@@ -28,6 +28,21 @@ IMG = {
     "mystery": img("pallet-mystery"),
 }
 
+POOL = {
+    "electronics": [img("pallet-electronics"), img("electronics-pallet-b"), img("electronics-pallet-c"), img("pallet-monitors")],
+    "clothing": [img("pallet-clothing"), img("clothing-bin-b"), img("clothing-bin-c"), img("clothing-bin-d")],
+    "mystery": [img("pallet-amazon-boxes"), img("pallet-mystery"), img("mystery-pallet-b"), img("mystery-pallet-c"), img("mystery-pallet-d")],
+    "pokemon": [img("pallet-cards"), img("tcg-boosters"), img("tcg-packs"), img("tcg-tins")],
+    "tools": [img("pallet-tools"), img("tools-pallet-b")],
+    "sneakers": [img("pallet-sneakers"), img("sneakers-pallet-b"), img("pallet-winter")],
+    "kitchen": [img("pallet-kitchen"), img("kitchen-pallet-b")],
+    "toys": [img("pallet-toys"), img("lego-duplo"), img("lego-modular"), img("lego-speed")],
+}
+
+
+def pick(pool, i):
+    return pool[(i - 1) % len(pool)]
+
 CATEGORIES = [
     {"slug": "elektronica", "name": "electronic liquidation pallets", "image": IMG["electronics"],
      "blurb": "Amazon-retouren, salvage monitors, audio en IT-accessoires. Manifest of as-is per lot."},
@@ -94,22 +109,22 @@ CATEGORIES = [
 CAT_MAP = {c["slug"]: c for c in CATEGORIES}
 
 LEGO_SETS = [
-    "LEGO Marvel Avengers Tower 76269 Building Kit 5201 pcs",
-    "LEGO Star Wars: UCS Death Star (75159) rebuilt with all minifigures",
-    "Lego Technic 42055: Bucket Wheel Excavator – RETIRED – MISB – PERFECT!",
-    "LEGO TECHNIC 42115 Lamborghini Sián FKP 37 New Factory Sealed",
-    "LEGO Technic 42177 Mercedes-Benz G 500 PROFESSIONAL Line",
-    "LEGO Technic McLaren P1 Model Car for Adults, Hyper Racing Car, Model Kit, 42172",
-    "LEGO Technic Rough Terrain Crane 42082 Building Kit Gift Set Sealed NEW",
-    "LEGO TECHNIC: App-Controlled Cat D11 Bulldozer (42131)",
-    "LEGO Icons Eiffel Tower 10307",
-    "LEGO Technic Bugatti Chiron 42083 MISB",
-    "LEGO Creator Expert Modular Building mix",
-    "LEGO Star Wars UCS Millennium Falcon-style display lot",
-    "LEGO NINJAGO City Markets sealed cases",
-    "LEGO Botanicals and seasonal sets pallet",
-    "LEGO Speed Champions mixed sealed boxes",
-    "LEGO DUPLO overstock pallet",
+    ("LEGO Marvel Avengers Tower 76269 Building Kit 5201 pcs", img("lego-avengers-tower")),
+    ("LEGO Star Wars: UCS Death Star (75159) rebuilt with all minifigures", img("lego-death-star")),
+    ("Lego Technic 42055: Bucket Wheel Excavator – RETIRED – MISB – PERFECT!", img("lego-excavator")),
+    ("LEGO TECHNIC 42115 Lamborghini Sián FKP 37 New Factory Sealed", img("lego-sian")),
+    ("LEGO Technic 42177 Mercedes-Benz G 500 PROFESSIONAL Line", img("lego-g-wagon")),
+    ("LEGO Technic McLaren P1 Model Car for Adults, Hyper Racing Car, Model Kit, 42172", img("lego-mclaren")),
+    ("LEGO Technic Rough Terrain Crane 42082 Building Kit Gift Set Sealed NEW", img("lego-crane")),
+    ("LEGO TECHNIC: App-Controlled Cat D11 Bulldozer (42131)", img("lego-bulldozer")),
+    ("LEGO Icons Eiffel Tower 10307", img("lego-eiffel")),
+    ("LEGO Technic Bugatti Chiron 42083 MISB", img("lego-bugatti")),
+    ("LEGO Creator Expert Modular Building mix", img("lego-modular")),
+    ("LEGO Star Wars UCS Millennium Falcon-style display lot", img("lego-falcon")),
+    ("LEGO NINJAGO City Markets sealed cases", img("lego-ninjago")),
+    ("LEGO Botanicals and seasonal sets pallet", img("lego-botanicals")),
+    ("LEGO Speed Champions mixed sealed boxes", img("lego-speed")),
+    ("LEGO DUPLO overstock pallet", img("lego-duplo")),
 ]
 
 MYSTERY_NAMES = [
@@ -210,7 +225,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     name = f"AMZ Electronics – {items} Items – €{msrp:,.2f} MSRP – PALLET – RETURNS"
                     condition = "Retour"
                     image = IMG["electronics"]
-                add(cat, name, price, _range_price(rng, price, False), msrp, items, condition, image,
+                add(cat, name, price, _range_price(rng, price, False), msrp, items, condition, pick(POOL["electronics"], i),
                     "Elektronicalot uit fulfillment-retouren. Manifest waar vermeld, anders as-is.")
 
             elif cat == "high-count":
@@ -225,7 +240,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 name = MYSTERY_NAMES[(i - 1) % len(MYSTERY_NAMES)]
                 if i > len(MYSTERY_NAMES):
                     name = f"{name} #{i}"
-                add(cat, name, price, pmax, None, None, "As-is", IMG["box"] if i % 2 else IMG["mystery"],
+                add(cat, name, price, pmax, None, None, "As-is", pick(POOL["mystery"], i),
                     "Mystery box pallet. Inhoud varieert; conditie van nieuw tot salvage.")
 
             elif cat in ("sneakers", "schoenen"):
@@ -239,7 +254,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     f"Pallets met opruimingsgoederen voor sneakers #{i}",
                     f"Groothandel in designer sneakers op pallets #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw / overstock", IMG["sneakers"],
+                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw / overstock", pick(POOL["sneakers"], i),
                     "Schoeisel met maat- en kleuroverzicht in het manifest.")
 
             elif cat == "winterschoenen":
@@ -266,7 +281,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     name = f"zara clothing liquidation pallets europe #{i}"
                 else:
                     name = f"fitness clothing pallet #{i} – {pcs}pcs"
-                add(cat, name, price, pmax, msrp, pcs, "Nieuw met tags", IMG["clothing"],
+                add(cat, name, price, pmax, msrp, pcs, "Nieuw met tags", pick(POOL["clothing"], i),
                     "Merkkleding tagged of in polybag. Maattabel in het manifest.")
 
             elif cat == "keuken":
@@ -279,7 +294,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     f"home appliance wholesale pallets eu #{i}",
                     f"Opruiming van pallets met huishoudelijke apparaten #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / open box", IMG["kitchen"],
+                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / open box", pick(POOL["kitchen"], i),
                     "Huishoudapparaten met modelnummers in het manifest. 230V.")
 
             elif cat == "koelkast":
@@ -306,7 +321,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     f"Jobsite combo – {items} kits",
                     f"Handgereedschap bulkpallet #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / overstock", IMG["tools"],
+                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / overstock", pick(POOL["tools"], i),
                     "Gereedschaplots. Accu en lader niet altijd inbegrepen; zie manifest.")
 
             elif cat == "parfum":
@@ -361,12 +376,12 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     "Nieuw / retour", IMG["electronics"], "Controllers, headsets en gesealde accessoires.")
 
             elif cat == "bouwsets":
-                base = LEGO_SETS[(i - 1) % len(LEGO_SETS)]
+                base, image = LEGO_SETS[(i - 1) % len(LEGO_SETS)]
                 name = base if i <= len(LEGO_SETS) else f"{base} #{i}"
                 price = _money(rng, 180, 620)
                 pmax = round(price * rng.uniform(7, 11), 2)
                 add(cat, name, price, pmax, round(price * rng.uniform(2.2, 3.5), 2), rng.choice([1, 2, 4, 6]),
-                    "Nieuw verzegeld", IMG["toys"],
+                    "Nieuw verzegeld", image,
                     "Sealed bouwset. Prijsbereik: enkele doos tot volle doos/pallet.")
 
             elif cat == "pokemon":
@@ -376,7 +391,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = _money(rng, 220, 890)
                 pmax = round(price * rng.uniform(4, 9), 2)
                 add(cat, name, price, pmax, round(price * 2.4, 2), rng.choice([6, 8, 10, 12]),
-                    "Nieuw / sealed", IMG["cards"],
+                    "Nieuw / sealed", pick(POOL["pokemon"], i),
                     "Sealed TCG-product. Prijs afhankelijk van case- of palletformaat.")
 
             elif cat == "speelgoed":
@@ -384,7 +399,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = items * rng.choice([12, 16, 22])
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
                 add(cat, f"Algemeen speelgoed – {items} stuks #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw / overstock", IMG["toys"], "Toegankelijk lot voor nieuwe wederverkopers.")
+                    "Nieuw / overstock", pick(POOL["toys"], i), "Toegankelijk lot voor nieuwe wederverkopers.")
 
             elif cat == "handtassen":
                 items = rng.choice([40, 60, 80, 100])
@@ -409,5 +424,17 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
     return products[:total]
 
 
-def by_category(products, slug, limit=8):
-    return [p["slug"] for p in products if p["category"] == slug][:limit]
+def by_category(products, slug, limit=8, unique_names=True):
+    out = []
+    seen = set()
+    for p in products:
+        if p["category"] != slug:
+            continue
+        key = p["name"].split(" #")[0]
+        if unique_names and key in seen:
+            continue
+        seen.add(key)
+        out.append(p["slug"])
+        if len(out) >= limit:
+            break
+    return out
