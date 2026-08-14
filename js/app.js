@@ -4,10 +4,16 @@ const SESSION_KEY = "pallethaven-session";
 const ORDERS_KEY = "pallethaven-orders";
 const LISTINGS_KEY = "pallethaven-listings";
 const BLOG_KEY = "pallethaven-blog";
+const HIDDEN_BLOG_KEY = "pallethaven-blog-hidden";
+const ADMIN_KEY = "pallethaven-admin";
 const CONTACT_INFO = (typeof CONTACT !== "undefined" && CONTACT) || {
   email: "Eu.wholesalestock@gmail.com",
   phone: "+49 1577 8431615",
   wa: "4915778431615"
+};
+const ADMIN_INFO = (typeof ADMIN !== "undefined" && ADMIN) || {
+  email: "eu.wholesalestock@gmail.com",
+  hash: ""
 };
 function mailHref(subject, body) {
   let url = "mailto:" + CONTACT_INFO.email;
@@ -52,6 +58,40 @@ function loadBlogPosts() {
   catch { return []; }
 }
 function saveBlogPosts(list) { localStorage.setItem(BLOG_KEY, JSON.stringify(list)); }
+function loadHiddenBlog() {
+  try { return JSON.parse(localStorage.getItem(HIDDEN_BLOG_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveHiddenBlog(list) { localStorage.setItem(HIDDEN_BLOG_KEY, JSON.stringify(list)); }
+function isAdmin() {
+  if (localStorage.getItem(ADMIN_KEY) === "1") return true;
+  const user = currentUser();
+  return !!(user && user.email && ADMIN_INFO.email && user.email.toLowerCase() === ADMIN_INFO.email);
+}
+function setAdmin(on) {
+  if (on) localStorage.setItem(ADMIN_KEY, "1");
+  else localStorage.removeItem(ADMIN_KEY);
+}
+function deleteBlog(slug) {
+  saveBlogPosts(loadBlogPosts().filter(p => p.slug !== slug));
+  const hidden = loadHiddenBlog();
+  if (!hidden.includes(slug)) {
+    hidden.push(slug);
+    saveHiddenBlog(hidden);
+  }
+}
+function visiblePublicPosts() {
+  const hidden = new Set(loadHiddenBlog());
+  return loadBlogPosts().filter(p => !hidden.has(p.slug));
+}
+function visibleEditorialPosts() {
+  const hidden = new Set(loadHiddenBlog());
+  return (typeof BLOG_POSTS !== "undefined" ? BLOG_POSTS : []).filter(p => !hidden.has(p.slug));
+}
+function blogDeleteBtn(slug) {
+  if (!isAdmin() || !slug) return "";
+  return `<button class="btn btn-sm blog-delete" type="button" data-delete-blog="${esc(slug)}">Verwijderen</button>`;
+}
 function esc(s) {
   return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
@@ -433,6 +473,24 @@ function bindCommon() {
     if (e.target.closest("[data-close]")) document.getElementById("quick-modal")?.classList.remove("open");
     if (e.target.closest("[data-close-order]")) document.getElementById("order-modal")?.classList.remove("open");
     if (e.target.id === "order-modal") e.target.classList.remove("open");
+    const del = e.target.closest("[data-delete-blog]");
+    if (del) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+      const slug = del.dataset.deleteBlog;
+      if (!slug || !confirm("Dit blogbericht verwijderen? Het verdwijnt van de site.")) return;
+      deleteBlog(slug);
+      if (location.pathname.includes("/blog/") || location.pathname.endsWith("bericht.html")) {
+        location.href = ROOT + "blog.html";
+        return;
+      }
+      renderBlogGrid();
+    }
+    if (e.target.closest("[data-admin-logout]")) {
+      e.preventDefault();
+      setAdmin(false);
+      renderBlogGrid();
+    }
   });
 
   document.querySelectorAll("[data-contact]").forEach(form => {
@@ -746,7 +804,7 @@ function editorialBlogCard(post) {
       <p class="meta">${esc(post.date)}</p>
       <h3><a href="${href}">${esc(post.title)}</a></h3>
       <p>${esc(post.excerpt)}</p>
-      <a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>${blogDeleteBtn(post.slug)}</p>
     </div>
   </article>`;
 }
@@ -762,17 +820,69 @@ function communityBlogCard(post) {
       <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
       <h3><a href="${href}">${esc(post.title)}</a></h3>
       <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
-      <a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>${blogDeleteBtn(post.slug)}</p>
     </div>
   </article>`;
 }
 
 function renderBlogGrid() {
   const grid = document.querySelector("[data-blog-grid]");
-  if (!grid) return;
-  const publicPosts = loadBlogPosts().map(communityBlogCard).join("");
-  const guides = (typeof BLOG_POSTS !== "undefined" ? BLOG_POSTS : []).map(editorialBlogCard).join("");
-  grid.innerHTML = publicPosts + guides || "<p>Nog geen berichten.</p>";
+  if (grid) {
+    const html = visiblePublicPosts().map(communityBlogCard).join("") + visibleEditorialPosts().map(editorialBlogCard).join("");
+    grid.innerHTML = html || "<p>Nog geen berichten.</p>";
+  }
+  const home = document.querySelector("[data-blog-home]");
+  if (home) {
+    const mixed = visiblePublicPosts().map(communityBlogCard).concat(visibleEditorialPosts().map(editorialBlogCard));
+    home.innerHTML = mixed.slice(0, 3).join("") || "";
+  }
+  renderBlogAdmin();
+  guardHiddenEditorial();
+}
+
+function renderBlogAdmin() {
+  document.querySelectorAll("[data-blog-admin]").forEach(box => {
+    const slug = box.dataset.deleteSlug || new URLSearchParams(location.search).get("p") || "";
+    if (isAdmin()) {
+      box.innerHTML = `<div class="alert alert-ok">Beheer is actief. Klik <strong>Verwijderen</strong> bij een bericht dat je niet wilt.
+        ${slug ? blogDeleteBtn(slug) : ""}
+        <button class="btn btn-sm" type="button" data-admin-logout>Beheer sluiten</button></div>`;
+      return;
+    }
+    box.innerHTML = `<form class="blog-admin-form" data-admin-login>
+      <p><strong>Beheer</strong> — verwijder blogberichten die je niet wilt.</p>
+      <label>Beheerderswachtwoord</label>
+      <div class="row">
+        <div><input type="password" name="password" required autocomplete="current-password"></div>
+        <div><button class="btn btn-dark btn-sm" type="submit">Beheer openen</button></div>
+      </div>
+      <div data-result></div>
+    </form>`;
+    const form = box.querySelector("[data-admin-login]");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const hash = await sha256Admin(form.password.value);
+      if (!ADMIN_INFO.hash || hash !== ADMIN_INFO.hash) {
+        showFormMessage(form, false, "Onjuist wachtwoord.");
+        return;
+      }
+      setAdmin(true);
+      renderBlogGrid();
+    });
+  });
+}
+
+async function sha256Admin(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ph-admin:" + text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function guardHiddenEditorial() {
+  const article = document.querySelector("[data-editorial-slug]");
+  if (!article) return;
+  const slug = article.dataset.editorialSlug;
+  if (!slug || !loadHiddenBlog().includes(slug)) return;
+  article.innerHTML = `<p>Dit blogbericht is verwijderd.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
 }
 
 function renderBlog() {
@@ -832,9 +942,10 @@ function renderBlogArticle() {
   const mount = document.querySelector("[data-blog-article]");
   if (!mount) return;
   const slug = new URLSearchParams(location.search).get("p");
-  const post = loadBlogPosts().find(p => p.slug === slug);
+  const post = visiblePublicPosts().find(p => p.slug === slug);
   if (!post) {
-    mount.innerHTML = `<p>Dit bericht is niet gevonden.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+    mount.innerHTML = `<p>Dit bericht is niet gevonden of verwijderd.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+    renderBlogAdmin();
     return;
   }
   const titleEl = document.querySelector("[data-blog-title]");
@@ -843,7 +954,10 @@ function renderBlogArticle() {
   const paras = esc(post.body).split(/\n+/).map(p => `<p>${p}</p>`).join("");
   const img = post.image ? `<img class="featured" src="${post.image}" alt="${esc(post.title)}">` : "";
   mount.innerHTML = `${img}<p class="meta">${esc(post.date)} · ${esc(post.author)}</p>${paras}
-    <p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+    <p class="blog-card-actions"><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a>${blogDeleteBtn(post.slug)}</p>`;
+  const adminBox = document.querySelector("[data-blog-admin]");
+  if (adminBox) adminBox.dataset.deleteSlug = post.slug;
+  renderBlogAdmin();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

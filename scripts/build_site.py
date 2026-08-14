@@ -2,6 +2,7 @@
 """Generate the PalletHaven static wholesale website."""
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import sys
@@ -19,6 +20,8 @@ PHONE = "+49 1577 8431615"
 WA_NUM = "4915778431615"
 MAIL_HREF = f"mailto:{EMAIL}"
 WA_HREF = f"https://wa.me/{WA_NUM}"
+ADMIN_PASSWORD = "HavenBeheer2026"
+ADMIN_HASH = hashlib.sha256(("ph-admin:" + ADMIN_PASSWORD).encode()).hexdigest()
 
 NAV = [
     ("index.html", "Home"),
@@ -300,7 +303,7 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
 {body}
 </main>
 {footer(prefix)}
-<script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}};</script>
+<script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}}; const ADMIN = {{email: "{EMAIL.lower()}", hash: "{ADMIN_HASH}"}};</script>
 <script src="{prefix}js/data.js"></script>
 <script src="{prefix}js/app.js"></script>
 {extra_js}
@@ -383,7 +386,8 @@ def blog_index_page():
 </section>
 <section class="section alt"><div class="container">
   <h2 class="section-title">Alle blogberichten</h2>
-  <p class="lead">Jouw geplaatste artikelen staan bovenaan, daarna de PalletHaven-gidsen.</p>
+  <p class="lead">Geplaatste artikelen staan bovenaan, daarna de PalletHaven-gidsen.</p>
+  <div class="blog-admin" data-blog-admin></div>
   <div class="blog-grid" data-blog-grid></div>
 </div></section>
 """
@@ -396,7 +400,7 @@ def blog_post_page(post):
   <h1>{post['title']}</h1>
   <p>{post['date']}</p>
 </div></section>
-<section class="section"><div class="container prose blog-article">
+<section class="section"><div class="container prose blog-article" data-editorial-slug="{post['slug']}">
   <img class="featured" src="../{post['image']}" alt="{post['title']}">
   {post['body']}
   <p class="hero-actions" style="justify-content:flex-start;margin-top:28px">
@@ -404,6 +408,7 @@ def blog_post_page(post):
     <a class="btn btn-dark" href="{WA_HREF}">Bestel via WhatsApp</a>
     <a class="btn btn-sm" href="../blog.html">Terug naar blog</a>
   </p>
+  <div class="blog-admin" data-blog-admin data-delete-slug="{post['slug']}"></div>
 </div></section>
 """
 
@@ -617,7 +622,7 @@ def homepage():
   <div class="container">
     <h2 class="section-title">Blog</h2>
     <p class="lead">Artikelen over inkopen, bestellen via e-mail of WhatsApp, en het runnen van een liquidatiehandel.</p>
-    {blog_grid(BLOG_POSTS, limit=3)}
+    <div class="blog-grid" data-blog-home></div>
     <p class="grid-more">
       <a class="btn btn-dark" href="blog.html#plaats-blog">Plaats je blogbericht</a>
       <a class="btn btn-sm" href="blog.html">Alle blogberichten</a>
@@ -788,7 +793,9 @@ def main():
 </div></section>
 <section class="section"><div class="container prose blog-article" data-blog-article>
   <p>Bericht wordt geladen…</p>
-</div></section>
+</div>
+<div class="container"><div class="blog-admin" data-blog-admin></div></div>
+</section>
 """))
 
     write(ROOT / "contact.html", page("Neem contact met ons op", "", "contact.html", """

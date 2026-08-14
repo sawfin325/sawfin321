@@ -169,6 +169,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .blog-composer h2 { margin-bottom: 8px; }
 .blog-composer textarea { min-height: 180px; }
+.blog-admin { max-width: 760px; margin: 0 auto 28px; }
+.blog-admin-form { background: #fff; border: 1px dashed #bbb; padding: 16px 18px; }
+.blog-admin .blog-delete { margin-right: 8px; }
+.blog-card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.blog-delete { background: #fff; color: var(--danger); border-color: var(--danger); }
+.blog-delete:hover { background: var(--danger); color: #fff; }
 
 .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .feature {
