@@ -1,8 +1,15 @@
 const CART_KEY = "pallethaven-cart";
-const USER_KEY = "pallethaven-user";
+const USERS_KEY = "pallethaven-users";
+const SESSION_KEY = "pallethaven-session";
+const ORDERS_KEY = "pallethaven-orders";
 
 function euro(n) {
-  return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(n);
+  return "€" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function imgSrc(path) {
+  if (!path) return "";
+  if (/^https?:/i.test(path)) return path;
+  return ROOT + path;
 }
 
 function getCart() {
@@ -41,6 +48,42 @@ function productBySlug(slug) { return PRODUCTS.find(p => p.slug === slug); }
 function categoryBySlug(slug) { return CATEGORIES.find(c => c.slug === slug); }
 function productsInCategory(slug) { return PRODUCTS.filter(p => p.category === slug); }
 
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ph:" + text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+function loadUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveUsers(users) { localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
+function getSession() {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY) || "null");
+  } catch { return null; }
+}
+function setSession(user, remember) {
+  const session = { email: user.email, name: user.name, company: user.company || "" };
+  const raw = JSON.stringify(session);
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
+  (remember ? localStorage : sessionStorage).setItem(SESSION_KEY, raw);
+}
+function currentUser() {
+  const session = getSession();
+  if (!session) return null;
+  return loadUsers().find(u => u.email === session.email) || session;
+}
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveOrder(order) {
+  const orders = loadOrders();
+  orders.unshift(order);
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
+
 function renderCartUI() {
   const count = cartCount();
   document.querySelectorAll("[data-cart-count]").forEach(el => el.textContent = count);
@@ -55,20 +98,21 @@ function renderCartUI() {
   mini.innerHTML = items.map(i => {
     const p = productBySlug(i.slug);
     if (!p) return "";
-    return `<div class="mini-item"><img src="${p.image}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
+    return `<div class="mini-item"><img src="${imgSrc(p.image)}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
   }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><a class="btn btn-dark btn-block" href="${ROOT}winkelwagen.html">Bekijk winkelwagen</a>`;
 }
 
 function productCard(p) {
+  const cat = categoryBySlug(p.category);
   return `<article class="product-card">
-    ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
     <div class="thumb">
-      <a href="${ROOT}product/${p.slug}.html"><img src="${p.image}" alt="${p.name}"></a>
+      <a href="${ROOT}product/${p.slug}.html"><img src="${imgSrc(p.image)}" alt="${p.name}"></a>
       <button class="quick" data-quick="${p.slug}">Snel bekijken</button>
     </div>
     <div class="info">
+      <p class="product-cat">${cat ? cat.name : ""}</p>
       <h3><a href="${ROOT}product/${p.slug}.html">${p.name}</a></h3>
-      <div class="price">${p.msrp ? `<span class="msrp">${euro(p.msrp)}</span>` : ""}${euro(p.price)}</div>
+      <div class="price">${euro(p.price)}</div>
     </div>
   </article>`;
 }
@@ -77,7 +121,7 @@ function openQuick(slug) {
   const p = productBySlug(slug);
   if (!p) return;
   const modal = document.getElementById("quick-modal");
-  modal.querySelector("img").src = p.image;
+  modal.querySelector("img").src = imgSrc(p.image);
   modal.querySelector("img").alt = p.name;
   modal.querySelector("h3").textContent = p.name;
   modal.querySelector("[data-q-price]").textContent = euro(p.price);
@@ -85,6 +129,164 @@ function openQuick(slug) {
   modal.querySelector("[data-q-add]").dataset.add = p.slug;
   modal.querySelector("[data-q-link]").href = ROOT + "product/" + p.slug + ".html";
   modal.classList.add("open");
+}
+
+function openLoginModal(e) {
+  if (e) e.preventDefault();
+  if (currentUser()) {
+    location.href = ROOT + "account.html";
+    return;
+  }
+  document.getElementById("login-modal")?.classList.add("open");
+}
+
+function renderHeaderAuth() {
+  const user = currentUser();
+  document.querySelectorAll("[data-open-login]").forEach(el => {
+    if (user) {
+      el.textContent = user.name ? user.name.split(" ")[0] : "Account";
+      el.classList.add("is-logged-in");
+    } else {
+      el.textContent = "LOGIN";
+      el.classList.remove("is-logged-in");
+    }
+  });
+}
+
+function showFormMessage(form, ok, text) {
+  const box = form.querySelector("[data-result]");
+  if (!box) return;
+  box.className = "alert " + (ok ? "alert-ok" : "alert-err");
+  box.textContent = text;
+}
+
+function bindAuth() {
+  document.querySelectorAll("[data-open-login]").forEach(el => {
+    el.addEventListener("click", openLoginModal);
+  });
+  document.querySelectorAll("[data-close-auth]").forEach(el => {
+    el.addEventListener("click", () => document.getElementById("login-modal")?.classList.remove("open"));
+  });
+  document.getElementById("login-modal")?.addEventListener("click", (e) => {
+    if (e.target.id === "login-modal") e.target.classList.remove("open");
+  });
+
+  document.querySelectorAll("[data-login]").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim().toLowerCase();
+      const password = form.password.value;
+      const remember = form.remember?.checked;
+      const users = loadUsers();
+      const user = users.find(u => u.email === email);
+      if (!user) {
+        showFormMessage(form, false, "Geen account gevonden met dit e-mailadres. Maak eerst een account aan.");
+        return;
+      }
+      const hash = await sha256(password);
+      if (hash !== user.passwordHash) {
+        showFormMessage(form, false, "Onjuist wachtwoord.");
+        return;
+      }
+      setSession(user, remember);
+      document.getElementById("login-modal")?.classList.remove("open");
+      location.href = ROOT + "account.html";
+    });
+  });
+
+  document.querySelectorAll("[data-register]").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim().toLowerCase();
+      const company = form.company?.value.trim() || "";
+      const password = form.password.value;
+      const password2 = form.password2.value;
+      if (password.length < 6) {
+        showFormMessage(form, false, "Kies een wachtwoord van minimaal 6 tekens.");
+        return;
+      }
+      if (password !== password2) {
+        showFormMessage(form, false, "Wachtwoorden komen niet overeen.");
+        return;
+      }
+      const users = loadUsers();
+      if (users.some(u => u.email === email)) {
+        showFormMessage(form, false, "Dit e-mailadres heeft al een account. Log in aan de linkerkant.");
+        return;
+      }
+      const user = {
+        id: crypto.randomUUID(),
+        name,
+        email,
+        company,
+        passwordHash: await sha256(password),
+        createdAt: new Date().toISOString()
+      };
+      users.push(user);
+      saveUsers(users);
+      setSession(user, true);
+      document.getElementById("login-modal")?.classList.remove("open");
+      location.href = ROOT + "account.html";
+    });
+  });
+}
+
+function renderAccount() {
+  const panel = document.querySelector("[data-account-panel]");
+  if (!panel) return;
+  const user = currentUser();
+  const forms = document.querySelector("[data-auth-forms]");
+  if (!user) {
+    panel.innerHTML = "";
+    if (forms) forms.style.display = "";
+    return;
+  }
+  if (forms) forms.style.display = "none";
+  const orders = loadOrders().filter(o => o.email === user.email);
+  const orderHtml = orders.length
+    ? `<table class="cart-table"><thead><tr><th>Datum</th><th>Lots</th><th>Totaal</th><th>Status</th></tr></thead><tbody>` +
+      orders.map(o => `<tr><td>${o.date}</td><td>${o.items.map(i => i.name + " × " + i.qty).join("<br>")}</td><td>${euro(o.total)}</td><td>${o.status}</td></tr>`).join("") +
+      `</tbody></table>`
+    : `<p>Je hebt nog geen bestellingen. <a href="${ROOT}winkel.html">Bekijk de winkel</a>.</p>`;
+  panel.innerHTML = `
+    <div class="account-dash">
+      <h2>Welkom, ${user.name || user.email}</h2>
+      <p>Je bent ingelogd als <strong>${user.email}</strong>${user.company ? " · " + user.company : ""}.</p>
+      <p><button class="btn btn-dark btn-sm" id="logout">Uitloggen</button></p>
+      <h3>Accountgegevens</h3>
+      <form data-account-update class="account-update">
+        <div class="row">
+          <div><label>Naam</label><input name="name" value="${user.name || ""}" required></div>
+          <div><label>Bedrijfsnaam</label><input name="company" value="${user.company || ""}"></div>
+        </div>
+        <label>Nieuw wachtwoord (optioneel)</label>
+        <input name="password" type="password" minlength="6" autocomplete="new-password">
+        <p><button class="btn btn-dark" type="submit">Gegevens opslaan</button></p>
+        <div data-result></div>
+      </form>
+      <h3>Bestellingen</h3>
+      ${orderHtml}
+    </div>`;
+  document.getElementById("logout")?.addEventListener("click", () => {
+    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+    location.href = ROOT + "account.html";
+  });
+  document.querySelector("[data-account-update]")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const users = loadUsers();
+    const idx = users.findIndex(u => u.email === user.email);
+    if (idx < 0) return;
+    users[idx].name = form.name.value.trim();
+    users[idx].company = form.company.value.trim();
+    if (form.password.value) users[idx].passwordHash = await sha256(form.password.value);
+    saveUsers(users);
+    setSession(users[idx], true);
+    showFormMessage(form, true, "Gegevens opgeslagen.");
+    renderHeaderAuth();
+  });
 }
 
 function bindCommon() {
@@ -126,6 +328,8 @@ function bindCommon() {
   });
 
   renderCartUI();
+  renderHeaderAuth();
+  bindAuth();
 }
 
 function renderShop() {
@@ -170,7 +374,7 @@ function renderCartPage() {
         const p = productBySlug(i.slug);
         if (!p) return "";
         return `<tr>
-          <td style="display:flex;gap:12px;align-items:center"><img src="${p.image}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
+          <td style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(p.image)}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
           <td>${euro(p.price)}</td>
           <td><input type="number" min="1" value="${i.qty}" data-qty-slug="${p.slug}" style="width:70px"></td>
           <td>${euro(p.price * i.qty)}</td>
@@ -200,6 +404,12 @@ function renderCheckout() {
     form.innerHTML = `<p>Je winkelwagen is leeg.</p><a class="btn btn-dark" href="${ROOT}winkel.html">Naar de winkel</a>`;
     return;
   }
+  const user = currentUser();
+  if (user) {
+    if (form.name) form.name.value = user.name || "";
+    if (form.email) form.email.value = user.email || "";
+    if (form.company) form.company.value = user.company || "";
+  }
   if (summary) {
     summary.innerHTML = items.map(i => {
       const p = productBySlug(i.slug);
@@ -208,35 +418,22 @@ function renderCheckout() {
   }
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    const email = (form.email.value || "").trim().toLowerCase();
+    saveOrder({
+      id: crypto.randomUUID(),
+      email,
+      name: form.name.value,
+      date: new Date().toLocaleDateString("nl-NL"),
+      total: cartTotal(),
+      status: "Wacht op betaling",
+      items: getCart().map(i => {
+        const p = productBySlug(i.slug);
+        return { slug: i.slug, name: p ? p.name : i.slug, qty: i.qty, price: p ? p.price : 0 };
+      })
+    });
     localStorage.removeItem(CART_KEY);
     renderCartUI();
-    form.innerHTML = `<div class="alert alert-ok"><strong>Bestelling ontvangen.</strong> We sturen een manifest en betaalinstructie (bankoverschrijving of Revolut) naar het opgegeven e-mailadres. Tot die tijd is er geen betaling verschuldigd.</div>`;
-  });
-}
-
-function renderAccount() {
-  const login = document.querySelector("[data-login]");
-  const register = document.querySelector("[data-register]");
-  const panel = document.querySelector("[data-account-panel]");
-  const user = JSON.parse(localStorage.getItem(USER_KEY) || "null");
-  if (user && panel) {
-    panel.innerHTML = `<div class="alert alert-ok">Ingelogd als ${user.email}. <button class="btn btn-sm" id="logout">Uitloggen</button></div>`;
-    document.getElementById("logout")?.addEventListener("click", () => {
-      localStorage.removeItem(USER_KEY);
-      location.reload();
-    });
-  }
-  login?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = login.querySelector("[name=email]").value;
-    localStorage.setItem(USER_KEY, JSON.stringify({ email }));
-    location.reload();
-  });
-  register?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const box = register.querySelector("[data-result]");
-    box.className = "alert alert-ok";
-    box.textContent = "Accountlink is klaargezet. In deze demo kun je direct inloggen met je e-mailadres.";
+    form.innerHTML = `<div class="alert alert-ok"><strong>Bestelling ontvangen.</strong> We sturen een manifest en betaalinstructie (bankoverschrijving of Revolut) naar ${email}. Tot die tijd is er geen betaling verschuldigd.${user ? " Je vindt deze order terug onder Mijn account." : " Maak een account aan om je orders later terug te zien."}</div>`;
   });
 }
 

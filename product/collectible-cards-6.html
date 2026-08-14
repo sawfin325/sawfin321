@@ -16,23 +16,24 @@
   <div class="topbar"><div class="container">Wij leveren in heel Europa, waaronder België, Nederland, Frankrijk, Italië, Spanje, Portugal, het Verenigd Koninkrijk, Polen, Zwitserland en Oostenrijk. Gratis verzending in Nederland vanaf € 3.000.</div></div>
   <div class="container header-main">
     <button class="menu-btn" data-menu aria-label="Menu">☰</button>
-    <a class="logo" href="../index.html"><img src="../assets/logo.svg" alt="PalletHaven"></a>
+    <a class="logo" href="../index.html"><img src="../assets/logo.jpg" alt="PalletHaven"></a>
     <form class="search-wrap" data-search>
       <label class="sr-only" for="q">Zoeken</label>
       <input id="q" name="s" placeholder="Zoeken…">
-      <button type="submit" aria-label="Zoeken">⌕</button>
+      <button type="submit" aria-label="Zoeken"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
     </form>
     <div class="header-actions">
-      <a class="hide-sm" href="../account.html">Login</a>
+      <a class="account-link hide-sm" href="../account.html" data-open-login>LOGIN</a>
+      <span class="header-divider hide-sm"></span>
       <a class="cart-link" href="../winkelwagen.html">
-        <span class="cart-meta hide-sm">Winkelwagen / <span data-cart-total>€ 0,00</span></span>
-        <span class="bag">👜<b data-cart-count>0</b></span>
+        <span class="cart-meta hide-sm">Winkelwagen / <span data-cart-total>€0.00</span></span>
+        <span class="cart-icon"><strong data-cart-count>0</strong></span>
         <div class="mini-cart" data-mini-cart></div>
       </a>
     </div>
   </div>
   <nav class="nav-bar"><div class="container"><a href="../index.html" class="">Home</a><a href="../winkel.html" class="active">Winkel</a><a href="../contact.html" class="">Neem contact met ons op</a><a href="../over-ons.html" class="">Over ons</a><a href="../privacybeleid.html" class="">Privacybeleid</a><a href="../algemene-voorwaarden.html" class="">Algemene voorwaarden</a><a href="../leveringsvoorwaarden.html" class="">Leveringsvoorwaarden</a><a href="../disclaimer.html" class="">Juridische disclaimer</a></div></nav>
-  <div class="mobile-menu" data-mobile><a href="../index.html">Home</a><a href="../winkel.html">Winkel</a><a href="../contact.html">Neem contact met ons op</a><a href="../over-ons.html">Over ons</a><a href="../privacybeleid.html">Privacybeleid</a><a href="../algemene-voorwaarden.html">Algemene voorwaarden</a><a href="../leveringsvoorwaarden.html">Leveringsvoorwaarden</a><a href="../disclaimer.html">Juridische disclaimer</a><a href="../account.html">Login</a></div>
+  <div class="mobile-menu" data-mobile><a href="../index.html">Home</a><a href="../winkel.html">Winkel</a><a href="../contact.html">Neem contact met ons op</a><a href="../over-ons.html">Over ons</a><a href="../privacybeleid.html">Privacybeleid</a><a href="../algemene-voorwaarden.html">Algemene voorwaarden</a><a href="../leveringsvoorwaarden.html">Leveringsvoorwaarden</a><a href="../disclaimer.html">Juridische disclaimer</a><a href="../account.html" data-open-login>LOGIN</a></div>
 </header>
 <main>
 
@@ -40,16 +41,16 @@
   <div class="crumbs"><a href="../index.html">Home</a> / <a href="../winkel.html">Winkel</a> / <a href="../categorie/speelgoed.html">Speelgoed en collectibles</a></div>
 </div></section>
 <section class="section"><div class="container product-layout">
-  <div class="gallery"><img src="https://images.unsplash.com/photo-1606503153255-059d8f0d0d0a?auto=format&fit=crop&w=900&q=80" alt="Collectible card case – 6 displays"></div>
+  <div class="gallery"><img src="../assets/products/pallet-cards.jpg" alt="Collectible card case – 6 displays"></div>
   <div>
     <h1>Collectible card case – 6 displays</h1>
-    <p class="price" style="font-size:1.6rem">€ 890,00</p>
+    <p class="price" style="font-size:1.6rem">€890.00</p>
     <p>Sealed displays voor kaartwinkels en online resellers.</p>
     <div class="meta-list">
       <div><span>Categorie</span><span>Speelgoed en collectibles</span></div>
       <div><span>Conditie</span><span>Nieuw</span></div>
       <div><span>Aantal stuks</span><span>6</span></div>
-      <div><span>Geschatte MSRP</span><span>€ 2.400,00</span></div>
+      <div><span>Geschatte MSRP</span><span>€2,400.00</span></div>
       <div><span>Verzending</span><span>LTL-vracht, offerte na adres</span></div>
     </div>
     <div class="qty-row">
@@ -95,7 +96,7 @@
       <p>Ma–vr 09:00–17:00 CET<br>Geen walk-in, geen afhaling behalve truckloads op afspraak.</p>
     </div>
   </div>
-  <div class="copy">© 2026 PalletHaven. Demo-website voor groothandel liquidatiepallets.</div>
+  <div class="copy">© 2026 PalletHaven. Groothandel liquidatiepallets voor Nederland en Europa.</div>
 </footer>
 <div class="modal" id="quick-modal">
   <div class="modal-box">
@@ -107,6 +108,39 @@
       <p data-q-desc></p>
       <p><button class="btn btn-dark" data-q-add data-add="" data-label="In winkelwagen">In winkelwagen</button></p>
       <p><a data-q-link>Bekijk product</a></p>
+    </div>
+  </div>
+</div>
+<div class="modal" id="login-modal">
+  <div class="auth-box">
+    <button class="close-x" data-close-auth aria-label="Sluiten">×</button>
+    <div class="auth-grid">
+      <form data-login>
+        <h3>Login</h3>
+        <label>Gebruikersnaam of e-mailadres *</label>
+        <input name="email" type="email" required autocomplete="username">
+        <label>Wachtwoord *</label>
+        <input name="password" type="password" required autocomplete="current-password">
+        <p class="remember"><label><input type="checkbox" name="remember"> Onthouden</label></p>
+        <button class="btn btn-dark" type="submit">Inloggen</button>
+        <div data-result></div>
+      </form>
+      <form data-register>
+        <h3>Registreren</h3>
+        <label>Naam *</label>
+        <input name="name" required autocomplete="name">
+        <label>E-mailadres *</label>
+        <input name="email" type="email" required autocomplete="email">
+        <label>Bedrijfsnaam</label>
+        <input name="company" autocomplete="organization">
+        <label>Wachtwoord *</label>
+        <input name="password" type="password" required minlength="6" autocomplete="new-password">
+        <label>Bevestig wachtwoord *</label>
+        <input name="password2" type="password" required minlength="6" autocomplete="new-password">
+        <p class="form-note">Je persoonsgegevens worden gebruikt om je account en bestellingen te beheren, zoals beschreven in ons <a href="../privacybeleid.html">privacybeleid</a>.</p>
+        <button class="btn btn-dark" type="submit">Account aanmaken</button>
+        <div data-result></div>
+      </form>
     </div>
   </div>
 </div>

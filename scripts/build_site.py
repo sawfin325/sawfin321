@@ -7,34 +7,38 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+def img(name: str) -> str:
+    return f"assets/products/{name}.jpg"
+
 IMG = {
     "hero": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80",
-    "electronics": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=900&q=80",
-    "monitor": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80",
-    "keyboard": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=900&q=80",
-    "box": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=900&q=80",
-    "gaylord": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=900&q=80",
-    "sneakers": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
-    "shoes": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80",
-    "clothing": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80",
-    "fashion": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=900&q=80",
-    "kitchen": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
-    "coffee": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=900&q=80",
-    "tools": "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80",
-    "drill": "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=900&q=80",
-    "perfume": "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80",
-    "beauty": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80",
-    "phone": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
-    "watch": "https://images.unsplash.com/photo-1434493789847-2f02dc6ce246?auto=format&fit=crop&w=900&q=80",
-    "toys": "https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&w=900&q=80",
-    "blocks": "https://images.unsplash.com/photo-1587654780291-39c9404d73a7?auto=format&fit=crop&w=900&q=80",
-    "cards": "https://images.unsplash.com/photo-1606503153255-059d8f0d0d0a?auto=format&fit=crop&w=900&q=80",
-    "ac": "https://images.unsplash.com/photo-1631545806608-5c505ba57b56?auto=format&fit=crop&w=900&q=80",
-    "fridge": "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&w=900&q=80",
-    "winter": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=80",
-    "bags": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80",
-    "tv": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=80",
-    "console": "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=900&q=80",
+    "electronics": img("pallet-electronics"),
+    "monitor": img("pallet-monitors"),
+    "keyboard": img("pallet-electronics"),
+    "box": img("pallet-amazon-boxes"),
+    "gaylord": img("pallet-gaylord"),
+    "sneakers": img("pallet-sneakers"),
+    "shoes": img("pallet-sneakers"),
+    "clothing": img("pallet-clothing"),
+    "fashion": img("pallet-clothing"),
+    "kitchen": img("pallet-kitchen"),
+    "coffee": img("pallet-kitchen"),
+    "tools": img("pallet-tools"),
+    "drill": img("pallet-tools"),
+    "perfume": img("pallet-perfume"),
+    "beauty": img("pallet-cosmetics"),
+    "phone": img("pallet-phones"),
+    "watch": img("pallet-phones"),
+    "toys": img("pallet-toys"),
+    "blocks": img("pallet-toys"),
+    "cards": img("pallet-cards"),
+    "ac": img("pallet-airco"),
+    "fridge": img("pallet-fridge"),
+    "winter": img("pallet-winter"),
+    "bags": img("pallet-bags"),
+    "tv": img("pallet-monitors"),
+    "console": img("pallet-electronics"),
+    "mystery": img("pallet-mystery"),
 }
 
 CATEGORIES = [
@@ -56,7 +60,7 @@ CATEGORIES = [
      "blurb": "iPhone- en Android-lots met model, opslag, kleur en batterijstatus vóór aankoop."},
     {"slug": "speelgoed", "name": "Speelgoed en collectibles", "image": IMG["toys"],
      "blurb": "Bouwsets, kaarten en seizoensspeelgoed. Geschikt voor webshops en kermissen."},
-    {"slug": "mystery-box", "name": "Mystery box pallets", "image": IMG["box"],
+    {"slug": "mystery-box", "name": "Mystery box pallets", "image": IMG["mystery"],
      "blurb": "Gemengde retourdozen. Inhoud varieert; conditie van nieuw tot salvage."},
     {"slug": "airco", "name": "Airco en HVAC", "image": IMG["ac"],
      "blurb": "Draagbare en split-units uit overstock en retourprogramma's."},
@@ -214,12 +218,12 @@ PRODUCTS = [
      "body": "Lage complexiteit, brede doelgroep. Aanbevolen als eerste pallet voordat je naar high-count of salvage gaat."},
     {"slug": "mystery-electronics", "name": "Mystery box elektronica – pallet",
      "category": "mystery-box", "price": 640.00, "msrp": None, "items": None, "condition": "As-is",
-     "badge": "As-is", "image": IMG["box"],
+     "badge": "As-is", "image": IMG["mystery"],
      "short": "Gemengde elektronica-retouren zonder volledige SKU-garantie.",
      "body": "Er is een categorieraming, geen artikel-voor-artikel lijst. Koop alleen als je as-is accepteert."},
     {"slug": "mystery-general", "name": "Mystery box algemeen – pallet",
      "category": "mystery-box", "price": 520.00, "msrp": None, "items": None, "condition": "As-is",
-     "badge": "As-is", "image": IMG["box"],
+     "badge": "As-is", "image": IMG["mystery"],
      "short": "Huishouden, speelgoed en accessoires in één stapel.",
      "body": "Goedkoop instappen, hoge sorteertijd. Niet hetzelfde als een manifestlot."},
     {"slug": "airco-retour-40", "name": "Airco retouren – 40 stuks (3 pallets)",
@@ -272,7 +276,13 @@ NAV = [
 
 
 def euro(n):
-    return f"€ {n:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return f"€{n:,.2f}"
+
+
+def src_img(path: str, prefix: str) -> str:
+    if path.startswith("http"):
+        return path
+    return prefix + path
 
 
 def header(prefix: str, active: str) -> str:
@@ -281,28 +291,30 @@ def header(prefix: str, active: str) -> str:
         for href, label in NAV
     )
     mobile = "".join(f'<a href="{prefix}{href}">{label}</a>' for href, label in NAV)
+    search_icon = '''<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'''
     return f"""
 <header class="site-header">
   <div class="topbar"><div class="container">Wij leveren in heel Europa, waaronder België, Nederland, Frankrijk, Italië, Spanje, Portugal, het Verenigd Koninkrijk, Polen, Zwitserland en Oostenrijk. Gratis verzending in Nederland vanaf € 3.000.</div></div>
   <div class="container header-main">
     <button class="menu-btn" data-menu aria-label="Menu">☰</button>
-    <a class="logo" href="{prefix}index.html"><img src="{prefix}assets/logo.svg" alt="PalletHaven"></a>
+    <a class="logo" href="{prefix}index.html"><img src="{prefix}assets/logo.jpg" alt="PalletHaven"></a>
     <form class="search-wrap" data-search>
       <label class="sr-only" for="q">Zoeken</label>
       <input id="q" name="s" placeholder="Zoeken…">
-      <button type="submit" aria-label="Zoeken">⌕</button>
+      <button type="submit" aria-label="Zoeken">{search_icon}</button>
     </form>
     <div class="header-actions">
-      <a class="hide-sm" href="{prefix}account.html">Login</a>
+      <a class="account-link hide-sm" href="{prefix}account.html" data-open-login>LOGIN</a>
+      <span class="header-divider hide-sm"></span>
       <a class="cart-link" href="{prefix}winkelwagen.html">
-        <span class="cart-meta hide-sm">Winkelwagen / <span data-cart-total>€ 0,00</span></span>
-        <span class="bag">👜<b data-cart-count>0</b></span>
+        <span class="cart-meta hide-sm">Winkelwagen / <span data-cart-total>€0.00</span></span>
+        <span class="cart-icon"><strong data-cart-count>0</strong></span>
         <div class="mini-cart" data-mini-cart></div>
       </a>
     </div>
   </div>
   <nav class="nav-bar"><div class="container">{links}</div></nav>
-  <div class="mobile-menu" data-mobile>{mobile}<a href="{prefix}account.html">Login</a></div>
+  <div class="mobile-menu" data-mobile>{mobile}<a href="{prefix}account.html" data-open-login>LOGIN</a></div>
 </header>"""
 
 
@@ -336,7 +348,7 @@ def footer(prefix: str) -> str:
       <p>Ma–vr 09:00–17:00 CET<br>Geen walk-in, geen afhaling behalve truckloads op afspraak.</p>
     </div>
   </div>
-  <div class="copy">© 2026 PalletHaven. Demo-website voor groothandel liquidatiepallets.</div>
+  <div class="copy">© 2026 PalletHaven. Groothandel liquidatiepallets voor Nederland en Europa.</div>
 </footer>
 <div class="modal" id="quick-modal">
   <div class="modal-box">
@@ -348,6 +360,39 @@ def footer(prefix: str) -> str:
       <p data-q-desc></p>
       <p><button class="btn btn-dark" data-q-add data-add="" data-label="In winkelwagen">In winkelwagen</button></p>
       <p><a data-q-link>Bekijk product</a></p>
+    </div>
+  </div>
+</div>
+<div class="modal" id="login-modal">
+  <div class="auth-box">
+    <button class="close-x" data-close-auth aria-label="Sluiten">×</button>
+    <div class="auth-grid">
+      <form data-login>
+        <h3>Login</h3>
+        <label>Gebruikersnaam of e-mailadres *</label>
+        <input name="email" type="email" required autocomplete="username">
+        <label>Wachtwoord *</label>
+        <input name="password" type="password" required autocomplete="current-password">
+        <p class="remember"><label><input type="checkbox" name="remember"> Onthouden</label></p>
+        <button class="btn btn-dark" type="submit">Inloggen</button>
+        <div data-result></div>
+      </form>
+      <form data-register>
+        <h3>Registreren</h3>
+        <label>Naam *</label>
+        <input name="name" required autocomplete="name">
+        <label>E-mailadres *</label>
+        <input name="email" type="email" required autocomplete="email">
+        <label>Bedrijfsnaam</label>
+        <input name="company" autocomplete="organization">
+        <label>Wachtwoord *</label>
+        <input name="password" type="password" required minlength="6" autocomplete="new-password">
+        <label>Bevestig wachtwoord *</label>
+        <input name="password2" type="password" required minlength="6" autocomplete="new-password">
+        <p class="form-note">Je persoonsgegevens worden gebruikt om je account en bestellingen te beheren, zoals beschreven in ons <a href="{prefix}privacybeleid.html">privacybeleid</a>.</p>
+        <button class="btn btn-dark" type="submit">Account aanmaken</button>
+        <div data-result></div>
+      </form>
     </div>
   </div>
 </div>"""
@@ -385,16 +430,17 @@ def cards(slugs):
     items = [p for p in PRODUCTS if p["slug"] in slugs]
     html = ['<div class="product-grid">']
     for p in items:
+        cat = CAT_MAP[p["category"]]["name"]
         html.append(f"""
         <article class="product-card">
-          {'<span class="badge">' + p["badge"] + "</span>" if p.get("badge") else ""}
           <div class="thumb">
             <a href="product/{p["slug"]}.html"><img src="{p["image"]}" alt="{p["name"]}"></a>
             <button class="quick" data-quick="{p["slug"]}">Snel bekijken</button>
           </div>
           <div class="info">
+            <p class="product-cat">{cat}</p>
             <h3><a href="product/{p["slug"]}.html">{p["name"]}</a></h3>
-            <div class="price">{'<span class="msrp">' + euro(p["msrp"]) + "</span>" if p.get("msrp") else ""}{euro(p["price"])}</div>
+            <div class="price">{euro(p["price"])}</div>
           </div>
         </article>""")
     html.append("</div>")
@@ -427,12 +473,12 @@ def homepage():
 
 <section class="section">
   <div class="container features">
-    <article class="feature"><div class="icon">🚚</div><h3>Prioritaire verzending</h3><p>LTL-vracht binnen Nederland en naar de rest van Europa met tracking.</p></article>
-    <article class="feature"><div class="icon">↺</div><h3>Duidelijke voorwaarden</h3><p>Manifestlots kun je beoordelen vóór betaling. Salvage en high-count gaan as-is.</p></article>
-    <article class="feature"><div class="icon">🔒</div><h3>Beveiligde betalingen</h3><p>Bankoverschrijving of Revolut. Geen betaling voordat het lot is bevestigd.</p></article>
-    <article class="feature"><div class="icon">✓</div><h3>Geverifieerde sourcing</h3><p>Overstock, surplus en retourstromen via retail- en distributiekanalen.</p></article>
-    <article class="feature"><div class="icon">📋</div><h3>Manifest vóór aankoop</h3><p>Merk, model, conditie en geschatte MSRP per regel waar van toepassing.</p></article>
-    <article class="feature"><div class="icon">🏢</div><h3>B2B en export</h3><p>Factuur, paklijst en exportdocumenten voor EU-kopers op aanvraag.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="7" width="13" height="10" rx="1"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7.5" cy="18.5" r="1.5" fill="#fff" stroke="none"/><circle cx="18.5" cy="18.5" r="1.5" fill="#fff" stroke="none"/></svg></div><h3>Prioritaire verzending</h3><p>LTL-vracht binnen Nederland en naar de rest van Europa met tracking.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></div><h3>Duidelijke voorwaarden</h3><p>Manifestlots kun je beoordelen vóór betaling. Salvage en high-count gaan as-is.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="11" width="16" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><h3>Beveiligde betalingen</h3><p>Bankoverschrijving of Revolut. Geen betaling voordat het lot is bevestigd.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 3l8 4v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg></div><h3>Geverifieerde sourcing</h3><p>Overstock, surplus en retourstromen via retail- en distributiekanalen.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>Manifest vóór aankoop</h3><p>Merk, model, conditie en geschatte MSRP per regel waar van toepassing.</p></article>
+    <article class="feature"><div class="icon"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="10" width="7" height="10"/><rect x="14" y="10" width="7" height="10"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h3>B2B en export</h3><p>Factuur, paklijst en exportdocumenten voor EU-kopers op aanvraag.</p></article>
   </div>
 </section>
 
@@ -696,7 +742,7 @@ def main():
   <div class="crumbs"><a href="../index.html">Home</a> / <a href="../winkel.html">Winkel</a> / <a href="../categorie/{cat["slug"]}.html">{cat["name"]}</a></div>
 </div></section>
 <section class="section"><div class="container product-layout">
-  <div class="gallery"><img src="{p["image"]}" alt="{p["name"]}"></div>
+  <div class="gallery"><img src="../{p["image"]}" alt="{p["name"]}"></div>
   <div>
     <h1>{p["name"]}</h1>
     <p class="price" style="font-size:1.6rem">{euro(p["price"])}</p>
@@ -842,14 +888,14 @@ def main():
 <section class="section"><div class="container contact-grid">
   <form data-checkout>
     <h2>Factuur- en aflevergegevens</h2>
-    <div class="row"><div><label>Bedrijfsnaam</label><input required></div><div><label>KvK-nummer</label><input></div></div>
-    <div class="row"><div><label>Contactpersoon</label><input required></div><div><label>E-mail</label><input type="email" required></div></div>
-    <label>Telefoon</label><input required>
-    <label>Afleveradres</label><input required>
-    <div class="row"><div><label>Postcode</label><input required></div><div><label>Plaats</label><input required></div></div>
+    <div class="row"><div><label>Bedrijfsnaam</label><input name="company"></div><div><label>KvK-nummer</label><input name="kvk"></div></div>
+    <div class="row"><div><label>Contactpersoon</label><input name="name" required></div><div><label>E-mail</label><input name="email" type="email" required></div></div>
+    <label>Telefoon</label><input name="phone" required>
+    <label>Afleveradres</label><input name="address" required>
+    <div class="row"><div><label>Postcode</label><input name="zip" required></div><div><label>Plaats</label><input name="city" required></div></div>
     <label>Land</label>
-    <select><option>Nederland</option><option>België</option><option>Duitsland</option><option>Frankrijk</option><option>Overig EU</option><option>Verenigd Koninkrijk</option></select>
-    <label>Opmerking / gewenst lotmanifest</label><textarea></textarea>
+    <select name="country"><option>Nederland</option><option>België</option><option>Duitsland</option><option>Frankrijk</option><option>Overig EU</option><option>Verenigd Koninkrijk</option></select>
+    <label>Opmerking / gewenst lotmanifest</label><textarea name="note"></textarea>
     <p><button class="btn btn-dark" type="submit">Bestelling plaatsen</button></p>
   </form>
   <div>
@@ -861,22 +907,34 @@ def main():
 """))
 
     write(ROOT / "account.html", page("Mijn account", "", "winkel.html", """
-<section class="page-hero"><div class="container"><h1>Mijn account</h1></div></section>
+<section class="page-hero"><div class="container"><h1>Mijn account</h1>
+<p>Log in met je bestaande account of maak hier een nieuw groothandelsaccount aan.</p></div></section>
 <section class="section"><div class="container">
   <div data-account-panel></div>
-  <div class="account-grid">
+  <div class="account-grid" data-auth-forms>
     <form data-login>
       <h2>Inloggen</h2>
-      <label>E-mailadres</label><input name="email" type="email" required>
-      <label>Wachtwoord</label><input type="password" required>
-      <p><label><input type="checkbox"> Onthouden</label></p>
+      <label>Gebruikersnaam of e-mailadres *</label>
+      <input name="email" type="email" required autocomplete="username">
+      <label>Wachtwoord *</label>
+      <input name="password" type="password" required autocomplete="current-password">
+      <p class="remember"><label><input type="checkbox" name="remember"> Onthouden</label></p>
       <p><button class="btn btn-dark" type="submit">Inloggen</button></p>
+      <div data-result></div>
     </form>
     <form data-register>
-      <h2>Registreren</h2>
-      <label>E-mailadres</label><input type="email" required>
-      <p class="form-note">Er wordt een link om een wachtwoord in te stellen naar je e-mailadres verzonden. In deze demo kun je daarna direct inloggen.</p>
-      <p>Je gegevens worden gebruikt zoals beschreven in het <a href="privacybeleid.html">privacybeleid</a>.</p>
+      <h2>Account aanmaken</h2>
+      <label>Naam *</label>
+      <input name="name" required autocomplete="name">
+      <label>E-mailadres *</label>
+      <input name="email" type="email" required autocomplete="email">
+      <label>Bedrijfsnaam</label>
+      <input name="company" autocomplete="organization">
+      <label>Wachtwoord *</label>
+      <input name="password" type="password" required minlength="6" autocomplete="new-password">
+      <label>Bevestig wachtwoord *</label>
+      <input name="password2" type="password" required minlength="6" autocomplete="new-password">
+      <p class="form-note">Je gegevens worden gebruikt zoals beschreven in het <a href="privacybeleid.html">privacybeleid</a>.</p>
       <p><button class="btn btn-dark" type="submit">Registreren</button></p>
       <div data-result></div>
     </form>

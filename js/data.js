@@ -2,73 +2,73 @@ const CATEGORIES = [
   {
     "slug": "elektronica",
     "name": "Elektronica pallets",
-    "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-electronics.jpg",
     "blurb": "Retour- en overstocklots met laptops, audio, monitors en accessoires. Manifest per artikel."
   },
   {
     "slug": "high-count",
     "name": "High Count FC pallets",
-    "image": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-gaylord.jpg",
     "blurb": "Hoge gaylord-stapels gemengde fulfillment-retouren. Geen itemmanifest, lagere stukprijs."
   },
   {
     "slug": "sneakers",
     "name": "Sneaker pallets",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-sneakers.jpg",
     "blurb": "Sport- en lifestyle schoeisel met merk, model, kleurweg en maatreks in het manifest."
   },
   {
     "slug": "kleding",
     "name": "Kleding en mode",
-    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-clothing.jpg",
     "blurb": "Merkkleding in nieuwe of tagged staat. Partijen van 250 stuks tot volle pallets."
   },
   {
     "slug": "keuken",
     "name": "Huishoudapparaten",
-    "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-kitchen.jpg",
     "blurb": "Koffiemachines, mixers, stofzuigers en airfryers. Conditieklasse per toestel."
   },
   {
     "slug": "gereedschap",
     "name": "Gereedschap pallets",
-    "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-tools.jpg",
     "blurb": "Accu- en handgereedschap voor wederverkoop via marktplaatsen en bouwgroothandel."
   },
   {
     "slug": "parfum",
     "name": "Parfum en cosmetica",
-    "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-perfume.jpg",
     "blurb": "Geur, huid- en haarverzorging in verzegelde of testerstaat. Volledige SKU-lijst."
   },
   {
     "slug": "iphone",
     "name": "Smartphone pallets",
-    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-phones.jpg",
     "blurb": "iPhone- en Android-lots met model, opslag, kleur en batterijstatus vóór aankoop."
   },
   {
     "slug": "speelgoed",
     "name": "Speelgoed en collectibles",
-    "image": "https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-toys.jpg",
     "blurb": "Bouwsets, kaarten en seizoensspeelgoed. Geschikt voor webshops en kermissen."
   },
   {
     "slug": "mystery-box",
     "name": "Mystery box pallets",
-    "image": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-mystery.jpg",
     "blurb": "Gemengde retourdozen. Inhoud varieert; conditie van nieuw tot salvage."
   },
   {
     "slug": "airco",
     "name": "Airco en HVAC",
-    "image": "https://images.unsplash.com/photo-1631545806608-5c505ba57b56?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-airco.jpg",
     "blurb": "Draagbare en split-units uit overstock en retourprogramma's."
   },
   {
     "slug": "winterschoenen",
     "name": "Winterschoenen",
-    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-winter.jpg",
     "blurb": "Laarzen en gevoerde schoenen voor het najaar. Maatreks in het manifest."
   }
 ];
@@ -82,7 +82,7 @@ const PRODUCTS = [
     "items": 24,
     "condition": "Retour / gemengd",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-electronics.jpg",
     "short": "Geteste en ongeteste consumentenelektronica in een compacte doos. Volledig artikelmanifest.",
     "body": "Deze doos is bedoeld voor verkopers die snel willen listen op eBay.de of Bol. Elk artikel staat in het manifest met merk, model en conditieklasse. Reken op een mix van audio, randapparatuur en kleine IT-accessoires."
   },
@@ -95,7 +95,7 @@ const PRODUCTS = [
     "items": 19,
     "condition": "Salvage",
     "badge": "Salvage",
-    "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-monitors.jpg",
     "short": "Schermen met cosmetische of functionele schade. Alleen voor reparatie of onderdelen.",
     "body": "Niet geschikt als eerste aankoop. De lotomschrijving vermeldt schermmaat en merk waar bekend. Kopers met een reparatielijn halen hier de hoogste restwaarde uit."
   },
@@ -108,7 +108,7 @@ const PRODUCTS = [
     "items": 15,
     "condition": "Salvage",
     "badge": "Salvage",
-    "image": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-electronics.jpg",
     "short": "Kleine salvage-box voor onderdelen of refurbishment.",
     "body": "Vijftien gaming- en kantoortoetsenborden met uiteenlopende gebreken. Manifest vermeldt visuele staat. Verkoop as-is of strip voor switches en behuizingen."
   },
@@ -121,7 +121,7 @@ const PRODUCTS = [
     "items": 43,
     "condition": "Retour",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-electronics.jpg",
     "short": "Middelgroot elektronicalot met ASIN-lijst vóór betaling.",
     "body": "Mix van headphones, speakers, webcams en smart-home items. Conditie loopt van nieuw-in-doos tot gebruikte retour. Uitvalpercentage staat in de lotnotitie."
   },
@@ -134,7 +134,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "Gemengd / as-is",
     "badge": "Geen manifest",
-    "image": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-gaylord.jpg",
     "short": "Hoge gaylord van fulfillment-retouren. Geen itemlijst, vaste prijs.",
     "body": "Stapel van circa 1,8 tot 2,1 meter. Categorieën kunnen elektronica, speelgoed, textiel en huishoud zijn. Alleen voor ervaren sorteerders. Verkoop is definitief."
   },
@@ -147,7 +147,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "Gemengd / as-is",
     "badge": "Geen manifest",
-    "image": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-gaylord.jpg",
     "short": "Tweede gaylord in dezelfde reeks, andere mix, zelfde voorwaarden.",
     "body": "Geen veiling en geen bieden. Beschikbaar zolang de voorraad strekt. Vracht wordt na adresbevestiging berekend."
   },
@@ -160,7 +160,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "Gemengd / as-is",
     "badge": "Geen manifest",
-    "image": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-amazon-boxes.jpg",
     "short": "Compactere high-count voor wie volume wil testen zonder truckload.",
     "body": "Lagere instapprijs dan de 3.000-euro gaylords. Nog steeds zonder artikelmanifest. Niet aanbevolen voor beginners."
   },
@@ -173,7 +173,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "Gemengd / as-is",
     "badge": "Geen manifest",
-    "image": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-gaylord.jpg",
     "short": "Standaard FC-hoogte, gemengde merchandise, directe verzending.",
     "body": "Geschikt voor veilingoperators en export. Verwacht een breed conditiebereik van nieuw tot onverkoopbaar."
   },
@@ -186,7 +186,7 @@ const PRODUCTS = [
     "items": 120,
     "condition": "Nieuw / overstock",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-sneakers.jpg",
     "short": "Atletisch en lifestyle schoeisel met maat- en kleuroverzicht.",
     "body": "Merken wisselen per lot. Het manifest noemt modelnamen en EU-maten. Populaire exitkanalen: Vinted, eBay.de en fysieke outlets."
   },
@@ -199,7 +199,7 @@ const PRODUCTS = [
     "items": 80,
     "condition": "Nieuw in doos",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-sneakers.jpg",
     "short": "Hogere retailwaarde per paar, volledige doospresentatie.",
     "body": "Kleinere teller, hogere stukprijs. Bedoeld voor boutiques en sneakerresellers die liever minder volume en schonere lots hebben."
   },
@@ -212,7 +212,7 @@ const PRODUCTS = [
     "items": 96,
     "condition": "Nieuw",
     "badge": "Overstock",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-sneakers.jpg",
     "short": "Seizoensoverstock uit Europese distributie.",
     "body": "Vooral neutrale kleuren en middensegment. Maatreks loopt van 38 tot 46, details in het Excel-manifest."
   },
@@ -225,7 +225,7 @@ const PRODUCTS = [
     "items": 250,
     "condition": "Nieuw met tags",
     "badge": "250 stuks",
-    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-clothing.jpg",
     "short": "Dames- en herenmix, tagged, klaar voor rek of online listing.",
     "body": "Geen replica's. Maattabel en merksplit staan in het manifest. Geschikt voor weekmarkten en outletshops."
   },
@@ -238,7 +238,7 @@ const PRODUCTS = [
     "items": 250,
     "condition": "Nieuw met tags",
     "badge": "250 stuks",
-    "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-clothing.jpg",
     "short": "Tweede kledinglot uit dezelfde reeks, andere merkmix.",
     "body": "Lagere instapprijs door meer basics. Controleer het seizoen in de lotomschrijving voordat je bestelt."
   },
@@ -251,7 +251,7 @@ const PRODUCTS = [
     "items": 250,
     "condition": "Nieuw / overstock",
     "badge": "250 stuks",
-    "image": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-clothing.jpg",
     "short": "Casual en sportkleding, tagged of in polybag.",
     "body": "Goede starter voor Vinted-verkopers die volume willen zonder truckload. Retouren na verzending worden niet geaccepteerd."
   },
@@ -264,7 +264,7 @@ const PRODUCTS = [
     "items": 400,
     "condition": "Nieuw / mixed",
     "badge": "Volume",
-    "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-clothing.jpg",
     "short": "Hoger volume voor distributeurs die splitsen naar lokale winkels.",
     "body": "Bevat meerdere merklagen. Vraag het Excel-bestand aan vóór betaling via sales@pallethaven.nl."
   },
@@ -277,7 +277,7 @@ const PRODUCTS = [
     "items": 36,
     "condition": "Nieuw / open box",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-kitchen.jpg",
     "short": "Airfryers, mixers en koffieapparaten met modelnummers in het manifest.",
     "body": "Populair bij Facebook Marketplace-verkopers. Controleer voltage (230V) in de specificaties; alle lots voor de EU-markt zijn 230V tenzij anders vermeld."
   },
@@ -290,7 +290,7 @@ const PRODUCTS = [
     "items": 20,
     "condition": "Nieuw verzegeld",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-kitchen.jpg",
     "short": "Steel- en cilinderstofzuigers, fabrieksverzegeld.",
     "body": "Beperkte merkmix, hoge herkenning. Accessoires volgens doosinhoud; ontbrekende onderdelen worden in het manifest gemeld."
   },
@@ -303,7 +303,7 @@ const PRODUCTS = [
     "items": 28,
     "condition": "Nieuw / retour",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-kitchen.jpg",
     "short": "Volautomaten en capsuleapparaten, conditie per serienummer.",
     "body": "Open-box toestellen zijn visueel gecontroleerd. Functionele garanties van de fabrikant kunnen vervallen bij liquidatievoorraad."
   },
@@ -316,7 +316,7 @@ const PRODUCTS = [
     "items": 42,
     "condition": "Nieuw / overstock",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-tools.jpg",
     "short": "Boormachines, slijpers en combosets. Accu's vermeld waar aanwezig.",
     "body": "Niet alle sets bevatten accu en lader. Het manifest maakt dat per regel zichtbaar zodat je je inkoopprijs per werkende kit kunt rekenen."
   },
@@ -329,7 +329,7 @@ const PRODUCTS = [
     "items": 180,
     "condition": "Nieuw",
     "badge": "Bulk",
-    "image": "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-tools.jpg",
     "short": "Tangen, sleutels, bitsets en opbergkoffers.",
     "body": "Lage stukprijs, breed assortiment. Geschikt voor bouwmarkten en marktkramen. Geen elektrische apparaten in dit lot."
   },
@@ -342,7 +342,7 @@ const PRODUCTS = [
     "items": 30,
     "condition": "Nieuw in doos",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-tools.jpg",
     "short": "Combopacks voor wederverkoop aan ZZP'ers en webshops.",
     "body": "Elke kit is als één SKU te listen. Voltage en accuplatform staan in het manifest."
   },
@@ -355,7 +355,7 @@ const PRODUCTS = [
     "items": 100,
     "condition": "Nieuw verzegeld",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-perfume.jpg",
     "short": "Designer- en masstige geuren, verzegelde flacons.",
     "body": "Geen testers in dit lot. Batchcodes waar beschikbaar. Parallelimport mogelijk; controleer lokale etikettering voor jouw verkoopkanaal."
   },
@@ -368,7 +368,7 @@ const PRODUCTS = [
     "items": 180,
     "condition": "Nieuw",
     "badge": "Mix",
-    "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-cosmetics.jpg",
     "short": "Huid, haar en make-up. THT-data in het spreadsheet.",
     "body": "Let op houdbaarheidsdata. Lots met minder dan zes maanden THT worden als zodanig gemarkeerd."
   },
@@ -381,7 +381,7 @@ const PRODUCTS = [
     "items": 12,
     "condition": "Grade A refurbished",
     "badge": "Grade A",
-    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-phones.jpg",
     "short": "Geteste toestellen met batterijgezondheid in het manifest.",
     "body": "IMEI-lijst volgt na reservering. Cosmetisch hoog, functioneel getest. Niet nieuw verzegeld tenzij expliciet vermeld."
   },
@@ -394,7 +394,7 @@ const PRODUCTS = [
     "items": 8,
     "condition": "Nieuw verzegeld",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-phones.jpg",
     "short": "Fabrieksverzegelde retaildozen, EU-stekker.",
     "body": "Beperkte voorraad. Model en opslag per seriële regel. Identiteitsverificatie kan worden gevraagd bij high-value lots."
   },
@@ -407,7 +407,7 @@ const PRODUCTS = [
     "items": 24,
     "condition": "Nieuw / retour",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1434493789847-2f02dc6ce246?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-phones.jpg",
     "short": "Smartwatches en bands, mix van nieuw en open box.",
     "body": "Bandjesmaten en kastmaten staan in het bestand. Geschikt als add-on bij telefoonverkopen."
   },
@@ -420,7 +420,7 @@ const PRODUCTS = [
     "items": 40,
     "condition": "Nieuw verzegeld",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1587654780291-39c9404d73a7?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-toys.jpg",
     "short": "Grote bouwdozen, sealed, met setnummers in het manifest.",
     "body": "Hoge herkenning, relatief eenvoudig te listen. Controleer of sets retired zijn; dat staat in de kolom status."
   },
@@ -433,7 +433,7 @@ const PRODUCTS = [
     "items": 6,
     "condition": "Nieuw",
     "badge": "Sealed",
-    "image": "https://images.unsplash.com/photo-1606503153255-059d8f0d0d0a?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-cards.jpg",
     "short": "Sealed displays voor kaartwinkels en online resellers.",
     "body": "Niet geopend. Foto's van seal en batch waar beschikbaar. Geen pull-garantie."
   },
@@ -446,7 +446,7 @@ const PRODUCTS = [
     "items": 200,
     "condition": "Nieuw / overstock",
     "badge": "Beginners",
-    "image": "https://images.unsplash.com/photo-1558060370-d644479cb6f7?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-toys.jpg",
     "short": "Toegankelijk instaplot voor nieuwe wederverkopers.",
     "body": "Lage complexiteit, brede doelgroep. Aanbevolen als eerste pallet voordat je naar high-count of salvage gaat."
   },
@@ -459,7 +459,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "As-is",
     "badge": "As-is",
-    "image": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-mystery.jpg",
     "short": "Gemengde elektronica-retouren zonder volledige SKU-garantie.",
     "body": "Er is een categorieraming, geen artikel-voor-artikel lijst. Koop alleen als je as-is accepteert."
   },
@@ -472,7 +472,7 @@ const PRODUCTS = [
     "items": null,
     "condition": "As-is",
     "badge": "As-is",
-    "image": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-mystery.jpg",
     "short": "Huishouden, speelgoed en accessoires in één stapel.",
     "body": "Goedkoop instappen, hoge sorteertijd. Niet hetzelfde als een manifestlot."
   },
@@ -485,7 +485,7 @@ const PRODUCTS = [
     "items": 40,
     "condition": "Retour",
     "badge": "3 pallets",
-    "image": "https://images.unsplash.com/photo-1631545806608-5c505ba57b56?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-airco.jpg",
     "short": "Draagbare units uit een retourprogramma. 230V.",
     "body": "Sommige units missen een slang of afstandsbediening. Dat staat per regel. Vracht is hoger door volume; vraag een offerte."
   },
@@ -498,7 +498,7 @@ const PRODUCTS = [
     "items": 12,
     "condition": "Nieuw",
     "badge": "Nieuw",
-    "image": "https://images.unsplash.com/photo-1631545806608-5c505ba57b56?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-airco.jpg",
     "short": "Nieuwe draagbare airco's, seizoensclearance.",
     "body": "Schonere lot dan retouren. Beperkt tot de zomerpiek; daarna langzamere exit."
   },
@@ -511,7 +511,7 @@ const PRODUCTS = [
     "items": 72,
     "condition": "Nieuw",
     "badge": "Seizoen",
-    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-winter.jpg",
     "short": "Gevoerde laarzen, dames en heren, maatoverzicht in Excel.",
     "body": "Seizoensgevoelig. Bestel ruim voor november als je winterpiek wilt meepakken."
   },
@@ -524,7 +524,7 @@ const PRODUCTS = [
     "items": 60,
     "condition": "Nieuw / overstock",
     "badge": "Seizoen",
-    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-sneakers.jpg",
     "short": "Lagere teller, gemengde stijlen.",
     "body": "Bevat enkelhoge en kuit-hoge modellen. Waterdichtheid per model in het manifest."
   },
@@ -537,7 +537,7 @@ const PRODUCTS = [
     "items": 80,
     "condition": "Nieuw",
     "badge": "Instap",
-    "image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-bags.jpg",
     "short": "Toegankelijk lot voor nieuwe modeverkopers.",
     "body": "Geen replica-lederclaims. Materialen staan als PU, textiel of leer volgens het bestand."
   },
@@ -550,7 +550,7 @@ const PRODUCTS = [
     "items": 10,
     "condition": "Salvage",
     "badge": "Salvage",
-    "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-monitors.jpg",
     "short": "Schermen met schade. Alleen voor technici.",
     "body": "Geen beeldgarantie. Serienummers en inch-maten staan in het manifest."
   },
@@ -563,7 +563,7 @@ const PRODUCTS = [
     "items": 35,
     "condition": "Nieuw / retour",
     "badge": "Manifest",
-    "image": "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&w=900&q=80",
+    "image": "assets/products/pallet-electronics.jpg",
     "short": "Controllers, headsets en gesealde accessoires.",
     "body": "Geen garantie dat consoles zelf in het lot zitten. Lees de SKU-lijst voordat je uitgaat van hardware."
   }
