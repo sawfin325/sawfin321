@@ -170,11 +170,21 @@ function showOrderPrompt(p, qty) {
   const qtyN = qty || 1;
   const msg = productOrderText(p, qtyN);
   const body = modal.querySelector("[data-order-prompt-body]");
-  if (body) body.innerHTML = `<p><strong>${p.name}</strong></p><p class="price">${priceLabel(p)} · aantal ${qtyN}</p>`;
+  if (body) {
+    body.innerHTML = `<p><strong>${p.name}</strong></p>
+      <p class="price">${priceLabel(p)} · aantal ${qtyN}</p>
+      <p>Kies hoe je deze order wilt sturen. We nemen geen online betaling.</p>`;
+  }
   const mail = modal.querySelector("[data-order-mail]");
   const wa = modal.querySelector("[data-order-wa]");
-  if (mail) mail.href = mailHref("Order: " + p.name, msg);
-  if (wa) wa.href = waHref(msg);
+  if (mail) {
+    mail.href = mailHref("Order: " + p.name, msg);
+    mail.innerHTML = `Bestel via e-mail<br><small>${CONTACT_INFO.email}</small>`;
+  }
+  if (wa) {
+    wa.href = waHref(msg);
+    wa.innerHTML = `Bestel via WhatsApp<br><small>${CONTACT_INFO.phone}</small>`;
+  }
   modal.classList.add("open");
 }
 
@@ -198,6 +208,7 @@ function productCard(p) {
       <p class="product-cat">${cat ? cat.name : (p.category || "Community")}</p>
       <h3><a href="${productHref(p.slug)}">${p.name}</a></h3>
       <div class="price">${priceLabel(p)}</div>
+      <button class="btn btn-dark btn-sm btn-block" type="button" data-order="${p.slug}">Bestellen</button>
     </div>
   </article>`;
 }
@@ -394,14 +405,21 @@ function bindCommon() {
   document.body.addEventListener("click", (e) => {
     const q = e.target.closest("[data-quick]");
     if (q) { e.preventDefault(); openQuick(q.dataset.quick); }
+    const orderBtn = e.target.closest("[data-order]");
+    if (orderBtn) {
+      e.preventDefault();
+      const qtyEl = orderBtn.closest("[data-product-page], .product-card, .modal")?.querySelector("[data-qty]")
+        || document.querySelector("[data-qty]");
+      const qty = qtyEl ? parseInt(qtyEl.value, 10) || 1 : 1;
+      showOrderPrompt(productBySlug(orderBtn.dataset.order), qty);
+    }
     const add = e.target.closest("[data-add]");
     if (add) {
       e.preventDefault();
       const qtyEl = document.querySelector("[data-qty]");
       const qty = qtyEl ? parseInt(qtyEl.value, 10) || 1 : 1;
       addToCart(add.dataset.add, qty);
-      const p = productBySlug(add.dataset.add);
-      showOrderPrompt(p, qty);
+      showOrderPrompt(productBySlug(add.dataset.add), qty);
     }
     if (e.target.closest("[data-close]")) document.getElementById("quick-modal")?.classList.remove("open");
     if (e.target.closest("[data-close-order]")) document.getElementById("order-modal")?.classList.remove("open");
@@ -519,7 +537,6 @@ function renderProductPage() {
           <label>Aantal <input type="number" min="1" value="1" data-qty></label>
         </div>
         ${orderActionsHtml(p, 1)}
-        <p><button class="btn btn-sm" data-add="${p.slug}" data-label="In winkelwagen" data-ask-order="1">Eerst in winkelwagen</button></p>
       </div>
     </div>`;
   const qtyInput = mount.querySelector("[data-qty]");

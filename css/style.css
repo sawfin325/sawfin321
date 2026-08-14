@@ -188,6 +188,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .product-card:hover .quick { transform: none; }
 .product-card .info { padding: 12px 4px 8px; }
+.product-card .btn { margin-top: 10px; }
 .product-cat {
   font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
   color: rgba(0,0,0,.45); margin: 0 0 4px; font-weight: 700;
@@ -254,6 +255,8 @@ textarea { min-height: 120px; resize: vertical; }
 
 .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .order-via small { display: block; font-weight: 400; opacity: .85; margin-top: 4px; }
+.order-via .btn { margin-bottom: 8px; }
+.btn small { display: block; font-weight: 400; opacity: .85; margin-top: 4px; text-transform: none; }
 #order-modal .auth-box { grid-template-columns: 1fr; }
 .topbar a { color: #fff; text-decoration: underline; }
 .legal h2 { margin-top: 1.6em; font-size: 1.2rem; }
