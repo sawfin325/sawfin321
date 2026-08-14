@@ -3,6 +3,7 @@ const USERS_KEY = "pallethaven-users";
 const SESSION_KEY = "pallethaven-session";
 const ORDERS_KEY = "pallethaven-orders";
 const LISTINGS_KEY = "pallethaven-listings";
+const BLOG_KEY = "pallethaven-blog";
 const CONTACT_INFO = (typeof CONTACT !== "undefined" && CONTACT) || {
   email: "Eu.wholesalestock@gmail.com",
   phone: "+49 1577 8431615",
@@ -46,6 +47,14 @@ function loadListings() {
   catch { return []; }
 }
 function saveListings(list) { localStorage.setItem(LISTINGS_KEY, JSON.stringify(list)); }
+function loadBlogPosts() {
+  try { return JSON.parse(localStorage.getItem(BLOG_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveBlogPosts(list) { localStorage.setItem(BLOG_KEY, JSON.stringify(list)); }
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
 function allProducts() {
   return PRODUCTS.concat(loadListings());
 }
@@ -708,6 +717,78 @@ function renderCommunity() {
   });
 }
 
+function communityBlogCard(post) {
+  const img = post.image
+    ? `<img src="${post.image}" alt="${esc(post.title)}">`
+    : `<img src="${ROOT}assets/products/pallet-amazon-boxes.jpg" alt="">`;
+  return `<article class="blog-card">
+    <a href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">${img}</a>
+    <div class="body">
+      <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
+      <h3><a href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">${esc(post.title)}</a></h3>
+      <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
+      <a class="btn btn-dark btn-sm" href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">Lees artikel</a>
+    </div>
+  </article>`;
+}
+
+function renderBlog() {
+  const grid = document.querySelector("[data-community-blog]");
+  if (grid) {
+    const list = loadBlogPosts();
+    grid.innerHTML = list.length ? list.map(communityBlogCard).join("") : "<p>Nog geen openbare berichten. Plaats de eerste.</p>";
+  }
+  const form = document.querySelector("[data-post-blog]");
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = "1";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const file = form.photo?.files?.[0];
+    let image = "";
+    if (file) {
+      image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    const post = {
+      slug: "blog-" + Date.now(),
+      title: form.title.value.trim(),
+      body: form.body.value.trim(),
+      author: form.name.value.trim(),
+      email: form.email.value.trim(),
+      date: new Date().toLocaleDateString("nl-NL"),
+      image
+    };
+    const list = loadBlogPosts();
+    list.unshift(post);
+    saveBlogPosts(list);
+    showFormMessage(form, true, "Je blogbericht staat online.");
+    form.reset();
+    renderBlog();
+  });
+}
+
+function renderBlogArticle() {
+  const mount = document.querySelector("[data-blog-article]");
+  if (!mount) return;
+  const slug = new URLSearchParams(location.search).get("p");
+  const post = loadBlogPosts().find(p => p.slug === slug);
+  if (!post) {
+    mount.innerHTML = `<p>Dit bericht is niet gevonden.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+    return;
+  }
+  const titleEl = document.querySelector("[data-blog-title]");
+  if (titleEl) titleEl.textContent = post.title;
+  document.title = post.title + " – PalletHaven";
+  const paras = esc(post.body).split(/\n+/).map(p => `<p>${p}</p>`).join("");
+  const img = post.image ? `<img class="featured" src="${post.image}" alt="${esc(post.title)}">` : "";
+  mount.innerHTML = `${img}<p class="meta">${esc(post.date)} · ${esc(post.author)}</p>${paras}
+    <p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   bindCommon();
   renderShop();
@@ -716,4 +797,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCheckout();
   renderAccount();
   renderCommunity();
+  renderBlog();
+  renderBlogArticle();
 });

@@ -23,6 +23,7 @@ WA_HREF = f"https://wa.me/{WA_NUM}"
 NAV = [
     ("index.html", "Home"),
     ("winkel.html", "Winkel"),
+    ("blog.html", "Blog"),
     ("plaats-pallet.html", "Plaats een pallet"),
     ("contact.html", "Neem contact met ons op"),
     ("over-ons.html", "Over ons"),
@@ -30,6 +31,102 @@ NAV = [
     ("algemene-voorwaarden.html", "Algemene voorwaarden"),
     ("leveringsvoorwaarden.html", "Leveringsvoorwaarden"),
     ("disclaimer.html", "Juridische disclaimer"),
+]
+
+BLOG_POSTS = [
+    {
+        "slug": "hoe-bestel-je-via-email-of-whatsapp",
+        "title": "Hoe bestel je bij PalletHaven: e-mail of WhatsApp",
+        "date": "12 augustus 2026",
+        "excerpt": "Er is geen online checkout. Wie een pallet wil, stuurt de order via e-mail of WhatsApp. Zo werkt het stap voor stap.",
+        "image": "assets/products/pallet-electronics.jpg",
+        "body": """
+<p>PalletHaven neemt geen online betaling. Klik je op Bestellen, dan kies je e-mail of WhatsApp. Zo blijft de order een gesprek: lot, aantal, afleveradres en vracht worden bevestigd voordat er geld overgaat.</p>
+<h2>Wat je nodig hebt</h2>
+<p>Bedrijfsnaam, contactpersoon, e-mail, telefoon en het bezorgadres waar een palletwagen of heftruck het lot kan aannemen. Vermeld het lot dat je op de productpagina ziet, plus het aantal.</p>
+<h2>Via e-mail</h2>
+<p>Stuur je order naar <a href="mailto:Eu.wholesalestock@gmail.com">Eu.wholesalestock@gmail.com</a>. Op de productpagina staat een knop die het bericht alvast vult. We bevestigen beschikbaarheid, manifest (waar beloofd) en vracht.</p>
+<h2>Via WhatsApp</h2>
+<p>Zelfde inhoud, sneller heen-en-weer: <a href="https://wa.me/4915778431615">+49 1577 8431615</a>. Handig als je nog een foto van het losadres of een KvK-nummer wilt nazuuren.</p>
+<h2>Daarna</h2>
+<p>Na bevestiging betaal je via bankoverschrijving of Revolut. Verzending start na ontvangst van de betaling. Tracking volgt per zending.</p>
+""",
+    },
+    {
+        "slug": "wat-is-een-liquidatiepallet",
+        "title": "Wat is een liquidatiepallet?",
+        "date": "8 augustus 2026",
+        "excerpt": "Overstock, seizoensclearance of retourvoorraad, gebundeld onder retail. Wat je koopt, hangt af van het lottype en of er een manifest is.",
+        "image": "assets/products/pallet-amazon-boxes.jpg",
+        "body": """
+<p>Een liquidatiepallet is een bundel merchandise die een retailer, fabrikant of distributeur doorzet naar de groothandel. Denk aan overstock, seizoensclearance of consumentenretouren. Wederverkopers kopen de bundel onder retail in en verkopen per stuk.</p>
+<h2>Waarom wederverkopers dit kopen</h2>
+<p>Je krijgt merken zonder een volle groothandelscatalogus. Nieuwe categorieën testen zonder truckload-volume vast te leggen hoort daarbij. Veel kopers starten met één of twee pallets en groeien daarna.</p>
+<h2>Het risico</h2>
+<p>Conditie varieert. Daarom leveren wij op standaardlots een regel-voor-regel overzicht. High-count zonder lijst is een ander product, met een andere prijs en een andere koper. Lees de lotpagina: nieuw, retour of salvage staat erin.</p>
+<h2>Bestellen</h2>
+<p>Kies een lot in de winkel en stuur de order via e-mail of WhatsApp. Geen walk-in, geen afhaling op standaardpallets.</p>
+""",
+    },
+    {
+        "slug": "pallet-flipping-bijverdienste-of-fulltime",
+        "title": "Pallet flipping: bijverdienste of fulltime onderneming?",
+        "date": "2 augustus 2026",
+        "excerpt": "Avonden en weekenden om te testen, of kasstroom en opslag voor schaal. Het tempo bepaalt welk lot je als eerste neemt.",
+        "image": "assets/products/pallet-sneakers.jpg",
+        "body": """
+<p>Als bijverdienste test je de markt met beperkt risico. Fulltime biedt meer schaal — van enkele pallets naar truckloads — maar vraagt kasstroom, opslag en een vast inkoopplan.</p>
+<h2>Begin klein</h2>
+<p>De meeste kopers die het volhouden starten met één of twee manifestlots. Ze bouwen hun sorteer- en listingsysteem en schalen daarna. Een high-count gaylord als eerste aankoop is zelden een goed idee.</p>
+<h2>Wanneer fulltime past</h2>
+<p>Als je al een verkoopkanaal hebt, weet hoe lang voorraad bij jou ligt, en vracht plus uitval in je prijs hebt zitten. Dan is volume een hefboom, geen gok.</p>
+<p>PalletHaven is ingericht op beide tempo’s: kleine dozen om te testen en truckloads wanneer de operatie dat aankan. Orders via e-mail of WhatsApp.</p>
+""",
+    },
+    {
+        "slug": "zijn-liquidatiepallets-de-moeite-waard",
+        "title": "Zijn liquidatiepallets de moeite waard?",
+        "date": "28 juli 2026",
+        "excerpt": "Alleen als de input klopt: manifest, realistische exitprijs, vracht en uitval. Zonder dat is de lage inkoopprijs een schijnvoordeel.",
+        "image": "assets/products/pallet-tools.jpg",
+        "body": """
+<p>Liquidatie geeft toegang tot merkvoorraad tegen een fractie van de retailprijs. Dat verschil is de marge — als je weet wat erin zit.</p>
+<h2>Reken het lot door</h2>
+<p>Neem de verwachte verkoopprijs minus platformkosten, vracht, opslag en eventuele refurbishment. Deel door het aantal stuks. Als dat getal niet boven je uurloon plus risico uitkomt, laat het lot liggen.</p>
+<h2>Manifest of niet</h2>
+<p>Zonder gedetailleerd overzicht is er geen betrouwbare manier om te beoordelen wat je ontvangt. Lots zonder lijst staan bij ons zo gelabeld. Die zijn voor sorteerders, niet voor een eerste test.</p>
+<p>Vragen over een specifiek lot: Eu.wholesalestock@gmail.com of WhatsApp +49 1577 8431615.</p>
+""",
+    },
+    {
+        "slug": "amazon-pallets-met-of-zonder-manifest",
+        "title": "Amazon-pallets: met of zonder manifest",
+        "date": "21 juli 2026",
+        "excerpt": "FC-gaylords zonder lijst zijn een ander product dan een elektronicalot met artikelregels. Koop het formaat dat bij jouw operatie past.",
+        "image": "assets/products/pallet-gaylord.jpg",
+        "body": """
+<p>Niet elke “Amazon-pallet” is hetzelfde. Sommige lots komen uit retourstromen met een artikelbestand. Andere zijn hoge gaylords zonder lijst, vast geprijsd, bedoeld voor wie kan sorteren.</p>
+<h2>Met manifest</h2>
+<p>Merk, model, conditieklasse en geschatte MSRP per regel waar van toepassing. Geschikt om vooraf te listen of om je marge te rekenen voordat je vastlegt.</p>
+<h2>Zonder lijst</h2>
+<p>High-count FC-stapels: elektronica, speelgoed, beddengoed door elkaar. Geen veiling. Alleen zinvol als je ruimte, tijd en een afzetkanaal voor reststromen hebt.</p>
+<p>Twijfel je welk formaat bij je past, mail of app voordat je bestelt.</p>
+""",
+    },
+    {
+        "slug": "truckloads-wanneer-heeft-het-zin",
+        "title": "Truckloads: wanneer heeft het zin?",
+        "date": "14 juli 2026",
+        "excerpt": "Volume drukt de stukprijs, maar vraagt loscapaciteit, opslag en kasstroom. Truckloads gaan bij PalletHaven via overleg, niet via een klik.",
+        "image": "assets/products/truck-a.jpg",
+        "body": """
+<p>Een truckload is geen grotere winkelwagen. Het is een logistieke afspraak: laadmoment, vracht, losadres met heftruck, en vaak meerdere categorieën in één rit.</p>
+<h2>Wat je klaar moet hebben</h2>
+<p>Opslag, sorteerruimte en een plan voor trage SKU’s. Als één pallet al vastloopt in je schuur, wacht dan met een hele bakwagen.</p>
+<h2>Hoe je bestelt</h2>
+<p>Truckloads overleggen we eerst. Stuur categorie, volume en afleveradres naar Eu.wholesalestock@gmail.com of WhatsApp +49 1577 8431615. Standaardpallets blijven LTL naar de stoeprand.</p>
+""",
+    },
 ]
 
 
@@ -100,6 +197,7 @@ def footer(prefix: str) -> str:
     <div>
       <h4>Navigatie</h4>
       <a href="{prefix}winkel.html">Winkel</a>
+      <a href="{prefix}blog.html">Blog</a>
       <a href="{prefix}plaats-pallet.html">Plaats een pallet</a>
       <a href="{prefix}over-ons.html">Over ons</a>
       <a href="{prefix}contact.html">Contact</a>
@@ -234,6 +332,80 @@ def cards(slugs, prefix=""):
         </article>""")
     html.append("</div>")
     return "\n".join(html)
+
+
+def blog_card(post, prefix=""):
+    href = f"{prefix}blog/{post['slug']}.html"
+    return f"""
+        <article class="blog-card">
+          <a href="{href}"><img src="{prefix}{post['image']}" alt="{post['title']}"></a>
+          <div class="body">
+            <p class="meta">{post['date']}</p>
+            <h3><a href="{href}">{post['title']}</a></h3>
+            <p>{post['excerpt']}</p>
+            <a class="btn btn-dark btn-sm" href="{href}">Lees artikel</a>
+          </div>
+        </article>"""
+
+
+def blog_grid(posts, prefix="", limit=None):
+    shown = posts[:limit] if limit else posts
+    return '<div class="blog-grid">' + "".join(blog_card(p, prefix) for p in shown) + "</div>"
+
+
+def blog_index_page():
+    return f"""
+<section class="page-hero"><div class="container">
+  <div class="crumbs"><a href="index.html">Home</a> / Blog</div>
+  <h1>Blog</h1>
+  <p>Gidsen voor wederverkopers. Bestellen bij PalletHaven gaat via e-mail of WhatsApp.</p>
+</div></section>
+<section class="section"><div class="container">
+  {blog_grid(BLOG_POSTS)}
+</div></section>
+<section class="section alt"><div class="container contact-grid">
+  <form data-post-blog>
+    <h2>Plaats een blogbericht</h2>
+    <p>Iedereen kan hier een artikel plaatsen over liquidatie, wederverkoop of een eigen lot.</p>
+    <label>Titel *</label>
+    <input name="title" required placeholder="Bijv. Mijn eerste pallet in Nederland">
+    <label>Bericht *</label>
+    <textarea name="body" required placeholder="Schrijf je artikel"></textarea>
+    <label>Foto (optioneel)</label>
+    <input name="photo" type="file" accept="image/*">
+    <div class="row">
+      <div><label>Jouw naam *</label><input name="name" required></div>
+      <div><label>E-mail *</label><input name="email" type="email" required></div>
+    </div>
+    <p class="form-note">Vragen: <a href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a href="{WA_HREF}">{PHONE}</a>.</p>
+    <p><button class="btn btn-dark" type="submit">Artikel publiceren</button></p>
+    <div data-result></div>
+  </form>
+  <div>
+    <h2>Berichten van het publiek</h2>
+    <div class="blog-grid" data-community-blog></div>
+  </div>
+</div></section>
+"""
+
+
+def blog_post_page(post):
+    return f"""
+<section class="page-hero"><div class="container">
+  <div class="crumbs"><a href="../index.html">Home</a> / <a href="../blog.html">Blog</a> / {post['title']}</div>
+  <h1>{post['title']}</h1>
+  <p>{post['date']}</p>
+</div></section>
+<section class="section"><div class="container prose blog-article">
+  <img class="featured" src="../{post['image']}" alt="{post['title']}">
+  {post['body']}
+  <p class="hero-actions" style="justify-content:flex-start;margin-top:28px">
+    <a class="btn btn-dark" href="{MAIL_HREF}">Bestel via e-mail</a>
+    <a class="btn btn-dark" href="{WA_HREF}">Bestel via WhatsApp</a>
+    <a class="btn btn-sm" href="../blog.html">Terug naar blog</a>
+  </p>
+</div></section>
+"""
 
 
 def home_grid(slug, title):
@@ -443,6 +615,15 @@ def homepage():
 
 <section class="section alt">
   <div class="container">
+    <h2 class="section-title">Blog</h2>
+    <p class="lead">Artikelen over inkopen, bestellen via e-mail of WhatsApp, en het runnen van een liquidatiehandel.</p>
+    {blog_grid(BLOG_POSTS, limit=3)}
+    <p class="grid-more"><a class="btn btn-dark" href="blog.html">Alle blogberichten</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
     <h2 class="section-title">Alle categorieën</h2>
     <div class="cat-grid">{cats}</div>
   </div>
@@ -583,6 +764,25 @@ def main():
 </div></section>
 <section class="section"><div class="container" data-product-page>
   <p>Product wordt geladen…</p>
+</div></section>
+"""))
+
+    write(ROOT / "blog.html", page("Blog", "", "blog.html", blog_index_page()))
+    blog_dir = ROOT / "blog"
+    keep_posts = {p["slug"] + ".html" for p in BLOG_POSTS}
+    if blog_dir.exists():
+        for f in blog_dir.glob("*.html"):
+            if f.name not in keep_posts:
+                f.unlink()
+    for post in BLOG_POSTS:
+        write(blog_dir / f"{post['slug']}.html", page(post["title"], "../", "blog.html", blog_post_page(post)))
+    write(ROOT / "bericht.html", page("Blogbericht", "", "blog.html", """
+<section class="page-hero"><div class="container">
+  <div class="crumbs"><a href="index.html">Home</a> / <a href="blog.html">Blog</a></div>
+  <h1 data-blog-title>Blogbericht</h1>
+</div></section>
+<section class="section"><div class="container prose blog-article" data-blog-article>
+  <p>Bericht wordt geladen…</p>
 </div></section>
 """))
 
