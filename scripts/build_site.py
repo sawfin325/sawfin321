@@ -189,7 +189,6 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
 </main>
 {footer(prefix)}
 <script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}};</script>
-<script src="{prefix}js/lot-art.js"></script>
 <script src="{prefix}js/data.js"></script>
 <script src="{prefix}js/app.js"></script>
 {extra_js}
@@ -209,7 +208,7 @@ def cards(slugs, prefix=""):
         html.append(f"""
         <article class="product-card">
           <div class="thumb">
-            <a href="{href}"><img data-lot="{p["slug"]}" data-cat="{p["category"]}" alt="{p["name"]}"></a>
+            <a href="{href}"><img src="{prefix}{p["image"]}" alt="{p["name"]}"></a>
             <button class="quick" data-quick="{p["slug"]}">Snel bekijken</button>
           </div>
           <div class="info">

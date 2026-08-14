@@ -256,7 +256,6 @@ textarea { min-height: 120px; resize: vertical; }
 .order-via { margin: 0 0 18px; }
 .order-via .btn { margin: 0 0 8px; width: 100%; }
 .topbar a { color: #fff; text-decoration: underline; }
-img[data-lot] { background: #d8d8d8; min-height: 160px; }
 .legal h2 { margin-top: 1.6em; font-size: 1.2rem; }
 
 footer { background: var(--primary); color: #ddd; padding: 48px 0 0; margin-top: 40px; }

@@ -29,14 +29,36 @@ IMG = {
 }
 
 POOL = {
-    "electronics": [img("pallet-electronics"), img("electronics-pallet-b"), img("electronics-pallet-c"), img("pallet-monitors")],
-    "clothing": [img("pallet-clothing"), img("clothing-bin-b"), img("clothing-bin-c"), img("clothing-bin-d")],
-    "mystery": [img("pallet-amazon-boxes"), img("pallet-mystery"), img("mystery-pallet-b"), img("mystery-pallet-c"), img("mystery-pallet-d")],
+    "electronics": [
+        img("pallet-electronics"), img("electronics-pallet-b"), img("electronics-pallet-c"),
+        img("pallet-monitors"), img("elec-a"), img("elec-b"), img("elec-c"), img("elec-d"),
+    ],
+    "clothing": [
+        img("pallet-clothing"), img("clothing-bin-b"), img("clothing-bin-c"), img("clothing-bin-d"),
+        img("cloth-a"), img("cloth-b"), img("cloth-c"), img("pallet-bags"),
+    ],
+    "mystery": [
+        img("pallet-amazon-boxes"), img("pallet-mystery"), img("mystery-pallet-b"),
+        img("mystery-pallet-c"), img("mystery-pallet-d"), img("myst-a"), img("myst-b"), img("myst-c"),
+    ],
     "pokemon": [img("pallet-cards"), img("tcg-boosters"), img("tcg-packs"), img("tcg-tins")],
     "tools": [img("pallet-tools"), img("tools-pallet-b")],
     "sneakers": [img("pallet-sneakers"), img("sneakers-pallet-b"), img("pallet-winter")],
     "kitchen": [img("pallet-kitchen"), img("kitchen-pallet-b")],
     "toys": [img("pallet-toys"), img("lego-duplo"), img("lego-modular"), img("lego-speed")],
+    "phone": [
+        img("phone-a"), img("phone-b"), img("phone-c"), img("phone-d"), img("phone-e"),
+        img("phone-f"), img("phone-g"), img("phone-h"), img("phone-i"), img("phone-j"),
+        img("pallet-phones"),
+    ],
+    "truck": [
+        img("truck-a"), img("truck-b"), img("truck-c"), img("truck-d"),
+        img("pallet-gaylord"), img("mystery-pallet-c"), img("mystery-pallet-b"), img("pallet-amazon-boxes"),
+    ],
+    "beauty": [img("pallet-cosmetics"), img("pallet-perfume")],
+    "fridge": [img("pallet-fridge"), img("pallet-kitchen")],
+    "ac": [img("pallet-airco"), img("kitchen-pallet-b")],
+    "bags": [img("pallet-bags"), img("clothing-bin-b")],
 }
 
 
@@ -82,7 +104,7 @@ CATEGORIES = [
      "blurb": "Verzegelde geuren, testers uitgesloten tenzij vermeld."},
     {"slug": "cosmetica", "name": "cosmetic liquidation pallets", "image": IMG["beauty"],
      "blurb": "Make-up en verzorging met THT in het spreadsheet."},
-    {"slug": "iphone", "name": "iphone liquidation pallets", "image": IMG["phone"],
+    {"slug": "iphone", "name": "iphone liquidation pallets", "image": img("phone-a"),
      "blurb": "Smartphones met model, opslag en batterijstatus."},
     {"slug": "wearables", "name": "apple watch liquidation", "image": IMG["phone"],
      "blurb": "Watches, bands en earbuds in nieuw of open-box staat."},
@@ -102,7 +124,7 @@ CATEGORIES = [
      "blurb": "Gemengde mystery pallets. Inhoud varieert, as-is."},
     {"slug": "handtassen", "name": "womens handbags", "image": IMG["bags"],
      "blurb": "Dameshandtassen in mixlots, nieuw."},
-    {"slug": "truckload", "name": "truckload liquidation wholesale", "image": IMG["gaylord"],
+    {"slug": "truckload", "name": "truckload liquidation wholesale", "image": img("truck-a"),
      "blurb": "Multi-pallet en truckload-volume, vracht op aanvraag."},
 ]
 
@@ -231,7 +253,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
             elif cat == "high-count":
                 price = _money(rng, 980, 3200)
                 name = f"AMZ High Count #{40 + i}" if i % 2 else f"AMZ High Count FC #{i:02d}"
-                add(cat, name, price, price, None, None, "Gemengd / as-is", IMG["gaylord"],
+                add(cat, name, price, price, None, None, "Gemengd / as-is", pick(POOL["truck"], i),
                     "Hoge gaylord van fulfillment-retouren. Geen itemlijst, vaste prijs.")
 
             elif cat in ("amazon-mystery", "mystery-box"):
@@ -262,7 +284,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = pairs * rng.choice([45, 60, 75])
                 price = round(msrp * rng.uniform(0.22, 0.35), 2)
                 name = f"Winter Boots Pallet #{i}" if i % 2 else f"women’s winter shoes #{i}"
-                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw", IMG["winter"],
+                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw", pick(POOL["sneakers"], i),
                     "Gevoerde laarzen, dames en heren, maatoverzicht in Excel.")
 
             elif cat in ("kleding", "costco-kleding", "zara-kleding", "sportkleding"):
@@ -302,13 +324,13 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = items * rng.choice([700, 900, 1200])
                 price = round(msrp * rng.uniform(0.22, 0.40), 2)
                 add(cat, f"refrigerator pallet liquidations #{i} – {items} units", price, price, msrp, items,
-                    "Nieuw / cosmetisch", IMG["fridge"], "Grote witte goederen. Extra vracht door volume.")
+                    "Nieuw / cosmetisch", pick(POOL["fridge"], i), "Grote witte goederen. Extra vracht door volume.")
 
             elif cat == "airco":
                 items = rng.choice([8, 12, 16, 24, 40])
                 msrp = items * rng.choice([220, 280, 350])
                 price = round(msrp * rng.uniform(0.14, 0.28), 2)
-                add(cat, f"Airco retouren – {items} stuks", price, price, msrp, items, "Retour / nieuw", IMG["ac"],
+                add(cat, f"Airco retouren – {items} stuks", price, price, msrp, items, "Retour / nieuw", pick(POOL["ac"], i),
                     "Draagbare units, 230V. Ontbrekende slangen staan in het manifest.")
 
             elif cat in ("gereedschap", "milwaukee"):
@@ -329,14 +351,14 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = items * rng.choice([35, 48, 62])
                 price = round(msrp * rng.uniform(0.18, 0.32), 2)
                 add(cat, f"Parfumpallet – {items} stuks #{i}", price, price, msrp, items, "Nieuw verzegeld",
-                    IMG["perfume"], "Sealed flacons. Batchcodes waar beschikbaar.")
+                    pick(POOL["beauty"], i), "Sealed flacons. Batchcodes waar beschikbaar.")
 
             elif cat == "cosmetica":
                 items = rng.choice([120, 150, 180, 220])
                 msrp = items * rng.choice([12, 18, 24])
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
                 add(cat, f"cosmetic liquidation pallets #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw", IMG["beauty"], "Beauty mix. THT-data in het spreadsheet.")
+                    "Nieuw", pick(POOL["beauty"], i), "Beauty mix. THT-data in het spreadsheet.")
 
             elif cat == "iphone":
                 items = rng.choice([6, 8, 10, 12, 16])
@@ -344,21 +366,21 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = round(msrp * rng.uniform(0.28, 0.48), 2)
                 grade = rng.choice(["Grade A refurbished", "Nieuw verzegeld", "Consumentenretour"])
                 add(cat, f"Smartphone {grade} – {items} stuks #{i}", price, price, msrp, items, grade,
-                    IMG["phone"], "Model, opslag en batterijstatus in het manifest.")
+                    pick(POOL["phone"], i), "Model, opslag en batterijstatus in het manifest.")
 
             elif cat == "wearables":
                 items = rng.choice([16, 20, 24, 30])
                 msrp = items * rng.choice([90, 140, 190])
                 price = round(msrp * rng.uniform(0.20, 0.36), 2)
                 add(cat, f"Wearables en watches – {items} stuks #{i}", price, price, msrp, items,
-                    "Nieuw / retour", IMG["phone"], "Smartwatches en bands, mix van nieuw en open box.")
+                    "Nieuw / retour", pick(POOL["phone"], i), "Smartwatches en bands, mix van nieuw en open box.")
 
             elif cat == "laptop":
                 items = rng.choice([8, 10, 12, 16, 20])
                 msrp = items * rng.choice([280, 450, 700])
                 price = round(msrp * rng.uniform(0.18, 0.34), 2)
                 add(cat, f"Laptop liquidation pallet – {items} stuks #{i}", price, price, msrp, items,
-                    rng.choice(["Grade A", "Retour", "Salvage"]), IMG["electronics"],
+                    rng.choice(["Grade A", "Retour", "Salvage"]), pick(POOL["electronics"], i),
                     "Notebooks. Cosmetische staat per seriële regel.")
 
             elif cat == "tv":
@@ -366,14 +388,14 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = items * rng.choice([180, 280, 420])
                 price = round(msrp * rng.uniform(0.08, 0.22), 2)
                 add(cat, f"TV salvage – {items} stuks #{i}", price, price, msrp, items, "Salvage",
-                    IMG["monitor"], "Schermen met schade. Alleen voor technici.")
+                    pick(POOL["electronics"], i), "Schermen met schade. Alleen voor technici.")
 
             elif cat == "console":
                 items = rng.choice([12, 18, 24, 35])
                 msrp = items * rng.choice([70, 120, 280])
                 price = round(msrp * rng.uniform(0.20, 0.38), 2)
                 add(cat, f"Console en accessoires – {items} stuks #{i}", price, price, msrp, items,
-                    "Nieuw / retour", IMG["electronics"], "Controllers, headsets en gesealde accessoires.")
+                    "Nieuw / retour", pick(POOL["electronics"], i), "Controllers, headsets en gesealde accessoires.")
 
             elif cat == "bouwsets":
                 base, image = LEGO_SETS[(i - 1) % len(LEGO_SETS)]
@@ -406,7 +428,7 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 msrp = items * rng.choice([18, 28, 40])
                 price = round(msrp * rng.uniform(0.18, 0.32), 2)
                 add(cat, f"Dameshandtassen mix – {items} stuks #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw", IMG["bags"], "Mixlot tassen. Materialen in het bestand.")
+                    "Nieuw", pick(POOL["bags"], i), "Mixlot tassen. Materialen in het bestand.")
 
             else:  # truckload
                 items = rng.choice([800, 1200, 2000, 4913])
@@ -414,26 +436,52 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = round(msrp * rng.uniform(0.08, 0.18), 2)
                 pallets = rng.choice([6, 10, 14, 22])
                 add(cat, f"Truckload – AMZ Electronics – {pallets} Pallets – {items} Items – {int(msrp/1000)}K MSRP",
-                    price, price, round(msrp, 2), items, "Gemengd / as-is", IMG["gaylord"],
+                    price, price, round(msrp, 2), items, "Gemengd / as-is", pick(POOL["truck"], i),
                     "Alleen voor volume-kopers. Vracht en laadadres op aanvraag.")
 
     rng.shuffle(products)
-    # keep stable unique slugs after shuffle
     for i, p in enumerate(products, 1):
         p["slug"] = f"{p['category']}-{i:05d}"
+
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for p in products:
+        groups[p["category"]].append(p)
+    cat_pool = {
+        "iphone": POOL["phone"], "wearables": POOL["phone"],
+        "elektronica": POOL["electronics"], "premium-electronics": POOL["electronics"],
+        "amazon-electronics": POOL["electronics"], "laptop": POOL["electronics"],
+        "tv": POOL["electronics"], "console": POOL["electronics"],
+        "kleding": POOL["clothing"], "costco-kleding": POOL["clothing"],
+        "zara-kleding": POOL["clothing"], "sportkleding": POOL["clothing"],
+        "amazon-mystery": POOL["mystery"], "mystery-box": POOL["mystery"],
+        "high-count": POOL["truck"], "truckload": POOL["truck"],
+        "pokemon": POOL["pokemon"], "gereedschap": POOL["tools"], "milwaukee": POOL["tools"],
+        "sneakers": POOL["sneakers"], "schoenen": POOL["sneakers"], "winterschoenen": POOL["sneakers"],
+        "keuken": POOL["kitchen"], "speelgoed": POOL["toys"],
+        "parfum": POOL["beauty"], "cosmetica": POOL["beauty"],
+        "koelkast": POOL["fridge"], "airco": POOL["ac"], "handtassen": POOL["bags"],
+    }
+    for cat, items in groups.items():
+        if cat == "bouwsets":
+            continue
+        pool = cat_pool.get(cat)
+        if not pool:
+            continue
+        for i, p in enumerate(items):
+            p["image"] = pool[i % len(pool)]
     return products[:total]
 
 
-def by_category(products, slug, limit=8, unique_names=True):
+def by_category(products, slug, limit=8):
     out = []
-    seen = set()
+    seen_imgs = set()
     for p in products:
         if p["category"] != slug:
             continue
-        key = p["name"].split(" #")[0]
-        if unique_names and key in seen:
+        if p["image"] in seen_imgs:
             continue
-        seen.add(key)
+        seen_imgs.add(p["image"])
         out.append(p["slug"])
         if len(out) >= limit:
             break

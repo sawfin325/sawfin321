@@ -21,7 +21,6 @@ function waHref(text) {
 }
 function lotImage(p) {
   if (p && p.image && /^data:image\//.test(p.image)) return p.image;
-  if (typeof lotArtUrl === "function" && p) return lotArtUrl(p.slug, p.category);
   return p && p.image ? imgSrc(p.image) : "";
 }
 
@@ -152,7 +151,7 @@ function productCard(p) {
   const cat = categoryBySlug(p.category);
   return `<article class="product-card">
     <div class="thumb">
-      <a href="${productHref(p.slug)}"><img src="${lotImage(p)}" data-lot="${p.slug}" data-cat="${p.category || ""}" alt="${p.name}"></a>
+      <a href="${productHref(p.slug)}"><img src="${lotImage(p)}" alt="${p.name}"></a>
       <button class="quick" data-quick="${p.slug}">Snel bekijken</button>
     </div>
     <div class="info">
@@ -457,7 +456,7 @@ function renderProductPage() {
   if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Winkel</a> / ${cat.name}`;
   mount.innerHTML = `
     <div class="product-layout">
-      <div class="gallery"><img src="${lotImage(p)}" data-lot="${p.slug}" data-cat="${p.category || ""}" alt="${p.name}"></div>
+      <div class="gallery"><img src="${lotImage(p)}" alt="${p.name}"></div>
       <div>
         <p class="product-cat">${cat.name}</p>
         <h1>${p.name}</h1>
