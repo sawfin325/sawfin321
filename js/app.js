@@ -717,57 +717,114 @@ function renderCommunity() {
   });
 }
 
-function communityBlogCard(post) {
-  const img = post.image
-    ? `<img src="${post.image}" alt="${esc(post.title)}">`
-    : `<img src="${ROOT}assets/products/pallet-amazon-boxes.jpg" alt="">`;
+function fileToJpegDataUrl(file, maxW = 1200) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxW / Math.max(img.width, 1));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      img.onerror = () => resolve(reader.result);
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function editorialBlogCard(post) {
+  const href = ROOT + "blog/" + post.slug + ".html";
   return `<article class="blog-card">
-    <a href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">${img}</a>
+    <a href="${href}"><img src="${ROOT}${post.image}" alt="${esc(post.title)}"></a>
     <div class="body">
-      <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
-      <h3><a href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">${esc(post.title)}</a></h3>
-      <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
-      <a class="btn btn-dark btn-sm" href="${ROOT}bericht.html?p=${encodeURIComponent(post.slug)}">Lees artikel</a>
+      <p class="meta">${esc(post.date)}</p>
+      <h3><a href="${href}">${esc(post.title)}</a></h3>
+      <p>${esc(post.excerpt)}</p>
+      <a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>
     </div>
   </article>`;
 }
 
+function communityBlogCard(post) {
+  const href = ROOT + "bericht.html?p=" + encodeURIComponent(post.slug);
+  const img = post.image
+    ? `<img src="${post.image}" alt="${esc(post.title)}">`
+    : `<img src="${ROOT}assets/products/pallet-amazon-boxes.jpg" alt="">`;
+  return `<article class="blog-card">
+    <a href="${href}">${img}</a>
+    <div class="body">
+      <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
+      <h3><a href="${href}">${esc(post.title)}</a></h3>
+      <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
+      <a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>
+    </div>
+  </article>`;
+}
+
+function renderBlogGrid() {
+  const grid = document.querySelector("[data-blog-grid]");
+  if (!grid) return;
+  const publicPosts = loadBlogPosts().map(communityBlogCard).join("");
+  const guides = (typeof BLOG_POSTS !== "undefined" ? BLOG_POSTS : []).map(editorialBlogCard).join("");
+  grid.innerHTML = publicPosts + guides || "<p>Nog geen berichten.</p>";
+}
+
 function renderBlog() {
-  const grid = document.querySelector("[data-community-blog]");
-  if (grid) {
-    const list = loadBlogPosts();
-    grid.innerHTML = list.length ? list.map(communityBlogCard).join("") : "<p>Nog geen openbare berichten. Plaats de eerste.</p>";
-  }
+  renderBlogGrid();
   const form = document.querySelector("[data-post-blog]");
   if (!form || form.dataset.bound) return;
   form.dataset.bound = "1";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const title = form.title.value.trim();
+    const body = form.body.value.trim();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    if (!title || !body || !name || !email) {
+      showFormMessage(form, false, "Vul titel, bericht, naam en e-mail in.");
+      return;
+    }
     const file = form.photo?.files?.[0];
     let image = "";
-    if (file) {
-      image = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+    try {
+      if (file) image = await fileToJpegDataUrl(file);
+    } catch {
+      showFormMessage(form, false, "De foto kon niet worden gelezen. Probeer een andere afbeelding of publiceer zonder foto.");
+      return;
     }
     const post = {
       slug: "blog-" + Date.now(),
-      title: form.title.value.trim(),
-      body: form.body.value.trim(),
-      author: form.name.value.trim(),
-      email: form.email.value.trim(),
+      title,
+      body,
+      author: name,
+      email,
       date: new Date().toLocaleDateString("nl-NL"),
       image
     };
     const list = loadBlogPosts();
     list.unshift(post);
-    saveBlogPosts(list);
-    showFormMessage(form, true, "Je blogbericht staat online.");
+    try {
+      saveBlogPosts(list);
+    } catch {
+      post.image = "";
+      list[0] = post;
+      try {
+        saveBlogPosts(list);
+      } catch {
+        showFormMessage(form, false, "Opslaan lukte niet. Probeer een kortere tekst of geen foto.");
+        return;
+      }
+    }
+    showFormMessage(form, true, "Je blogbericht staat online bovenaan de lijst.");
     form.reset();
-    renderBlog();
+    renderBlogGrid();
+    document.querySelector("[data-blog-grid]")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
 

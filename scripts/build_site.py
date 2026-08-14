@@ -358,33 +358,33 @@ def blog_index_page():
 <section class="page-hero"><div class="container">
   <div class="crumbs"><a href="index.html">Home</a> / Blog</div>
   <h1>Blog</h1>
-  <p>Gidsen voor wederverkopers. Bestellen bij PalletHaven gaat via e-mail of WhatsApp.</p>
+  <p>Iedereen kan hier een blogbericht plaatsen. Geen account nodig. Schrijf hieronder en je artikel staat meteen tussen de andere berichten.</p>
 </div></section>
-<section class="section"><div class="container">
-  {blog_grid(BLOG_POSTS)}
-</div></section>
-<section class="section alt"><div class="container contact-grid">
-  <form data-post-blog>
-    <h2>Plaats een blogbericht</h2>
-    <p>Iedereen kan hier een artikel plaatsen over liquidatie, wederverkoop of een eigen lot.</p>
-    <label>Titel *</label>
-    <input name="title" required placeholder="Bijv. Mijn eerste pallet in Nederland">
-    <label>Bericht *</label>
-    <textarea name="body" required placeholder="Schrijf je artikel"></textarea>
-    <label>Foto (optioneel)</label>
-    <input name="photo" type="file" accept="image/*">
-    <div class="row">
-      <div><label>Jouw naam *</label><input name="name" required></div>
-      <div><label>E-mail *</label><input name="email" type="email" required></div>
-    </div>
-    <p class="form-note">Vragen: <a href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a href="{WA_HREF}">{PHONE}</a>.</p>
-    <p><button class="btn btn-dark" type="submit">Artikel publiceren</button></p>
-    <div data-result></div>
-  </form>
-  <div>
-    <h2>Berichten van het publiek</h2>
-    <div class="blog-grid" data-community-blog></div>
+<section class="section" id="plaats-blog">
+  <div class="container">
+    <form class="blog-composer" data-post-blog>
+      <h2>Plaats je blogbericht</h2>
+      <p>Titel, tekst en optioneel een foto. Na publiceren verschijnt je artikel bovenaan de blog.</p>
+      <label>Titel van je artikel *</label>
+      <input name="title" required maxlength="140" placeholder="Bijv. Mijn eerste pallet in Nederland">
+      <label>Je blogbericht *</label>
+      <textarea name="body" required placeholder="Schrijf hier je artikel. Iedereen op de blog kan het daarna lezen."></textarea>
+      <label>Foto (optioneel)</label>
+      <input name="photo" type="file" accept="image/*">
+      <div class="row">
+        <div><label>Jouw naam *</label><input name="name" required autocomplete="name"></div>
+        <div><label>E-mail *</label><input name="email" type="email" required autocomplete="email"></div>
+      </div>
+      <p class="form-note">Vragen: <a href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a href="{WA_HREF}">{PHONE}</a>.</p>
+      <p><button class="btn btn-dark btn-block" type="submit">Blogbericht publiceren</button></p>
+      <div data-result></div>
+    </form>
   </div>
+</section>
+<section class="section alt"><div class="container">
+  <h2 class="section-title">Alle blogberichten</h2>
+  <p class="lead">Jouw geplaatste artikelen staan bovenaan, daarna de PalletHaven-gidsen.</p>
+  <div class="blog-grid" data-blog-grid></div>
 </div></section>
 """
 
@@ -618,7 +618,10 @@ def homepage():
     <h2 class="section-title">Blog</h2>
     <p class="lead">Artikelen over inkopen, bestellen via e-mail of WhatsApp, en het runnen van een liquidatiehandel.</p>
     {blog_grid(BLOG_POSTS, limit=3)}
-    <p class="grid-more"><a class="btn btn-dark" href="blog.html">Alle blogberichten</a></p>
+    <p class="grid-more">
+      <a class="btn btn-dark" href="blog.html#plaats-blog">Plaats je blogbericht</a>
+      <a class="btn btn-sm" href="blog.html">Alle blogberichten</a>
+    </p>
   </div>
 </section>
 
@@ -733,6 +736,8 @@ def main():
     }
     js = "const CATEGORIES=" + json.dumps(data["CATEGORIES"], ensure_ascii=False, separators=(",", ":")) + ";\n"
     js += "const PRODUCTS=" + json.dumps(data["PRODUCTS"], ensure_ascii=False, separators=(",", ":")) + ";\n"
+    blog_public = [{k: p[k] for k in ("slug", "title", "date", "excerpt", "image")} for p in BLOG_POSTS]
+    js += "const BLOG_POSTS=" + json.dumps(blog_public, ensure_ascii=False, separators=(",", ":")) + ";\n"
     write(ROOT / "js" / "data.js", js)
     print(f"Wrote catalog: {len(PRODUCTS)} products, {len(CATEGORIES)} categories, data.js { (ROOT/'js'/'data.js').stat().st_size // 1024 } KB")
 
