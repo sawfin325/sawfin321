@@ -11,6 +11,19 @@ function imgSrc(path) {
   if (/^https?:/i.test(path)) return path;
   return ROOT + path;
 }
+function productHref(slug) {
+  return ROOT + "product.html?p=" + encodeURIComponent(slug);
+}
+function priceLabel(p) {
+  if (p.priceMax && p.priceMax > p.price + 0.009) return euro(p.price) + " – " + euro(p.priceMax);
+  return euro(p.price);
+}
+
+let PRODUCT_INDEX = null;
+function productBySlug(slug) {
+  if (!PRODUCT_INDEX) PRODUCT_INDEX = new Map(PRODUCTS.map(p => [p.slug, p]));
+  return PRODUCT_INDEX.get(slug);
+}
 
 function getCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
@@ -23,7 +36,7 @@ function saveCart(items) {
 function cartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
 function cartTotal() {
   return getCart().reduce((s, i) => {
-    const p = PRODUCTS.find(x => x.slug === i.slug);
+    const p = productBySlug(i.slug);
     return s + (p ? p.price * i.qty : 0);
   }, 0);
 }
@@ -44,7 +57,6 @@ function setQty(slug, qty) {
   }
   saveCart(items);
 }
-function productBySlug(slug) { return PRODUCTS.find(p => p.slug === slug); }
 function categoryBySlug(slug) { return CATEGORIES.find(c => c.slug === slug); }
 function productsInCategory(slug) { return PRODUCTS.filter(p => p.category === slug); }
 
@@ -98,7 +110,7 @@ function renderCartUI() {
   mini.innerHTML = items.map(i => {
     const p = productBySlug(i.slug);
     if (!p) return "";
-    return `<div class="mini-item"><img src="${imgSrc(p.image)}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
+    return `<div class="mini-item"><img src="${imgSrc(p.image)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
   }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><a class="btn btn-dark btn-block" href="${ROOT}winkelwagen.html">Bekijk winkelwagen</a>`;
 }
 
@@ -106,13 +118,13 @@ function productCard(p) {
   const cat = categoryBySlug(p.category);
   return `<article class="product-card">
     <div class="thumb">
-      <a href="${ROOT}product/${p.slug}.html"><img src="${imgSrc(p.image)}" alt="${p.name}"></a>
+      <a href="${productHref(p.slug)}"><img src="${imgSrc(p.image)}" alt="${p.name}"></a>
       <button class="quick" data-quick="${p.slug}">Snel bekijken</button>
     </div>
     <div class="info">
       <p class="product-cat">${cat ? cat.name : ""}</p>
-      <h3><a href="${ROOT}product/${p.slug}.html">${p.name}</a></h3>
-      <div class="price">${euro(p.price)}</div>
+      <h3><a href="${productHref(p.slug)}">${p.name}</a></h3>
+      <div class="price">${priceLabel(p)}</div>
     </div>
   </article>`;
 }
@@ -124,10 +136,10 @@ function openQuick(slug) {
   modal.querySelector("img").src = imgSrc(p.image);
   modal.querySelector("img").alt = p.name;
   modal.querySelector("h3").textContent = p.name;
-  modal.querySelector("[data-q-price]").textContent = euro(p.price);
-  modal.querySelector("[data-q-desc]").textContent = p.short;
+  modal.querySelector("[data-q-price]").textContent = priceLabel(p);
+  modal.querySelector("[data-q-desc]").textContent = p.short || "";
   modal.querySelector("[data-q-add]").dataset.add = p.slug;
-  modal.querySelector("[data-q-link]").href = ROOT + "product/" + p.slug + ".html";
+  modal.querySelector("[data-q-link]").href = productHref(p.slug);
   modal.classList.add("open");
 }
 
@@ -339,9 +351,11 @@ function renderShop() {
   const q = (params.get("s") || "").toLowerCase();
   const cat = grid.dataset.category || params.get("categorie") || "";
   const sort = document.querySelector("[data-sort]");
+  const pager = document.querySelector("[data-pager]");
+  const PAGE_SIZE = 24;
   let list = cat ? productsInCategory(cat) : PRODUCTS.slice();
   if (q) {
-    list = list.filter(p => (p.name + " " + p.short + " " + p.category).toLowerCase().includes(q));
+    list = list.filter(p => (p.name + " " + (p.short || "") + " " + p.category).toLowerCase().includes(q));
     const hint = document.querySelector("[data-search-hint]");
     if (hint) hint.textContent = `Zoekresultaten voor “${params.get("s")}”`;
   }
@@ -351,12 +365,88 @@ function renderShop() {
     if (v === "price-asc") shown.sort((a, b) => a.price - b.price);
     if (v === "price-desc") shown.sort((a, b) => b.price - a.price);
     if (v === "name") shown.sort((a, b) => a.name.localeCompare(b.name, "nl"));
-    grid.innerHTML = shown.map(productCard).join("") || "<p>Geen pallets gevonden.</p>";
+    const pages = Math.max(1, Math.ceil(shown.length / PAGE_SIZE));
+    const page = Math.min(pages, Math.max(1, parseInt(params.get("page") || "1", 10)));
+    const slice = shown.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    grid.innerHTML = slice.map(productCard).join("") || "<p>Geen pallets gevonden.</p>";
     const count = document.querySelector("[data-result-count]");
-    if (count) count.textContent = shown.length + " resultaten";
+    if (count) count.textContent = shown.length.toLocaleString("nl-NL") + " resultaten · pagina " + page + " van " + pages;
+    if (pager) pager.innerHTML = pagerHtml(page, pages);
   };
-  if (sort) sort.addEventListener("change", apply);
+  if (sort) sort.addEventListener("change", () => {
+    const u = new URL(location.href);
+    u.searchParams.set("page", "1");
+    history.replaceState({}, "", u);
+    params.set("page", "1");
+    apply();
+  });
   apply();
+}
+
+function pagerHtml(page, pages) {
+  if (pages <= 1) return "";
+  const url = (n) => {
+    const u = new URL(location.href);
+    u.searchParams.set("page", n);
+    return u.pathname + u.search;
+  };
+  const items = [];
+  const add = (n, label, disabled, active) => {
+    if (disabled) items.push(`<span class="off">${label}</span>`);
+    else if (active) items.push(`<span class="active">${label}</span>`);
+    else items.push(`<a href="${url(n)}">${label}</a>`);
+  };
+  add(page - 1, "Vorige", page <= 1, false);
+  const start = Math.max(1, page - 3);
+  const end = Math.min(pages, page + 3);
+  if (start > 1) add(1, "1", false, page === 1);
+  if (start > 2) items.push("<span class='off'>…</span>");
+  for (let n = start; n <= end; n++) add(n, String(n), false, n === page);
+  if (end < pages - 1) items.push("<span class='off'>…</span>");
+  if (end < pages) add(pages, String(pages), false, page === pages);
+  add(page + 1, "Volgende", page >= pages, false);
+  return items.join("");
+}
+
+function renderProductPage() {
+  const mount = document.querySelector("[data-product-page]");
+  if (!mount) return;
+  const slug = new URLSearchParams(location.search).get("p");
+  const p = productBySlug(slug);
+  if (!p) {
+    mount.innerHTML = `<p>Dit lot is niet gevonden.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Terug naar winkel</a></p>`;
+    return;
+  }
+  const cat = categoryBySlug(p.category);
+  document.title = p.name + " – PalletHaven";
+  const crumbs = document.querySelector("[data-product-crumbs]");
+  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Winkel</a> / <a href="${ROOT}categorie/${cat.slug}.html">${cat.name}</a>`;
+  mount.innerHTML = `
+    <div class="product-layout">
+      <div class="gallery"><img src="${imgSrc(p.image)}" alt="${p.name}"></div>
+      <div>
+        <p class="product-cat">${cat.name}</p>
+        <h1>${p.name}</h1>
+        <p class="price" style="font-size:1.6rem">${priceLabel(p)}</p>
+        <p>${p.short || ""}</p>
+        <div class="meta-list">
+          <div><span>Categorie</span><span>${cat.name}</span></div>
+          <div><span>Conditie</span><span>${p.condition || "Zie lotomschrijving"}</span></div>
+          <div><span>Aantal stuks</span><span>${p.items != null ? p.items : "Niet gespecificeerd"}</span></div>
+          <div><span>Geschatte MSRP</span><span>${p.msrp ? euro(p.msrp) : "Onbekend / geen manifest"}</span></div>
+          <div><span>Verzending</span><span>LTL-vracht, offerte na adres</span></div>
+        </div>
+        <div class="qty-row">
+          <label>Aantal <input type="number" min="1" value="1" data-qty></label>
+          <button class="btn btn-dark" data-add="${p.slug}" data-label="In winkelwagen">In winkelwagen</button>
+        </div>
+        <p class="form-note">Vraag het volledige manifest aan via sales@pallethaven.nl voordat je betaalt. High-count en mystery lots gaan as-is. Prijsbereiken gelden voor doos versus palletformaat.</p>
+      </div>
+    </div>
+    <section class="section alt" style="padding-left:0;padding-right:0">
+      <h2>Omschrijving</h2>
+      <p>${p.short || ""} PalletHaven verkoopt aan professionele kopers. Door te bestellen bevestig je de lotvoorwaarden, inclusief conditieklasse en het wel of niet aanwezig zijn van een itemmanifest.</p>
+    </section>`;
 }
 
 function renderCartPage() {
@@ -374,7 +464,7 @@ function renderCartPage() {
         const p = productBySlug(i.slug);
         if (!p) return "";
         return `<tr>
-          <td style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(p.image)}" alt=""><div><a href="${ROOT}product/${p.slug}.html">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
+          <td style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(p.image)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
           <td>${euro(p.price)}</td>
           <td><input type="number" min="1" value="${i.qty}" data-qty-slug="${p.slug}" style="width:70px"></td>
           <td>${euro(p.price * i.qty)}</td>
@@ -440,6 +530,7 @@ function renderCheckout() {
 document.addEventListener("DOMContentLoaded", () => {
   bindCommon();
   renderShop();
+  renderProductPage();
   renderCartPage();
   renderCheckout();
   renderAccount();
