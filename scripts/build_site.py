@@ -14,9 +14,16 @@ from catalog import CATEGORIES, CAT_MAP, IMG, by_category, generate_products
 PRODUCTS = generate_products(10000)
 PRODUCT_BY_SLUG = {p["slug"]: p for p in PRODUCTS}
 
+EMAIL = "Eu.wholesalestock@gmail.com"
+PHONE = "+49 1577 8431615"
+WA_NUM = "4915778431615"
+MAIL_HREF = f"mailto:{EMAIL}"
+WA_HREF = f"https://wa.me/{WA_NUM}"
+
 NAV = [
     ("index.html", "Home"),
     ("winkel.html", "Winkel"),
+    ("plaats-pallet.html", "Plaats een pallet"),
     ("contact.html", "Neem contact met ons op"),
     ("over-ons.html", "Over ons"),
     ("privacybeleid.html", "Privacybeleid"),
@@ -57,7 +64,7 @@ def header(prefix: str, active: str) -> str:
     search_icon = '''<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'''
     return f"""
 <header class="site-header">
-  <div class="topbar"><div class="container">Wij leveren in heel Europa, waaronder België, Nederland, Frankrijk, Italië, Spanje, Portugal, het Verenigd Koninkrijk, Polen, Zwitserland en Oostenrijk. Gratis verzending in Nederland vanaf € 3.000.</div></div>
+  <div class="topbar"><div class="container">Bestel via e-mail <a href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a href="{WA_HREF}">{PHONE}</a> · Levering in heel Europa. Gratis verzending in Nederland vanaf € 3.000.</div></div>
   <div class="container header-main">
     <button class="menu-btn" data-menu aria-label="Menu">☰</button>
     <a class="logo" href="{prefix}index.html"><img src="{prefix}assets/logo.jpg" alt="PalletHaven"></a>
@@ -93,6 +100,7 @@ def footer(prefix: str) -> str:
     <div>
       <h4>Navigatie</h4>
       <a href="{prefix}winkel.html">Winkel</a>
+      <a href="{prefix}plaats-pallet.html">Plaats een pallet</a>
       <a href="{prefix}over-ons.html">Over ons</a>
       <a href="{prefix}contact.html">Contact</a>
       <a href="{prefix}account.html">Mijn account</a>
@@ -106,8 +114,8 @@ def footer(prefix: str) -> str:
     </div>
     <div>
       <h4>Contact</h4>
-      <a href="mailto:sales@pallethaven.nl">sales@pallethaven.nl</a>
-      <a href="https://wa.me/31201234567">WhatsApp +31 20 123 4567</a>
+      <a href="{MAIL_HREF}">{EMAIL}</a>
+      <a href="{WA_HREF}">WhatsApp {PHONE}</a>
       <p>Ma–vr 09:00–17:00 CET<br>Geen walk-in, geen afhaling behalve truckloads op afspraak.</p>
     </div>
   </div>
@@ -180,7 +188,8 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
 {body}
 </main>
 {footer(prefix)}
-<script>const ROOT = "{prefix}";</script>
+<script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}};</script>
+<script src="{prefix}js/lot-art.js"></script>
 <script src="{prefix}js/data.js"></script>
 <script src="{prefix}js/app.js"></script>
 {extra_js}
@@ -200,7 +209,7 @@ def cards(slugs, prefix=""):
         html.append(f"""
         <article class="product-card">
           <div class="thumb">
-            <a href="{href}"><img src="{prefix}{p["image"]}" alt="{p["name"]}"></a>
+            <a href="{href}"><img data-lot="{p["slug"]}" data-cat="{p["category"]}" alt="{p["name"]}"></a>
             <button class="quick" data-quick="{p["slug"]}">Snel bekijken</button>
           </div>
           <div class="info">
@@ -240,7 +249,7 @@ def homepage():
 <section class="hero" style="background-image:url('{IMG["hero"]}')">
   <div class="hero-inner">
     <h1>Wholesale Liquidation Pallets voor Nederland en Europa — Merkproducten, Volledig Manifest, Directe Levering</h1>
-    <p>Koop groothandel liquidatiepallets van de meest gevraagde categorieën op de Europese wederverkoopmarkt. Elektronica, sneakers, kleding, parfums, gereedschap, huishoudapparaten, bouwsets en mystery boxes. Elk manifestlot toont de samenstelling vóór aankoop. Neem contact op vóór het plaatsen van jouw bestelling: <a href="mailto:sales@pallethaven.nl">sales@pallethaven.nl</a></p>
+    <p>Koop groothandel liquidatiepallets van de meest gevraagde categorieën op de Europese wederverkoopmarkt. Elektronica, sneakers, kleding, parfums, gereedschap, huishoudapparaten, bouwsets en mystery boxes. Elk manifestlot toont de samenstelling vóór aankoop. Neem contact op vóór het plaatsen van jouw bestelling: <a href="mailto:Eu.wholesalestock@gmail.com">Eu.wholesalestock@gmail.com</a></p>
     <div class="hero-actions">
       <a class="btn btn-light" href="winkel.html">Winkel alle pallets</a>
       <a class="btn btn-outline" href="contact.html">Vraag een offerte aan</a>
@@ -291,7 +300,7 @@ def homepage():
     <h2 class="section-title">Hoe PalletHaven werkt</h2>
     <div class="steps">
       <article class="step"><b>1</b><h3>Kies een categorie</h3><p>Bekijk merkmix, conditie en verwachte MSRP op de categoriepagina.</p></article>
-      <article class="step"><b>2</b><h3>Vraag het manifest</h3><p>Mail sales@pallethaven.nl. Je krijgt de artikelregels vóór betaling.</p></article>
+      <article class="step"><b>2</b><h3>Vraag het manifest</h3><p>Mail Eu.wholesalestock@gmail.com. Je krijgt de artikelregels vóór betaling.</p></article>
       <article class="step"><b>3</b><h3>Reken je marge</h3><p>Vergelijk met recente verkopen op eBay.de, Amazon.de of Back Market minus vracht.</p></article>
       <article class="step"><b>4</b><h3>Bestel online</h3><p>Geen magazijnbezoek. Truckloads kunnen op afspraak worden geladen.</p></article>
       <article class="step"><b>5</b><h3>Ontvang en verkoop</h3><p>Professioneel gewikkeld, met tracking, klaar om te testen en te listen.</p></article>
@@ -311,7 +320,7 @@ def homepage():
     <h2>Waarom Nederlandse en Europese wederverkopers PalletHaven kiezen</h2>
     <p>Omdat je op standaardlots de samenstelling kent vóór je betaalt: merk, model, conditieklasse en geschatte MSRP per eenheid. De meeste Europese brokers tonen dat pas na aankoop. Bij ons is het manifest de default.</p>
     <p>Voorraad komt uit overstock, surplus en retourkanalen. Geen namaak om pallets te vullen. Nieuw verzegeld is nieuw verzegeld. Getest werkend is functioneel gecontroleerd. Retour vermeldt een realistisch uitvalpercentage. Salvage is salvage.</p>
-    <p>We verzenden naar Nederland (3–7 werkdagen) en de rest van Europa (5–14 werkdagen). Invoerrechten en btw buiten onze factuur zijn voor de koper. Volume en truckloads via sales@pallethaven.nl.</p>
+    <p>We verzenden naar Nederland (3–7 werkdagen) en de rest van Europa (5–14 werkdagen). Invoerrechten en btw buiten onze factuur zijn voor de koper. Volume en truckloads via Eu.wholesalestock@gmail.com.</p>
   </div>
 </section>
 
@@ -334,7 +343,7 @@ def homepage():
 <section class="section alt">
   <div class="container prose">
     <h2>Klaar om te beginnen? Dit is wat je doet</h2>
-    <p>PalletHaven is uitsluitend online. Geen walk-in en geen afhaling op standaardpallets. Bekijk de categoriepagina’s, mail sales@pallethaven.nl met de categorienaam en het formaat, ontvang het manifest, toets je exitprijzen en plaats de order. Voor truckloads overleggen we vracht en laaddatum eerst.</p>
+    <p>PalletHaven is uitsluitend online. Geen walk-in en geen afhaling op standaardpallets. Bekijk de categoriepagina’s, mail Eu.wholesalestock@gmail.com met de categorienaam en het formaat, ontvang het manifest, toets je exitprijzen en plaats de order. Voor truckloads overleggen we vracht en laaddatum eerst.</p>
   </div>
 </section>
 
@@ -460,14 +469,14 @@ def homepage():
       <details><summary>Welke categorieën zijn beschikbaar?</summary><p>Elektronica, sneakers, kleding, parfum, gereedschap, huishoudapparaten, smartphones, bouwsets, TCG, mystery boxes, airco, truckloads en meer. De winkel telt 10.000 live lots.</p></details>
       <details><summary>Verzenden jullie naar Duitsland en de rest van Europa?</summary><p>Ja. Invoerrechten, btw en douane op internationale orders zijn voor de koper.</p></details>
       <details><summary>Zijn er lokale ophalingopties?</summary><p>Niet bij standaardpallets. Truckloads mogelijk op afspraak.</p></details>
-      <details><summary>Wat is de minimale bestelling?</summary><p>Het kleinste lot in de winkel. Volume via sales@pallethaven.nl.</p></details>
+      <details><summary>Wat is de minimale bestelling?</summary><p>Het kleinste lot in de winkel. Volume via Eu.wholesalestock@gmail.com.</p></details>
       <details><summary>Zijn retouren geaccepteerd?</summary><p>Verkoop is definitief na verzending, behalve bij een aantoonbare verzendfout of een lot dat materieel afwijkt van het bevestigde manifest.</p></details>
       <details><summary>Wat zijn de beste lots voor beginners in Nederland?</summary><p>Manifest-geverifieerde enkele-categorie lots: kleine elektronica dozen, parfum of 120-paar schoenen. Geen high-count gaylord als eerste aankoop.</p></details>
       <details><summary>Wat zijn wholesale liquidation pallets voor Nederland en Europa?</summary><p>Bulklots van consumentenproducten uit retourkanalen, retailer-overstock, seizoensclearance en distributeursurplus, verkocht onder retail aan professionele wederverkopers. PalletHaven geeft een manifest vóór aankoop op elk lot dat als manifestlot is gelabeld.</p></details>
       <details><summary>Hoe verschilt PalletHaven van andere leveranciers?</summary><p>We prijzen in euro, vermelden conditie eerlijk (retour is retour, salvage is salvage) en overdrijven geen merkmix. High-count zonder lijst staat zo gelabeld.</p></details>
       <details><summary>Zijn deze pallets winstgevend voor wederverkopers?</summary><p>Voor kopers met een verkoopkanaal en de capaciteit om de gekozen categorie te verwerken. Herkenbare merken trekken vraag op eBay.nl, eBay.de en Amazon.nl. Resultaten hangen af van jouw prijs, vracht en uitval.</p></details>
       <details><summary>Welke categorieën zijn beschikbaar voor de Nederlandse markt?</summary><p>Elektronica, speelgoed, Amazon-retouren, handtassen, winterschoenen, sneakers, kleding, parfum, gereedschap, huishoudapparaten, bouwsets, TCG en truckloads. Elke categoriepagina toont live lots met EUR-prijzen.</p></details>
-      <details><summary>Bieden jullie pallets mét manifest?</summary><p>Ja, op standaardlots: artikelregels, identifiers waar beschikbaar en geschatte MSRP. Voor sommige high-count formats is het bestand op verzoek via sales@pallethaven.nl.</p></details>
+      <details><summary>Bieden jullie pallets mét manifest?</summary><p>Ja, op standaardlots: artikelregels, identifiers waar beschikbaar en geschatte MSRP. Voor sommige high-count formats is het bestand op verzoek via Eu.wholesalestock@gmail.com.</p></details>
       <details><summary>Hoe lang duurt levering?</summary><p>Nederland 3 tot 7 werkdagen. EU 7 tot 14 werkdagen. Grotere monitorpallets kunnen 10 tot 21 dagen vragen.</p></details>
       <details><summary>Bieden jullie lokale afhaling of magazijnverkoop aan in Nederland?</summary><p>Nee, behalve truckloads op afspraak. Standaardpallets gaan naar het opgegeven bezorgadres.</p></details>
       <details><summary>Zijn deze pallets geschikt voor beginnende wederverkopers?</summary><p>Sommige lots wel: speelgoed, kleine smart-home dozen en handtassen. Salvage-monitorpallets zijn voor technici. High-count gaylords zijn geen startersproduct.</p></details>
@@ -563,10 +572,15 @@ def main():
 """))
 
     write(ROOT / "contact.html", page("Neem contact met ons op", "", "contact.html", """
-<section class="page-hero"><div class="container"><h1>Neem contact met ons op</h1><p>Stuur een bericht voordat je bestelt als je het manifest, de vracht of het lotformaat wilt checken.</p></div></section>
+<section class="page-hero"><div class="container"><h1>Neem contact met ons op</h1>
+<p>Bestel en vraag offertes via e-mail of WhatsApp. We reageren op werkdagen.</p></div></section>
 <section class="section"><div class="container contact-grid">
   <div>
     <h2>Stuur ons een bericht</h2>
+    <div class="order-via">
+      <p><a class="btn btn-dark" href="mailto:Eu.wholesalestock@gmail.com">E-mail Eu.wholesalestock@gmail.com</a></p>
+      <p><a class="btn btn-dark" href="https://wa.me/4915778431615">WhatsApp +49 1577 8431615</a></p>
+    </div>
     <form data-contact>
       <div class="row"><div><label>Je naam</label><input name="name" required></div><div><label>Je e-mailadres</label><input type="email" required></div></div>
       <label>Onderwerp</label><input name="subject" required>
@@ -580,9 +594,46 @@ def main():
     <dl class="info-list">
       <dt>Adres</dt><dd>Distelweg 72, 1031 HH Amsterdam, Nederland</dd>
       <dt>Openingstijden</dt><dd>Niet open voor publiek. Afhalen alleen bij truckloads op afspraak.</dd>
-      <dt>E-mail</dt><dd><a href="mailto:sales@pallethaven.nl">sales@pallethaven.nl</a></dd>
-      <dt>WhatsApp</dt><dd><a href="https://wa.me/31201234567">+31 20 123 4567</a></dd>
+      <dt>E-mail</dt><dd><a href="mailto:Eu.wholesalestock@gmail.com">Eu.wholesalestock@gmail.com</a></dd>
+      <dt>WhatsApp</dt><dd><a href="https://wa.me/4915778431615">+49 1577 8431615</a></dd>
     </dl>
+  </div>
+</div></section>
+"""))
+
+    write(ROOT / "plaats-pallet.html", page("Plaats een pallet", "", "plaats-pallet.html", """
+<section class="page-hero"><div class="container">
+  <h1>Plaats een pallet</h1>
+  <p>Iedereen kan hier een eigen liquidatiepallet of lot plaatsen. Na publicatie staat je advertentie op deze pagina en in de winkel.</p>
+</div></section>
+<section class="section"><div class="container contact-grid">
+  <form data-post-pallet>
+    <h2>Nieuwe pallet plaatsen</h2>
+    <label>Titel van het lot *</label>
+    <input name="title" required placeholder="Bijv. Merkkleding pallet 250 stuks">
+    <label>Categorie *</label>
+    <select name="category" required></select>
+    <div class="row">
+      <div><label>Prijs in euro *</label><input name="price" type="number" min="1" step="0.01" required></div>
+      <div><label>Aantal stuks</label><input name="items" type="number" min="1"></div>
+    </div>
+    <label>Omschrijving *</label>
+    <textarea name="description" required placeholder="Wat zit er in het lot, conditie, locatie"></textarea>
+    <label>Foto van jouw pallet</label>
+    <input name="photo" type="file" accept="image/*">
+    <div class="row">
+      <div><label>Jouw naam *</label><input name="name" required></div>
+      <div><label>E-mail *</label><input name="email" type="email" required></div>
+    </div>
+    <label>Telefoon / WhatsApp</label>
+    <input name="phone" placeholder="+49 …">
+    <p class="form-note">Vragen over plaatsing: <a href="mailto:Eu.wholesalestock@gmail.com">Eu.wholesalestock@gmail.com</a> of WhatsApp <a href="https://wa.me/4915778431615">+49 1577 8431615</a>.</p>
+    <p><button class="btn btn-dark" type="submit">Pallet publiceren</button></p>
+    <div data-result></div>
+  </form>
+  <div>
+    <h2>Geplaatste pallets van het publiek</h2>
+    <div class="product-grid" data-community-grid></div>
   </div>
 </div></section>
 """))
@@ -615,7 +666,7 @@ def main():
   <h2>Delen</h2>
   <p>Vervoerders, betaaldienstverleners en IT-hosting, beperkt tot wat nodig is. Geen verkoop van adressenlijsten.</p>
   <h2>Rechten</h2>
-  <p>Inzage, correctie, verwijdering, beperking en bezwaar via sales@pallethaven.nl. Klachten kunnen naar de Autoriteit Persoonsgegevens.</p>
+  <p>Inzage, correctie, verwijdering, beperking en bezwaar via Eu.wholesalestock@gmail.com. Klachten kunnen naar de Autoriteit Persoonsgegevens.</p>
   <h2>Cookies</h2>
   <p>Deze demo-site gebruikt lokale opslag voor de winkelwagen. Er draait geen trackingpixel.</p>
 </div></section>
@@ -654,7 +705,7 @@ def main():
   <h2>Aanlevering</h2>
   <p>Bezorging tot de stoeprand of laadperron, afhankelijk van de locatie. Een heftruck of palletwagen aan de ontvangstzijde is jouw verantwoordelijkheid. Mislukte levering door ontoegankelijkheid kan extra kosten geven.</p>
   <h2>Schade</h2>
-  <p>Noteer zichtbare transportschade op de vrachtbrief en mail foto's binnen 24 uur naar sales@pallethaven.nl.</p>
+  <p>Noteer zichtbare transportschade op de vrachtbrief en mail foto's binnen 24 uur naar Eu.wholesalestock@gmail.com.</p>
 </div></section>
 """))
 
@@ -677,10 +728,16 @@ def main():
 """))
 
     write(ROOT / "afrekenen.html", page("Afrekenen", "", "winkel.html", """
-<section class="page-hero"><div class="container"><h1>Afrekenen</h1><p>Na deze aanvraag ontvang je het manifest (waar van toepassing) en de betaalinstructie. Er wordt niet automatisch afgeschreven.</p></div></section>
+<section class="page-hero"><div class="container"><h1>Afrekenen</h1>
+<p>Bestellingen gaan via e-mail of WhatsApp. Er wordt niets automatisch afgeschreven.</p></div></section>
 <section class="section"><div class="container contact-grid">
   <form data-checkout>
-    <h2>Factuur- en aflevergegevens</h2>
+    <h2>Jouw gegevens voor de order</h2>
+    <div class="order-via">
+      <p>Stuur je bestelling naar:</p>
+      <p><a class="btn btn-dark" href="mailto:Eu.wholesalestock@gmail.com">E-mail Eu.wholesalestock@gmail.com</a></p>
+      <p><a class="btn btn-dark" href="https://wa.me/4915778431615">WhatsApp +49 1577 8431615</a></p>
+    </div>
     <div class="row"><div><label>Bedrijfsnaam</label><input name="company"></div><div><label>KvK-nummer</label><input name="kvk"></div></div>
     <div class="row"><div><label>Contactpersoon</label><input name="name" required></div><div><label>E-mail</label><input name="email" type="email" required></div></div>
     <label>Telefoon</label><input name="phone" required>
@@ -689,12 +746,16 @@ def main():
     <label>Land</label>
     <select name="country"><option>Nederland</option><option>België</option><option>Duitsland</option><option>Frankrijk</option><option>Overig EU</option><option>Verenigd Koninkrijk</option></select>
     <label>Opmerking / gewenst lotmanifest</label><textarea name="note"></textarea>
-    <p><button class="btn btn-dark" type="submit">Bestelling plaatsen</button></p>
+    <p class="form-note">Kies hieronder hoe je de order verstuurt. We bevestigen via hetzelfde kanaal.</p>
+    <p class="hero-actions" style="justify-content:flex-start">
+      <button class="btn btn-dark" type="submit" name="via" value="email">Bestel via e-mail</button>
+      <button class="btn btn-dark" type="submit" name="via" value="whatsapp">Bestel via WhatsApp</button>
+    </p>
   </form>
   <div>
     <h2>Jouw pallets</h2>
     <div class="totals" data-order-summary></div>
-    <p class="form-note">Betaling via bankoverschrijving of Revolut ná bevestiging. High-count lots zonder manifest blijven as-is.</p>
+    <p class="form-note">Contact: Eu.wholesalestock@gmail.com · WhatsApp +49 1577 8431615</p>
   </div>
 </div></section>
 """))

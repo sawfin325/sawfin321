@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leveringsvoorwaarden – PalletHaven</title>
+  <title>Plaats een pallet – PalletHaven</title>
   <meta name="description" content="PalletHaven levert groothandel liquidatiepallets aan wederverkopers in Nederland en Europa. Manifest vóór aankoop, directe verzending.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,22 +32,44 @@
       </a>
     </div>
   </div>
-  <nav class="nav-bar"><div class="container"><a href="index.html" class="">Home</a><a href="winkel.html" class="">Winkel</a><a href="plaats-pallet.html" class="">Plaats een pallet</a><a href="contact.html" class="">Neem contact met ons op</a><a href="over-ons.html" class="">Over ons</a><a href="privacybeleid.html" class="">Privacybeleid</a><a href="algemene-voorwaarden.html" class="">Algemene voorwaarden</a><a href="leveringsvoorwaarden.html" class="active">Leveringsvoorwaarden</a><a href="disclaimer.html" class="">Juridische disclaimer</a></div></nav>
+  <nav class="nav-bar"><div class="container"><a href="index.html" class="">Home</a><a href="winkel.html" class="">Winkel</a><a href="plaats-pallet.html" class="active">Plaats een pallet</a><a href="contact.html" class="">Neem contact met ons op</a><a href="over-ons.html" class="">Over ons</a><a href="privacybeleid.html" class="">Privacybeleid</a><a href="algemene-voorwaarden.html" class="">Algemene voorwaarden</a><a href="leveringsvoorwaarden.html" class="">Leveringsvoorwaarden</a><a href="disclaimer.html" class="">Juridische disclaimer</a></div></nav>
   <div class="mobile-menu" data-mobile><a href="index.html">Home</a><a href="winkel.html">Winkel</a><a href="plaats-pallet.html">Plaats een pallet</a><a href="contact.html">Neem contact met ons op</a><a href="over-ons.html">Over ons</a><a href="privacybeleid.html">Privacybeleid</a><a href="algemene-voorwaarden.html">Algemene voorwaarden</a><a href="leveringsvoorwaarden.html">Leveringsvoorwaarden</a><a href="disclaimer.html">Juridische disclaimer</a><a href="account.html" data-open-login>LOGIN</a></div>
 </header>
 <main>
 
-<section class="page-hero"><div class="container"><h1>Leveringsvoorwaarden</h1></div></section>
-<section class="section"><div class="container legal">
-  <p>PalletHaven verzendt pallets via LTL-vrachtpartners. Standaardpallets worden niet ter plaatse afgehaald.</p>
-  <h2>Nederland</h2>
-  <p>3 tot 7 werkdagen na orderbevestiging. Gratis verzending vanaf € 3.000 naar een Nederlands adres, tenzij het lot als truckload of extra volume is gemarkeerd.</p>
-  <h2>Europa</h2>
-  <p>5 tot 14 werkdagen. Grotere formaten kunnen 10 tot 21 dagen vragen. Invoer, douane en btw zijn voor de koper. We leveren factuur en paklijst.</p>
-  <h2>Aanlevering</h2>
-  <p>Bezorging tot de stoeprand of laadperron, afhankelijk van de locatie. Een heftruck of palletwagen aan de ontvangstzijde is jouw verantwoordelijkheid. Mislukte levering door ontoegankelijkheid kan extra kosten geven.</p>
-  <h2>Schade</h2>
-  <p>Noteer zichtbare transportschade op de vrachtbrief en mail foto's binnen 24 uur naar Eu.wholesalestock@gmail.com.</p>
+<section class="page-hero"><div class="container">
+  <h1>Plaats een pallet</h1>
+  <p>Iedereen kan hier een eigen liquidatiepallet of lot plaatsen. Na publicatie staat je advertentie op deze pagina en in de winkel.</p>
+</div></section>
+<section class="section"><div class="container contact-grid">
+  <form data-post-pallet>
+    <h2>Nieuwe pallet plaatsen</h2>
+    <label>Titel van het lot *</label>
+    <input name="title" required placeholder="Bijv. Merkkleding pallet 250 stuks">
+    <label>Categorie *</label>
+    <select name="category" required></select>
+    <div class="row">
+      <div><label>Prijs in euro *</label><input name="price" type="number" min="1" step="0.01" required></div>
+      <div><label>Aantal stuks</label><input name="items" type="number" min="1"></div>
+    </div>
+    <label>Omschrijving *</label>
+    <textarea name="description" required placeholder="Wat zit er in het lot, conditie, locatie"></textarea>
+    <label>Foto van jouw pallet</label>
+    <input name="photo" type="file" accept="image/*">
+    <div class="row">
+      <div><label>Jouw naam *</label><input name="name" required></div>
+      <div><label>E-mail *</label><input name="email" type="email" required></div>
+    </div>
+    <label>Telefoon / WhatsApp</label>
+    <input name="phone" placeholder="+49 …">
+    <p class="form-note">Vragen over plaatsing: <a href="mailto:Eu.wholesalestock@gmail.com">Eu.wholesalestock@gmail.com</a> of WhatsApp <a href="https://wa.me/4915778431615">+49 1577 8431615</a>.</p>
+    <p><button class="btn btn-dark" type="submit">Pallet publiceren</button></p>
+    <div data-result></div>
+  </form>
+  <div>
+    <h2>Geplaatste pallets van het publiek</h2>
+    <div class="product-grid" data-community-grid></div>
+  </div>
 </div></section>
 
 </main>

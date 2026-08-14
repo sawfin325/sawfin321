@@ -2,6 +2,28 @@ const CART_KEY = "pallethaven-cart";
 const USERS_KEY = "pallethaven-users";
 const SESSION_KEY = "pallethaven-session";
 const ORDERS_KEY = "pallethaven-orders";
+const LISTINGS_KEY = "pallethaven-listings";
+const CONTACT_INFO = (typeof CONTACT !== "undefined" && CONTACT) || {
+  email: "Eu.wholesalestock@gmail.com",
+  phone: "+49 1577 8431615",
+  wa: "4915778431615"
+};
+function mailHref(subject, body) {
+  let url = "mailto:" + CONTACT_INFO.email;
+  const q = [];
+  if (subject) q.push("subject=" + encodeURIComponent(subject));
+  if (body) q.push("body=" + encodeURIComponent(body));
+  return q.length ? url + "?" + q.join("&") : url;
+}
+function waHref(text) {
+  let url = "https://wa.me/" + CONTACT_INFO.wa;
+  return text ? url + "?text=" + encodeURIComponent(text) : url;
+}
+function lotImage(p) {
+  if (p && p.image && /^data:image\//.test(p.image)) return p.image;
+  if (typeof lotArtUrl === "function" && p) return lotArtUrl(p.slug, p.category);
+  return p && p.image ? imgSrc(p.image) : "";
+}
 
 function euro(n) {
   return "€" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -20,7 +42,17 @@ function priceLabel(p) {
 }
 
 let PRODUCT_INDEX = null;
+function loadListings() {
+  try { return JSON.parse(localStorage.getItem(LISTINGS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveListings(list) { localStorage.setItem(LISTINGS_KEY, JSON.stringify(list)); }
+function allProducts() {
+  return PRODUCTS.concat(loadListings());
+}
 function productBySlug(slug) {
+  const listed = loadListings().find(p => p.slug === slug);
+  if (listed) return listed;
   if (!PRODUCT_INDEX) PRODUCT_INDEX = new Map(PRODUCTS.map(p => [p.slug, p]));
   return PRODUCT_INDEX.get(slug);
 }
@@ -58,7 +90,9 @@ function setQty(slug, qty) {
   saveCart(items);
 }
 function categoryBySlug(slug) { return CATEGORIES.find(c => c.slug === slug); }
-function productsInCategory(slug) { return PRODUCTS.filter(p => p.category === slug); }
+function productsInCategory(slug) {
+  return allProducts().filter(p => p.category === slug);
+}
 
 async function sha256(text) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ph:" + text));
@@ -110,7 +144,7 @@ function renderCartUI() {
   mini.innerHTML = items.map(i => {
     const p = productBySlug(i.slug);
     if (!p) return "";
-    return `<div class="mini-item"><img src="${imgSrc(p.image)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
+    return `<div class="mini-item"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
   }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><a class="btn btn-dark btn-block" href="${ROOT}winkelwagen.html">Bekijk winkelwagen</a>`;
 }
 
@@ -118,11 +152,11 @@ function productCard(p) {
   const cat = categoryBySlug(p.category);
   return `<article class="product-card">
     <div class="thumb">
-      <a href="${productHref(p.slug)}"><img src="${imgSrc(p.image)}" alt="${p.name}"></a>
+      <a href="${productHref(p.slug)}"><img src="${lotImage(p)}" data-lot="${p.slug}" data-cat="${p.category || ""}" alt="${p.name}"></a>
       <button class="quick" data-quick="${p.slug}">Snel bekijken</button>
     </div>
     <div class="info">
-      <p class="product-cat">${cat ? cat.name : ""}</p>
+      <p class="product-cat">${cat ? cat.name : (p.category || "Community")}</p>
       <h3><a href="${productHref(p.slug)}">${p.name}</a></h3>
       <div class="price">${priceLabel(p)}</div>
     </div>
@@ -133,7 +167,7 @@ function openQuick(slug) {
   const p = productBySlug(slug);
   if (!p) return;
   const modal = document.getElementById("quick-modal");
-  modal.querySelector("img").src = imgSrc(p.image);
+  modal.querySelector("img").src = lotImage(p);
   modal.querySelector("img").alt = p.name;
   modal.querySelector("h3").textContent = p.name;
   modal.querySelector("[data-q-price]").textContent = priceLabel(p);
@@ -334,7 +368,7 @@ function bindCommon() {
       e.preventDefault();
       const box = form.querySelector("[data-result]");
       box.className = "alert alert-ok";
-      box.textContent = "Bedankt. We reageren binnen één werkdag op sales@pallethaven.nl.";
+      box.textContent = "Bedankt. We reageren via " + CONTACT_INFO.email + " of WhatsApp " + CONTACT_INFO.phone + ".";
       form.reset();
     });
   });
@@ -353,7 +387,7 @@ function renderShop() {
   const sort = document.querySelector("[data-sort]");
   const pager = document.querySelector("[data-pager]");
   const PAGE_SIZE = 24;
-  let list = cat ? productsInCategory(cat) : PRODUCTS.slice();
+  let list = cat ? productsInCategory(cat) : allProducts().slice();
   if (q) {
     list = list.filter(p => (p.name + " " + (p.short || "") + " " + p.category).toLowerCase().includes(q));
     const hint = document.querySelector("[data-search-hint]");
@@ -417,13 +451,13 @@ function renderProductPage() {
     mount.innerHTML = `<p>Dit lot is niet gevonden.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Terug naar winkel</a></p>`;
     return;
   }
-  const cat = categoryBySlug(p.category);
+  const cat = categoryBySlug(p.category) || { slug: "winkel", name: p.category || "Community pallet" };
   document.title = p.name + " – PalletHaven";
   const crumbs = document.querySelector("[data-product-crumbs]");
-  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Winkel</a> / <a href="${ROOT}categorie/${cat.slug}.html">${cat.name}</a>`;
+  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Winkel</a> / ${cat.name}`;
   mount.innerHTML = `
     <div class="product-layout">
-      <div class="gallery"><img src="${imgSrc(p.image)}" alt="${p.name}"></div>
+      <div class="gallery"><img src="${lotImage(p)}" data-lot="${p.slug}" data-cat="${p.category || ""}" alt="${p.name}"></div>
       <div>
         <p class="product-cat">${cat.name}</p>
         <h1>${p.name}</h1>
@@ -440,7 +474,7 @@ function renderProductPage() {
           <label>Aantal <input type="number" min="1" value="1" data-qty></label>
           <button class="btn btn-dark" data-add="${p.slug}" data-label="In winkelwagen">In winkelwagen</button>
         </div>
-        <p class="form-note">Vraag het volledige manifest aan via sales@pallethaven.nl voordat je betaalt. High-count en mystery lots gaan as-is. Prijsbereiken gelden voor doos versus palletformaat.</p>
+        <p class="form-note">Vraag het volledige manifest aan via ${CONTACT_INFO.email} of WhatsApp ${CONTACT_INFO.phone} voordat je betaalt. Bestellen gaat via e-mail of WhatsApp. High-count en mystery lots gaan as-is.</p>
       </div>
     </div>
     <section class="section alt" style="padding-left:0;padding-right:0">
@@ -464,14 +498,14 @@ function renderCartPage() {
         const p = productBySlug(i.slug);
         if (!p) return "";
         return `<tr>
-          <td style="display:flex;gap:12px;align-items:center"><img src="${imgSrc(p.image)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
+          <td style="display:flex;gap:12px;align-items:center"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
           <td>${euro(p.price)}</td>
           <td><input type="number" min="1" value="${i.qty}" data-qty-slug="${p.slug}" style="width:70px"></td>
           <td>${euro(p.price * i.qty)}</td>
         </tr>`;
       }).join("") + `</tbody></table>`;
     const totals = document.querySelector("[data-cart-totals]");
-    if (totals) totals.innerHTML = `<div class="totals"><h3>Overzicht</h3><div><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><div><span>Verzending</span><span>Offerte na adres</span></div><div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div><p class="form-note">Gratis verzending in Nederland vanaf €3.000.</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Afrekenen</a></div>`;
+    if (totals) totals.innerHTML = `<div class="totals"><h3>Overzicht</h3><div><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><div><span>Verzending</span><span>Offerte na adres</span></div><div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div><p class="form-note">Bestel via e-mail of WhatsApp.</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Afrekenen via e-mail / WhatsApp</a></div>`;
   };
   table.addEventListener("change", (e) => {
     const slug = e.target.dataset.qtySlug;
@@ -483,6 +517,28 @@ function renderCartPage() {
     if (rm) { setQty(rm.dataset.remove, 0); draw(); }
   });
   draw();
+}
+
+function orderMessage(form, items) {
+  const lines = items.map(i => {
+    const p = productBySlug(i.slug);
+    return `- ${p ? p.name : i.slug} × ${i.qty} (${p ? euro(p.price * i.qty) : ""})`;
+  });
+  return [
+    "Nieuwe PalletHaven-order",
+    "",
+    "Contact: " + form.name.value,
+    "E-mail: " + form.email.value,
+    "Telefoon: " + form.phone.value,
+    "Bedrijf: " + (form.company?.value || "-"),
+    "Adres: " + form.address.value + ", " + form.zip.value + " " + form.city.value + ", " + form.country.value,
+    "",
+    "Lots:",
+    ...lines,
+    "",
+    "Totaal: " + euro(cartTotal()),
+    form.note?.value ? "Opmerking: " + form.note.value : ""
+  ].filter(Boolean).join("\n");
 }
 
 function renderCheckout() {
@@ -504,18 +560,23 @@ function renderCheckout() {
     summary.innerHTML = items.map(i => {
       const p = productBySlug(i.slug);
       return `<div><span>${p.name} × ${i.qty}</span><strong>${euro(p.price * i.qty)}</strong></div>`;
-    }).join("") + `<div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div>`;
+    }).join("") + `<div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div>
+      <p><a class="btn btn-dark btn-block" href="${mailHref("PalletHaven order", orderMessage(form, items))}">Order via e-mail</a></p>
+      <p><a class="btn btn-dark btn-block" href="${waHref(orderMessage(form, items))}">Order via WhatsApp</a></p>
+      <p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p>`;
   }
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    const via = (e.submitter && e.submitter.value) || "email";
     const email = (form.email.value || "").trim().toLowerCase();
+    const msg = orderMessage(form, getCart());
     saveOrder({
       id: crypto.randomUUID(),
       email,
       name: form.name.value,
       date: new Date().toLocaleDateString("nl-NL"),
       total: cartTotal(),
-      status: "Wacht op betaling",
+      status: "Verstuurd via " + (via === "whatsapp" ? "WhatsApp" : "e-mail"),
       items: getCart().map(i => {
         const p = productBySlug(i.slug);
         return { slug: i.slug, name: p ? p.name : i.slug, qty: i.qty, price: p ? p.price : 0 };
@@ -523,7 +584,63 @@ function renderCheckout() {
     });
     localStorage.removeItem(CART_KEY);
     renderCartUI();
-    form.innerHTML = `<div class="alert alert-ok"><strong>Bestelling ontvangen.</strong> We sturen een manifest en betaalinstructie (bankoverschrijving of Revolut) naar ${email}. Tot die tijd is er geen betaling verschuldigd.${user ? " Je vindt deze order terug onder Mijn account." : " Maak een account aan om je orders later terug te zien."}</div>`;
+    if (via === "whatsapp") location.href = waHref(msg);
+    else location.href = mailHref("PalletHaven order", msg);
+    form.innerHTML = `<div class="alert alert-ok"><strong>Stuur je order nu via e-mail of WhatsApp.</strong>
+      <p>E-mail: <a href="${mailHref("PalletHaven order", msg)}">${CONTACT_INFO.email}</a></p>
+      <p>WhatsApp: <a href="${waHref(msg)}">${CONTACT_INFO.phone}</a></p>
+      ${user ? "<p>Je vindt deze order terug onder Mijn account.</p>" : ""}</div>`;
+  });
+}
+
+function renderCommunity() {
+  const select = document.querySelector("[data-post-pallet] select[name=category]");
+  if (select && !select.options.length) {
+    CATEGORIES.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.slug;
+      opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  }
+  const grid = document.querySelector("[data-community-grid]");
+  if (grid) {
+    const list = loadListings();
+    grid.innerHTML = list.length ? list.map(productCard).join("") : "<p>Nog geen openbare pallets. Plaats de eerste.</p>";
+  }
+  const form = document.querySelector("[data-post-pallet]");
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = "1";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const file = form.photo?.files?.[0];
+    let image = "";
+    if (file) {
+      image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    const listing = {
+      slug: "community-" + Date.now(),
+      name: form.title.value.trim(),
+      category: form.category.value,
+      price: parseFloat(form.price.value) || 0,
+      priceMax: parseFloat(form.price.value) || 0,
+      items: form.items.value ? parseInt(form.items.value, 10) : null,
+      condition: "Community listing",
+      image,
+      short: form.description.value.trim() + " · Contact: " + form.name.value + " " + (form.phone.value || form.email.value),
+      seller: { name: form.name.value.trim(), email: form.email.value.trim(), phone: form.phone.value.trim() }
+    };
+    const list = loadListings();
+    list.unshift(listing);
+    saveListings(list);
+    showFormMessage(form, true, "Je pallet staat online in de winkel en op deze pagina.");
+    form.reset();
+    renderCommunity();
   });
 }
 
@@ -534,4 +651,5 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCartPage();
   renderCheckout();
   renderAccount();
+  renderCommunity();
 });
