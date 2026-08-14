@@ -37,34 +37,31 @@
 </header>
 <main>
 
-<section class="page-hero"><div class="container"><h1>Afrekenen</h1>
-<p>Bestellingen gaan via e-mail of WhatsApp. Er wordt niets automatisch afgeschreven.</p></div></section>
+<section class="page-hero"><div class="container"><h1>Bestel via e-mail of WhatsApp</h1>
+<p>Kies hoe je de order verstuurt. Er wordt niets automatisch afgeschreven.</p></div></section>
 <section class="section"><div class="container contact-grid">
-  <form data-checkout>
-    <h2>Jouw gegevens voor de order</h2>
-    <div class="order-via">
-      <p>Stuur je bestelling naar:</p>
-      <p><a class="btn btn-dark" href="mailto:Eu.wholesalestock@gmail.com">E-mail Eu.wholesalestock@gmail.com</a></p>
-      <p><a class="btn btn-dark" href="https://wa.me/4915778431615">WhatsApp +49 1577 8431615</a></p>
-    </div>
-    <div class="row"><div><label>Bedrijfsnaam</label><input name="company"></div><div><label>KvK-nummer</label><input name="kvk"></div></div>
-    <div class="row"><div><label>Contactpersoon</label><input name="name" required></div><div><label>E-mail</label><input name="email" type="email" required></div></div>
-    <label>Telefoon</label><input name="phone" required>
-    <label>Afleveradres</label><input name="address" required>
-    <div class="row"><div><label>Postcode</label><input name="zip" required></div><div><label>Plaats</label><input name="city" required></div></div>
-    <label>Land</label>
-    <select name="country"><option>Nederland</option><option>België</option><option>Duitsland</option><option>Frankrijk</option><option>Overig EU</option><option>Verenigd Koninkrijk</option></select>
-    <label>Opmerking / gewenst lotmanifest</label><textarea name="note"></textarea>
-    <p class="form-note">Kies hieronder hoe je de order verstuurt. We bevestigen via hetzelfde kanaal.</p>
-    <p class="hero-actions" style="justify-content:flex-start">
-      <button class="btn btn-dark" type="submit" name="via" value="email">Bestel via e-mail</button>
-      <button class="btn btn-dark" type="submit" name="via" value="whatsapp">Bestel via WhatsApp</button>
-    </p>
-  </form>
+  <div>
+    <h2>Hoe wil je bestellen?</h2>
+    <p>Stuur je bestelling naar <strong>Eu.wholesalestock@gmail.com</strong> of WhatsApp <strong>+49 1577 8431615</strong>. Vul hieronder je gegevens in en klik op een van de knoppen.</p>
+    <form data-checkout>
+      <div class="row"><div><label>Bedrijfsnaam</label><input name="company"></div><div><label>KvK-nummer</label><input name="kvk"></div></div>
+      <div class="row"><div><label>Contactpersoon</label><input name="name" required></div><div><label>E-mail</label><input name="email" type="email" required></div></div>
+      <label>Telefoon</label><input name="phone" required>
+      <label>Afleveradres</label><input name="address" required>
+      <div class="row"><div><label>Postcode</label><input name="zip" required></div><div><label>Plaats</label><input name="city" required></div></div>
+      <label>Land</label>
+      <select name="country"><option>Nederland</option><option>België</option><option>Duitsland</option><option>Frankrijk</option><option>Overig EU</option><option>Verenigd Koninkrijk</option></select>
+      <label>Opmerking / gewenst lotmanifest</label><textarea name="note"></textarea>
+      <p class="form-note">Je e-mailprogramma of WhatsApp opent met de order klaar om te versturen.</p>
+      <p class="hero-actions" style="justify-content:flex-start">
+        <button class="btn btn-dark" type="submit" name="via" value="email">Bestel via e-mail</button>
+        <button class="btn btn-dark" type="submit" name="via" value="whatsapp">Bestel via WhatsApp</button>
+      </p>
+    </form>
+  </div>
   <div>
     <h2>Jouw pallets</h2>
     <div class="totals" data-order-summary></div>
-    <p class="form-note">Contact: Eu.wholesalestock@gmail.com · WhatsApp +49 1577 8431615</p>
   </div>
 </div></section>
 
@@ -109,9 +106,23 @@
       <h3></h3>
       <p class="price" data-q-price></p>
       <p data-q-desc></p>
-      <p><button class="btn btn-dark" data-q-add data-add="" data-label="In winkelwagen">In winkelwagen</button></p>
+      <p class="form-note">Bestellen gaat via e-mail of WhatsApp.</p>
+      <p><a class="btn btn-dark btn-block" data-q-mail>Bestel via e-mail</a></p>
+      <p><a class="btn btn-dark btn-block" data-q-wa>Bestel via WhatsApp</a></p>
       <p><a data-q-link>Bekijk product</a></p>
     </div>
+  </div>
+</div>
+<div class="modal" id="order-modal">
+  <div class="auth-box" style="max-width:520px">
+    <button class="close-x" data-close-order aria-label="Sluiten">×</button>
+    <h3>Bestel via e-mail of WhatsApp</h3>
+    <p>We nemen geen online betaling. Stuur je order naar <strong>Eu.wholesalestock@gmail.com</strong> of WhatsApp <strong>+49 1577 8431615</strong>.</p>
+    <div data-order-prompt-body></div>
+    <p class="hero-actions" style="justify-content:flex-start;margin-top:16px">
+      <a class="btn btn-dark" data-order-mail>Bestel via e-mail</a>
+      <a class="btn btn-dark" data-order-wa>Bestel via WhatsApp</a>
+    </p>
   </div>
 </div>
 <div class="modal" id="login-modal">

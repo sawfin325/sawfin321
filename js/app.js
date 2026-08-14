@@ -144,7 +144,47 @@ function renderCartUI() {
     const p = productBySlug(i.slug);
     if (!p) return "";
     return `<div class="mini-item"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
-  }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><a class="btn btn-dark btn-block" href="${ROOT}winkelwagen.html">Bekijk winkelwagen</a>`;
+  }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div>
+    <p class="form-note">Bestel via e-mail of WhatsApp.</p>
+    <a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via e-mail / WhatsApp</a>`;
+}
+
+function productOrderText(p, qty) {
+  qty = qty || 1;
+  return [
+    "PalletHaven-order",
+    "",
+    "Lot: " + p.name,
+    "Categorie: " + (p.category || ""),
+    "Aantal: " + qty,
+    "Prijs: " + priceLabel(p),
+    p.short ? "Omschrijving: " + p.short : "",
+    "",
+    "Ik wil dit lot bestellen via e-mail/WhatsApp."
+  ].filter(Boolean).join("\n");
+}
+
+function showOrderPrompt(p, qty) {
+  const modal = document.getElementById("order-modal");
+  if (!modal || !p) return;
+  const qtyN = qty || 1;
+  const msg = productOrderText(p, qtyN);
+  const body = modal.querySelector("[data-order-prompt-body]");
+  if (body) body.innerHTML = `<p><strong>${p.name}</strong></p><p class="price">${priceLabel(p)} · aantal ${qtyN}</p>`;
+  const mail = modal.querySelector("[data-order-mail]");
+  const wa = modal.querySelector("[data-order-wa]");
+  if (mail) mail.href = mailHref("Order: " + p.name, msg);
+  if (wa) wa.href = waHref(msg);
+  modal.classList.add("open");
+}
+
+function orderActionsHtml(p, qty) {
+  const msg = productOrderText(p, qty || 1);
+  return `<div class="order-via">
+    <p class="form-note">Bestel dit lot via e-mail of WhatsApp.</p>
+    <p><a class="btn btn-dark btn-block" href="${mailHref("Order: " + p.name, msg)}">Bestel via e-mail<br><small>${CONTACT_INFO.email}</small></a></p>
+    <p><a class="btn btn-dark btn-block" href="${waHref(msg)}">Bestel via WhatsApp<br><small>${CONTACT_INFO.phone}</small></a></p>
+  </div>`;
 }
 
 function productCard(p) {
@@ -171,7 +211,11 @@ function openQuick(slug) {
   modal.querySelector("h3").textContent = p.name;
   modal.querySelector("[data-q-price]").textContent = priceLabel(p);
   modal.querySelector("[data-q-desc]").textContent = p.short || "";
-  modal.querySelector("[data-q-add]").dataset.add = p.slug;
+  const mail = modal.querySelector("[data-q-mail]");
+  const wa = modal.querySelector("[data-q-wa]");
+  const msg = productOrderText(p, 1);
+  if (mail) mail.href = mailHref("Order: " + p.name, msg);
+  if (wa) wa.href = waHref(msg);
   modal.querySelector("[data-q-link]").href = productHref(p.slug);
   modal.classList.add("open");
 }
@@ -356,10 +400,12 @@ function bindCommon() {
       const qtyEl = document.querySelector("[data-qty]");
       const qty = qtyEl ? parseInt(qtyEl.value, 10) || 1 : 1;
       addToCart(add.dataset.add, qty);
-      add.textContent = "Toegevoegd";
-      setTimeout(() => { add.textContent = add.dataset.label || "In winkelwagen"; }, 1200);
+      const p = productBySlug(add.dataset.add);
+      showOrderPrompt(p, qty);
     }
     if (e.target.closest("[data-close]")) document.getElementById("quick-modal")?.classList.remove("open");
+    if (e.target.closest("[data-close-order]")) document.getElementById("order-modal")?.classList.remove("open");
+    if (e.target.id === "order-modal") e.target.classList.remove("open");
   });
 
   document.querySelectorAll("[data-contact]").forEach(form => {
@@ -471,15 +517,17 @@ function renderProductPage() {
         </div>
         <div class="qty-row">
           <label>Aantal <input type="number" min="1" value="1" data-qty></label>
-          <button class="btn btn-dark" data-add="${p.slug}" data-label="In winkelwagen">In winkelwagen</button>
         </div>
-        <p class="form-note">Vraag het volledige manifest aan via ${CONTACT_INFO.email} of WhatsApp ${CONTACT_INFO.phone} voordat je betaalt. Bestellen gaat via e-mail of WhatsApp. High-count en mystery lots gaan as-is.</p>
+        ${orderActionsHtml(p, 1)}
+        <p><button class="btn btn-sm" data-add="${p.slug}" data-label="In winkelwagen" data-ask-order="1">Eerst in winkelwagen</button></p>
       </div>
-    </div>
-    <section class="section alt" style="padding-left:0;padding-right:0">
-      <h2>Omschrijving</h2>
-      <p>${p.short || ""} PalletHaven verkoopt aan professionele kopers. Door te bestellen bevestig je de lotvoorwaarden, inclusief conditieklasse en het wel of niet aanwezig zijn van een itemmanifest.</p>
-    </section>`;
+    </div>`;
+  const qtyInput = mount.querySelector("[data-qty]");
+  qtyInput?.addEventListener("change", () => {
+    const qty = parseInt(qtyInput.value, 10) || 1;
+    const box = mount.querySelector(".order-via");
+    if (box) box.outerHTML = orderActionsHtml(p, qty);
+  });
 }
 
 function renderCartPage() {
@@ -504,7 +552,7 @@ function renderCartPage() {
         </tr>`;
       }).join("") + `</tbody></table>`;
     const totals = document.querySelector("[data-cart-totals]");
-    if (totals) totals.innerHTML = `<div class="totals"><h3>Overzicht</h3><div><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><div><span>Verzending</span><span>Offerte na adres</span></div><div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div><p class="form-note">Bestel via e-mail of WhatsApp.</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Afrekenen via e-mail / WhatsApp</a></div>`;
+    if (totals) totals.innerHTML = `<div class="totals"><h3>Bestel via e-mail of WhatsApp</h3><div><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><div><span>Verzending</span><span>Offerte na adres</span></div><div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div><p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via e-mail</a><p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via WhatsApp</a></p></div>`;
   };
   table.addEventListener("change", (e) => {
     const slug = e.target.dataset.qtySlug;

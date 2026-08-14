@@ -85,9 +85,23 @@
       <h3></h3>
       <p class="price" data-q-price></p>
       <p data-q-desc></p>
-      <p><button class="btn btn-dark" data-q-add data-add="" data-label="In winkelwagen">In winkelwagen</button></p>
+      <p class="form-note">Bestellen gaat via e-mail of WhatsApp.</p>
+      <p><a class="btn btn-dark btn-block" data-q-mail>Bestel via e-mail</a></p>
+      <p><a class="btn btn-dark btn-block" data-q-wa>Bestel via WhatsApp</a></p>
       <p><a data-q-link>Bekijk product</a></p>
     </div>
+  </div>
+</div>
+<div class="modal" id="order-modal">
+  <div class="auth-box" style="max-width:520px">
+    <button class="close-x" data-close-order aria-label="Sluiten">×</button>
+    <h3>Bestel via e-mail of WhatsApp</h3>
+    <p>We nemen geen online betaling. Stuur je order naar <strong>Eu.wholesalestock@gmail.com</strong> of WhatsApp <strong>+49 1577 8431615</strong>.</p>
+    <div data-order-prompt-body></div>
+    <p class="hero-actions" style="justify-content:flex-start;margin-top:16px">
+      <a class="btn btn-dark" data-order-mail>Bestel via e-mail</a>
+      <a class="btn btn-dark" data-order-wa>Bestel via WhatsApp</a>
+    </p>
   </div>
 </div>
 <div class="modal" id="login-modal">
