@@ -164,10 +164,16 @@ def header(prefix: str, active: str) -> str:
     search_icon = '''<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>'''
     return f"""
 <header class="site-header">
-  <div class="topbar"><div class="container">Bestel via e-mail <a href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a href="{WA_HREF}">{PHONE}</a> · Levering in heel Europa. Gratis verzending in Nederland vanaf € 3.000.</div></div>
+  <div class="topbar"><div class="container topbar-inner">
+    <span>Bestel via e-mail <a class="notranslate" href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a class="notranslate" href="{WA_HREF}">{PHONE}</a> · Levering in heel Europa. Gratis verzending in Nederland vanaf € 3.000.</span>
+    <div class="translate-wrap notranslate" aria-label="Translate this website">
+      <span class="translate-label">Taal</span>
+      <div id="google_translate_element"></div>
+    </div>
+  </div></div>
   <div class="container header-main">
     <button class="menu-btn" data-menu aria-label="Menu">☰</button>
-    <a class="logo" href="{prefix}index.html"><img src="{prefix}assets/logo.jpg" alt="PalletHaven"></a>
+    <a class="logo notranslate" href="{prefix}index.html"><img src="{prefix}assets/logo.jpg" alt="PalletHaven"></a>
     <form class="search-wrap" data-search>
       <label class="sr-only" for="q">Zoeken</label>
       <input id="q" name="s" placeholder="Zoeken…">
@@ -292,7 +298,10 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title} – PalletHaven</title>
   <meta name="description" content="PalletHaven levert groothandel liquidatiepallets aan wederverkopers in Nederland en Europa. Manifest vóór aankoop, directe verzending.">
+  <link rel="icon" href="{prefix}favicon.ico" sizes="any">
   <link rel="icon" href="{prefix}assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="{prefix}assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{prefix}css/style.css">
@@ -306,6 +315,7 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
 <script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}}; const ADMIN = {{email: "{EMAIL.lower()}", hash: "{ADMIN_HASH}"}};</script>
 <script src="{prefix}js/data.js"></script>
 <script src="{prefix}js/app.js"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 {extra_js}
 </body>
 </html>

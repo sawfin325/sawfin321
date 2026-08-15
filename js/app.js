@@ -971,3 +971,14 @@ document.addEventListener("DOMContentLoaded", () => {
   renderBlog();
   renderBlogArticle();
 });
+
+function googleTranslateElementInit() {
+  if (!window.google || !google.translate || !google.translate.TranslateElement) return;
+  new google.translate.TranslateElement({
+    pageLanguage: "nl",
+    includedLanguages: "nl,en,de,fr,es,it,pl,pt,ro,tr,ar,zh-CN,ru,uk,sv,da,nb,fi,cs,hu,el,ja,ko,hi,id,vi,th,bg,hr,sk,sl,lt,lv,et",
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
+  }, "google_translate_element");
+}
+window.googleTranslateElementInit = googleTranslateElementInit;
