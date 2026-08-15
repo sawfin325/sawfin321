@@ -7,7 +7,7 @@ def img(name: str) -> str:
     return f"assets/products/{name}.jpg"
 
 IMG = {
-    "hero": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80",
+    "hero": img("pallet-electronics"),
     "electronics": img("pallet-electronics"),
     "monitor": img("pallet-monitors"),
     "box": img("pallet-amazon-boxes"),

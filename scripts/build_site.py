@@ -166,9 +166,44 @@ def header(prefix: str, active: str) -> str:
 <header class="site-header">
   <div class="topbar"><div class="container topbar-inner">
     <span>Bestel via e-mail <a class="notranslate" href="{MAIL_HREF}">{EMAIL}</a> of WhatsApp <a class="notranslate" href="{WA_HREF}">{PHONE}</a> · Levering in heel Europa. Gratis verzending in Nederland vanaf € 3.000.</span>
-    <div class="translate-wrap notranslate" aria-label="Translate this website">
-      <span class="translate-label">Taal</span>
-      <div id="google_translate_element"></div>
+    <div class="translate-wrap notranslate" aria-label="Language">
+      <label class="translate-label" for="site-lang">Taal</label>
+      <select id="site-lang" class="lang-select" data-site-lang>
+        <option value="nl">Nederlands</option>
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+        <option value="it">Italiano</option>
+        <option value="pl">Polski</option>
+        <option value="pt">Português</option>
+        <option value="ro">Română</option>
+        <option value="tr">Türkçe</option>
+        <option value="ar">العربية</option>
+        <option value="zh-CN">中文</option>
+        <option value="ru">Русский</option>
+        <option value="uk">Українська</option>
+        <option value="sv">Svenska</option>
+        <option value="da">Dansk</option>
+        <option value="nb">Norsk</option>
+        <option value="fi">Suomi</option>
+        <option value="cs">Čeština</option>
+        <option value="hu">Magyar</option>
+        <option value="el">Ελληνικά</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="hi">हिन्दी</option>
+        <option value="id">Indonesia</option>
+        <option value="vi">Tiếng Việt</option>
+        <option value="th">ไทย</option>
+        <option value="bg">Български</option>
+        <option value="hr">Hrvatski</option>
+        <option value="sk">Slovenčina</option>
+        <option value="sl">Slovenščina</option>
+        <option value="lt">Lietuvių</option>
+        <option value="lv">Latviešu</option>
+        <option value="et">Eesti</option>
+      </select>
     </div>
   </div></div>
   <div class="container header-main">
@@ -228,6 +263,7 @@ def footer(prefix: str) -> str:
   </div>
   <div class="copy">© 2026 PalletHaven. Groothandel liquidatiepallets voor Nederland en Europa.</div>
 </footer>
+<div id="google_translate_element" class="sr-only" hidden></div>
 <div class="modal" id="quick-modal">
   <div class="modal-box">
     <img alt="">
@@ -302,8 +338,6 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
   <link rel="icon" href="{prefix}assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="{prefix}assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{prefix}css/style.css">
 </head>
 <body>
@@ -315,7 +349,6 @@ def page(title: str, prefix: str, active: str, body: str, extra_js: str = "") ->
 <script>const ROOT = "{prefix}"; const CONTACT = {{email: "{EMAIL}", phone: "{PHONE}", wa: "{WA_NUM}"}}; const ADMIN = {{email: "{EMAIL.lower()}", hash: "{ADMIN_HASH}"}};</script>
 <script src="{prefix}js/data.js"></script>
 <script src="{prefix}js/app.js"></script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 {extra_js}
 </body>
 </html>

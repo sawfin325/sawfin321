@@ -970,14 +970,52 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCommunity();
   renderBlog();
   renderBlogArticle();
+  bindLanguage();
 });
 
+const LANG_KEY = "pallethaven-lang";
+function currentLang() {
+  try { return localStorage.getItem(LANG_KEY) || "nl"; }
+  catch { return "nl"; }
+}
+function bindLanguage() {
+  const lang = currentLang();
+  document.querySelectorAll("[data-site-lang]").forEach(sel => {
+    sel.value = lang;
+    if (sel.dataset.bound) return;
+    sel.dataset.bound = "1";
+    sel.addEventListener("change", () => {
+      try { localStorage.setItem(LANG_KEY, sel.value); } catch {}
+      applySiteLanguage(sel.value);
+    });
+  });
+  if (lang && lang !== "nl") applySiteLanguage(lang);
+}
+function applySiteLanguage(tl) {
+  document.querySelectorAll("[data-site-lang]").forEach(sel => { sel.value = tl; });
+  if (tl === "nl") {
+    document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    if (document.querySelector(".translated-ltr, .translated-rtl")) location.reload();
+    return;
+  }
+  document.cookie = "googtrans=/nl/" + tl + ";path=/";
+  loadGoogleTranslate();
+}
+function loadGoogleTranslate() {
+  if (document.getElementById("google-translate-script")) return;
+  const s = document.createElement("script");
+  s.id = "google-translate-script";
+  s.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  s.async = true;
+  s.defer = true;
+  s.onerror = function () { s.remove(); };
+  document.head.appendChild(s);
+}
 function googleTranslateElementInit() {
   if (!window.google || !google.translate || !google.translate.TranslateElement) return;
   new google.translate.TranslateElement({
     pageLanguage: "nl",
     includedLanguages: "nl,en,de,fr,es,it,pl,pt,ro,tr,ar,zh-CN,ru,uk,sv,da,nb,fi,cs,hu,el,ja,ko,hi,id,vi,th,bg,hr,sk,sl,lt,lv,et",
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
     autoDisplay: false
   }, "google_translate_element");
 }
