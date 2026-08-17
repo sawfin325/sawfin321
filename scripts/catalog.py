@@ -66,66 +66,66 @@ def pick(pool, i):
     return pool[(i - 1) % len(pool)]
 
 CATEGORIES = [
-    {"slug": "elektronica", "name": "electronic liquidation pallets", "image": IMG["electronics"],
-     "blurb": "Amazon-retouren, salvage monitors, audio en IT-accessoires. Manifest of as-is per lot."},
+    {"slug": "elektronica", "name": "Electronic liquidation pallets", "image": IMG["electronics"],
+     "blurb": "Amazon returns, salvage monitors, audio and IT accessories. Manifest or as-is by lot."},
     {"slug": "premium-electronics", "name": "Premium Electronics", "image": IMG["electronics"],
-     "blurb": "Hogere MSRP-elektronica met artikelmanifest vóór aankoop."},
-    {"slug": "amazon-electronics", "name": "amazon electronic liquidation pallets", "image": IMG["electronics"],
-     "blurb": "FC-retourdozen en pallets elektronica, vast geprijsd, geen veiling."},
+     "blurb": "Higher-MSRP electronics with an item manifest before you buy."},
+    {"slug": "amazon-electronics", "name": "Amazon electronic liquidation pallets", "image": IMG["electronics"],
+     "blurb": "FC return boxes and electronics pallets. Fixed price, no auction."},
     {"slug": "high-count", "name": "AMZ High Counts", "image": IMG["gaylord"],
-     "blurb": "Hoge gaylord-stapels gemengde fulfillment-retouren. Geen itemmanifest."},
-    {"slug": "amazon-mystery", "name": "amazon mystery box nederland", "image": IMG["box"],
-     "blurb": "Mystery box pallets en dozen uit fulfillment-retourstromen."},
-    {"slug": "sneakers", "name": "sneaker liquidation pallets", "image": IMG["sneakers"],
-     "blurb": "Sport- en lifestyle schoeisel met maat- en kleuroverzicht."},
-    {"slug": "schoenen", "name": "shoe liquidation pallets", "image": IMG["sneakers"],
-     "blurb": "Gemengd schoeisel, overstock en seizoensclearance."},
-    {"slug": "winterschoenen", "name": "winter shoes", "image": IMG["winter"],
-     "blurb": "Laarzen en gevoerde schoenen voor het najaar."},
-    {"slug": "kleding", "name": "Brand Name Clothings", "image": IMG["clothing"],
-     "blurb": "Merkkleding in partijen van 250 stuks tot volle pallets."},
-    {"slug": "costco-kleding", "name": "cosco Clothings", "image": IMG["clothing"],
-     "blurb": "Warehouse-kledinglots voor wederverkopers in NL en EU."},
-    {"slug": "zara-kleding", "name": "zara clothing liquidation pallets", "image": IMG["clothing"],
-     "blurb": "Mode-overstock in palletformaat voor outlets en Vinted-verkopers."},
-    {"slug": "sportkleding", "name": "gymshark fitness clothing", "image": IMG["clothing"],
-     "blurb": "Fitness- en athleisure kleding, tagged of in polybag."},
-    {"slug": "keuken", "name": "home and kitchen appliances", "image": IMG["kitchen"],
-     "blurb": "Koffiemachines, mixers, stofzuigers en airfryers."},
-    {"slug": "koelkast", "name": "refrigerator pallet liquidations", "image": IMG["fridge"],
-     "blurb": "Koel-vriescombinaties en grote witte goederen op pallet."},
-    {"slug": "airco", "name": "Air Conditioners Pallets", "image": IMG["ac"],
-     "blurb": "Draagbare en split-units uit overstock en retourprogramma's."},
-    {"slug": "gereedschap", "name": "dewalt tool pallet liquidation", "image": IMG["tools"],
-     "blurb": "Accu- en handgereedschap, combosets en salvage lots."},
-    {"slug": "milwaukee", "name": "milwaukee power tools", "image": IMG["tools"],
-     "blurb": "Powertools en jobsitesets voor wederverkoop."},
-    {"slug": "parfum", "name": "perfume liquidation pallets", "image": IMG["perfume"],
-     "blurb": "Verzegelde geuren, testers uitgesloten tenzij vermeld."},
-    {"slug": "cosmetica", "name": "cosmetic liquidation pallets", "image": IMG["beauty"],
-     "blurb": "Make-up en verzorging met THT in het spreadsheet."},
-    {"slug": "iphone", "name": "iphone liquidation pallets", "image": img("phone-a"),
-     "blurb": "Smartphones met model, opslag en batterijstatus."},
-    {"slug": "wearables", "name": "apple watch liquidation", "image": IMG["phone"],
-     "blurb": "Watches, bands en earbuds in nieuw of open-box staat."},
-    {"slug": "laptop", "name": "laptop liquidation pallets", "image": IMG["electronics"],
-     "blurb": "Notebooks en Chromebooks, Grade A tot salvage."},
-    {"slug": "tv", "name": "tv liquidation pallets", "image": IMG["monitor"],
-     "blurb": "Televisies en monitors, inclusief salvage-schermen."},
-    {"slug": "console", "name": "playstation 5 pallet", "image": IMG["electronics"],
-     "blurb": "Consoles, controllers en gaming-accessoires."},
-    {"slug": "bouwsets", "name": "Lego liquidation pallets", "image": IMG["toys"],
-     "blurb": "Sealed bouwsets en Technic-lots voor collectible-wederverkopers."},
-    {"slug": "pokemon", "name": "pokemon booster box", "image": IMG["cards"],
-     "blurb": "Sealed displays, booster packs en trainer boxes."},
-    {"slug": "speelgoed", "name": "toy liquidation pallets", "image": IMG["toys"],
-     "blurb": "Algemeen speelgoed, seizoenslots en collectibles."},
-    {"slug": "mystery-box", "name": "amazon mystery box nederland", "image": IMG["mystery"],
-     "blurb": "Gemengde mystery pallets. Inhoud varieert, as-is."},
-    {"slug": "handtassen", "name": "womens handbags", "image": IMG["bags"],
-     "blurb": "Dameshandtassen in mixlots, nieuw."},
-    {"slug": "truckload", "name": "truckload liquidation wholesale", "image": img("truck-a"),
-     "blurb": "Multi-pallet en truckload-volume, vracht op aanvraag."},
+     "blurb": "Tall gaylord stacks of mixed fulfillment returns. No item manifest."},
+    {"slug": "amazon-mystery", "name": "Amazon mystery box pallets", "image": IMG["box"],
+     "blurb": "Mystery box pallets and cartons from fulfillment return streams."},
+    {"slug": "sneakers", "name": "Sneaker liquidation pallets", "image": IMG["sneakers"],
+     "blurb": "Sport and lifestyle footwear with size and color breakdowns."},
+    {"slug": "schoenen", "name": "Shoe liquidation pallets", "image": IMG["sneakers"],
+     "blurb": "Mixed footwear, overstock and seasonal clearance."},
+    {"slug": "winterschoenen", "name": "Winter shoes", "image": IMG["winter"],
+     "blurb": "Boots and insulated shoes for the cold season."},
+    {"slug": "kleding", "name": "Brand-name clothing", "image": IMG["clothing"],
+     "blurb": "Branded apparel in lots from 250 pieces to full pallets."},
+    {"slug": "costco-kleding", "name": "Costco clothing", "image": IMG["clothing"],
+     "blurb": "Warehouse clothing lots for resellers in Europe and beyond."},
+    {"slug": "zara-kleding", "name": "Zara clothing liquidation pallets", "image": IMG["clothing"],
+     "blurb": "Fashion overstock in pallet format for outlets and online sellers."},
+    {"slug": "sportkleding", "name": "Gym and fitness clothing", "image": IMG["clothing"],
+     "blurb": "Fitness and athleisure apparel, tagged or in polybags."},
+    {"slug": "keuken", "name": "Home and kitchen appliances", "image": IMG["kitchen"],
+     "blurb": "Coffee machines, mixers, vacuums and air fryers."},
+    {"slug": "koelkast", "name": "Refrigerator pallet liquidations", "image": IMG["fridge"],
+     "blurb": "Fridge-freezer combos and large white goods on pallet."},
+    {"slug": "airco", "name": "Air conditioner pallets", "image": IMG["ac"],
+     "blurb": "Portable and split units from overstock and return programs."},
+    {"slug": "gereedschap", "name": "Dewalt tool pallet liquidation", "image": IMG["tools"],
+     "blurb": "Cordless and hand tools, combo kits and salvage lots."},
+    {"slug": "milwaukee", "name": "Milwaukee power tools", "image": IMG["tools"],
+     "blurb": "Power tools and jobsite sets for resale."},
+    {"slug": "parfum", "name": "Perfume liquidation pallets", "image": IMG["perfume"],
+     "blurb": "Sealed fragrances. Testers excluded unless listed."},
+    {"slug": "cosmetica", "name": "Cosmetic liquidation pallets", "image": IMG["beauty"],
+     "blurb": "Makeup and personal care with expiry dates in the spreadsheet."},
+    {"slug": "iphone", "name": "iPhone liquidation pallets", "image": img("phone-a"),
+     "blurb": "Smartphones with model, storage and battery status."},
+    {"slug": "wearables", "name": "Apple Watch liquidation", "image": IMG["phone"],
+     "blurb": "Watches, bands and earbuds in new or open-box condition."},
+    {"slug": "laptop", "name": "Laptop liquidation pallets", "image": IMG["electronics"],
+     "blurb": "Notebooks and Chromebooks, Grade A to salvage."},
+    {"slug": "tv", "name": "TV liquidation pallets", "image": IMG["monitor"],
+     "blurb": "Televisions and monitors, including salvage screens."},
+    {"slug": "console", "name": "PlayStation 5 pallet", "image": IMG["electronics"],
+     "blurb": "Consoles, controllers and gaming accessories."},
+    {"slug": "bouwsets", "name": "LEGO liquidation pallets", "image": IMG["toys"],
+     "blurb": "Sealed building sets and Technic lots for collectible resellers."},
+    {"slug": "pokemon", "name": "Pokemon booster box", "image": IMG["cards"],
+     "blurb": "Sealed displays, booster packs and trainer boxes."},
+    {"slug": "speelgoed", "name": "Toy liquidation pallets", "image": IMG["toys"],
+     "blurb": "General toys, seasonal lots and collectibles."},
+    {"slug": "mystery-box", "name": "Amazon mystery box pallets", "image": IMG["mystery"],
+     "blurb": "Mixed mystery pallets. Contents vary, sold as-is."},
+    {"slug": "handtassen", "name": "Women's handbags", "image": IMG["bags"],
+     "blurb": "Women's handbags in mixed lots, new."},
+    {"slug": "truckload", "name": "Truckload liquidation wholesale", "image": img("truck-a"),
+     "blurb": "Multi-pallet and truckload volume. Freight quoted on request."},
 ]
 
 CAT_MAP = {c["slug"]: c for c in CATEGORIES}
@@ -153,11 +153,11 @@ MYSTERY_NAMES = [
     "amazon mystery box pallet",
     "amazon mystery box electronics",
     "mystery boxes on amazon",
-    "mystery box kopen amazon",
     "amazon mystery boxes for sale",
     "best place to buy amazon mystery boxes",
-    "amazon mystery box nederland",
-    "mystery boxen amazon",
+    "amazon mystery box wholesale",
+    "amazon electronics mystery pallet",
+    "mixed amazon mystery boxes",
 ]
 
 POKEMON_NAMES = [
@@ -166,7 +166,7 @@ POKEMON_NAMES = [
     "buy pokemon liquidation pallets europe online",
     "wholesale pokemon products pallet europe",
     "pokemon pallets wholesale eu supplier",
-    "buy pokemon tcg pallets netherlands",
+    "buy pokemon tcg pallets europe",
     "pokemon liquidation pallets for sale eu",
     "pokemon cards pallet bulk europe",
     "pokemon booster box sealed case",
@@ -228,11 +228,11 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 kind = rng.choice(["box", "pallet", "neg", "salvage", "home"])
                 if kind == "box":
                     name = f"BOX OF RETURNS (Electronics) – ITEMS {items} – MSRP €{msrp:,.2f}"
-                    condition = "Retour"
+                    condition = "Returns"
                     image = IMG["electronics"]
                 elif kind == "neg":
                     name = f"NEG – Returns – Electronics – ITEMS: {items} – MSRP: {max(1, int(msrp/1000))}K"
-                    condition = "Retour"
+                    condition = "Returns"
                     image = IMG["electronics"]
                 elif kind == "salvage":
                     name = f"PALLET FROM NEG – Salvage – Monitors – ITEMS: {items} – MSRP: {int(msrp)}"
@@ -241,20 +241,20 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     price = round(msrp * rng.uniform(0.06, 0.14), 2)
                 elif kind == "home":
                     name = f"Home Improvements Pallets from AMZ – ITEMS: {items} – MSRP: {int(msrp/1000)}K"
-                    condition = "Retour / mixed"
+                    condition = "Returns / mixed"
                     image = IMG["electronics"]
                 else:
                     name = f"AMZ Electronics – {items} Items – €{msrp:,.2f} MSRP – PALLET – RETURNS"
-                    condition = "Retour"
+                    condition = "Returns"
                     image = IMG["electronics"]
                 add(cat, name, price, _range_price(rng, price, False), msrp, items, condition, pick(POOL["electronics"], i),
-                    "Elektronicalot uit fulfillment-retouren. Manifest waar vermeld, anders as-is.")
+                    "Electronics lot from fulfillment returns. Manifest where listed, otherwise as-is.")
 
             elif cat == "high-count":
                 price = _money(rng, 980, 3200)
                 name = f"AMZ High Count #{40 + i}" if i % 2 else f"AMZ High Count FC #{i:02d}"
-                add(cat, name, price, price, None, None, "Gemengd / as-is", pick(POOL["truck"], i),
-                    "Hoge gaylord van fulfillment-retouren. Geen itemlijst, vaste prijs.")
+                add(cat, name, price, price, None, None, "Mixed / as-is", pick(POOL["truck"], i),
+                    "Tall gaylord of fulfillment returns. No item list, fixed price.")
 
             elif cat in ("amazon-mystery", "mystery-box"):
                 price = _money(rng, 180, 980)
@@ -263,29 +263,29 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 if i > len(MYSTERY_NAMES):
                     name = f"{name} #{i}"
                 add(cat, name, price, pmax, None, None, "As-is", pick(POOL["mystery"], i),
-                    "Mystery box pallet. Inhoud varieert; conditie van nieuw tot salvage.")
+                    "Mystery-box pallet. Contents vary; condition from new to salvage.")
 
             elif cat in ("sneakers", "schoenen"):
                 pairs = rng.choice([60, 72, 80, 96, 120, 144])
                 msrp = pairs * rng.choice([55, 70, 85, 95, 120])
                 price = round(msrp * rng.uniform(0.18, 0.32), 2)
                 name = rng.choice([
-                    f"Gemengde sneakerpallet – {pairs} paar",
+                    f"Mixed sneaker pallet – {pairs} pairs",
                     f"shoe liquidation pallets #{i}",
-                    f"New Balance sneaker palettes – {pairs} paar",
-                    f"Pallets met opruimingsgoederen voor sneakers #{i}",
-                    f"Groothandel in designer sneakers op pallets #{i}",
+                    f"New Balance sneaker pallets – {pairs} pairs",
+                    f"Sneaker clearance pallets #{i}",
+                    f"Wholesale designer sneakers on pallets #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw / overstock", pick(POOL["sneakers"], i),
-                    "Schoeisel met maat- en kleuroverzicht in het manifest.")
+                add(cat, name, price, _range_price(rng, price), msrp, pairs, "New / overstock", pick(POOL["sneakers"], i),
+                    "Footwear with size and color breakdown in the manifest.")
 
             elif cat == "winterschoenen":
                 pairs = rng.choice([48, 60, 72, 80])
                 msrp = pairs * rng.choice([45, 60, 75])
                 price = round(msrp * rng.uniform(0.22, 0.35), 2)
                 name = f"Winter Boots Pallet #{i}" if i % 2 else f"women’s winter shoes #{i}"
-                add(cat, name, price, _range_price(rng, price), msrp, pairs, "Nieuw", pick(POOL["sneakers"], i),
-                    "Gevoerde laarzen, dames en heren, maatoverzicht in Excel.")
+                add(cat, name, price, _range_price(rng, price), msrp, pairs, "New", pick(POOL["sneakers"], i),
+                    "Insulated boots, women's and men's, size rundown in the spreadsheet.")
 
             elif cat in ("kleding", "costco-kleding", "zara-kleding", "sportkleding"):
                 pcs = rng.choice([200, 250, 300, 400])
@@ -303,35 +303,35 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                     name = f"zara clothing liquidation pallets europe #{i}"
                 else:
                     name = f"fitness clothing pallet #{i} – {pcs}pcs"
-                add(cat, name, price, pmax, msrp, pcs, "Nieuw met tags", pick(POOL["clothing"], i),
-                    "Merkkleding tagged of in polybag. Maattabel in het manifest.")
+                add(cat, name, price, pmax, msrp, pcs, "New with tags", pick(POOL["clothing"], i),
+                    "Branded apparel tagged or in polybags. Size chart in the manifest.")
 
             elif cat == "keuken":
                 items = rng.choice([16, 20, 24, 28, 36, 40])
                 msrp = items * rng.choice([90, 140, 190, 240])
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
                 name = rng.choice([
-                    f"Keukenapparatuur mix – {items} stuks",
+                    f"Kitchen appliance mix – {items} pcs",
                     f"bulk kitchen appliances pallets europe #{i}",
                     f"home appliance wholesale pallets eu #{i}",
-                    f"Opruiming van pallets met huishoudelijke apparaten #{i}",
+                    f"Home appliance clearance pallets #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / open box", pick(POOL["kitchen"], i),
-                    "Huishoudapparaten met modelnummers in het manifest. 230V.")
+                add(cat, name, price, _range_price(rng, price), msrp, items, "New / open box", pick(POOL["kitchen"], i),
+                    "Home appliances with model numbers in the manifest. 230V.")
 
             elif cat == "koelkast":
                 items = rng.choice([2, 3, 4, 6])
                 msrp = items * rng.choice([700, 900, 1200])
                 price = round(msrp * rng.uniform(0.22, 0.40), 2)
                 add(cat, f"refrigerator pallet liquidations #{i} – {items} units", price, price, msrp, items,
-                    "Nieuw / cosmetisch", pick(POOL["fridge"], i), "Grote witte goederen. Extra vracht door volume.")
+                    "New / cosmetic", pick(POOL["fridge"], i), "Large white goods. Extra freight due to volume.")
 
             elif cat == "airco":
                 items = rng.choice([8, 12, 16, 24, 40])
                 msrp = items * rng.choice([220, 280, 350])
                 price = round(msrp * rng.uniform(0.14, 0.28), 2)
-                add(cat, f"Airco retouren – {items} stuks", price, price, msrp, items, "Retour / nieuw", pick(POOL["ac"], i),
-                    "Draagbare units, 230V. Ontbrekende slangen staan in het manifest.")
+                add(cat, f"Air-con returns – {items} pcs", price, price, msrp, items, "Returns / new", pick(POOL["ac"], i),
+                    "Portable units, 230V. Missing hoses are noted in the manifest.")
 
             elif cat in ("gereedschap", "milwaukee"):
                 items = rng.choice([20, 24, 30, 36, 42, 60])
@@ -339,63 +339,63 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
                 name = rng.choice([
                     f"dewalt tool pallet liquidation #{i}",
-                    f"Accugereedschap mixpallet #{i}",
+                    f"Cordless tool mix pallet #{i}",
                     f"Jobsite combo – {items} kits",
-                    f"Handgereedschap bulkpallet #{i}",
+                    f"Hand-tool bulk pallet #{i}",
                 ])
-                add(cat, name, price, _range_price(rng, price), msrp, items, "Nieuw / overstock", pick(POOL["tools"], i),
-                    "Gereedschaplots. Accu en lader niet altijd inbegrepen; zie manifest.")
+                add(cat, name, price, _range_price(rng, price), msrp, items, "New / overstock", pick(POOL["tools"], i),
+                    "Tool lots. Battery and charger are not always included; see the manifest.")
 
             elif cat == "parfum":
                 items = rng.choice([80, 100, 120, 150])
                 msrp = items * rng.choice([35, 48, 62])
                 price = round(msrp * rng.uniform(0.18, 0.32), 2)
-                add(cat, f"Parfumpallet – {items} stuks #{i}", price, price, msrp, items, "Nieuw verzegeld",
-                    pick(POOL["beauty"], i), "Sealed flacons. Batchcodes waar beschikbaar.")
+                add(cat, f"Fragrance pallet – {items} pcs #{i}", price, price, msrp, items, "New sealed",
+                    pick(POOL["beauty"], i), "Sealed bottles. Batch codes where available.")
 
             elif cat == "cosmetica":
                 items = rng.choice([120, 150, 180, 220])
                 msrp = items * rng.choice([12, 18, 24])
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
                 add(cat, f"cosmetic liquidation pallets #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw", pick(POOL["beauty"], i), "Beauty mix. THT-data in het spreadsheet.")
+                    "New", pick(POOL["beauty"], i), "Beauty mix. Expiry dates in the spreadsheet.")
 
             elif cat == "iphone":
                 items = rng.choice([6, 8, 10, 12, 16])
                 msrp = items * rng.choice([420, 580, 720, 890])
                 price = round(msrp * rng.uniform(0.28, 0.48), 2)
-                grade = rng.choice(["Grade A refurbished", "Nieuw verzegeld", "Consumentenretour"])
-                add(cat, f"Smartphone {grade} – {items} stuks #{i}", price, price, msrp, items, grade,
-                    pick(POOL["phone"], i), "Model, opslag en batterijstatus in het manifest.")
+                grade = rng.choice(["Grade A refurbished", "New sealed", "Consumer returns"])
+                add(cat, f"Smartphone {grade} – {items} pcs #{i}", price, price, msrp, items, grade,
+                    pick(POOL["phone"], i), "Model, storage and battery status in the manifest.")
 
             elif cat == "wearables":
                 items = rng.choice([16, 20, 24, 30])
                 msrp = items * rng.choice([90, 140, 190])
                 price = round(msrp * rng.uniform(0.20, 0.36), 2)
-                add(cat, f"Wearables en watches – {items} stuks #{i}", price, price, msrp, items,
-                    "Nieuw / retour", pick(POOL["phone"], i), "Smartwatches en bands, mix van nieuw en open box.")
+                add(cat, f"Wearables and watches – {items} pcs #{i}", price, price, msrp, items,
+                    "New / returns", pick(POOL["phone"], i), "Smartwatches and bands, mix of new and open box.")
 
             elif cat == "laptop":
                 items = rng.choice([8, 10, 12, 16, 20])
                 msrp = items * rng.choice([280, 450, 700])
                 price = round(msrp * rng.uniform(0.18, 0.34), 2)
-                add(cat, f"Laptop liquidation pallet – {items} stuks #{i}", price, price, msrp, items,
-                    rng.choice(["Grade A", "Retour", "Salvage"]), pick(POOL["electronics"], i),
-                    "Notebooks. Cosmetische staat per seriële regel.")
+                add(cat, f"Laptop liquidation pallet – {items} pcs #{i}", price, price, msrp, items,
+                    rng.choice(["Grade A", "Returns", "Salvage"]), pick(POOL["electronics"], i),
+                    "Notebooks. Cosmetic grade listed per serial line.")
 
             elif cat == "tv":
                 items = rng.choice([6, 8, 10, 12, 19, 21, 24])
                 msrp = items * rng.choice([180, 280, 420])
                 price = round(msrp * rng.uniform(0.08, 0.22), 2)
-                add(cat, f"TV salvage – {items} stuks #{i}", price, price, msrp, items, "Salvage",
-                    pick(POOL["electronics"], i), "Schermen met schade. Alleen voor technici.")
+                add(cat, f"TV salvage – {items} pcs #{i}", price, price, msrp, items, "Salvage",
+                    pick(POOL["electronics"], i), "Screens with damage. For technicians only.")
 
             elif cat == "console":
                 items = rng.choice([12, 18, 24, 35])
                 msrp = items * rng.choice([70, 120, 280])
                 price = round(msrp * rng.uniform(0.20, 0.38), 2)
-                add(cat, f"Console en accessoires – {items} stuks #{i}", price, price, msrp, items,
-                    "Nieuw / retour", pick(POOL["electronics"], i), "Controllers, headsets en gesealde accessoires.")
+                add(cat, f"Consoles and accessories – {items} pcs #{i}", price, price, msrp, items,
+                    "New / returns", pick(POOL["electronics"], i), "Controllers, headsets and sealed accessories.")
 
             elif cat == "bouwsets":
                 base, image = LEGO_SETS[(i - 1) % len(LEGO_SETS)]
@@ -403,8 +403,8 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = _money(rng, 180, 620)
                 pmax = round(price * rng.uniform(7, 11), 2)
                 add(cat, name, price, pmax, round(price * rng.uniform(2.2, 3.5), 2), rng.choice([1, 2, 4, 6]),
-                    "Nieuw verzegeld", image,
-                    "Sealed bouwset. Prijsbereik: enkele doos tot volle doos/pallet.")
+                    "New sealed", image,
+                    "Sealed building set. Price range: single box to full case or pallet.")
 
             elif cat == "pokemon":
                 name = POKEMON_NAMES[(i - 1) % len(POKEMON_NAMES)]
@@ -413,22 +413,22 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = _money(rng, 220, 890)
                 pmax = round(price * rng.uniform(4, 9), 2)
                 add(cat, name, price, pmax, round(price * 2.4, 2), rng.choice([6, 8, 10, 12]),
-                    "Nieuw / sealed", pick(POOL["pokemon"], i),
-                    "Sealed TCG-product. Prijs afhankelijk van case- of palletformaat.")
+                    "New / sealed", pick(POOL["pokemon"], i),
+                    "Sealed TCG product. Price depends on case or pallet format.")
 
             elif cat == "speelgoed":
                 items = rng.choice([80, 120, 160, 200])
                 msrp = items * rng.choice([12, 16, 22])
                 price = round(msrp * rng.uniform(0.16, 0.30), 2)
-                add(cat, f"Algemeen speelgoed – {items} stuks #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw / overstock", pick(POOL["toys"], i), "Toegankelijk lot voor nieuwe wederverkopers.")
+                add(cat, f"General toys – {items} pcs #{i}", price, _range_price(rng, price), msrp, items,
+                    "New / overstock", pick(POOL["toys"], i), "Accessible lot for new resellers.")
 
             elif cat == "handtassen":
                 items = rng.choice([40, 60, 80, 100])
                 msrp = items * rng.choice([18, 28, 40])
                 price = round(msrp * rng.uniform(0.18, 0.32), 2)
-                add(cat, f"Dameshandtassen mix – {items} stuks #{i}", price, _range_price(rng, price), msrp, items,
-                    "Nieuw", pick(POOL["bags"], i), "Mixlot tassen. Materialen in het bestand.")
+                add(cat, f"Women's handbag mix – {items} pcs #{i}", price, _range_price(rng, price), msrp, items,
+                    "New", pick(POOL["bags"], i), "Mixed bag lot. Materials listed in the file.")
 
             else:  # truckload
                 items = rng.choice([800, 1200, 2000, 4913])
@@ -436,8 +436,8 @@ def generate_products(total: int = 10000, seed: int = 42) -> list[dict]:
                 price = round(msrp * rng.uniform(0.08, 0.18), 2)
                 pallets = rng.choice([6, 10, 14, 22])
                 add(cat, f"Truckload – AMZ Electronics – {pallets} Pallets – {items} Items – {int(msrp/1000)}K MSRP",
-                    price, price, round(msrp, 2), items, "Gemengd / as-is", pick(POOL["truck"], i),
-                    "Alleen voor volume-kopers. Vracht en laadadres op aanvraag.")
+                    price, price, round(msrp, 2), items, "Mixed / as-is", pick(POOL["truck"], i),
+                    "For volume buyers only. Freight and load address on request.")
 
     rng.shuffle(products)
     for i, p in enumerate(products, 1):

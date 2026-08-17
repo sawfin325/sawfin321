@@ -90,7 +90,7 @@ function visibleEditorialPosts() {
 }
 function blogDeleteBtn(slug) {
   if (!isAdmin() || !slug) return "";
-  return `<button class="btn btn-sm blog-delete" type="button" data-delete-blog="${esc(slug)}">Verwijderen</button>`;
+  return `<button class="btn btn-sm blog-delete" type="button" data-delete-blog="${esc(slug)}">Delete</button>`;
 }
 function esc(s) {
   return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -186,16 +186,16 @@ function renderCartUI() {
   if (!mini) return;
   const items = getCart();
   if (!items.length) {
-    mini.innerHTML = `<div class="mini-empty"><p>Geen producten in de winkelwagen.</p><a class="btn btn-dark btn-sm" href="${ROOT}winkel.html">Terug naar winkel</a></div>`;
+    mini.innerHTML = `<div class="mini-empty"><p>No products in the cart.</p><a class="btn btn-dark btn-sm" href="${ROOT}winkel.html">Back to shop</a></div>`;
     return;
   }
   mini.innerHTML = items.map(i => {
     const p = productBySlug(i.slug);
     if (!p) return "";
     return `<div class="mini-item"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
-  }).join("") + `<div class="mini-total"><span>Subtotaal</span><span>${euro(cartTotal())}</span></div>
-    <p class="form-note">Bestel via e-mail of WhatsApp.</p>
-    <a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via e-mail / WhatsApp</a>`;
+  }).join("") + `<div class="mini-total"><span>Subtotal</span><span>${euro(cartTotal())}</span></div>
+    <p class="form-note">Order by email or WhatsApp.</p>
+    <a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by email / WhatsApp</a>`;
 }
 
 function productOrderText(p, qty) {
@@ -204,12 +204,12 @@ function productOrderText(p, qty) {
     "PalletHaven-order",
     "",
     "Lot: " + p.name,
-    "Categorie: " + (p.category || ""),
-    "Aantal: " + qty,
-    "Prijs: " + priceLabel(p),
-    p.short ? "Omschrijving: " + p.short : "",
+    "Category: " + (p.category || ""),
+    "Qty: " + qty,
+    "Price: " + priceLabel(p),
+    p.short ? "Description: " + p.short : "",
     "",
-    "Ik wil dit lot bestellen via e-mail/WhatsApp."
+    "I want to order this lot by email/WhatsApp."
   ].filter(Boolean).join("\n");
 }
 
@@ -221,18 +221,18 @@ function showOrderPrompt(p, qty) {
   const body = modal.querySelector("[data-order-prompt-body]");
   if (body) {
     body.innerHTML = `<p><strong>${p.name}</strong></p>
-      <p class="price">${priceLabel(p)} · aantal ${qtyN}</p>
-      <p>Kies hoe je deze order wilt sturen. We nemen geen online betaling.</p>`;
+      <p class="price">${priceLabel(p)} · qty ${qtyN}</p>
+      <p>Choose how you want to send this order. We do not take online payment.</p>`;
   }
   const mail = modal.querySelector("[data-order-mail]");
   const wa = modal.querySelector("[data-order-wa]");
   if (mail) {
     mail.href = mailHref("Order: " + p.name, msg);
-    mail.innerHTML = `Bestel via e-mail<br><small>${CONTACT_INFO.email}</small>`;
+    mail.innerHTML = `Order by email<br><small>${CONTACT_INFO.email}</small>`;
   }
   if (wa) {
     wa.href = waHref(msg);
-    wa.innerHTML = `Bestel via WhatsApp<br><small>${CONTACT_INFO.phone}</small>`;
+    wa.innerHTML = `Order by WhatsApp<br><small>${CONTACT_INFO.phone}</small>`;
   }
   modal.classList.add("open");
 }
@@ -240,9 +240,9 @@ function showOrderPrompt(p, qty) {
 function orderActionsHtml(p, qty) {
   const msg = productOrderText(p, qty || 1);
   return `<div class="order-via">
-    <p class="form-note">Bestel dit lot via e-mail of WhatsApp.</p>
-    <p><a class="btn btn-dark btn-block" href="${mailHref("Order: " + p.name, msg)}">Bestel via e-mail<br><small>${CONTACT_INFO.email}</small></a></p>
-    <p><a class="btn btn-dark btn-block" href="${waHref(msg)}">Bestel via WhatsApp<br><small>${CONTACT_INFO.phone}</small></a></p>
+    <p class="form-note">Order this lot by email or WhatsApp.</p>
+    <p><a class="btn btn-dark btn-block" href="${mailHref("Order: " + p.name, msg)}">Order by email<br><small>${CONTACT_INFO.email}</small></a></p>
+    <p><a class="btn btn-dark btn-block" href="${waHref(msg)}">Order by WhatsApp<br><small>${CONTACT_INFO.phone}</small></a></p>
   </div>`;
 }
 
@@ -251,13 +251,13 @@ function productCard(p) {
   return `<article class="product-card">
     <div class="thumb">
       <a href="${productHref(p.slug)}"><img src="${lotImage(p)}" alt="${p.name}"></a>
-      <button class="quick" data-quick="${p.slug}">Snel bekijken</button>
+      <button class="quick" data-quick="${p.slug}">Quick view</button>
     </div>
     <div class="info">
       <p class="product-cat">${cat ? cat.name : (p.category || "Community")}</p>
       <h3><a href="${productHref(p.slug)}">${p.name}</a></h3>
       <div class="price">${priceLabel(p)}</div>
-      <button class="btn btn-dark btn-sm btn-block" type="button" data-order="${p.slug}">Bestellen</button>
+      <button class="btn btn-dark btn-sm btn-block" type="button" data-order="${p.slug}">Order</button>
     </div>
   </article>`;
 }
@@ -329,12 +329,12 @@ function bindAuth() {
       const users = loadUsers();
       const user = users.find(u => u.email === email);
       if (!user) {
-        showFormMessage(form, false, "Geen account gevonden met dit e-mailadres. Maak eerst een account aan.");
+        showFormMessage(form, false, "No account found with this email address. Create an account first.");
         return;
       }
       const hash = await sha256(password);
       if (hash !== user.passwordHash) {
-        showFormMessage(form, false, "Onjuist wachtwoord.");
+        showFormMessage(form, false, "Incorrect password.");
         return;
       }
       setSession(user, remember);
@@ -352,16 +352,16 @@ function bindAuth() {
       const password = form.password.value;
       const password2 = form.password2.value;
       if (password.length < 6) {
-        showFormMessage(form, false, "Kies een wachtwoord van minimaal 6 tekens.");
+        showFormMessage(form, false, "Choose a password of at least 6 characters.");
         return;
       }
       if (password !== password2) {
-        showFormMessage(form, false, "Wachtwoorden komen niet overeen.");
+        showFormMessage(form, false, "Passwords do not match.");
         return;
       }
       const users = loadUsers();
       if (users.some(u => u.email === email)) {
-        showFormMessage(form, false, "Dit e-mailadres heeft al een account. Log in aan de linkerkant.");
+        showFormMessage(form, false, "This email address already has an account. Log in on the left.");
         return;
       }
       const user = {
@@ -394,27 +394,27 @@ function renderAccount() {
   if (forms) forms.style.display = "none";
   const orders = loadOrders().filter(o => o.email === user.email);
   const orderHtml = orders.length
-    ? `<table class="cart-table"><thead><tr><th>Datum</th><th>Lots</th><th>Totaal</th><th>Status</th></tr></thead><tbody>` +
+    ? `<table class="cart-table"><thead><tr><th>Date</th><th>Lots</th><th>Total</th><th>Status</th></tr></thead><tbody>` +
       orders.map(o => `<tr><td>${o.date}</td><td>${o.items.map(i => i.name + " × " + i.qty).join("<br>")}</td><td>${euro(o.total)}</td><td>${o.status}</td></tr>`).join("") +
       `</tbody></table>`
-    : `<p>Je hebt nog geen bestellingen. <a href="${ROOT}winkel.html">Bekijk de winkel</a>.</p>`;
+    : `<p>You have no orders yet. <a href="${ROOT}winkel.html">Browse the shop</a>.</p>`;
   panel.innerHTML = `
     <div class="account-dash">
-      <h2>Welkom, ${user.name || user.email}</h2>
-      <p>Je bent ingelogd als <strong>${user.email}</strong>${user.company ? " · " + user.company : ""}.</p>
-      <p><button class="btn btn-dark btn-sm" id="logout">Uitloggen</button></p>
-      <h3>Accountgegevens</h3>
+      <h2>Welcome, ${user.name || user.email}</h2>
+      <p>You are logged in as <strong>${user.email}</strong>${user.company ? " · " + user.company : ""}.</p>
+      <p><button class="btn btn-dark btn-sm" id="logout">Log out</button></p>
+      <h3>Account details</h3>
       <form data-account-update class="account-update">
         <div class="row">
-          <div><label>Naam</label><input name="name" value="${user.name || ""}" required></div>
-          <div><label>Bedrijfsnaam</label><input name="company" value="${user.company || ""}"></div>
+          <div><label>Name</label><input name="name" value="${user.name || ""}" required></div>
+          <div><label>Company name</label><input name="company" value="${user.company || ""}"></div>
         </div>
-        <label>Nieuw wachtwoord (optioneel)</label>
+        <label>New password (optional)</label>
         <input name="password" type="password" minlength="6" autocomplete="new-password">
-        <p><button class="btn btn-dark" type="submit">Gegevens opslaan</button></p>
+        <p><button class="btn btn-dark" type="submit">Save details</button></p>
         <div data-result></div>
       </form>
-      <h3>Bestellingen</h3>
+      <h3>Orders</h3>
       ${orderHtml}
     </div>`;
   document.getElementById("logout")?.addEventListener("click", () => {
@@ -433,7 +433,7 @@ function renderAccount() {
     if (form.password.value) users[idx].passwordHash = await sha256(form.password.value);
     saveUsers(users);
     setSession(users[idx], true);
-    showFormMessage(form, true, "Gegevens opgeslagen.");
+    showFormMessage(form, true, "Details saved.");
     renderHeaderAuth();
   });
 }
@@ -478,7 +478,7 @@ function bindCommon() {
       e.preventDefault();
       if (!isAdmin()) return;
       const slug = del.dataset.deleteBlog;
-      if (!slug || !confirm("Dit blogbericht verwijderen? Het verdwijnt van de site.")) return;
+      if (!slug || !confirm("Delete this blog post? It will disappear from the site.")) return;
       deleteBlog(slug);
       if (location.pathname.includes("/blog/") || location.pathname.endsWith("bericht.html")) {
         location.href = ROOT + "blog.html";
@@ -498,7 +498,7 @@ function bindCommon() {
       e.preventDefault();
       const box = form.querySelector("[data-result]");
       box.className = "alert alert-ok";
-      box.textContent = "Bedankt. We reageren via " + CONTACT_INFO.email + " of WhatsApp " + CONTACT_INFO.phone + ".";
+      box.textContent = "Thanks. We will reply via " + CONTACT_INFO.email + " or WhatsApp " + CONTACT_INFO.phone + ".";
       form.reset();
     });
   });
@@ -521,20 +521,20 @@ function renderShop() {
   if (q) {
     list = list.filter(p => (p.name + " " + (p.short || "") + " " + p.category).toLowerCase().includes(q));
     const hint = document.querySelector("[data-search-hint]");
-    if (hint) hint.textContent = `Zoekresultaten voor “${params.get("s")}”`;
+    if (hint) hint.textContent = `Search results for “${params.get("s")}”`;
   }
   const apply = () => {
     let shown = list.slice();
     const v = sort ? sort.value : "featured";
     if (v === "price-asc") shown.sort((a, b) => a.price - b.price);
     if (v === "price-desc") shown.sort((a, b) => b.price - a.price);
-    if (v === "name") shown.sort((a, b) => a.name.localeCompare(b.name, "nl"));
+    if (v === "name") shown.sort((a, b) => a.name.localeCompare(b.name, "en"));
     const pages = Math.max(1, Math.ceil(shown.length / PAGE_SIZE));
     const page = Math.min(pages, Math.max(1, parseInt(params.get("page") || "1", 10)));
     const slice = shown.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    grid.innerHTML = slice.map(productCard).join("") || "<p>Geen pallets gevonden.</p>";
+    grid.innerHTML = slice.map(productCard).join("") || "<p>No pallets found.</p>";
     const count = document.querySelector("[data-result-count]");
-    if (count) count.textContent = shown.length.toLocaleString("nl-NL") + " resultaten · pagina " + page + " van " + pages;
+    if (count) count.textContent = shown.length.toLocaleString("en-US") + " results · page " + page + " of " + pages;
     if (pager) pager.innerHTML = pagerHtml(page, pages);
   };
   if (sort) sort.addEventListener("change", () => {
@@ -560,7 +560,7 @@ function pagerHtml(page, pages) {
     else if (active) items.push(`<span class="active">${label}</span>`);
     else items.push(`<a href="${url(n)}">${label}</a>`);
   };
-  add(page - 1, "Vorige", page <= 1, false);
+  add(page - 1, "Previous", page <= 1, false);
   const start = Math.max(1, page - 3);
   const end = Math.min(pages, page + 3);
   if (start > 1) add(1, "1", false, page === 1);
@@ -568,7 +568,7 @@ function pagerHtml(page, pages) {
   for (let n = start; n <= end; n++) add(n, String(n), false, n === page);
   if (end < pages - 1) items.push("<span class='off'>…</span>");
   if (end < pages) add(pages, String(pages), false, page === pages);
-  add(page + 1, "Volgende", page >= pages, false);
+  add(page + 1, "Next", page >= pages, false);
   return items.join("");
 }
 
@@ -578,13 +578,13 @@ function renderProductPage() {
   const slug = new URLSearchParams(location.search).get("p");
   const p = productBySlug(slug);
   if (!p) {
-    mount.innerHTML = `<p>Dit lot is niet gevonden.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Terug naar winkel</a></p>`;
+    mount.innerHTML = `<p>This lot was not found.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Back to shop</a></p>`;
     return;
   }
   const cat = categoryBySlug(p.category) || { slug: "winkel", name: p.category || "Community pallet" };
   document.title = p.name + " – PalletHaven";
   const crumbs = document.querySelector("[data-product-crumbs]");
-  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Winkel</a> / ${cat.name}`;
+  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Shop</a> / ${cat.name}`;
   mount.innerHTML = `
     <div class="product-layout">
       <div class="gallery"><img src="${lotImage(p)}" alt="${p.name}"></div>
@@ -594,14 +594,14 @@ function renderProductPage() {
         <p class="price" style="font-size:1.6rem">${priceLabel(p)}</p>
         <p>${p.short || ""}</p>
         <div class="meta-list">
-          <div><span>Categorie</span><span>${cat.name}</span></div>
-          <div><span>Conditie</span><span>${p.condition || "Zie lotomschrijving"}</span></div>
-          <div><span>Aantal stuks</span><span>${p.items != null ? p.items : "Niet gespecificeerd"}</span></div>
-          <div><span>Geschatte MSRP</span><span>${p.msrp ? euro(p.msrp) : "Onbekend / geen manifest"}</span></div>
-          <div><span>Verzending</span><span>LTL-vracht, offerte na adres</span></div>
+          <div><span>Category</span><span>${cat.name}</span></div>
+          <div><span>Condition</span><span>${p.condition || "See lot description"}</span></div>
+          <div><span>Piece count</span><span>${p.items != null ? p.items : "Not specified"}</span></div>
+          <div><span>Estimated MSRP</span><span>${p.msrp ? euro(p.msrp) : "Unknown / no manifest"}</span></div>
+          <div><span>Shipping</span><span>LTL freight, quote after address</span></div>
         </div>
         <div class="qty-row">
-          <label>Aantal <input type="number" min="1" value="1" data-qty></label>
+          <label>Qty <input type="number" min="1" value="1" data-qty></label>
         </div>
         ${orderActionsHtml(p, 1)}
       </div>
@@ -620,23 +620,23 @@ function renderCartPage() {
   const draw = () => {
     const items = getCart();
     if (!items.length) {
-      table.innerHTML = `<p>Je winkelwagen is leeg.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Terug naar winkel</a></p>`;
+      table.innerHTML = `<p>Your cart is empty.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Back to shop</a></p>`;
       document.querySelector("[data-cart-totals]")?.replaceChildren();
       return;
     }
-    table.innerHTML = `<table class="cart-table"><thead><tr><th>Product</th><th>Prijs</th><th>Aantal</th><th>Subtotaal</th></tr></thead><tbody>` +
+    table.innerHTML = `<table class="cart-table"><thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>` +
       items.map(i => {
         const p = productBySlug(i.slug);
         if (!p) return "";
         return `<tr>
-          <td style="display:flex;gap:12px;align-items:center"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Verwijderen</button></div></td>
+          <td style="display:flex;gap:12px;align-items:center"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Delete</button></div></td>
           <td>${euro(p.price)}</td>
           <td><input type="number" min="1" value="${i.qty}" data-qty-slug="${p.slug}" style="width:70px"></td>
           <td>${euro(p.price * i.qty)}</td>
         </tr>`;
       }).join("") + `</tbody></table>`;
     const totals = document.querySelector("[data-cart-totals]");
-    if (totals) totals.innerHTML = `<div class="totals"><h3>Bestel via e-mail of WhatsApp</h3><div><span>Subtotaal</span><span>${euro(cartTotal())}</span></div><div><span>Verzending</span><span>Offerte na adres</span></div><div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div><p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via e-mail</a><p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Bestel via WhatsApp</a></p></div>`;
+    if (totals) totals.innerHTML = `<div class="totals"><h3>Order by email or WhatsApp</h3><div><span>Subtotal</span><span>${euro(cartTotal())}</span></div><div><span>Shipping</span><span>Quote after address</span></div><div class="grand"><span>Total</span><span>${euro(cartTotal())}</span></div><p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by email</a><p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by WhatsApp</a></p></div>`;
   };
   table.addEventListener("change", (e) => {
     const slug = e.target.dataset.qtySlug;
@@ -656,19 +656,19 @@ function orderMessage(form, items) {
     return `- ${p ? p.name : i.slug} × ${i.qty} (${p ? euro(p.price * i.qty) : ""})`;
   });
   return [
-    "Nieuwe PalletHaven-order",
+    "New PalletHaven order",
     "",
     "Contact: " + form.name.value,
     "E-mail: " + form.email.value,
-    "Telefoon: " + form.phone.value,
-    "Bedrijf: " + (form.company?.value || "-"),
-    "Adres: " + form.address.value + ", " + form.zip.value + " " + form.city.value + ", " + form.country.value,
+    "Phone: " + form.phone.value,
+    "Company: " + (form.company?.value || "-"),
+    "Address: " + form.address.value + ", " + form.zip.value + " " + form.city.value + ", " + form.country.value,
     "",
     "Lots:",
     ...lines,
     "",
-    "Totaal: " + euro(cartTotal()),
-    form.note?.value ? "Opmerking: " + form.note.value : ""
+    "Total: " + euro(cartTotal()),
+    form.note?.value ? "Note: " + form.note.value : ""
   ].filter(Boolean).join("\n");
 }
 
@@ -678,7 +678,7 @@ function renderCheckout() {
   const summary = document.querySelector("[data-order-summary]");
   const items = getCart();
   if (!items.length) {
-    form.innerHTML = `<p>Je winkelwagen is leeg.</p><a class="btn btn-dark" href="${ROOT}winkel.html">Naar de winkel</a>`;
+    form.innerHTML = `<p>Your cart is empty.</p><a class="btn btn-dark" href="${ROOT}winkel.html">Go to the shop</a>`;
     return;
   }
   const user = currentUser();
@@ -691,9 +691,9 @@ function renderCheckout() {
     summary.innerHTML = items.map(i => {
       const p = productBySlug(i.slug);
       return `<div><span>${p.name} × ${i.qty}</span><strong>${euro(p.price * i.qty)}</strong></div>`;
-    }).join("") + `<div class="grand"><span>Totaal</span><span>${euro(cartTotal())}</span></div>
-      <p><a class="btn btn-dark btn-block" href="${mailHref("PalletHaven order", orderMessage(form, items))}">Order via e-mail</a></p>
-      <p><a class="btn btn-dark btn-block" href="${waHref(orderMessage(form, items))}">Order via WhatsApp</a></p>
+    }).join("") + `<div class="grand"><span>Total</span><span>${euro(cartTotal())}</span></div>
+      <p><a class="btn btn-dark btn-block" href="${mailHref("PalletHaven order", orderMessage(form, items))}">Order by email</a></p>
+      <p><a class="btn btn-dark btn-block" href="${waHref(orderMessage(form, items))}">Order by WhatsApp</a></p>
       <p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p>`;
   }
   form.addEventListener("submit", (e) => {
@@ -705,9 +705,9 @@ function renderCheckout() {
       id: crypto.randomUUID(),
       email,
       name: form.name.value,
-      date: new Date().toLocaleDateString("nl-NL"),
+      date: new Date().toLocaleDateString("en-GB"),
       total: cartTotal(),
-      status: "Verstuurd via " + (via === "whatsapp" ? "WhatsApp" : "e-mail"),
+      status: "Sent via " + (via === "whatsapp" ? "WhatsApp" : "email"),
       items: getCart().map(i => {
         const p = productBySlug(i.slug);
         return { slug: i.slug, name: p ? p.name : i.slug, qty: i.qty, price: p ? p.price : 0 };
@@ -717,10 +717,10 @@ function renderCheckout() {
     renderCartUI();
     if (via === "whatsapp") location.href = waHref(msg);
     else location.href = mailHref("PalletHaven order", msg);
-    form.innerHTML = `<div class="alert alert-ok"><strong>Stuur je order nu via e-mail of WhatsApp.</strong>
+    form.innerHTML = `<div class="alert alert-ok"><strong>Send your order now by email or WhatsApp.</strong>
       <p>E-mail: <a href="${mailHref("PalletHaven order", msg)}">${CONTACT_INFO.email}</a></p>
       <p>WhatsApp: <a href="${waHref(msg)}">${CONTACT_INFO.phone}</a></p>
-      ${user ? "<p>Je vindt deze order terug onder Mijn account.</p>" : ""}</div>`;
+      ${user ? "<p>You can find this order under My account.</p>" : ""}</div>`;
   });
 }
 
@@ -737,7 +737,7 @@ function renderCommunity() {
   const grid = document.querySelector("[data-community-grid]");
   if (grid) {
     const list = loadListings();
-    grid.innerHTML = list.length ? list.map(productCard).join("") : "<p>Nog geen openbare pallets. Plaats de eerste.</p>";
+    grid.innerHTML = list.length ? list.map(productCard).join("") : "<p>No public pallets yet. List the first one.</p>";
   }
   const form = document.querySelector("[data-post-pallet]");
   if (!form || form.dataset.bound) return;
@@ -769,7 +769,7 @@ function renderCommunity() {
     const list = loadListings();
     list.unshift(listing);
     saveListings(list);
-    showFormMessage(form, true, "Je pallet staat online in de winkel en op deze pagina.");
+    showFormMessage(form, true, "Your pallet is live in the shop and on this page.");
     form.reset();
     renderCommunity();
   });
@@ -804,7 +804,7 @@ function editorialBlogCard(post) {
       <p class="meta">${esc(post.date)}</p>
       <h3><a href="${href}">${esc(post.title)}</a></h3>
       <p>${esc(post.excerpt)}</p>
-      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>${blogDeleteBtn(post.slug)}</p>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Read article</a>${blogDeleteBtn(post.slug)}</p>
     </div>
   </article>`;
 }
@@ -820,7 +820,7 @@ function communityBlogCard(post) {
       <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
       <h3><a href="${href}">${esc(post.title)}</a></h3>
       <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
-      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Lees artikel</a>${blogDeleteBtn(post.slug)}</p>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Read article</a>${blogDeleteBtn(post.slug)}</p>
     </div>
   </article>`;
 }
@@ -829,7 +829,7 @@ function renderBlogGrid() {
   const grid = document.querySelector("[data-blog-grid]");
   if (grid) {
     const html = visiblePublicPosts().map(communityBlogCard).join("") + visibleEditorialPosts().map(editorialBlogCard).join("");
-    grid.innerHTML = html || "<p>Nog geen berichten.</p>";
+    grid.innerHTML = html || "<p>No posts yet.</p>";
   }
   const home = document.querySelector("[data-blog-home]");
   if (home) {
@@ -844,17 +844,17 @@ function renderBlogAdmin() {
   document.querySelectorAll("[data-blog-admin]").forEach(box => {
     const slug = box.dataset.deleteSlug || new URLSearchParams(location.search).get("p") || "";
     if (isAdmin()) {
-      box.innerHTML = `<div class="alert alert-ok">Beheer is actief. Klik <strong>Verwijderen</strong> bij een bericht dat je niet wilt.
+      box.innerHTML = `<div class="alert alert-ok">Admin is active. Click <strong>Delete</strong> on a post you do not want.
         ${slug ? blogDeleteBtn(slug) : ""}
-        <button class="btn btn-sm" type="button" data-admin-logout>Beheer sluiten</button></div>`;
+        <button class="btn btn-sm" type="button" data-admin-logout>Close admin</button></div>`;
       return;
     }
     box.innerHTML = `<form class="blog-admin-form" data-admin-login>
-      <p><strong>Beheer</strong> — verwijder blogberichten die je niet wilt.</p>
-      <label>Beheerderswachtwoord</label>
+      <p><strong>Admin</strong> — delete blog posts you do not want.</p>
+      <label>Admin password</label>
       <div class="row">
         <div><input type="password" name="password" required autocomplete="current-password"></div>
-        <div><button class="btn btn-dark btn-sm" type="submit">Beheer openen</button></div>
+        <div><button class="btn btn-dark btn-sm" type="submit">Open admin</button></div>
       </div>
       <div data-result></div>
     </form>`;
@@ -863,7 +863,7 @@ function renderBlogAdmin() {
       e.preventDefault();
       const hash = await sha256Admin(form.password.value);
       if (!ADMIN_INFO.hash || hash !== ADMIN_INFO.hash) {
-        showFormMessage(form, false, "Onjuist wachtwoord.");
+        showFormMessage(form, false, "Incorrect password.");
         return;
       }
       setAdmin(true);
@@ -882,7 +882,7 @@ function guardHiddenEditorial() {
   if (!article) return;
   const slug = article.dataset.editorialSlug;
   if (!slug || !loadHiddenBlog().includes(slug)) return;
-  article.innerHTML = `<p>Dit blogbericht is verwijderd.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+  article.innerHTML = `<p>This blog post has been deleted.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a></p>`;
 }
 
 function renderBlog() {
@@ -897,7 +897,7 @@ function renderBlog() {
     const name = form.name.value.trim();
     const email = form.email.value.trim();
     if (!title || !body || !name || !email) {
-      showFormMessage(form, false, "Vul titel, bericht, naam en e-mail in.");
+      showFormMessage(form, false, "Fill in title, article, name and email.");
       return;
     }
     const file = form.photo?.files?.[0];
@@ -905,7 +905,7 @@ function renderBlog() {
     try {
       if (file) image = await fileToJpegDataUrl(file);
     } catch {
-      showFormMessage(form, false, "De foto kon niet worden gelezen. Probeer een andere afbeelding of publiceer zonder foto.");
+      showFormMessage(form, false, "The photo could not be read. Try another image or publish without a photo.");
       return;
     }
     const post = {
@@ -914,7 +914,7 @@ function renderBlog() {
       body,
       author: name,
       email,
-      date: new Date().toLocaleDateString("nl-NL"),
+      date: new Date().toLocaleDateString("en-GB"),
       image
     };
     const list = loadBlogPosts();
@@ -927,11 +927,11 @@ function renderBlog() {
       try {
         saveBlogPosts(list);
       } catch {
-        showFormMessage(form, false, "Opslaan lukte niet. Probeer een kortere tekst of geen foto.");
+        showFormMessage(form, false, "Save failed. Try a shorter text or no photo.");
         return;
       }
     }
-    showFormMessage(form, true, "Je blogbericht staat online bovenaan de lijst.");
+    showFormMessage(form, true, "Your blog post is live at the top of the list.");
     form.reset();
     renderBlogGrid();
     document.querySelector("[data-blog-grid]")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -944,7 +944,7 @@ function renderBlogArticle() {
   const slug = new URLSearchParams(location.search).get("p");
   const post = visiblePublicPosts().find(p => p.slug === slug);
   if (!post) {
-    mount.innerHTML = `<p>Dit bericht is niet gevonden of verwijderd.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a></p>`;
+    mount.innerHTML = `<p>This post was not found or has been deleted.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a></p>`;
     renderBlogAdmin();
     return;
   }
@@ -954,7 +954,7 @@ function renderBlogArticle() {
   const paras = esc(post.body).split(/\n+/).map(p => `<p>${p}</p>`).join("");
   const img = post.image ? `<img class="featured" src="${post.image}" alt="${esc(post.title)}">` : "";
   mount.innerHTML = `${img}<p class="meta">${esc(post.date)} · ${esc(post.author)}</p>${paras}
-    <p class="blog-card-actions"><a class="btn btn-dark" href="${ROOT}blog.html">Terug naar blog</a>${blogDeleteBtn(post.slug)}</p>`;
+    <p class="blog-card-actions"><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a>${blogDeleteBtn(post.slug)}</p>`;
   const adminBox = document.querySelector("[data-blog-admin]");
   if (adminBox) adminBox.dataset.deleteSlug = post.slug;
   renderBlogAdmin();
@@ -975,8 +975,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const LANG_KEY = "pallethaven-lang";
 function currentLang() {
-  try { return localStorage.getItem(LANG_KEY) || "nl"; }
-  catch { return "nl"; }
+  try { return localStorage.getItem(LANG_KEY) || "en"; }
+  catch { return "en"; }
 }
 function bindLanguage() {
   const lang = currentLang();
@@ -989,16 +989,16 @@ function bindLanguage() {
       applySiteLanguage(sel.value);
     });
   });
-  if (lang && lang !== "nl") applySiteLanguage(lang);
+  if (lang && lang !== "en") applySiteLanguage(lang);
 }
 function applySiteLanguage(tl) {
   document.querySelectorAll("[data-site-lang]").forEach(sel => { sel.value = tl; });
-  if (tl === "nl") {
+  if (tl === "en") {
     document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     if (document.querySelector(".translated-ltr, .translated-rtl")) location.reload();
     return;
   }
-  document.cookie = "googtrans=/nl/" + tl + ";path=/";
+  document.cookie = "googtrans=/en/" + tl + ";path=/";
   loadGoogleTranslate();
 }
 function loadGoogleTranslate() {
@@ -1014,8 +1014,8 @@ function loadGoogleTranslate() {
 function googleTranslateElementInit() {
   if (!window.google || !google.translate || !google.translate.TranslateElement) return;
   new google.translate.TranslateElement({
-    pageLanguage: "nl",
-    includedLanguages: "nl,en,de,fr,es,it,pl,pt,ro,tr,ar,zh-CN,ru,uk,sv,da,nb,fi,cs,hu,el,ja,ko,hi,id,vi,th,bg,hr,sk,sl,lt,lv,et",
+    pageLanguage: "en",
+    includedLanguages: "en,nl,de,fr,es,it,pl,pt,ro,tr,ar,zh-CN,ru,uk,sv,da,nb,fi,cs,hu,el,ja,ko,hi,id,vi,th,bg,hr,sk,sl,lt,lv,et",
     autoDisplay: false
   }, "google_translate_element");
 }
