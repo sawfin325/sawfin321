@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vespera — Independent marketplace for exceptional timepieces</title>
+  <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bg: #f3eee4;
+      --bg-2: #faf7f1;
+      --ink: #161411;
+      --muted: #6d665b;
+      --line: #ddd4c5;
+      --gold: #9a7b4f;
+      --gold-2: #c4a36a;
+      --paper: #fffdf8;
+      --danger: #7c2d22;
+      --ok: #2f5d3a;
+      --shadow: 0 18px 50px rgba(22, 20, 17, 0.12);
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+      --sans: "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
+      --max: 1240px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
+    body { min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    img, svg { max-width: 100%; display: block; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .gold { color: var(--gold); }
+
+    .util {
+      background: var(--ink); color: #efe8db; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .util .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; align-items: center; }
+    .util nav, .util-right { display: flex; gap: 18px; flex-wrap: wrap; }
+    .util a:hover, .util button:hover { color: var(--gold-2); }
+    .util button { background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; text-transform: inherit; color: inherit; }
+
+    header.site {
+      position: sticky; top: 0; z-index: 40; background: rgba(243,238,228,.92);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--line);
+    }
+    .mast { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 0 10px; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; justify-self: center; }
+    .brand svg { width: 34px; height: 34px; }
+    .brand-name { font-family: var(--serif); font-size: 28px; letter-spacing: .22em; font-weight: 500; }
+    .brand small { display: block; font-family: var(--sans); font-size: 9px; letter-spacing: .28em; color: var(--gold); text-align: center; margin-top: 2px; }
+    .mast-left, .mast-right { display: flex; align-items: center; gap: 8px; }
+    .mast-right { justify-content: flex-end; }
+    .icon-btn {
+      width: 40px; height: 40px; border: 1px solid transparent; background: transparent; border-radius: 50%;
+      cursor: pointer; display: grid; place-items: center;
+    }
+    .icon-btn:hover { border-color: var(--line); background: var(--paper); }
+    .icon-btn .count {
+      position: absolute; margin: -16px 0 0 14px; background: var(--ink); color: var(--bg); font-size: 10px;
+      min-width: 16px; height: 16px; border-radius: 99px; display: grid; place-items: center; padding: 0 4px;
+    }
+    .search-open {
+      display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--paper);
+      border-radius: 999px; padding: 8px 14px; cursor: pointer; color: var(--muted); min-width: 210px;
+    }
+    .search-open:hover { border-color: var(--gold); }
+    .menu-toggle { display: none; }
+
+    .primary { display: flex; justify-content: center; gap: 4px; padding: 0 0 8px; }
+    .nav-item { position: relative; }
+    .nav-item > a, .nav-item > button {
+      background: none; border: 0; cursor: pointer; padding: 10px 14px; letter-spacing: .12em;
+      text-transform: uppercase; font-size: 12px; color: var(--ink);
+    }
+    .nav-item > a:hover, .nav-item > button:hover, .nav-item:hover > a, .nav-item:hover > button { color: var(--gold); }
+    .mega {
+      display: none; position: absolute; left: 50%; transform: translateX(-50%); top: 100%;
+      background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow);
+      min-width: 560px; padding: 22px; z-index: 30;
+    }
+    .nav-item:hover .mega, .nav-item:focus-within .mega { display: grid; }
+    .mega.wide { min-width: min(920px, 90vw); grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
+    .mega.two { min-width: 640px; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .mega h4 { margin: 0 0 10px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+    .mega a, .mega button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0; cursor: pointer; color: var(--ink); font-size: 14px; }
+    .mega a:hover, .mega button:hover { color: var(--gold); }
+    .mega .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
+
+    main { min-height: 70vh; }
+    .hero {
+      padding: 72px 0 48px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center;
+    }
+    .kicker { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em; margin: 0; }
+    h1 { font-size: clamp(40px, 6vw, 72px); line-height: .95; }
+    .lede { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 38em; margin: 22px 0 28px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink);
+      background: var(--ink); color: var(--bg); padding: 12px 20px; cursor: pointer; letter-spacing: .12em;
+      text-transform: uppercase; font-size: 11px;
+    }
+    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn.gold { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .btn:hover { opacity: .88; }
+    .hero-panel {
+      background: var(--paper); border: 1px solid var(--line); padding: 18px; display: grid; gap: 14px;
+    }
+    .hero-watch { background: linear-gradient(160deg, #ece4d4, #d9cbb3); min-height: 320px; display: grid; place-items: center; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 36px; }
+    .stat { border-top: 1px solid var(--line); padding-top: 12px; }
+    .stat b { display: block; font-family: var(--serif); font-size: 28px; font-weight: 500; }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    section { padding: 56px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 28px; }
+    .section-head p { margin: 8px 0 0; color: var(--muted); }
+    .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+    .maison-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
+    .maison-chip {
+      border: 1px solid var(--line); background: var(--paper); padding: 16px 10px; text-align: center; cursor: pointer;
+      min-height: 86px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    }
+    .maison-chip:hover { border-color: var(--gold); }
+    .maison-chip strong { font-family: var(--serif); font-size: 15px; font-weight: 500; }
+    .maison-chip span { font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+
+    .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .type-card {
+      background: var(--paper); border: 1px solid var(--line); padding: 22px; min-height: 140px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .type-card:hover { border-color: var(--ink); }
+    .type-card em { font-style: normal; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+    .type-card strong { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card {
+      background: var(--paper); border: 1px solid var(--line); cursor: pointer; display: flex; flex-direction: column;
+    }
+    .card:hover { border-color: var(--gold); }
+    .card-art { background: linear-gradient(180deg, #efe7d8, #ddd0b8); min-height: 230px; display: grid; place-items: center; position: relative; }
+    .badge {
+      position: absolute; top: 10px; left: 10px; background: var(--paper); border: 1px solid var(--line);
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 4px 8px;
+    }
+    .save {
+      position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line);
+      background: var(--paper); cursor: pointer; display: grid; place-items: center;
+    }
+    .save.on { background: var(--ink); color: var(--gold-2); border-color: var(--ink); }
+    .card-body { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .card-body .maison { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+    .card-body h3 { font-size: 18px; }
+    .card-body .meta { color: var(--muted); font-size: 13px; }
+    .price { margin-top: auto; padding-top: 10px; font-family: var(--serif); font-size: 20px; }
+
+    .shop-layout { display: grid; grid-template-columns: 250px 1fr; gap: 28px; padding: 28px 0 64px; }
+    .filters { background: var(--paper); border: 1px solid var(--line); padding: 18px; position: sticky; top: 108px; }
+    .filters h3 { font-size: 20px; margin-bottom: 12px; }
+    .filters label { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+    .filters select, .filters input {
+      width: 100%; border: 1px solid var(--line); background: var(--bg-2); padding: 8px 10px;
+    }
+    .filter-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .results-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
+    .empty { padding: 48px; text-align: center; border: 1px dashed var(--line); background: var(--paper); color: var(--muted); }
+
+    .detail { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 36px 0 72px; }
+    .detail-art { background: linear-gradient(180deg, #efe7d8, #d9cbb3); min-height: 520px; display: grid; place-items: center; border: 1px solid var(--line); }
+    .crumbs { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .crumbs a:hover { color: var(--gold); }
+    .spec { width: 100%; border-collapse: collapse; margin: 22px 0; }
+    .spec th, .spec td { border-bottom: 1px solid var(--line); padding: 10px 0; text-align: left; font-size: 14px; }
+    .spec th { color: var(--muted); font-weight: 500; width: 42%; }
+    .dealer-box { border: 1px solid var(--line); background: var(--paper); padding: 16px; margin: 18px 0; }
+
+    .page { padding: 48px 0 80px; }
+    .prose { max-width: 720px; }
+    .prose p, .prose li { line-height: 1.7; color: #3c3832; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .panel { background: var(--paper); border: 1px solid var(--line); padding: 22px; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .step { background: var(--paper); border: 1px solid var(--line); padding: 18px; }
+    .step b { display: block; font-family: var(--serif); font-size: 28px; color: var(--gold); margin-bottom: 8px; }
+
+    form .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    form label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 12px 0 6px; }
+    form input, form select, form textarea {
+      width: 100%; border: 1px solid var(--line); background: var(--paper); padding: 10px 12px;
+    }
+    form textarea { min-height: 120px; resize: vertical; }
+    .full { grid-column: 1 / -1; }
+
+    .article-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+    .article { background: var(--paper); border: 1px solid var(--line); padding: 22px; min-height: 220px; display: flex; flex-direction: column; }
+    .article:hover { border-color: var(--gold); }
+    .article .tag { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+    .article h3 { font-size: 26px; margin: 12px 0; }
+    .article p { color: var(--muted); flex: 1; }
+
+    .cta {
+      background: var(--ink); color: #efe8db; padding: 56px 0; margin: 20px 0 0;
+    }
+    .cta h2 { font-size: 42px; }
+    .cta p { color: #c9c0b0; max-width: 36em; }
+
+    footer.site { background: #11100e; color: #d9d1c3; padding: 48px 0 24px; font-size: 14px; }
+    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
+    footer h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-2); margin: 0 0 12px; }
+    footer a { display: block; padding: 4px 0; color: #d9d1c3; }
+    footer a:hover { color: #fff; }
+    .legal { border-top: 1px solid #2b2925; margin-top: 32px; padding-top: 16px; color: #9c9488; font-size: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    .overlay {
+      position: fixed; inset: 0; background: rgba(22,20,17,.46); z-index: 60; display: none; align-items: flex-start; justify-content: center; padding: 8vh 16px;
+    }
+    .overlay.show { display: flex; }
+    .search-box, .modal {
+      width: min(720px, 100%); background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); padding: 18px;
+    }
+    .search-box input { width: 100%; border: 0; border-bottom: 1px solid var(--line); font-size: 22px; font-family: var(--serif); padding: 10px 0; background: transparent; outline: none; }
+    .search-hits { margin-top: 12px; max-height: 50vh; overflow: auto; }
+    .hit { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .toast {
+      position: fixed; bottom: 20px; right: 20px; background: var(--ink); color: var(--bg); padding: 12px 16px;
+      z-index: 80; display: none; letter-spacing: .04em; font-size: 13px;
+    }
+    .toast.show { display: block; }
+    .mobile-drawer {
+      position: fixed; inset: 0 30% 0 0; background: var(--paper); z-index: 70; transform: translateX(-110%);
+      transition: transform .25s ease; padding: 24px; overflow: auto; border-right: 1px solid var(--line);
+      width: min(360px, 88vw); right: auto;
+    }
+    .mobile-drawer.show { transform: none; }
+    .mobile-drawer a, .mobile-drawer button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 10px 0; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 16px; }
+    .backdrop { position: fixed; inset: 0; background: rgba(22,20,17,.4); z-index: 65; display: none; }
+    .backdrop.show { display: block; }
+
+    @media (max-width: 980px) {
+      .mast { grid-template-columns: auto 1fr auto; }
+      .search-open, .primary { display: none; }
+      .menu-toggle { display: grid; }
+      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-grid { grid-template-columns: 1fr; }
+      .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
+      .filters { position: static; }
+      .hero { padding-top: 36px; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(var(--max), calc(100% - 24px)); }
+      .cards, .maison-row, .stats { grid-template-columns: 1fr 1fr; }
+      form .grid { grid-template-columns: 1fr; }
+      .util .wrap { justify-content: flex-end; }
+      .util-left { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr" href="#view">Skip to content</a>
+  <div class="util">
+    <div class="wrap">
+      <nav class="util-left" aria-label="Utility">
+        <a href="#/help">Help</a>
+        <a href="#/dealers">Dealers</a>
+        <a href="#/authenticate">Authentication</a>
+        <a href="#/sell">Sell a watch</a>
+      </nav>
+      <div class="util-right">
+        <button type="button" id="currencyBtn" aria-label="Currency">USD</button>
+        <button type="button" id="langBtn" aria-label="Language">English</button>
+        <a href="#/account">Account</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site">
+    <div class="wrap mast">
+      <div class="mast-left">
+        <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
+        <button class="search-open" id="searchOpen" type="button">
+          <span>⌕</span> <span>Search maisons, models…</span>
+        </button>
+      </div>
+      <a class="brand" href="#/" aria-label="Vespera home">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="20" fill="none" stroke="#9a7b4f" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="2.2" fill="#9a7b4f"/>
+          <path d="M32 16v16L21 44" fill="none" stroke="#161411" stroke-width="2" stroke-linecap="round"/>
+          <path d="M32 32l14-5" fill="none" stroke="#9a7b4f" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="brand-name">VESPERA</div>
+          <small>INDEPENDENT MARKETPLACE</small>
+        </div>
+      </a>
+      <div class="mast-right">
+        <button class="icon-btn" id="searchIcon" aria-label="Search">⌕</button>
+        <a class="icon-btn" href="#/saved" aria-label="Saved watches"><span>♡</span><span class="count" id="savedCount" hidden>0</span></a>
+        <a class="icon-btn" href="#/inquiries" aria-label="Purchase inquiries"><span>✉</span><span class="count" id="inqCount" hidden>0</span></a>
+        <a class="icon-btn" href="#/account" aria-label="Account">⌂</a>
+      </div>
+    </div>
+    <nav class="primary wrap" aria-label="Primary">
+      <div class="nav-item">
+        <a href="#/shop">Shop</a>
+        <div class="mega wide">
+          <div>
+            <h4>Browse</h4>
+            <button data-go="#/shop">All listings</button>
+            <button data-go="#/shop?condition=Unworn">New / unworn</button>
+            <button data-go="#/shop?condition=Excellent">Pre-owned</button>
+            <button data-go="#/shop?certified=1">Certified</button>
+            <button data-go="#/shop?era=Vintage">Vintage</button>
+            <button data-go="#/shop?limited=1">Limited editions</button>
+            <button data-go="#/shop?gender=Women">Women’s watches</button>
+            <button data-go="#/shop?gender=Men">Men’s watches</button>
+          </div>
+          <div>
+            <h4>By price</h4>
+            <button data-go="#/shop?price=0-3000">Under $3,000</button>
+            <button data-go="#/shop?price=3000-8000">$3,000 – $8,000</button>
+            <button data-go="#/shop?price=8000-20000">$8,000 – $20,000</button>
+            <button data-go="#/shop?price=20000-50000">$20,000 – $50,000</button>
+            <button data-go="#/shop?price=50000-999999">$50,000 and above</button>
+            <button data-go="#/shop?papers=1">Box &amp; papers</button>
+          </div>
+          <div>
+            <h4>By collection</h4>
+            <button data-go="#/shop?type=Dive">Dive</button>
+            <button data-go="#/shop?type=Dress">Dress</button>
+            <button data-go="#/shop?type=Chronograph">Chronograph</button>
+            <button data-go="#/shop?type=GMT">GMT &amp; travel</button>
+            <button data-go="#/shop?type=Pilot">Pilot</button>
+            <button data-go="#/shop?type=Field">Field</button>
+            <button data-go="#/shop?type=Skeleton">Skeleton</button>
+            <button data-go="#/shop?type=Moonphase">Moonphase</button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#/brands">Brands</a>
+        <div class="mega two">
+          <div>
+            <h4>Maisons</h4>
+            <div class="brand-grid" id="brandMega"></div>
+          </div>
+          <div>
+            <h4>Directory</h4>
+            <a href="#/brands">All maisons</a>
+            <a href="#/dealers">Authorized dealers</a>
+            <a href="#/shop?sort=new">New arrivals by brand</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#/shop?sort=new">New arrivals</a>
+      </div>
+      <div class="nav-item">
+        <a href="#/shop?condition=Excellent">Pre-owned</a>
+      </div>
+      <div class="nav-item">
+        <a href="#/shop?certified=1">Certified</a>
+      </div>
+      <div class="nav-item">
+        <a href="#/sell">Sell</a>
+        <div class="mega">
+          <h4>Selling</h4>
+          <a href="#/sell">List a watch</a>
+          <a href="#/help">Seller guide</a>
+          <a href="#/authenticate">Inspection &amp; escrow</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="#/magazine">Magazine</a></div>
+      <div class="nav-item"><a href="#/authenticate">Authenticate</a></div>
+    </nav>
+  </header>
+
+  <main id="view"></main>
+
+  <section class="cta" id="footerCta">
+    <div class="wrap">
+      <p class="kicker">Private sellers &amp; ateliers</p>
+      <h2>Place a watch with Vespera</h2>
+      <p>List a piece from your collection. Buyers request a purchase; you confirm the sale. Inspection and payment hold are optional extras on certified listings.</p>
+      <div class="row" style="margin-top:22px">
+        <a class="btn gold" href="#/sell">Start a listing</a>
+        <a class="btn ghost" href="#/help" style="border-color:#efe8db;color:#efe8db">How selling works</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="wrap foot-grid">
+      <div>
+        <h4>Vespera</h4>
+        <p>An independent marketplace for exceptional timepieces. Original maisons and sample listings created for this catalogue — not affiliated with any other watch platform.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="#/shop">All listings</a>
+        <a href="#/brands">Maisons</a>
+        <a href="#/shop?type=Dive">Dive watches</a>
+        <a href="#/shop?type=Dress">Dress watches</a>
+        <a href="#/shop?type=Chronograph">Chronographs</a>
+        <a href="#/shop?certified=1">Certified</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#/about">About</a>
+        <a href="#/dealers">Dealers</a>
+        <a href="#/magazine">Magazine</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/help">Help centre</a>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <a href="#/privacy">Privacy</a>
+        <a href="#/terms">Terms of use</a>
+        <a href="#/authenticate">Authentication</a>
+        <a href="#/account">Your account</a>
+      </div>
+    </div>
+    <div class="wrap legal">
+      <span>© 2026 Vespera Horology Ltd. Sample catalogue for demonstration.</span>
+      <span>USD · English</span>
+    </div>
+  </footer>
+
+  <div class="overlay" id="searchOverlay" role="dialog" aria-label="Search">
+    <div class="search-box">
+      <input id="searchInput" type="search" placeholder="Search by maison, model, or reference" autocomplete="off" />
+      <div class="search-hits" id="searchHits"></div>
+    </div>
+  </div>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="mobile-drawer" id="drawer" aria-label="Mobile menu"></aside>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const MAISONS = [
+      { slug: "elowen", name: "Maison Elowen", origin: "Geneva", founded: 1912, note: "Quiet dress watches in gold and steel." },
+      { slug: "brannock", name: "Brannock & Hale", origin: "Coventry", founded: 1938, note: "Field instruments built for long service." },
+      { slug: "solenne", name: "Solenne", origin: "Besançon", founded: 1889, note: "French haute complications and enamel." },
+      { slug: "calder", name: "Calder", origin: "La Chaux-de-Fonds", founded: 1961, note: "Professional dive watches and compact cases." },
+      { slug: "nymara", name: "Nymara", origin: "Paris", founded: 1954, note: "Jewelry watches and precious dials." },
+      { slug: "helion", name: "Helion", origin: "Milan", founded: 1972, note: "Motorsport chronographs with long registers." },
+      { slug: "ardent", name: "Ardent", origin: "Le Locle", founded: 2016, note: "Independent atelier, small-series steel." },
+      { slug: "lysander", name: "Lysander", origin: "London", founded: 1926, note: "Ultra-thin city watches and vintage gold." },
+      { slug: "quill", name: "Quill & Crown", origin: "Zurich", founded: 1904, note: "Heritage sovereigns with enamel dials." },
+      { slug: "peregrine", name: "Peregrine", origin: "Hamburg", founded: 1958, note: "GMT and dual-time travel watches." },
+      { slug: "rochefort", name: "Rochefort", origin: "Vallée de Joux", founded: 1877, note: "Openworked movements and grande sonnerie studies." },
+      { slug: "halcyon", name: "Halcyon", origin: "Birmingham", founded: 1949, note: "Reissues of mid-century tool watches." },
+      { slug: "frost", name: "Frost & Tide", origin: "Oslo", founded: 1984, note: "Cold-water divers and titanium GMTs." },
+      { slug: "kestrel", name: "Kestrel", origin: "Toulouse", founded: 1935, note: "Pilot watches with cathedral hands." },
+      { slug: "valois", name: "Valois", origin: "Lyon", founded: 1861, note: "Filigree-thin dress pieces in yellow gold." },
+      { slug: "stellara", name: "Stellara", origin: "Neuchâtel", founded: 1998, note: "Moonphase and celestial complications." }
+    ];
+
+    const PRODUCTS = [
+      { id: "el-nocturne-36", maison: "Maison Elowen", slug: "elowen", model: "Nocturne 36", ref: "EL-N36-001", year: 2023, condition: "Unworn", price: 12800, type: "Dress", gender: "Unisex", movement: "Automatic, caliber EL-720", case: "36mm, 18k yellow gold", water: "30m", dial: "Champagne", dialColor: "#e6cf96", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Geneva", dealer: "Atelier Nord", desc: "A compact gold dress watch with a sunburst champagne dial and dauphine hands. Unworn, full set." },
+      { id: "el-nocturne-40", maison: "Maison Elowen", slug: "elowen", model: "Nocturne 40 Steel", ref: "EL-N40-214", year: 2021, condition: "Excellent", price: 6200, type: "Dress", gender: "Men", movement: "Automatic, caliber EL-720", case: "40mm, stainless steel", water: "50m", dial: "Argenté", dialColor: "#e8e4dc", metal: "#b7c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Zurich", dealer: "Canton Horology", desc: "Steel Nocturne with a fine silver dial. Light hairlines on the clasp only." },
+      { id: "bh-field-iv", maison: "Brannock & Hale", slug: "brannock", model: "Field Service Mk IV", ref: "BH-FS4-119", year: 2018, condition: "Very good", price: 2450, type: "Field", gender: "Unisex", movement: "Manual, caliber BH-12", case: "38mm, stainless steel", water: "100m", dial: "Sand", dialColor: "#cbb58a", metal: "#9aa3ab", bezel: "smooth", papers: false, box: false, certified: false, limited: false, era: "Modern", location: "London", dealer: "Private seller", desc: "Service watch with a matte sand dial and railroad minutes. Honest desk-diving marks on the case." },
+      { id: "bh-expedition", maison: "Brannock & Hale", slug: "brannock", model: "Expedition GMT", ref: "BH-EXG-040", year: 2024, condition: "Like new", price: 3890, type: "GMT", gender: "Men", movement: "Automatic GMT, BH-21", case: "40mm, stainless steel", water: "150m", dial: "Black", dialColor: "#1b1c1e", metal: "#b8c0c8", bezel: "gmt", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Edinburgh", dealer: "Northumbria Watches", desc: "Dual-time field GMT with a 24-hour bezel. Worn twice; still with travel pouch." },
+      { id: "so-etoile", maison: "Solenne", slug: "solenne", model: "Étoile Perpetuelle", ref: "SO-EP-88", year: 2022, condition: "Unworn", price: 48200, type: "Moonphase", gender: "Unisex", movement: "Automatic perpetual, SO-88", case: "39mm, 18k yellow gold", water: "30m", dial: "Midnight enamel", dialColor: "#152238", metal: "#c9a227", bezel: "coin", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Paris", dealer: "Maison Rive", desc: "Perpetual calendar with a grand feu midnight dial. Limited to 88 pieces." },
+      { id: "so-rive", maison: "Solenne", slug: "solenne", model: "Rive Gauche Chrono", ref: "SO-RG-203", year: 2019, condition: "Excellent", price: 9100, type: "Chronograph", gender: "Men", movement: "Automatic chrono, SO-11", case: "40mm, stainless steel", water: "50m", dial: "Opaline white", dialColor: "#f4f1ea", metal: "#b7c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Lyon", dealer: "Horloge du Rhône", desc: "Column-wheel chronograph, silver subdials, blued steel hands." },
+      { id: "ca-abyss", maison: "Calder", slug: "calder", model: "Abyss 300", ref: "CA-A300-001", year: 2023, condition: "Like new", price: 4200, type: "Dive", gender: "Unisex", movement: "Automatic, CA-300", case: "41mm, stainless steel", water: "300m", dial: "Black", dialColor: "#111317", metal: "#c5ced6", bezel: "dive", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Hamburg", dealer: "Nordic Case", desc: "Helium-valve-free 300m diver with a 120-click bezel and applied indices." },
+      { id: "ca-bronze", maison: "Calder", slug: "calder", model: "Abyss 300 Bronze", ref: "CA-A300-BR", year: 2020, condition: "Very good", price: 3900, type: "Dive", gender: "Men", movement: "Automatic, CA-300", case: "41mm, aluminum bronze", water: "300m", dial: "Tropical brown", dialColor: "#6b4a2f", metal: "#8a5a32", bezel: "dive", papers: true, box: false, certified: false, limited: false, era: "Modern", location: "Lisbon", dealer: "Private seller", desc: "Warm patina on the bronze case; bezel action remains crisp." },
+      { id: "ny-iris", maison: "Nymara", slug: "nymara", model: "Iris 28", ref: "NY-I28-04", year: 2024, condition: "Unworn", price: 7600, type: "Dress", gender: "Women", movement: "Quartz, NY-Q8", case: "28mm, 18k rose gold", water: "30m", dial: "Mother of pearl", dialColor: "#f0e6ea", metal: "#b76e54", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Paris", dealer: "Atelier Nord", desc: "A jewelry watch with a gently iridescent dial and a satin strap." },
+      { id: "ny-iris-d", maison: "Nymara", slug: "nymara", model: "Iris 28 Diamond", ref: "NY-I28-D", year: 2024, condition: "Unworn", price: 15400, type: "Dress", gender: "Women", movement: "Quartz, NY-Q8", case: "28mm, 18k white gold", water: "30m", dial: "Ivory silk", dialColor: "#f3efe6", metal: "#d5d8de", bezel: "fluted", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Milan", dealer: "Casa Minerva", desc: "White-gold Iris with a diamond-set bezel. Boutique unworn." },
+      { id: "he-track", maison: "Helion", slug: "helion", model: "Trackmaster 2.0", ref: "HE-TM2-09", year: 2021, condition: "Excellent", price: 5400, type: "Chronograph", gender: "Men", movement: "Automatic chrono, HE-C2", case: "42mm, stainless steel", water: "100m", dial: "Panda", dialColor: "#f5f2ea", metal: "#b8c0c8", bezel: "tachymeter", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Milan", dealer: "Pista Tempo", desc: "White panda chronograph with black registers and a tachymeter scale." },
+      { id: "he-gold", maison: "Helion", slug: "helion", model: "Trackmaster Gold", ref: "HE-TMG-02", year: 2022, condition: "Like new", price: 18700, type: "Chronograph", gender: "Men", movement: "Automatic chrono, HE-C2", case: "42mm, 18k yellow gold", water: "50m", dial: "Black lacquer", dialColor: "#161616", metal: "#c9a227", bezel: "tachymeter", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Monaco", dealer: "Riviera Time", desc: "Gold Trackmaster, 200 pieces. Faint strap marks at the lugs." },
+      { id: "ar-type1", maison: "Ardent", slug: "ardent", model: "Type 1", ref: "AR-T1-77", year: 2025, condition: "Unworn", price: 3100, type: "Dress", gender: "Unisex", movement: "Automatic, AR-01", case: "39mm, stainless steel", water: "50m", dial: "Granite grey", dialColor: "#6d7278", metal: "#b7c0c8", bezel: "smooth", papers: true, box: true, certified: false, limited: false, era: "Modern", location: "Le Locle", dealer: "Ardent Atelier", desc: "Small-series independent steel watch. Direct from the workshop." },
+      { id: "ar-type3", maison: "Ardent", slug: "ardent", model: "Type 3 Skeleton", ref: "AR-T3-12", year: 2024, condition: "Unworn", price: 4450, type: "Skeleton", gender: "Unisex", movement: "Manual skeleton, AR-03", case: "40mm, stainless steel", water: "30m", dial: "Openworked", dialColor: "#2c3036", metal: "#c5ced6", bezel: "smooth", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Le Locle", dealer: "Ardent Atelier", desc: "Bridges finished by hand; limited to 120 pieces." },
+      { id: "ly-1958", maison: "Lysander", slug: "lysander", model: "Ultra-Thin 1958", ref: "LY-UT58", year: 1964, condition: "Good", price: 22100, type: "Dress", gender: "Men", movement: "Manual extra-thin, LY-8", case: "35mm, 18k yellow gold", water: "Not rated", dial: "Champagne linen", dialColor: "#e3d1a4", metal: "#c9a227", bezel: "smooth", papers: false, box: false, certified: true, limited: false, era: "Vintage", location: "London", dealer: "Crown & Case", desc: "Period Lysander with a restored linen dial and later gold buckle." },
+      { id: "ly-city", maison: "Lysander", slug: "lysander", model: "City Minute", ref: "LY-CM-40", year: 2023, condition: "Excellent", price: 4800, type: "Dress", gender: "Unisex", movement: "Automatic, LY-40", case: "38mm, stainless steel", water: "30m", dial: "Midnight blue", dialColor: "#1a2744", metal: "#b7c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Dublin", dealer: "Private seller", desc: "Sunburst blue dress watch. Light wear on the steel bracelet." },
+      { id: "qc-sov", maison: "Quill & Crown", slug: "quill", model: "Sovereign 40", ref: "QC-SV-40G", year: 2017, condition: "Excellent", price: 33500, type: "Dress", gender: "Men", movement: "Automatic, QC-90", case: "40mm, 18k yellow gold", water: "30m", dial: "Black enamel", dialColor: "#111111", metal: "#c9a227", bezel: "fluted", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Zurich", dealer: "Canton Horology", desc: "Grand feu black enamel, fluted bezel, and a concealed clasp." },
+      { id: "qc-steel", maison: "Quill & Crown", slug: "quill", model: "Sovereign Steel", ref: "QC-SV-40S", year: 2020, condition: "Like new", price: 8900, type: "Dress", gender: "Men", movement: "Automatic, QC-90", case: "40mm, stainless steel", water: "50m", dial: "White enamel", dialColor: "#f7f4ee", metal: "#c5ced6", bezel: "fluted", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Vienna", dealer: "Hofuhr", desc: "Steel sovereign with a porcelain-white enamel dial." },
+      { id: "pe-world", maison: "Peregrine", slug: "peregrine", model: "World Traveller", ref: "PE-WT-41", year: 2024, condition: "Unworn", price: 6700, type: "GMT", gender: "Unisex", movement: "Automatic GMT, PE-24", case: "41mm, stainless steel", water: "100m", dial: "Atlantic blue", dialColor: "#16324f", metal: "#b8c0c8", bezel: "gmt", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Hamburg", dealer: "Nordic Case", desc: "True GMT with an independently settable hour hand and two-tone bezel." },
+      { id: "pe-tt", maison: "Peregrine", slug: "peregrine", model: "World Traveller Two-Tone", ref: "PE-WT-TT", year: 2022, condition: "Excellent", price: 9200, type: "GMT", gender: "Unisex", movement: "Automatic GMT, PE-24", case: "41mm, steel and gold", water: "100m", dial: "Black", dialColor: "#171717", metal: "#d1b068", bezel: "gmt", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Amsterdam", dealer: "Canal Time", desc: "Two-tone traveller. Bracelet has even wear, no deep scratches." },
+      { id: "ro-open", maison: "Rochefort", slug: "rochefort", model: "Openworked 41", ref: "RO-OW-41", year: 2021, condition: "Like new", price: 12800, type: "Skeleton", gender: "Men", movement: "Manual openworked, RO-7", case: "41mm, stainless steel", water: "30m", dial: "Rhodium", dialColor: "#8d949c", metal: "#c5ced6", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Geneva", dealer: "Atelier Nord", desc: "Anglage on every bridge; sapphire front and back." },
+      { id: "ro-repeat", maison: "Rochefort", slug: "rochefort", model: "Minute Repeater Study", ref: "RO-MRS-1", year: 2019, condition: "Unworn", price: 89000, type: "Moonphase", gender: "Unisex", movement: "Manual repeater, RO-R1", case: "42mm, 18k yellow gold", water: "30m", dial: "Silver grainé", dialColor: "#ece7dc", metal: "#c9a227", bezel: "coin", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Geneva", dealer: "Maison Rive", desc: "Atelier study with cathedral gongs. Never worn; still in sealed papers." },
+      { id: "ha-1964", maison: "Halcyon", slug: "halcyon", model: "Reissue 1964", ref: "HA-R64", year: 2023, condition: "Very good", price: 2750, type: "Field", gender: "Unisex", movement: "Automatic, HA-64", case: "36mm, stainless steel", water: "100m", dial: "Tropical gilt", dialColor: "#b0894f", metal: "#9aa3ab", bezel: "smooth", papers: true, box: true, certified: false, limited: false, era: "Modern", location: "Manchester", dealer: "Private seller", desc: "Gilt-reissue field watch. Light swirl on the crystal." },
+      { id: "ha-diver", maison: "Halcyon", slug: "halcyon", model: "Diver Compact", ref: "HA-DC-37", year: 2022, condition: "Excellent", price: 3300, type: "Dive", gender: "Unisex", movement: "Automatic, HA-37", case: "37mm, stainless steel", water: "200m", dial: "Moss green", dialColor: "#2f4a38", metal: "#b8c0c8", bezel: "dive", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Copenhagen", dealer: "Nordic Case", desc: "Small-case diver, equally at home under a cuff." },
+      { id: "ft-north", maison: "Frost & Tide", slug: "frost", model: "North Sea 500", ref: "FT-NS-500", year: 2023, condition: "Like new", price: 5100, type: "Dive", gender: "Men", movement: "Automatic, FT-500", case: "42mm, stainless steel", water: "500m", dial: "Navy", dialColor: "#0e1c33", metal: "#c5ced6", bezel: "dive", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Oslo", dealer: "Fjord Watches", desc: "Saturation-ready case, ceramic bezel, and a gas-escape valve." },
+      { id: "ft-ice", maison: "Frost & Tide", slug: "frost", model: "Ice GMT", ref: "FT-ICE", year: 2025, condition: "Unworn", price: 7400, type: "GMT", gender: "Unisex", movement: "Automatic GMT, FT-24", case: "40mm, titanium", water: "150m", dial: "Glacier white", dialColor: "#eef3f6", metal: "#8d959c", bezel: "gmt", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Oslo", dealer: "Fjord Watches", desc: "Grade 5 titanium GMT. White dial, ice-blue GMT hand." },
+      { id: "ke-dawn", maison: "Kestrel", slug: "kestrel", model: "Dawn Patrol", ref: "KE-DP-39", year: 2016, condition: "Very good", price: 3600, type: "Pilot", gender: "Men", movement: "Automatic, KE-39", case: "39mm, stainless steel", water: "50m", dial: "Black", dialColor: "#1a1a1a", metal: "#9aa3ab", bezel: "coin", papers: false, box: true, certified: false, limited: false, era: "Modern", location: "Toulouse", dealer: "Private seller", desc: "Cathedral hands, railroad track, and a signed onion crown." },
+      { id: "ke-chrono", maison: "Kestrel", slug: "kestrel", model: "Dawn Patrol Chrono", ref: "KE-DPC", year: 2020, condition: "Excellent", price: 4900, type: "Chronograph", gender: "Men", movement: "Automatic chrono, KE-C", case: "41mm, stainless steel", water: "50m", dial: "Cream", dialColor: "#efe6d2", metal: "#b8c0c8", bezel: "tachymeter", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Madrid", dealer: "Iberia Case", desc: "Cream-dial pilot chrono with a bi-compax layout." },
+      { id: "va-fil", maison: "Valois", slug: "valois", model: "Fil de Temps", ref: "VA-FT-35", year: 2024, condition: "Unworn", price: 27400, type: "Dress", gender: "Unisex", movement: "Manual extra-thin, VA-1", case: "35mm, 18k yellow gold", water: "30m", dial: "Argenté", dialColor: "#ece8df", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Lyon", dealer: "Maison Rive", desc: "5.2mm gold case, hand-bevelled movement, 80-hour mainspring." },
+      { id: "st-cel", maison: "Stellara", slug: "stellara", model: "Celestine Moon", ref: "ST-CM-40", year: 2023, condition: "Like new", price: 8600, type: "Moonphase", gender: "Unisex", movement: "Automatic moonphase, ST-M", case: "40mm, stainless steel", water: "50m", dial: "Midnight sky", dialColor: "#141a2e", metal: "#b8c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Neuchâtel", dealer: "Canton Horology", desc: "Pointer-date moonphase with a starry aventurine-style dial." },
+      { id: "st-gold", maison: "Stellara", slug: "stellara", model: "Celestine Gold", ref: "ST-CM-G", year: 2021, condition: "Excellent", price: 19600, type: "Moonphase", gender: "Women", movement: "Automatic moonphase, ST-M", case: "36mm, 18k yellow gold", water: "30m", dial: "Sky enamel", dialColor: "#7ba7c9", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Florence", dealer: "Casa Minerva", desc: "Gold Celestine with a pale sky grand feu dial." },
+      { id: "ca-compact", maison: "Calder", slug: "calder", model: "Compact 36 Dive", ref: "CA-C36", year: 2015, condition: "Good", price: 2950, type: "Dive", gender: "Unisex", movement: "Automatic, CA-36", case: "36mm, stainless steel", water: "200m", dial: "Burgundy", dialColor: "#5a1f2a", metal: "#9aa3ab", bezel: "dive", papers: false, box: false, certified: false, limited: false, era: "Modern", location: "Barcelona", dealer: "Private seller", desc: "Compact diver with a faded burgundy sunburst and a tight bezel." }
+    ];
+
+    const ARTICLES = [
+      { id: "reading-a-movement", title: "How to read a movement through the caseback", tag: "Collecting", dek: "What anglage, perlage, and a clean keyless works actually tell you.", body: "<p>A display caseback is not a guarantee of quality, but it is a map. Start at the balance: a free-sprung stud and a well-shaped overcoil suggest more finishing time than a simple regulator. Then look at the bridges. Anglage that catches light in a continuous ribbon is different from a stamped bevel that dies at every corner.</p><p>On Vespera listings, independent maisons such as Ardent and Rochefort tend to show the work. Factory movements can still be honest — look for even polishing and screws that have not been chewed by a poor service.</p><p>If the seller will not show a movement photograph on a piece above a few thousand, treat that as information, not an oversight.</p>" },
+      { id: "bronze-patina", title: "Bronze divers, and when patina is a problem", tag: "Materials", dek: "Aluminum bronze ages in air. That is the point — until it is not.", body: "<p>Bronze is chosen because it changes. A Calder Abyss in aluminum bronze will pick up greens and browns where the wrist oils sit. That is expected. What is not expected is pitting that breaks the brushed finish into craters, or verdigris creeping under a crystal gasket.</p><p>Ask for photographs in daylight, not only studio yellow. Wipe tests from a recent service are useful. If a seller has coated the case in lacquer to freeze the colour, say so in the listing — collectors disagree on whether that is a kindness or a concealment.</p>" },
+      { id: "selling-quietly", title: "Selling a watch without turning it into a performance", tag: "Selling", dek: "A clean listing beats a dramatic origin story.", body: "<p>Buyers on a marketplace are not your dinner guests. They want the reference, the year, the service history, and whether the clasp code matches the period. Lead with those. A short note on why you are selling is enough; a novel is not.</p><p>On Vespera, certified listings go through inspection and a payment hold. Private listings do not. Price them accordingly. The fastest sales we see are complete sets with unedited wrist photographs and a measured asking price — not the highest number in the room.</p>" },
+      { id: "moonphase-care", title: "A moonphase is a calendar you can forget", tag: "Complications", dek: "Most modern moons are 29.5-day approximations. Treat them kindly.", body: "<p>A Stellara Celestine or Solenne Étoile will keep a handsome moon for years if you do not force the date around midnight. When the disc is changing, the mechanism is in mesh; a quick pull on the crown can chip a tooth you will not see until the moon starts to drift.</p><p>If you buy vintage, budget for a specialist. Moonphase correctors and perpetual levers do not enjoy generalist oiling. Ask the dealer who last opened the watch, and whether the moon disc is original — refinished night skies are common and not a scandal, but they should be disclosed.</p>" }
+    ];
+
+    const DEALERS = [
+      { name: "Atelier Nord", city: "Geneva", focus: "Elowen, Rochefort, Nymara" },
+      { name: "Canton Horology", city: "Zurich", focus: "Quill & Crown, Stellara" },
+      { name: "Maison Rive", city: "Paris", focus: "Solenne, Valois, Rochefort" },
+      { name: "Nordic Case", city: "Hamburg / Oslo", focus: "Calder, Peregrine, Frost & Tide" },
+      { name: "Crown & Case", city: "London", focus: "Lysander, vintage gold" },
+      { name: "Ardent Atelier", city: "Le Locle", focus: "Ardent small series" }
+    ];
+
+    const state = {
+      saved: JSON.parse(localStorage.getItem("vespera-saved") || "[]"),
+      inquiries: JSON.parse(localStorage.getItem("vespera-inq") || "[]"),
+      currency: "USD",
+      lang: "English"
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function money(n) {
+      if (state.currency === "EUR") return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n * 0.92));
+      if (state.currency === "GBP") return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(Math.round(n * 0.79));
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+    }
+
+    function toast(msg) {
+      const el = $("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function persist() {
+      localStorage.setItem("vespera-saved", JSON.stringify(state.saved));
+      localStorage.setItem("vespera-inq", JSON.stringify(state.inquiries));
+      $("savedCount").hidden = !state.saved.length;
+      $("savedCount").textContent = state.saved.length;
+      $("inqCount").hidden = !state.inquiries.length;
+      $("inqCount").textContent = state.inquiries.length;
+    }
+
+    function toggleSave(id, ev) {
+      if (ev) ev.stopPropagation();
+      const i = state.saved.indexOf(id);
+      if (i >= 0) state.saved.splice(i, 1);
+      else state.saved.push(id);
+      persist();
+      toast(i >= 0 ? "Removed from saved" : "Saved to your list");
+      render();
+    }
+
+    function watchSVG(p, size) {
+      const d = p.dialColor, m = p.metal;
+      const isOpen = p.type === "Skeleton";
+      const ticks = Array.from({ length: 60 }, (_, i) => {
+        const a = (i * 6 - 90) * Math.PI / 180;
+        const inner = i % 5 === 0 ? 70 : 78;
+        const x1 = 100 + Math.cos(a) * inner, y1 = 100 + Math.sin(a) * inner;
+        const x2 = 100 + Math.cos(a) * 82, y2 = 100 + Math.sin(a) * 82;
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${i % 5 === 0 ? "#f4efe6" : "rgba(244,239,230,.45)"}" stroke-width="${i % 5 === 0 ? 2.2 : 0.8}"/>`;
+      }).join("");
+      let bezel = `<circle cx="100" cy="100" r="90" fill="none" stroke="${m}" stroke-width="10"/>`;
+      if (p.bezel === "dive") {
+        bezel = `<circle cx="100" cy="100" r="90" fill="#1b1e22" stroke="${m}" stroke-width="3"/>
+          <path d="M100 18 A82 82 0 0 1 182 100" fill="none" stroke="#c4a36a" stroke-width="6"/>`;
+      } else if (p.bezel === "gmt") {
+        bezel = `<circle cx="100" cy="100" r="90" fill="#1b1e22" stroke="${m}" stroke-width="3"/>
+          <path d="M100 18 A82 82 0 0 1 100 182" fill="none" stroke="#7c2d22" stroke-width="8"/>
+          <path d="M100 182 A82 82 0 0 1 100 18" fill="none" stroke="#152238" stroke-width="8"/>`;
+      } else if (p.bezel === "fluted") {
+        const flutes = Array.from({ length: 72 }, (_, i) => {
+          const a = i * 5 * Math.PI / 180;
+          const x1 = 100 + Math.cos(a) * 86, y1 = 100 + Math.sin(a) * 86;
+          const x2 = 100 + Math.cos(a) * 94, y2 = 100 + Math.sin(a) * 94;
+          return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${m}" stroke-width="2"/>`;
+        }).join("");
+        bezel = `<circle cx="100" cy="100" r="90" fill="none" stroke="${m}" stroke-width="8"/>${flutes}`;
+      } else if (p.bezel === "tachymeter") {
+        bezel = `<circle cx="100" cy="100" r="90" fill="#222" stroke="${m}" stroke-width="4"/><circle cx="100" cy="100" r="84" fill="none" stroke="#c4a36a" stroke-width="1"/>`;
+      } else if (p.bezel === "coin") {
+        bezel = `<circle cx="100" cy="100" r="90" fill="none" stroke="${m}" stroke-width="12" stroke-dasharray="3 4"/>`;
+      }
+      const moon = p.type === "Moonphase" ? `<circle cx="100" cy="132" r="10" fill="#e8d9a8"/><circle cx="106" cy="130" r="9" fill="${d}"/>` : "";
+      const chrono = p.type === "Chronograph" ? `<circle cx="100" cy="64" r="14" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="72" cy="108" r="14" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="128" cy="108" r="14" fill="none" stroke="rgba(255,255,255,.35)"/>` : "";
+      const open = isOpen ? `<circle cx="100" cy="100" r="28" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="8"/>
+        <circle cx="88" cy="96" r="10" fill="none" stroke="#c4a36a"/><circle cx="114" cy="108" r="8" fill="none" stroke="#9aa3ab"/>` : "";
+      return `<svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" aria-hidden="true">
+        <rect x="88" y="6" width="24" height="18" rx="3" fill="${m}"/>
+        <rect x="88" y="196" width="24" height="18" rx="3" fill="${m}"/>
+        <rect x="178" y="92" width="12" height="16" rx="2" fill="${m}"/>
+        <circle cx="100" cy="100" r="96" fill="${m}"/>
+        ${bezel}
+        <circle cx="100" cy="100" r="78" fill="${isOpen ? "#2a2d32" : d}"/>
+        ${isOpen ? open : ticks}
+        ${chrono}${moon}
+        <text x="100" y="${p.type === "Chronograph" ? 92 : 78}" text-anchor="middle" font-size="7" fill="#f4efe6" font-family="Times New Roman, serif" letter-spacing="1.4">${p.maison.split(" ")[0].toUpperCase()}</text>
+        <line x1="100" y1="100" x2="100" y2="48" stroke="#f4efe6" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="100" y1="100" x2="142" y2="100" stroke="#c4a36a" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="3.2" fill="#c4a36a"/>
+      </svg>`;
+    }
+
+    function parseRoute() {
+      const raw = (location.hash || "#/").replace(/^#/, "") || "/";
+      const [pathPart, query = ""] = raw.split("?");
+      const parts = pathPart.split("/").filter(Boolean);
+      const q = {};
+      new URLSearchParams(query).forEach((v, k) => { q[k] = v; });
+      return { parts, q, path: "/" + parts.join("/") };
+    }
+
+    function filtered(q) {
+      let list = PRODUCTS.slice();
+      const s = (q.q || "").trim().toLowerCase();
+      if (s) list = list.filter((p) => (p.maison + p.model + p.ref + p.type + p.dial).toLowerCase().includes(s));
+      if (q.maison) list = list.filter((p) => p.slug === q.maison);
+      if (q.type) list = list.filter((p) => p.type === q.type);
+      if (q.condition) {
+        if (q.condition === "Excellent") list = list.filter((p) => ["Excellent", "Like new", "Very good", "Good"].includes(p.condition));
+        else list = list.filter((p) => p.condition === q.condition);
+      }
+      if (q.certified === "1") list = list.filter((p) => p.certified);
+      if (q.limited === "1") list = list.filter((p) => p.limited);
+      if (q.papers === "1") list = list.filter((p) => p.papers && p.box);
+      if (q.era) list = list.filter((p) => p.era === q.era);
+      if (q.gender) list = list.filter((p) => p.gender === q.gender || p.gender === "Unisex");
+      if (q.price) {
+        const [a, b] = q.price.split("-").map(Number);
+        list = list.filter((p) => p.price >= a && p.price <= b);
+      }
+      if (q.sort === "price-asc") list.sort((a, b) => a.price - b.price);
+      else if (q.sort === "price-desc") list.sort((a, b) => b.price - a.price);
+      else if (q.sort === "new") list.sort((a, b) => b.year - a.year);
+      else list.sort((a, b) => a.maison.localeCompare(b.maison) || a.price - b.price);
+      return list;
+    }
+
+    function card(p) {
+      const on = state.saved.includes(p.id);
+      return `<article class="card" data-go="#/listing/${p.id}">
+        <div class="card-art">
+          ${p.certified ? `<span class="badge">Certified</span>` : (p.limited ? `<span class="badge">Limited</span>` : "")}
+          <button class="save ${on ? "on" : ""}" data-save="${p.id}" aria-label="Save">${on ? "♥" : "♡"}</button>
+          ${watchSVG(p, 180)}
+        </div>
+        <div class="card-body">
+          <div class="maison">${p.maison}</div>
+          <h3>${p.model}</h3>
+          <div class="meta">${p.year} · ${p.condition} · ${p.case.split(",")[0]}</div>
+          <div class="price">${money(p.price)}</div>
+        </div>
+      </article>`;
+    }
+
+    function home() {
+      const featured = PRODUCTS.filter((p) => p.certified).slice(0, 4);
+      const arrivals = [...PRODUCTS].sort((a, b) => b.year - a.year).slice(0, 4);
+      const types = ["Dive", "Dress", "Chronograph", "GMT", "Pilot", "Field", "Skeleton", "Moonphase"];
+      return `<div class="wrap hero">
+        <div>
+          <p class="kicker">Collectors · Ateliers · Private sellers</p>
+          <h1>Exceptional watches, listed with care.</h1>
+          <p class="lede">Vespera is an independent marketplace for fine timepieces. Sixteen original maisons, a focused catalogue, and purchase requests that go to the seller — not a shopping cart.</p>
+          <div class="row">
+            <a class="btn" href="#/shop">Browse listings</a>
+            <a class="btn ghost" href="#/sell">Sell a watch</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>${PRODUCTS.length}</b><span>Curated listings</span></div>
+            <div class="stat"><b>${MAISONS.length}</b><span>Maisons</span></div>
+            <div class="stat"><b>${PRODUCTS.filter(p=>p.certified).length}</b><span>Certified pieces</span></div>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-watch">${watchSVG(PRODUCTS.find(p=>p.id==="so-etoile"), 280)}</div>
+          <div>
+            <div class="maison">Solenne · Limited</div>
+            <h3 style="font-size:28px">Étoile Perpetuelle</h3>
+            <p class="meta">Unworn · Geneva · ${money(48200)}</p>
+            <a class="btn ghost" style="margin-top:12px" href="#/listing/so-etoile">View listing</a>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="section-head"><div><p class="kicker">Maisons</p><h2>Shop by atelier</h2></div><a href="#/brands">All maisons →</a></div>
+        <div class="maison-row">
+          ${MAISONS.slice(0,8).map(m => `<button class="maison-chip" data-go="#/brand/${m.slug}"><strong>${m.name.split(" ")[0]}</strong><span>${m.origin}</span></button>`).join("")}
+        </div>
+      </div>
+      <section><div class="wrap">
+        <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by type</h2></div></div>
+        <div class="type-grid">
+          ${types.map(t => `<a class="type-card" href="#/shop?type=${encodeURIComponent(t)}"><em>Collection</em><strong>${t}</strong></a>`).join("")}
+        </div>
+      </div></section>
+      <section><div class="wrap">
+        <div class="section-head"><div><p class="kicker">Certified</p><h2>Inspected this month</h2></div><a href="#/shop?certified=1">All certified →</a></div>
+        <div class="cards">${featured.map(card).join("")}</div>
+      </div></section>
+      <section><div class="wrap">
+        <div class="section-head"><div><p class="kicker">Arrivals</p><h2>Recently listed</h2></div><a href="#/shop?sort=new">New arrivals →</a></div>
+        <div class="cards">${arrivals.map(card).join("")}</div>
+      </div></section>
+      <section><div class="wrap">
+        <div class="section-head"><div><p class="kicker">Magazine</p><h2>Notes from the bench</h2></div><a href="#/magazine">All essays →</a></div>
+        <div class="article-grid">
+          ${ARTICLES.map(a => `<a class="article" href="#/article/${a.id}"><span class="tag">${a.tag}</span><h3>${a.title}</h3><p>${a.dek}</p></a>`).join("")}
+        </div>
+      </div></section>`;
+    }
+
+    function shop(q) {
+      const list = filtered(q);
+      const maisons = MAISONS.map(m => `<option value="${m.slug}" ${q.maison===m.slug?"selected":""}>${m.name}</option>`).join("");
+      return `<div class="wrap shop-layout">
+        <aside class="filters">
+          <h3>Filter</h3>
+          <label>Search</label>
+          <input id="fQ" value="${q.q || ""}" placeholder="Model or reference" />
+          <label>Maison</label>
+          <select id="fMaison"><option value="">All maisons</option>${maisons}</select>
+          <label>Type</label>
+          <select id="fType">
+            <option value="">All types</option>
+            ${["Dive","Dress","Chronograph","GMT","Pilot","Field","Skeleton","Moonphase"].map(t=>`<option ${q.type===t?"selected":""}>${t}</option>`).join("")}
+          </select>
+          <label>Condition</label>
+          <select id="fCond">
+            <option value="">Any</option>
+            ${["Unworn","Like new","Excellent","Very good","Good"].map(t=>`<option ${q.condition===t?"selected":""}>${t}</option>`).join("")}
+          </select>
+          <label>Price</label>
+          <select id="fPrice">
+            <option value="">Any price</option>
+            <option value="0-3000" ${q.price==="0-3000"?"selected":""}>Under $3,000</option>
+            <option value="3000-8000" ${q.price==="3000-8000"?"selected":""}>$3,000 – $8,000</option>
+            <option value="8000-20000" ${q.price==="8000-20000"?"selected":""}>$8,000 – $20,000</option>
+            <option value="20000-50000" ${q.price==="20000-50000"?"selected":""}>$20,000 – $50,000</option>
+            <option value="50000-999999" ${q.price==="50000-999999"?"selected":""}>$50,000+</option>
+          </select>
+          <label>Sort</label>
+          <select id="fSort">
+            <option value="">Featured</option>
+            <option value="new" ${q.sort==="new"?"selected":""}>Newest year</option>
+            <option value="price-asc" ${q.sort==="price-asc"?"selected":""}>Price, low to high</option>
+            <option value="price-desc" ${q.sort==="price-desc"?"selected":""}>Price, high to low</option>
+          </select>
+          <label><input type="checkbox" id="fCert" ${q.certified==="1"?"checked":""}/> Certified only</label>
+          <label><input type="checkbox" id="fPapers" ${q.papers==="1"?"checked":""}/> Box &amp; papers</label>
+          <div class="filter-actions">
+            <button class="btn" id="applyFilters">Apply</button>
+            <a class="btn ghost" href="#/shop">Clear</a>
+          </div>
+        </aside>
+        <div>
+          <div class="results-head">
+            <div><p class="kicker">Catalogue</p><h2>${list.length} listing${list.length===1?"":"s"}</h2></div>
+          </div>
+          ${list.length ? `<div class="cards">${list.map(card).join("")}</div>` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
+        </div>
+      </div>`;
+    }
+
+    function listing(id) {
+      const p = PRODUCTS.find((x) => x.id === id);
+      if (!p) return `<div class="wrap page"><h2>Listing not found</h2><p><a href="#/shop">Return to shop</a></p></div>`;
+      const related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
+      const on = state.saved.includes(p.id);
+      return `<div class="wrap">
+        <p class="crumbs"><a href="#/">Home</a> / <a href="#/shop">Shop</a> / <a href="#/brand/${p.slug}">${p.maison}</a> / ${p.model}</p>
+        <div class="detail">
+          <div class="detail-art">${watchSVG(p, 420)}</div>
+          <div>
+            <p class="kicker">${p.maison}${p.certified ? " · Certified" : ""}${p.limited ? " · Limited" : ""}</p>
+            <h1 style="font-size:48px">${p.model}</h1>
+            <p class="lede" style="margin-top:12px">${p.desc}</p>
+            <p class="price" style="font-size:36px">${money(p.price)}</p>
+            <div class="row" style="margin:18px 0">
+              <button class="btn" data-inquire="${p.id}">Request to purchase</button>
+              <button class="btn ghost" data-save="${p.id}">${on ? "Saved" : "Save listing"}</button>
+            </div>
+            <table class="spec">
+              <tr><th>Reference</th><td>${p.ref}</td></tr>
+              <tr><th>Year</th><td>${p.year}</td></tr>
+              <tr><th>Condition</th><td>${p.condition}</td></tr>
+              <tr><th>Type</th><td>${p.type}</td></tr>
+              <tr><th>Movement</th><td>${p.movement}</td></tr>
+              <tr><th>Case</th><td>${p.case}</td></tr>
+              <tr><th>Water resistance</th><td>${p.water}</td></tr>
+              <tr><th>Dial</th><td>${p.dial}</td></tr>
+              <tr><th>Box / papers</th><td>${p.box ? "Box" : "No box"} · ${p.papers ? "Papers" : "No papers"}</td></tr>
+              <tr><th>Location</th><td>${p.location}</td></tr>
+            </table>
+            <div class="dealer-box">
+              <strong>${p.dealer}</strong>
+              <p class="meta">Listed from ${p.location}. Purchase requests are sent to this seller. Vespera does not process card payments on the page.</p>
+            </div>
+          </div>
+        </div>
+        ${related.length ? `<div class="section-head"><h2>More from ${p.maison}</h2></div><div class="cards">${related.map(card).join("")}</div>` : ""}
+      </div>`;
+    }
+
+    function brandsPage() {
+      return `<div class="wrap page">
+        <p class="kicker">Directory</p>
+        <h1>Maisons</h1>
+        <p class="lede">Sixteen original ateliers in this catalogue. None are licensed names from other platforms.</p>
+        <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:28px">
+          ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    function brandPage(slug) {
+      const m = MAISONS.find((x) => x.slug === slug);
+      if (!m) return `<div class="wrap page"><h2>Maison not found</h2></div>`;
+      const list = PRODUCTS.filter((p) => p.slug === slug);
+      return `<div class="wrap page">
+        <p class="crumbs"><a href="#/brands">Maisons</a> / ${m.name}</p>
+        <p class="kicker">${m.origin} · Est. ${m.founded}</p>
+        <h1>${m.name}</h1>
+        <p class="lede">${m.note}</p>
+        <div class="cards">${list.map(card).join("")}</div>
+      </div>`;
+    }
+
+    function sellPage() {
+      return `<div class="wrap page split">
+        <div class="prose">
+          <p class="kicker">Sellers</p>
+          <h1>List a watch</h1>
+          <p>Tell us the maison, reference, and condition. This demonstration stores the inquiry in your browser only — nothing is sent to a server.</p>
+          <div class="steps" style="grid-template-columns:1fr;margin-top:24px">
+            <div class="step"><b>01</b> Describe the piece and set an asking price.</div>
+            <div class="step"><b>02</b> Choose private listing or certified inspection.</div>
+            <div class="step"><b>03</b> Buyers send a purchase request; you accept or decline.</div>
+          </div>
+        </div>
+        <form class="panel" id="sellForm">
+          <h3>Listing details</h3>
+          <div class="grid">
+            <div><label>Maison</label><select name="maison" required>${MAISONS.map(m=>`<option>${m.name}</option>`).join("")}</select></div>
+            <div><label>Model</label><input name="model" required placeholder="e.g. Abyss 300" /></div>
+            <div><label>Reference</label><input name="ref" placeholder="Optional" /></div>
+            <div><label>Year</label><input name="year" type="number" min="1900" max="2026" /></div>
+            <div><label>Condition</label><select name="condition"><option>Unworn</option><option>Like new</option><option>Excellent</option><option>Very good</option><option>Good</option></select></div>
+            <div><label>Asking price (USD)</label><input name="price" type="number" min="1" required /></div>
+            <div class="full"><label>Notes</label><textarea name="notes" placeholder="Box, papers, service history"></textarea></div>
+            <div class="full"><label>Contact email</label><input name="email" type="email" required /></div>
+          </div>
+          <button class="btn" style="margin-top:16px" type="submit">Submit listing request</button>
+        </form>
+      </div>`;
+    }
+
+    function magazine() {
+      return `<div class="wrap page">
+        <p class="kicker">Magazine</p>
+        <h1>Notes from the bench</h1>
+        <p class="lede">Short essays for collectors. Original to Vespera.</p>
+        <div class="article-grid" style="margin-top:28px">
+          ${ARTICLES.map(a => `<a class="article" href="#/article/${a.id}"><span class="tag">${a.tag}</span><h3>${a.title}</h3><p>${a.dek}</p></a>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    function article(id) {
+      const a = ARTICLES.find((x) => x.id === id);
+      if (!a) return `<div class="wrap page"><h2>Article not found</h2></div>`;
+      return `<div class="wrap page prose">
+        <p class="crumbs"><a href="#/magazine">Magazine</a> / ${a.tag}</p>
+        <h1>${a.title}</h1>
+        <p class="lede">${a.dek}</p>
+        ${a.body}
+      </div>`;
+    }
+
+    function authenticate() {
+      return `<div class="wrap page">
+        <p class="kicker">Trust</p>
+        <h1>Authentication &amp; inspection</h1>
+        <p class="lede">Certified listings are examined by an independent bench before the buyer pays. Private listings skip this step and are priced accordingly.</p>
+        <div class="steps">
+          <div class="step"><b>01</b><h3>Receive</h3><p>The seller ships to a Vespera inspection desk, fully insured.</p></div>
+          <div class="step"><b>02</b><h3>Examine</h3><p>Case, movement, serial, and accessories are checked against the listing.</p></div>
+          <div class="step"><b>03</b><h3>Hold</h3><p>Funds sit in a payment hold until the buyer confirms receipt.</p></div>
+          <div class="step"><b>04</b><h3>Release</h3><p>The watch ships to the buyer; the seller is paid.</p></div>
+        </div>
+        <div class="panel" style="margin-top:28px">
+          <h3>What we do not claim</h3>
+          <p>Vespera is a demonstration catalogue. No real inspections, escrow, or shipping take place from this page.</p>
+        </div>
+      </div>`;
+    }
+
+    function dealers() {
+      return `<div class="wrap page">
+        <p class="kicker">Partners</p>
+        <h1>Dealers</h1>
+        <p class="lede">Fictional counters that appear on listings in this catalogue.</p>
+        <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:24px">
+          ${DEALERS.map(d => `<div class="type-card"><em>${d.city}</em><strong>${d.name}</strong><p class="meta">${d.focus}</p></div>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    function about() {
+      return `<div class="wrap page prose">
+        <p class="kicker">Company</p>
+        <h1>About Vespera</h1>
+        <p>Vespera is an original luxury-watch marketplace created as a self-contained website. The maisons, listings, dealers, and essays are fictional. They are not copied from another platform and are not offered for sale.</p>
+        <p>The catalogue is meant to feel like a serious collector’s room: filters for type and condition, certified versus private listings, and purchase requests instead of a checkout cart.</p>
+      </div>`;
+    }
+
+    function help() {
+      return `<div class="wrap page split">
+        <div class="prose">
+          <p class="kicker">Help centre</p>
+          <h1>Questions</h1>
+          <h3>How do I buy?</h3>
+          <p>Open a listing and send a purchase request. The seller receives it (in this demo, it is stored in your browser).</p>
+          <h3>What does certified mean?</h3>
+          <p>A certified tag means the listing is written as if it passed inspection. See Authentication for the story of that process.</p>
+          <h3>Can I sell without a dealer?</h3>
+          <p>Yes. Use Sell a watch and choose a private listing in the notes.</p>
+        </div>
+        <div class="panel">
+          <h3>Still stuck?</h3>
+          <p>Write to the contact page. This demo does not send email.</p>
+          <a class="btn" href="#/contact">Contact</a>
+        </div>
+      </div>`;
+    }
+
+    function contact() {
+      return `<div class="wrap page split">
+        <div class="prose">
+          <p class="kicker">Contact</p>
+          <h1>Write to Vespera</h1>
+          <p>Desk hours are weekdays, in this story, from Geneva. Messages stay in your browser.</p>
+        </div>
+        <form class="panel" id="contactForm">
+          <label>Name</label><input name="name" required />
+          <label>Email</label><input name="email" type="email" required />
+          <label>Message</label><textarea name="msg" required></textarea>
+          <button class="btn" style="margin-top:16px" type="submit">Send message</button>
+        </form>
+      </div>`;
+    }
+
+    function privacy() {
+      return `<div class="wrap page prose"><p class="kicker">Legal</p><h1>Privacy</h1>
+        <p>This page is a static demonstration. Saved watches and purchase requests are kept in localStorage on your device. No analytics, accounts, or payment data are collected by a server from this file.</p>
+        <p>If you publish a copy, you are responsible for any real privacy notice you add.</p></div>`;
+    }
+
+    function terms() {
+      return `<div class="wrap page prose"><p class="kicker">Legal</p><h1>Terms of use</h1>
+        <p>Listings, maisons, and prices are fictional sample data. Nothing on this site is an offer to sell a genuine watch. Do not use Vespera’s names or copy to impersonate another marketplace.</p>
+        <p>The software in this file is provided as-is for browsing the demonstration catalogue.</p></div>`;
+    }
+
+    function account() {
+      return `<div class="wrap page split">
+        <div>
+          <p class="kicker">Collectors</p>
+          <h1>Account</h1>
+          <p class="lede">This demo has no passwords. Your saved list and inquiries live in this browser.</p>
+          <div class="row">
+            <a class="btn" href="#/saved">Saved watches (${state.saved.length})</a>
+            <a class="btn ghost" href="#/inquiries">Inquiries (${state.inquiries.length})</a>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Preferences</h3>
+          <p>Currency: ${state.currency}<br/>Language: ${state.lang}</p>
+          <p class="meta">Use the controls in the top bar to switch USD, EUR, or GBP.</p>
+        </div>
+      </div>`;
+    }
+
+    function savedPage() {
+      const list = PRODUCTS.filter((p) => state.saved.includes(p.id));
+      return `<div class="wrap page">
+        <p class="kicker">Account</p><h1>Saved watches</h1>
+        ${list.length ? `<div class="cards">${list.map(card).join("")}</div>` : `<div class="empty">You have not saved any listings yet.</div>`}
+      </div>`;
+    }
+
+    function inquiriesPage() {
+      if (!state.inquiries.length) return `<div class="wrap page"><p class="kicker">Account</p><h1>Purchase inquiries</h1><div class="empty">No requests yet.</div></div>`;
+      return `<div class="wrap page"><p class="kicker">Account</p><h1>Purchase inquiries</h1>
+        ${state.inquiries.map(i => `<div class="panel" style="margin-bottom:12px"><strong>${i.model}</strong><p class="meta">${i.maison} · ${money(i.price)} · ${i.when}</p></div>`).join("")}
+      </div>`;
+    }
+
+    function render() {
+      const { parts, q } = parseRoute();
+      const root = parts[0] || "";
+      const view = $("view");
+      const cta = $("footerCta");
+      cta.style.display = (root === "sell") ? "none" : "";
+      let html = "";
+      if (!root) html = home();
+      else if (root === "shop") html = shop(q);
+      else if (root === "listing") html = listing(parts[1]);
+      else if (root === "brands") html = brandsPage();
+      else if (root === "brand") html = brandPage(parts[1]);
+      else if (root === "sell") html = sellPage();
+      else if (root === "magazine") html = magazine();
+      else if (root === "article") html = article(parts[1]);
+      else if (root === "authenticate") html = authenticate();
+      else if (root === "dealers") html = dealers();
+      else if (root === "about") html = about();
+      else if (root === "help") html = help();
+      else if (root === "contact") html = contact();
+      else if (root === "privacy") html = privacy();
+      else if (root === "terms") html = terms();
+      else if (root === "account") html = account();
+      else if (root === "saved") html = savedPage();
+      else if (root === "inquiries") html = inquiriesPage();
+      else html = `<div class="wrap page"><h1>Page not found</h1><p><a href="#/">Back to Vespera</a></p></div>`;
+      view.innerHTML = html;
+      window.scrollTo(0, 0);
+      bindView();
+    }
+
+    function bindView() {
+      const apply = $("applyFilters");
+      if (apply) apply.onclick = () => {
+        const params = new URLSearchParams();
+        const q = $("fQ").value.trim(); if (q) params.set("q", q);
+        const m = $("fMaison").value; if (m) params.set("maison", m);
+        const t = $("fType").value; if (t) params.set("type", t);
+        const c = $("fCond").value; if (c) params.set("condition", c);
+        const p = $("fPrice").value; if (p) params.set("price", p);
+        const s = $("fSort").value; if (s) params.set("sort", s);
+        if ($("fCert").checked) params.set("certified", "1");
+        if ($("fPapers").checked) params.set("papers", "1");
+        location.hash = "#/shop" + (params.toString() ? "?" + params.toString() : "");
+      };
+      const sell = $("sellForm");
+      if (sell) sell.onsubmit = (e) => {
+        e.preventDefault();
+        const fd = new FormData(sell);
+        state.inquiries.unshift({ maison: fd.get("maison"), model: fd.get("model"), price: Number(fd.get("price")), when: new Date().toLocaleString() });
+        persist();
+        toast("Listing request saved in this browser");
+        location.hash = "#/inquiries";
+      };
+      const contact = $("contactForm");
+      if (contact) contact.onsubmit = (e) => { e.preventDefault(); toast("Message saved locally — nothing was sent"); contact.reset(); };
+    }
+
+    function openSearch() {
+      $("searchOverlay").classList.add("show");
+      $("searchInput").value = "";
+      $("searchHits").innerHTML = "";
+      $("searchInput").focus();
+    }
+    function closeSearch() { $("searchOverlay").classList.remove("show"); }
+
+    function searchHits(term) {
+      const t = term.trim().toLowerCase();
+      if (!t) { $("searchHits").innerHTML = ""; return; }
+      const hits = PRODUCTS.filter((p) => (p.maison + " " + p.model + " " + p.ref + " " + p.type).toLowerCase().includes(t)).slice(0, 8);
+      $("searchHits").innerHTML = hits.length ? hits.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches.</p>`;
+    }
+
+    function closeDrawer() {
+      $("drawer").classList.remove("show");
+      $("backdrop").classList.remove("show");
+    }
+
+    document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
+      <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
+      <a href="#/shop?sort=new">New arrivals</a><a href="#/shop?certified=1">Certified</a>
+      <a href="#/sell">Sell</a><a href="#/magazine">Magazine</a><a href="#/authenticate">Authenticate</a>
+      <a href="#/help">Help</a><a href="#/account">Account</a>`;
+
+    document.body.addEventListener("click", (e) => {
+      const save = e.target.closest("[data-save]");
+      if (save) { e.preventDefault(); toggleSave(save.getAttribute("data-save")); return; }
+      const go = e.target.closest("[data-go]");
+      if (go) { e.preventDefault(); closeSearch(); closeDrawer(); location.hash = go.getAttribute("data-go"); return; }
+      const inq = e.target.closest("[data-inquire]");
+      if (inq) {
+        const p = PRODUCTS.find((x) => x.id === inq.getAttribute("data-inquire"));
+        state.inquiries.unshift({ maison: p.maison, model: p.model, price: p.price, when: new Date().toLocaleString() });
+        persist();
+        toast("Purchase request saved");
+        render();
+      }
+    });
+
+    $("searchOpen").onclick = openSearch;
+    $("searchIcon").onclick = openSearch;
+    $("searchOverlay").onclick = (e) => { if (e.target.id === "searchOverlay") closeSearch(); };
+    $("searchInput").addEventListener("input", (e) => searchHits(e.target.value));
+    $("searchInput").addEventListener("keydown", (e) => { if (e.key === "Escape") closeSearch(); if (e.key === "Enter") { const t = e.target.value.trim(); closeSearch(); location.hash = "#/shop?q=" + encodeURIComponent(t); } });
+    $("menuBtn").onclick = () => { $("drawer").classList.add("show"); $("backdrop").classList.add("show"); };
+    $("backdrop").onclick = closeDrawer;
+    $("drawer").addEventListener("click", (e) => { if (e.target.id === "closeDrawer" || e.target.tagName === "A") closeDrawer(); });
+    $("currencyBtn").onclick = () => {
+      state.currency = state.currency === "USD" ? "EUR" : state.currency === "EUR" ? "GBP" : "USD";
+      $("currencyBtn").textContent = state.currency;
+      render();
+    };
+    $("langBtn").onclick = () => toast("This demonstration is written in English");
+    window.addEventListener("hashchange", render);
+    persist();
+    if (!location.hash) location.hash = "#/";
+    else render();
+  </script>
+</body>
+</html>
