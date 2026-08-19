@@ -8,17 +8,17 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <style>
     :root {
-      --bg: #f3eee4;
-      --bg-2: #faf7f1;
-      --ink: #161411;
-      --muted: #6d665b;
-      --line: #ddd4c5;
-      --gold: #9a7b4f;
-      --gold-2: #c4a36a;
-      --paper: #fffdf8;
-      --danger: #7c2d22;
-      --ok: #2f5d3a;
-      --shadow: 0 18px 50px rgba(22, 20, 17, 0.12);
+      --bg: #0b0f14;
+      --bg-2: #121821;
+      --ink: #f3f6fa;
+      --muted: #9aa7b5;
+      --line: #243040;
+      --gold: #c4a36a;
+      --gold-2: #d4b57a;
+      --paper: #151c26;
+      --danger: #f0a090;
+      --ok: #7dcea0;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
       --sans: "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
       --max: 1240px;
@@ -34,75 +34,87 @@
     .gold { color: var(--gold); }
 
     .util {
-      background: var(--ink); color: #efe8db; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+      background: #070a0e; color: #c9d2dc; font-size: 12px; letter-spacing: .04em;
     }
     .util .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; align-items: center; }
     .util nav, .util-right { display: flex; gap: 18px; flex-wrap: wrap; }
-    .util a:hover, .util button:hover { color: var(--gold-2); }
+    .util a:hover, .util button:hover { color: #fff; }
     .util button { background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; text-transform: inherit; color: inherit; }
 
     header.site {
-      position: sticky; top: 0; z-index: 40; background: rgba(243,238,228,.92);
-      backdrop-filter: blur(16px); border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 40; background: #0b0f14;
+      border-bottom: 1px solid #1c2733;
     }
-    .mast { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 0 10px; gap: 16px; }
-    .brand { display: flex; align-items: center; gap: 10px; justify-self: center; }
+    .mast { display: grid; grid-template-columns: auto 1fr auto; align-items: center; padding: 14px 0 10px; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 10px; justify-self: start; color: #fff; }
     .brand svg { width: 34px; height: 34px; }
-    .brand-name { font-family: var(--serif); font-size: 28px; letter-spacing: .22em; font-weight: 500; }
-    .brand small { display: block; font-family: var(--sans); font-size: 9px; letter-spacing: .28em; color: var(--gold); text-align: center; margin-top: 2px; }
+    .brand-name { font-family: var(--sans); font-size: 22px; letter-spacing: .18em; font-weight: 700; }
+    .brand small { display: none; }
     .mast-left, .mast-right { display: flex; align-items: center; gap: 8px; }
-    .mast-right { justify-content: flex-end; }
+    .mast-right { justify-content: flex-end; color: #c9d2dc; font-size: 13px; }
+    .mast-right a { color: #c9d2dc; padding: 0 6px; }
+    .mast-right a:hover { color: #fff; }
     .icon-btn {
       width: 40px; height: 40px; border: 1px solid transparent; background: transparent; border-radius: 50%;
-      cursor: pointer; display: grid; place-items: center;
+      cursor: pointer; display: grid; place-items: center; color: #fff;
     }
-    .icon-btn:hover { border-color: var(--line); background: var(--paper); }
+    .icon-btn:hover { border-color: #2a3848; background: #151c26; }
     .icon-btn .count {
-      position: absolute; margin: -16px 0 0 14px; background: var(--ink); color: var(--bg); font-size: 10px;
+      position: absolute; margin: -16px 0 0 14px; background: #3b82f6; color: #fff; font-size: 10px;
       min-width: 16px; height: 16px; border-radius: 99px; display: grid; place-items: center; padding: 0 4px;
     }
     .search-open {
-      display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--paper);
-      border-radius: 999px; padding: 8px 14px; cursor: pointer; color: var(--muted); min-width: 210px;
+      display: flex; align-items: center; gap: 8px; border: 1px solid #2a3848; background: #151c26;
+      border-radius: 4px; padding: 11px 16px; cursor: pointer; color: #9aa7b5; width: 100%;
     }
-    .search-open:hover { border-color: var(--gold); }
+    .search-open:hover { border-color: #3b82f6; color: #fff; }
     .menu-toggle { display: none; }
 
-    .primary { display: flex; justify-content: center; gap: 4px; padding: 0 0 8px; }
+    .primary { display: flex; justify-content: flex-start; gap: 2px; padding: 0 0 10px; }
     .nav-item { position: relative; }
     .nav-item > a, .nav-item > button {
-      background: none; border: 0; cursor: pointer; padding: 10px 14px; letter-spacing: .12em;
-      text-transform: uppercase; font-size: 12px; color: var(--ink);
+      background: none; border: 0; cursor: pointer; padding: 10px 12px;
+      text-transform: none; font-size: 14px; color: #e8eef5; letter-spacing: 0;
     }
-    .nav-item > a:hover, .nav-item > button:hover, .nav-item:hover > a, .nav-item:hover > button { color: var(--gold); }
+    .nav-item > a:hover, .nav-item > button:hover, .nav-item:hover > a, .nav-item:hover > button { color: #fff; }
     .mega {
-      display: none; position: absolute; left: 50%; transform: translateX(-50%); top: 100%;
-      background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow);
+      display: none; position: absolute; left: 0; transform: none; top: 100%;
+      background: #151c26; border: 1px solid #243040; box-shadow: var(--shadow);
       min-width: 560px; padding: 22px; z-index: 30;
     }
     .nav-item:hover .mega, .nav-item:focus-within .mega { display: grid; }
     .mega.wide { min-width: min(920px, 90vw); grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
     .mega.two { min-width: 640px; grid-template-columns: 1fr 1fr; gap: 24px; }
     .mega h4 { margin: 0 0 10px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
-    .mega a, .mega button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0; cursor: pointer; color: var(--ink); font-size: 14px; }
-    .mega a:hover, .mega button:hover { color: var(--gold); }
+    .mega a, .mega button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0; cursor: pointer; color: #e8eef5; font-size: 14px; }
+    .mega a:hover, .mega button:hover { color: #fff; }
     .mega .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
 
+    .hero-bleed { position: relative; background: #000; }
+    .hero-bleed img { width: 100%; height: min(72vh, 640px); object-fit: cover; display: block; filter: brightness(.72); }
+    .hero-copy { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; }
+    .hero-copy .wrap { color: #fff; }
+    .hero-copy h1 { font-family: var(--sans); font-weight: 750; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; max-width: 14ch; color: #fff; }
+    .hero-copy .sub { display: block; font-size: 18px; margin: 10px 0 22px; color: #e8eef5; letter-spacing: .04em; text-transform: uppercase; }
+    .btn.discover { background: rgba(12,16,22,.72); border: 1px solid #fff; color: #fff; padding: 12px 22px; }
+    .brand-bar { background: #0b0f14; padding: 36px 0 28px; border-bottom: 1px solid #1c2733; }
+    .brand-bar h2 { color: #fff; font-family: var(--sans); font-size: 22px; font-weight: 650; margin-bottom: 18px; }
+    .brand-logos { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
+    .brand-logos a { color: #c9d2dc; border: 1px solid #243040; padding: 16px 8px; text-align: center; font-weight: 650; letter-spacing: .04em; }
+    .brand-logos a:hover { color: #fff; border-color: #fff; }
+
     main { min-height: 70vh; }
-    .hero {
-      padding: 72px 0 48px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center;
-    }
     .kicker { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em; margin: 0; }
     h1 { font-size: clamp(40px, 6vw, 72px); line-height: .95; }
     .lede { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 38em; margin: 22px 0 28px; }
     .row { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--ink);
-      background: var(--ink); color: var(--bg); padding: 12px 20px; cursor: pointer; letter-spacing: .12em;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #fff;
+      background: #fff; color: #0b0f14; padding: 12px 20px; cursor: pointer; letter-spacing: .12em;
       text-transform: uppercase; font-size: 11px;
     }
-    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn.ghost { background: transparent; color: #fff; }
     .btn.gold { background: var(--gold); border-color: var(--gold); color: #fff; }
     .btn:hover { opacity: .88; }
     .hero-panel {
@@ -182,7 +194,9 @@
 
     .page { padding: 48px 0 80px; }
     .prose { max-width: 720px; }
-    .prose p, .prose li { line-height: 1.7; color: #3c3832; }
+    .section-head h2 { color: #fff; }
+    .section-head a { color: #93c5fd; }
+    .prose p, .prose li { line-height: 1.7; color: #c9d2dc; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .panel { background: var(--paper); border: 1px solid var(--line); padding: 22px; }
     .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -306,8 +320,9 @@
 
     @media (max-width: 980px) {
       .mast { grid-template-columns: auto 1fr auto; }
-      .search-open, .primary { display: none; }
+      .primary { display: none; }
       .menu-toggle { display: grid; }
+      .brand-logos { grid-template-columns: repeat(4, 1fr); }
       .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row { grid-template-columns: 1fr 1fr; }
       .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
@@ -346,34 +361,30 @@
 
   <header class="site">
     <div class="wrap mast">
-      <div class="mast-left">
-        <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
-        <button class="search-open" id="searchOpen" type="button">
-          <span>⌕</span> <span>Search maisons, models…</span>
-        </button>
-      </div>
       <a class="brand" href="#/" aria-label="Vespera home">
         <svg viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="20" fill="none" stroke="#9a7b4f" stroke-width="1.5"/>
-          <circle cx="32" cy="32" r="2.2" fill="#9a7b4f"/>
-          <path d="M32 16v16L21 44" fill="none" stroke="#161411" stroke-width="2" stroke-linecap="round"/>
-          <path d="M32 32l14-5" fill="none" stroke="#9a7b4f" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="32" cy="32" r="20" fill="none" stroke="#c4a36a" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="2.2" fill="#c4a36a"/>
+          <path d="M32 16v16L21 44" fill="none" stroke="#f3f6fa" stroke-width="2" stroke-linecap="round"/>
+          <path d="M32 32l14-5" fill="none" stroke="#c4a36a" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <div>
           <div class="brand-name">VESPERA</div>
-          <small>INDEPENDENT MARKETPLACE</small>
         </div>
       </a>
+      <button class="search-open" id="searchOpen" type="button">
+        <span>⌕</span> <span>Search through 35 watches worldwide</span>
+      </button>
       <div class="mast-right">
-        <button class="icon-btn" id="searchIcon" aria-label="Search">⌕</button>
+        <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
+        <a href="#/account">Log in or register</a>
         <a class="icon-btn" href="#/saved" aria-label="Saved watches"><span>♡</span><span class="count" id="savedCount" hidden>0</span></a>
         <a class="icon-btn" href="#/inquiries" aria-label="Purchase inquiries"><span>✉</span><span class="count" id="inqCount" hidden>0</span></a>
-        <a class="icon-btn" href="#/account" aria-label="Account">⌂</a>
       </div>
     </div>
     <nav class="primary wrap" aria-label="Primary">
       <div class="nav-item">
-        <a href="#/shop">Shop</a>
+        <a href="#/shop">Buy a watch</a>
         <div class="mega wide">
           <div>
             <h4>Browse</h4>
@@ -411,9 +422,20 @@
           </div>
         </div>
       </div>
-      <div class="nav-item"><a href="#/">Explore</a></div>
       <div class="nav-item">
-        <a href="#/brands">Brands</a>
+        <a href="#/sell">Sell a watch</a>
+        <div class="mega">
+          <h4>Selling</h4>
+          <a href="#/sell">List a watch</a>
+          <a href="#/private-sellers">Private sellers</a>
+          <a href="#/commercial">Commercial sellers</a>
+          <a href="#/appraisal">Free appraisal</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="#/shop?certified=1">Best deals</a></div>
+      <div class="nav-item"><a href="#/magazine">Magazine</a></div>
+      <div class="nav-item">
+        <a href="#/brands">Watch collection</a>
         <div class="mega two">
           <div>
             <h4>Maisons</h4>
@@ -423,30 +445,12 @@
             <h4>Directory</h4>
             <a href="#/brands">All maisons</a>
             <a href="#/dealers">Authorized dealers</a>
-            <a href="#/shop?sort=new">New arrivals by brand</a>
+            <a href="#/shop?sort=new">New arrivals</a>
           </div>
         </div>
       </div>
-      <div class="nav-item">
-        <a href="#/shop?sort=new">New arrivals</a>
-      </div>
-      <div class="nav-item">
-        <a href="#/shop?condition=Excellent">Pre-owned</a>
-      </div>
-      <div class="nav-item">
-        <a href="#/shop?certified=1">Certified</a>
-      </div>
-      <div class="nav-item">
-        <a href="#/sell">Sell</a>
-        <div class="mega">
-          <h4>Selling</h4>
-          <a href="#/sell">List a watch</a>
-          <a href="#/help">Seller guide</a>
-          <a href="#/authenticate">Inspection &amp; escrow</a>
-        </div>
-      </div>
-      <div class="nav-item"><a href="#/magazine">Magazine</a></div>
-      <div class="nav-item"><a href="#/authenticate">Authenticate</a></div>
+      <div class="nav-item"><a href="#/help">FAQ</a></div>
+      <div class="nav-item"><a href="#/authenticate">Security</a></div>
     </nav>
   </header>
 
@@ -786,21 +790,11 @@
     }
 
     function productPhotos(p) {
-      const hero = `assets/watches/${p.id}.jpg`;
-      const fam = familyKey(p);
-      const extras = [2, 3, 4, 5].map((n) => `assets/watches/${fam}-${n}.jpg`);
-      const similar = PRODUCTS.filter((x) => x.id !== p.id && familyKey(x) === fam).map((x) => `assets/watches/${x.id}.jpg`);
-      const pad = PRODUCTS.filter((x) => x.id !== p.id).map((x) => `assets/watches/${x.id}.jpg`);
-      const seen = new Set();
-      const all = [];
-      for (const src of [hero, ...extras, ...similar, ...pad]) {
-        if (!src || seen.has(src)) continue;
-        seen.add(src);
-        all.push(src);
-        if (all.length === 8) break;
+      const shots = [];
+      for (let n = 1; n <= 8; n++) {
+        shots.push(n === 1 ? `assets/watches/${p.id}.jpg` : `assets/watches/${p.id}-${n}.jpg`);
       }
-      while (all.length < 8) all.push(hero);
-      return all;
+      return shots;
     }
 
     function photoFor(p, view) {
@@ -808,7 +802,7 @@
     }
 
     function gallerySlot(p, view) {
-      return `<img class="photo" src="${photoFor(p, view)}" alt="${p.maison} ${p.model} — ${GALLERY_VIEWS[view]}" />`;
+      return `<img class="photo" src="${photoFor(p, view)}" alt="${p.maison} ${p.model} — ${GALLERY_VIEWS[view]}" onerror="this.onerror=null;this.src='assets/watches/${p.id}.jpg'" />`;
     }
 
     function parseRoute() {
@@ -855,7 +849,7 @@
           ${p.certified ? `<span class="badge">Certified</span>` : (p.limited ? `<span class="badge">Limited</span>` : "")}
           <button class="save ${on ? "on" : ""}" data-save="${p.id}" aria-label="Save">${on ? "♥" : "♡"}</button>
           <span class="photo-count">8 photos</span>
-          <img class="product-photo" src="assets/watches/${p.id}.jpg" alt="${p.maison} ${p.model}" />
+          <img class="product-photo" src="assets/watches/${p.id}.jpg" alt="${p.maison} ${p.model}" onerror="this.style.background='#151c26'" />
         </div>
         <div class="card-body">
           <div class="maison">${p.maison}</div>
@@ -870,32 +864,21 @@
       const featured = PRODUCTS.filter((p) => p.certified).slice(0, 4);
       const arrivals = [...PRODUCTS].sort((a, b) => b.year - a.year).slice(0, 4);
       const types = ["Dive", "Dress", "Chronograph", "GMT", "Pilot", "Field", "Skeleton", "Moonphase", "Pocket"];
-      return `<div class="wrap hero">
-        <div>
-          <p class="kicker">Collectors · Ateliers · Private sellers</p>
-          <h1>Exceptional watches, listed with care.</h1>
-          <p class="lede">Vespera is an independent marketplace for fine timepieces. Sixteen original maisons, a focused catalogue, and purchase requests that go to the seller — not a shopping cart.</p>
-          <div class="row">
-            <a class="btn" href="#/shop">Browse listings</a>
-            <a class="btn ghost" href="#/sell">Sell a watch</a>
-          </div>
-          <div class="stats">
-            <div class="stat"><b>${PRODUCTS.length}</b><span>Curated listings</span></div>
-            <div class="stat"><b>${MAISONS.length}</b><span>Maisons</span></div>
-            <div class="stat"><b>${PRODUCTS.filter(p=>p.certified).length}</b><span>Certified pieces</span></div>
-          </div>
+      return `<section class="hero-bleed">
+        <img src="assets/hero-bestsellers.jpg" alt="Steel sport watch and GMT watch on black leather" />
+        <div class="hero-copy"><div class="wrap">
+          <h1>What watch enthusiasts are wearing</h1>
+          <span class="sub">Bestsellers &amp; watch classics</span>
+          <a class="btn discover" href="#/shop">Discover now</a>
+        </div></div>
+      </section>
+      <section class="brand-bar"><div class="wrap">
+        <h2>Popular brands</h2>
+        <div class="brand-logos">
+          ${MAISONS.slice(0,8).map(m => `<a href="#/brand/${m.slug}">${m.name.split(" ")[0]}</a>`).join("")}
         </div>
-        <div class="hero-panel">
-          <div class="hero-watch"><img src="assets/watches/so-etoile.jpg" alt="Solenne Étoile Perpetuelle" /></div>
-          <div>
-            <div class="maison">Solenne · Limited</div>
-            <h3 style="font-size:28px">Étoile Perpetuelle</h3>
-            <p class="meta">Unworn · Geneva · ${money(48200)}</p>
-            <a class="btn ghost" style="margin-top:12px" href="#/listing/so-etoile">View listing</a>
-          </div>
-        </div>
-      </div>
-      <div class="wrap">
+      </div></section>
+      <div class="wrap" style="padding-top:48px">
         <div class="section-head"><div><p class="kicker">Maisons</p><h2>Shop by atelier</h2></div><a href="#/brands">All maisons →</a></div>
         <div class="maison-row">
           ${MAISONS.slice(0,8).map(m => `<button class="maison-chip" data-go="#/brand/${m.slug}"><strong>${m.name.split(" ")[0]}</strong><span>${m.origin}</span></button>`).join("")}
@@ -1034,7 +1017,7 @@
       if (!p) return `<div class="wrap page"><h2>Listing not found</h2><p><a href="#/shop">Return to shop</a></p></div>`;
       const related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
       const on = state.saved.includes(p.id);
-      const thumbs = GALLERY_VIEWS.map((label, i) => `<button type="button" class="${i===0?"on":""}" data-thumb="${i}" aria-label="${label}"><img src="${photoFor(p, i)}" alt="${label}"></button>`).join("");
+      const thumbs = GALLERY_VIEWS.map((label, i) => `<button type="button" class="${i===0?"on":""}" data-thumb="${i}" aria-label="${label}"><img src="${photoFor(p, i)}" alt="${label}" onerror="this.onerror=null;this.src='assets/watches/${p.id}.jpg'"></button>`).join("");
       return `<div class="wrap">
         <p class="crumbs"><a href="#/">Home</a> / <a href="#/shop">Shop</a> / <a href="#/brand/${p.slug}">${p.maison}</a> / ${p.model}</p>
         <div class="detail">
@@ -1427,7 +1410,7 @@
     });
 
     $("searchOpen").onclick = openSearch;
-    $("searchIcon").onclick = openSearch;
+    if ($("searchIcon")) $("searchIcon").onclick = openSearch;
     $("searchOverlay").onclick = (e) => { if (e.target.id === "searchOverlay") closeSearch(); };
     $("searchInput").addEventListener("input", (e) => searchHits(e.target.value));
     $("searchInput").addEventListener("keydown", (e) => { if (e.key === "Escape") closeSearch(); if (e.key === "Enter") { const t = e.target.value.trim(); closeSearch(); location.hash = "#/shop?q=" + encodeURIComponent(t); } });
