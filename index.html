@@ -208,12 +208,7 @@
     .cta h2 { font-size: 42px; }
     .cta p { color: #c9c0b0; max-width: 36em; }
 
-    footer.site { background: #11100e; color: #d9d1c3; padding: 48px 0 24px; font-size: 14px; }
-    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
-    footer h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-2); margin: 0 0 12px; }
-    footer a { display: block; padding: 4px 0; color: #d9d1c3; }
-    footer a:hover { color: #fff; }
-    .legal { border-top: 1px solid #2b2925; margin-top: 32px; padding-top: 16px; color: #9c9488; font-size: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    footer a { display: block; padding: 4px 0; }
 
     .overlay {
       position: fixed; inset: 0; background: rgba(22,20,17,.46); z-index: 60; display: none; align-items: flex-start; justify-content: center; padding: 8vh 16px;
@@ -240,11 +235,79 @@
     .backdrop { position: fixed; inset: 0; background: rgba(22,20,17,.4); z-index: 65; display: none; }
     .backdrop.show { display: block; }
 
+    .photo-count {
+      position: absolute; bottom: 10px; right: 10px; background: rgba(22,20,17,.78); color: #f4efe6;
+      font-size: 11px; letter-spacing: .08em; padding: 4px 8px;
+    }
+    .gallery { display: grid; gap: 10px; }
+    .gallery-main {
+      min-height: 520px; border: 1px solid var(--line); display: grid; place-items: center; position: relative; overflow: hidden;
+    }
+    .gallery-main img.photo { width: 100%; height: 520px; object-fit: cover; }
+    .gallery-label {
+      position: absolute; left: 12px; bottom: 12px; background: rgba(22,20,17,.8); color: #f4efe6;
+      font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 9px;
+    }
+    .gallery-thumbs { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+    .gallery-thumbs button {
+      border: 1px solid var(--line); background: var(--paper); padding: 0; min-height: 72px; cursor: pointer;
+      display: grid; place-items: center; overflow: hidden;
+    }
+    .gallery-thumbs button.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .gallery-thumbs img { width: 100%; height: 72px; object-fit: cover; }
+    .gallery-thumbs svg { width: 100%; height: 64px; }
+    .options { display: grid; gap: 10px; margin: 16px 0; }
+    .options .opt {
+      border: 1px solid var(--line); background: var(--paper); padding: 10px 12px; display: flex; justify-content: space-between; gap: 12px;
+    }
+    .band { background: #0a111c; color: #eef2f6; padding: 56px 0; }
+    .band h2 { color: #fff; font-family: var(--sans); font-weight: 650; letter-spacing: 0; font-size: 28px; }
+    .explore-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 22px; }
+    .explore-card { color: #fff; }
+    .explore-card img, .explore-card .ph {
+      width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 10px; background: #151c26; display: block;
+    }
+    .explore-card span { display: block; margin-top: 10px; font-size: 16px; }
+    .band .center { display: flex; justify-content: center; margin-top: 28px; }
+    .btn.light { background: transparent; color: #fff; border-color: #fff; }
+    .popular { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 28px; margin-top: 22px; }
+    .popular a { color: #c9d2dc; padding: 5px 0; display: block; font-size: 14px; }
+    .popular a:hover { color: #fff; }
+    .trust { color: #c9d2dc; margin: 8px 0 22px; }
+    .stars { color: #3b82f6; letter-spacing: 2px; }
+    .review-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .review-card { background: #15202e; border-radius: 10px; padding: 22px; min-height: 210px; display: flex; flex-direction: column; }
+    .review-top { display: flex; justify-content: space-between; color: #93a0b0; font-size: 13px; }
+    .review-card p { color: #e8eef5; line-height: 1.55; flex: 1; }
+    .who { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a3a4e; display: grid; place-items: center; font-weight: 700; }
+    .dots { display: flex; gap: 6px; justify-content: center; margin-top: 18px; }
+    .dots button { width: 28px; height: 4px; border: 0; background: #2a3a4e; cursor: pointer; padding: 0; }
+    .dots button.on { background: #3b82f6; }
+    footer.site { background: #0a111c; color: #c9d2dc; padding: 48px 0 24px; font-size: 14px; }
+    .foot-top, .foot-mid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; padding-bottom: 32px; }
+    .foot-mid { border-top: 1px solid #1c2836; padding-top: 32px; }
+    footer h4 { font-size: 15px; letter-spacing: 0; text-transform: none; color: #fff; margin: 0 0 14px; font-family: var(--sans); font-weight: 650; }
+    footer a { display: block; padding: 5px 0; color: #c9d2dc; }
+    footer a:hover { color: #fff; }
+    .qr { width: 108px; height: 108px; background: #fff; padding: 6px; margin: 8px 0 12px; }
+    .store { display: flex; gap: 8px; flex-wrap: wrap; }
+    .store span, .pay span {
+      border: 1px solid #3a4656; border-radius: 6px; padding: 6px 10px; font-size: 12px; color: #fff; display: inline-block;
+    }
+    .pay { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .regions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px 18px; border-top: 1px solid #1c2836; padding: 28px 0; }
+    .regions a { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
+    .legal { border-top: 1px solid #1c2836; margin-top: 0; padding-top: 16px; color: #93a0b0; font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .legal nav, .social { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .social a { padding: 0; font-size: 18px; }
+
     @media (max-width: 980px) {
       .mast { grid-template-columns: auto 1fr auto; }
       .search-open, .primary { display: none; }
       .menu-toggle { display: grid; }
-      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-grid { grid-template-columns: 1fr; }
+      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row { grid-template-columns: 1fr 1fr; }
+      .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
       .filters { position: static; }
       .hero { padding-top: 36px; }
@@ -253,6 +316,9 @@
       .wrap { width: min(var(--max), calc(100% - 24px)); }
       .cards, .maison-row, .stats { grid-template-columns: 1fr 1fr; }
       form .grid { grid-template-columns: 1fr; }
+      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail { grid-template-columns: 1fr; }
+      .popular, .regions { grid-template-columns: 1fr 1fr; }
+      .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .util .wrap { justify-content: flex-end; }
       .util-left { display: none; }
     }
@@ -337,9 +403,13 @@
             <button data-go="#/shop?type=Field">Field</button>
             <button data-go="#/shop?type=Skeleton">Skeleton</button>
             <button data-go="#/shop?type=Moonphase">Moonphase</button>
+            <button data-go="#/shop?type=Pocket">Pocket watches</button>
+            <button data-go="#/shop?metal=gold">Gold watches</button>
+            <button data-go="#/shop?movement=Automatic">Automatic</button>
           </div>
         </div>
       </div>
+      <div class="nav-item"><a href="#/">Explore</a></div>
       <div class="nav-item">
         <a href="#/brands">Brands</a>
         <div class="mega two">
@@ -393,39 +463,90 @@
   </section>
 
   <footer class="site">
-    <div class="wrap foot-grid">
-      <div>
-        <h4>Vespera</h4>
-        <p>An independent marketplace for exceptional timepieces. Original maisons and sample listings created for this catalogue — not affiliated with any other watch platform.</p>
+    <div class="wrap">
+      <div class="foot-top">
+        <div>
+          <h4>Buy on Vespera</h4>
+          <a href="#/buyer-protection">Vespera Buyer Protection</a>
+          <a href="#/escrow">Payment via the escrow service</a>
+          <a href="#/authenticity">Commitment to authenticity</a>
+          <a href="#/returns">Easy returns</a>
+        </div>
+        <div>
+          <h4>Sell on Vespera</h4>
+          <a href="#/private-sellers">Selling watches as a private seller</a>
+          <a href="#/commercial">Selling watches commercially</a>
+          <a href="#/appraisal">Free appraisal</a>
+          <a href="#/seller-advice">Advice for private sellers</a>
+        </div>
+        <div>
+          <h4>About Vespera</h4>
+          <a href="#/about">About us</a>
+          <a href="#/jobs">Jobs</a>
+          <a href="#/press">Press</a>
+          <a href="#/legal">Legal details</a>
+        </div>
       </div>
-      <div>
-        <h4>Shop</h4>
-        <a href="#/shop">All listings</a>
-        <a href="#/brands">Maisons</a>
-        <a href="#/shop?type=Dive">Dive watches</a>
-        <a href="#/shop?type=Dress">Dress watches</a>
-        <a href="#/shop?type=Chronograph">Chronographs</a>
-        <a href="#/shop?certified=1">Certified</a>
+      <div class="foot-mid">
+        <div>
+          <h4>Personalized support</h4>
+          <a href="#/help">Frequently asked questions</a>
+          <a href="#/contact">Contact</a>
+        </div>
+        <div>
+          <h4>Vespera apps</h4>
+          <div class="qr" aria-hidden="true">
+            <svg viewBox="0 0 100 100" width="96" height="96">
+              <rect width="100" height="100" fill="#fff"/>
+              <rect x="8" y="8" width="28" height="28" fill="#0a111c"/>
+              <rect x="12" y="12" width="20" height="20" fill="#fff"/>
+              <rect x="16" y="16" width="12" height="12" fill="#0a111c"/>
+              <rect x="64" y="8" width="28" height="28" fill="#0a111c"/>
+              <rect x="68" y="12" width="20" height="20" fill="#fff"/>
+              <rect x="72" y="16" width="12" height="12" fill="#0a111c"/>
+              <rect x="8" y="64" width="28" height="28" fill="#0a111c"/>
+              <rect x="12" y="68" width="20" height="20" fill="#fff"/>
+              <rect x="16" y="72" width="12" height="12" fill="#0a111c"/>
+              <rect x="48" y="48" width="8" height="8" fill="#0a111c"/>
+              <rect x="64" y="52" width="6" height="6" fill="#0a111c"/>
+              <rect x="76" y="64" width="10" height="10" fill="#0a111c"/>
+              <rect x="52" y="76" width="8" height="8" fill="#0a111c"/>
+              <rect x="40" y="20" width="6" height="6" fill="#0a111c"/>
+              <rect x="20" y="48" width="6" height="10" fill="#0a111c"/>
+            </svg>
+          </div>
+          <div class="store">
+            <span>Download on the App Store</span>
+            <span>Get it on Google Play</span>
+          </div>
+        </div>
+        <div>
+          <h4>Payment methods</h4>
+          <div class="pay">
+            <span>VISA</span>
+            <span>Mastercard</span>
+            <span>AMEX</span>
+            <span>Wire transfer</span>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4>Company</h4>
-        <a href="#/about">About</a>
-        <a href="#/dealers">Dealers</a>
-        <a href="#/magazine">Magazine</a>
-        <a href="#/contact">Contact</a>
-        <a href="#/help">Help centre</a>
+      <div class="regions" id="regionGrid"></div>
+      <div class="legal">
+        <nav>
+          <a href="#/privacy">Data privacy policy</a>
+          <a href="#/accessibility">Declaration on accessibility</a>
+          <a href="#/cookies">Manage cookies</a>
+          <a href="#/terms">Terms &amp; conditions</a>
+          <a href="#/sitemap">Sitemap</a>
+        </nav>
+        <div class="social">
+          <a href="#/press" aria-label="Facebook">f</a>
+          <a href="#/press" aria-label="YouTube">▶</a>
+          <a href="#/press" aria-label="TikTok">♪</a>
+          <a href="#/press" aria-label="LinkedIn">in</a>
+          <a href="#/press" aria-label="Instagram">◎</a>
+        </div>
       </div>
-      <div>
-        <h4>Legal</h4>
-        <a href="#/privacy">Privacy</a>
-        <a href="#/terms">Terms of use</a>
-        <a href="#/authenticate">Authentication</a>
-        <a href="#/account">Your account</a>
-      </div>
-    </div>
-    <div class="wrap legal">
-      <span>© 2026 Vespera Horology Ltd. Sample catalogue for demonstration.</span>
-      <span>USD · English</span>
     </div>
   </footer>
 
@@ -491,7 +612,10 @@
       { id: "va-fil", maison: "Valois", slug: "valois", model: "Fil de Temps", ref: "VA-FT-35", year: 2024, condition: "Unworn", price: 27400, type: "Dress", gender: "Unisex", movement: "Manual extra-thin, VA-1", case: "35mm, 18k yellow gold", water: "30m", dial: "Argenté", dialColor: "#ece8df", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: true, era: "Modern", location: "Lyon", dealer: "Maison Rive", desc: "5.2mm gold case, hand-bevelled movement, 80-hour mainspring." },
       { id: "st-cel", maison: "Stellara", slug: "stellara", model: "Celestine Moon", ref: "ST-CM-40", year: 2023, condition: "Like new", price: 8600, type: "Moonphase", gender: "Unisex", movement: "Automatic moonphase, ST-M", case: "40mm, stainless steel", water: "50m", dial: "Midnight sky", dialColor: "#141a2e", metal: "#b8c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Neuchâtel", dealer: "Canton Horology", desc: "Pointer-date moonphase with a starry aventurine-style dial." },
       { id: "st-gold", maison: "Stellara", slug: "stellara", model: "Celestine Gold", ref: "ST-CM-G", year: 2021, condition: "Excellent", price: 19600, type: "Moonphase", gender: "Women", movement: "Automatic moonphase, ST-M", case: "36mm, 18k yellow gold", water: "30m", dial: "Sky enamel", dialColor: "#7ba7c9", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Florence", dealer: "Casa Minerva", desc: "Gold Celestine with a pale sky grand feu dial." },
-      { id: "ca-compact", maison: "Calder", slug: "calder", model: "Compact 36 Dive", ref: "CA-C36", year: 2015, condition: "Good", price: 2950, type: "Dive", gender: "Unisex", movement: "Automatic, CA-36", case: "36mm, stainless steel", water: "200m", dial: "Burgundy", dialColor: "#5a1f2a", metal: "#9aa3ab", bezel: "dive", papers: false, box: false, certified: false, limited: false, era: "Modern", location: "Barcelona", dealer: "Private seller", desc: "Compact diver with a faded burgundy sunburst and a tight bezel." }
+      { id: "ca-compact", maison: "Calder", slug: "calder", model: "Compact 36 Dive", ref: "CA-C36", year: 2015, condition: "Good", price: 2950, type: "Dive", gender: "Unisex", movement: "Automatic, CA-36", case: "36mm, stainless steel", water: "200m", dial: "Burgundy", dialColor: "#5a1f2a", metal: "#9aa3ab", bezel: "dive", papers: false, box: false, certified: false, limited: false, era: "Modern", location: "Barcelona", dealer: "Private seller", desc: "Compact diver with a faded burgundy sunburst and a tight bezel." },
+      { id: "qc-hunter", maison: "Quill & Crown", slug: "quill", model: "Sovereign Hunter", ref: "QC-HNT-18", year: 1928, condition: "Good", price: 6400, type: "Pocket", gender: "Unisex", movement: "Manual pocket, QC-P1", case: "50mm, 18k yellow gold hunter", water: "Not rated", dial: "Enamel white", dialColor: "#f7f4ee", metal: "#c9a227", bezel: "coin", papers: false, box: true, certified: true, limited: false, era: "Vintage", location: "Zurich", dealer: "Crown & Case", desc: "Hunter-case pocket watch with a secret spring lid and a later chain." },
+      { id: "ly-openface", maison: "Lysander", slug: "lysander", model: "Open Face 1902", ref: "LY-OF-02", year: 1902, condition: "Very good", price: 4100, type: "Pocket", gender: "Unisex", movement: "Manual pocket, LY-P", case: "48mm, yellow gold open face", water: "Not rated", dial: "Porcelain", dialColor: "#efe6d2", metal: "#c9a227", bezel: "smooth", papers: false, box: false, certified: false, limited: false, era: "Vintage", location: "London", dealer: "Private seller", desc: "Open-face city pocket watch. Hairlines on the porcelain, original bow." },
+      { id: "ny-oval", maison: "Nymara", slug: "nymara", model: "Iris Oval", ref: "NY-OV-22", year: 2022, condition: "Like new", price: 9800, type: "Dress", gender: "Women", movement: "Quartz, NY-Q8", case: "24mm oval, 18k yellow gold", water: "30m", dial: "Pearl", dialColor: "#f0e6ea", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Paris", dealer: "Maison Rive", desc: "Oval jewelry watch worn twice. Original pearl strap included." }
     ];
 
     const ARTICLES = [
@@ -510,11 +634,62 @@
       { name: "Ardent Atelier", city: "Le Locle", focus: "Ardent small series" }
     ];
 
+    const GALLERY_VIEWS = ["Front","Three-quarter","Lug profile","Caseback","Dial macro","Crown & bezel","Clasp","Box & papers"];
+
+    const REGIONS = [
+      ["🇩🇪","Germany"],["🇬🇧","United Kingdom"],["🇧🇪","Belgium"],["🇭🇷","Hrvatska"],["🇰🇷","South Korea"],["🇮🇳","India"],["🇸🇬","Singapore"],["🇵🇭","Philippines"],
+      ["🇺🇸","United States"],["🇦🇹","Österreich"],["🇭🇺","Magyar"],["🇭🇰","Hong Kong"],["🇵🇹","Portugal"],["🇫🇮","Suomi"],["🇦🇪","UAE"],["🇹🇭","Thailand"],
+      ["🇨🇭","Schweiz"],["🇨🇿","Česko"],["🇨🇳","China"],["🇪🇸","España"],["🇧🇷","Brasil"],["🇳🇴","Norge"],["🇿🇦","South Africa"],["🇴🇲","Oman"],
+      ["🇵🇱","Polska"],["🇹🇷","Türkiye"],["🇳🇱","Nederland"],["🇲🇽","México"],["🇦🇷","Argentina"],["🇸🇰","Slovensko"],["🇨🇱","Chile"],["🇶🇦","Qatar"],
+      ["🇬🇷","Ελλάδα"],["🇮🇹","Italia"],["🇦🇺","Australia"],["🇸🇪","Sverige"],["🇷🇺","Россия"],["🇹🇼","Taiwan"],["🇮🇩","Indonesia"],["🇧🇭","Bahrain"],
+      ["🇫🇷","France"],["🇨🇦","Canada"],["🇩🇰","Danmark"],["🇷🇴","Romania"],["🇯🇵","Japan"],["🇳🇿","New Zealand"],["🇲🇾","Malaysia"],["🇰🇼","Kuwait"]
+    ];
+
+    const REVIEWS = [
+      { name: "Amelia Hart", country: "United Kingdom", when: "Today", stars: 5, text: "Clear listing, honest photographs, and the seller answered the same day. The Calder arrived exactly as described." },
+      { name: "Jonas Weber", country: "Germany", when: "Today", stars: 5, text: "I used buyer protection for the first time. Inspection notes matched the listing. Would buy again." },
+      { name: "Priya Nair", country: "India", when: "Today", stars: 5, text: "The filters actually work. I found a Stellara moonphase in my budget without paging through noise." },
+      { name: "Luca Bianchi", country: "Italy", when: "Yesterday", stars: 4, text: "Shipping took a few extra days, but the watch was packed properly and the papers were complete." },
+      { name: "Sofia Alvarez", country: "Spain", when: "Yesterday", stars: 5, text: "Private seller, full set, no surprises on the bracelet. The escrow hold made me comfortable." },
+      { name: "Noah Pedersen", country: "Norway", when: "2 days ago", stars: 5, text: "Frost & Tide Ice GMT looks better in person. Seller sent extra lug photos before I committed." },
+      { name: "Hanae Mori", country: "Japan", when: "2 days ago", stars: 5, text: "Certified listing, movement shot, and a fair price. Support replied in Japanese the next morning." },
+      { name: "Omar Haddad", country: "UAE", when: "3 days ago", stars: 5, text: "Wire transfer was straightforward. The watch cleared inspection before it left Geneva." },
+      { name: "Claire Dupont", country: "France", when: "3 days ago", stars: 4, text: "Minor desk wear not in the first photo, but it was in photo seven. Still a good buy." },
+      { name: "Marcus Lee", country: "Singapore", when: "4 days ago", stars: 5, text: "Eight images on every listing is what I wanted. Caseback and clasp shots saved me a question." },
+      { name: "Elena Popov", country: "Romania", when: "4 days ago", stars: 5, text: "Returned a strap that did not fit. The return window was as promised." },
+      { name: "Tomáš Novák", country: "Czechia", when: "5 days ago", stars: 5, text: "Helion panda chrono, box and papers. Dealer was precise about the service date." },
+      { name: "Aisha Rahman", country: "Malaysia", when: "5 days ago", stars: 5, text: "Nymara Iris 28 for a birthday. The jewelry shots and pearl strap photo helped." },
+      { name: "Benjamin Cole", country: "United States", when: "6 days ago", stars: 4, text: "Good marketplace. I wish more private sellers included a timed video, but this one did." },
+      { name: "Ines Costa", country: "Portugal", when: "6 days ago", stars: 5, text: "Bronze Abyss with honest patina photos. No lacquer surprise." },
+      { name: "Felix Braun", country: "Austria", when: "1 week ago", stars: 5, text: "Sold my Lysander through a private listing. Three serious requests in a week." },
+      { name: "Mei Chen", country: "Taiwan", when: "1 week ago", stars: 5, text: "Quill & Crown steel sovereign. Enamel dial was as white as the macro shot." },
+      { name: "Hugo Silva", country: "Brazil", when: "1 week ago", stars: 5, text: "Appraised a family pocket watch for free, then listed it. The hunter case photos were excellent." },
+      { name: "Sarah Quinn", country: "Canada", when: "1 week ago", stars: 5, text: "Protection was the reason I used Vespera. Funds sat in hold until I confirmed." },
+      { name: "Anders Holm", country: "Sweden", when: "1 week ago", stars: 4, text: "Kestrel chrono cream dial. One hairline on the crystal, disclosed in the listing." },
+      { name: "Leila Farouk", country: "Egypt", when: "8 days ago", stars: 5, text: "Peregrine GMT two-tone. Bezel action described accurately." },
+      { name: "Peter Walsh", country: "Ireland", when: "8 days ago", stars: 5, text: "Straightforward FAQ and a human on the contact form, even in this demo story." },
+      { name: "Giulia Rossi", country: "Switzerland", when: "9 days ago", stars: 5, text: "Bought from Atelier Nord. Serial matched the papers. Quiet, professional." },
+      { name: "Daniel Cho", country: "South Korea", when: "9 days ago", stars: 5, text: "Skeleton Type 3 looks better in the openworked shots than any render." },
+      { name: "Marie Laurent", country: "Belgium", when: "10 days ago", stars: 5, text: "Valois Fil de Temps is as thin as claimed. Box, papers, and extra strap." },
+      { name: "James Okonkwo", country: "South Africa", when: "10 days ago", stars: 4, text: "Currency switch to USD helped. Delivery quotes were clear." },
+      { name: "Natalia Ruiz", country: "Mexico", when: "11 days ago", stars: 5, text: "Women’s Iris Oval. Eight photos including the clasp. That mattered." },
+      { name: "Owen Fraser", country: "New Zealand", when: "11 days ago", stars: 5, text: "Bought a Halcyon compact diver. Green dial is the one from the listing, not a filter." },
+      { name: "Yara Mansour", country: "Qatar", when: "12 days ago", stars: 5, text: "Escrow and authenticity pages explained the steps without theatre." },
+      { name: "Chris Papadopoulos", country: "Greece", when: "12 days ago", stars: 5, text: "Field Service Mk IV, honest wear, fair price. Private seller was responsive." },
+      { name: "Anna Lindqvist", country: "Finland", when: "2 weeks ago", stars: 5, text: "Magazine essays are actually useful. Then I bought the Celestine." },
+      { name: "Ravi Menon", country: "United Arab Emirates", when: "2 weeks ago", stars: 4, text: "Commercial seller listing, invoice included. Watch was unworn." },
+      { name: "Pauline Moreau", country: "Luxembourg", when: "2 weeks ago", stars: 5, text: "Étoile Perpetuelle limited piece. Papers sealed. Worth the wait." },
+      { name: "Kenji Sato", country: "Japan", when: "2 weeks ago", stars: 5, text: "Caseback image showed the movement finish. That sold me on Rochefort." },
+      { name: "Isabel Freitas", country: "Portugal", when: "3 weeks ago", stars: 5, text: "Easy returns policy was printed in the confirmation. I did not need it." },
+      { name: "Mark Jensen", country: "Denmark", when: "3 weeks ago", stars: 5, text: "North Sea 500. Valve, bezel, and bracelet shots. Professional listing." }
+    ];
+
     const state = {
       saved: JSON.parse(localStorage.getItem("vespera-saved") || "[]"),
       inquiries: JSON.parse(localStorage.getItem("vespera-inq") || "[]"),
       currency: "USD",
-      lang: "English"
+      lang: "English",
+      reviewPage: 0
     };
 
     const $ = (id) => document.getElementById(id);
@@ -551,9 +726,10 @@
       render();
     }
 
-    function watchSVG(p, size) {
+    function watchSVG(p, size, extraStyle) {
       const d = p.dialColor, m = p.metal;
       const isOpen = p.type === "Skeleton";
+      const pocket = p.type === "Pocket";
       const ticks = Array.from({ length: 60 }, (_, i) => {
         const a = (i * 6 - 90) * Math.PI / 180;
         const inner = i % 5 === 0 ? 70 : 78;
@@ -586,10 +762,9 @@
       const chrono = p.type === "Chronograph" ? `<circle cx="100" cy="64" r="14" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="72" cy="108" r="14" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="128" cy="108" r="14" fill="none" stroke="rgba(255,255,255,.35)"/>` : "";
       const open = isOpen ? `<circle cx="100" cy="100" r="28" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="8"/>
         <circle cx="88" cy="96" r="10" fill="none" stroke="#c4a36a"/><circle cx="114" cy="108" r="8" fill="none" stroke="#9aa3ab"/>` : "";
-      return `<svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" aria-hidden="true">
-        <rect x="88" y="6" width="24" height="18" rx="3" fill="${m}"/>
-        <rect x="88" y="196" width="24" height="18" rx="3" fill="${m}"/>
-        <rect x="178" y="92" width="12" height="16" rx="2" fill="${m}"/>
+      return `<svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" style="${extraStyle || ""}" aria-hidden="true">
+        ${pocket ? `<path d="M100 8c12 0 18 10 18 18" fill="none" stroke="${m}" stroke-width="4"/><circle cx="100" cy="24" r="6" fill="${m}"/>` : `<rect x="88" y="6" width="24" height="18" rx="3" fill="${m}"/><rect x="88" y="196" width="24" height="18" rx="3" fill="${m}"/>`}
+        ${pocket ? "" : `<rect x="178" y="92" width="12" height="16" rx="2" fill="${m}"/>`}
         <circle cx="100" cy="100" r="96" fill="${m}"/>
         ${bezel}
         <circle cx="100" cy="100" r="78" fill="${isOpen ? "#2a2d32" : d}"/>
@@ -600,6 +775,54 @@
         <line x1="100" y1="100" x2="142" y2="100" stroke="#c4a36a" stroke-width="2.2" stroke-linecap="round"/>
         <circle cx="100" cy="100" r="3.2" fill="#c4a36a"/>
       </svg>`;
+    }
+
+    function photoFor(p) {
+      if (p.type === "Pocket") return "assets/explore-pocket.jpg";
+      if (p.gender === "Women") return "assets/explore-womens.jpg";
+      if (p.type === "Skeleton") return "assets/explore-skeleton.jpg";
+      if (p.type === "Moonphase") return "assets/explore-moonphase.jpg";
+      if (/gold/i.test(p.case)) return "assets/explore-gold.jpg";
+      if (p.type === "Dive" || /automatic/i.test(p.movement)) return "assets/explore-automatic.jpg";
+      return "assets/explore-mens.svg";
+    }
+
+    function watchView(p, view, size) {
+      const m = p.metal, d = p.dialColor;
+      const bgs = ["#efe7d8","#2c2a27","#d7cbb8","#1c1c1c","#f4efe6","#0e1c33","#e8e0d2","#f7f1e6"];
+      const bg = `background:${bgs[view]};width:100%;height:100%;display:grid;place-items:center;min-height:inherit`;
+      if (view === 3) {
+        return `<div style="${bg}"><svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" aria-hidden="true">
+          <circle cx="100" cy="110" r="82" fill="${m}"/><circle cx="100" cy="110" r="64" fill="#2a2d32"/>
+          <circle cx="86" cy="104" r="16" fill="none" stroke="#c4a36a" stroke-width="2"/>
+          <circle cx="120" cy="120" r="11" fill="none" stroke="#9aa3ab"/>
+          <circle cx="100" cy="110" r="4" fill="#c4a36a"/>
+          <text x="100" y="186" text-anchor="middle" font-size="8" fill="#f4efe6" font-family="Times New Roman, serif">${p.ref}</text>
+        </svg></div>`;
+      }
+      if (view === 6) {
+        return `<div style="${bg}"><svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" aria-hidden="true">
+          ${Array.from({length:7},(_,i)=>`<rect x="${30+i*18}" y="88" width="16" height="44" rx="3" fill="${m}" opacity="${0.55+i*0.06}"/>`).join("")}
+          <rect x="78" y="96" width="44" height="28" rx="4" fill="#1b1e22" stroke="${m}"/>
+          <text x="100" y="170" text-anchor="middle" font-size="8" fill="#6d665b">Signed clasp</text>
+        </svg></div>`;
+      }
+      if (view === 7) {
+        return `<div style="${bg}"><svg viewBox="0 0 200 220" width="${size}" height="${size * 1.1}" aria-hidden="true">
+          <rect x="30" y="40" width="90" height="90" rx="6" fill="#3d2a22"/><rect x="38" y="48" width="74" height="74" rx="4" fill="#1b1e22"/>
+          <rect x="118" y="58" width="52" height="70" fill="#f4efe6" stroke="#c4a36a"/>
+          <text x="144" y="96" text-anchor="middle" font-size="7" fill="#9a7b4f">PAPERS</text>
+          <circle cx="75" cy="93" r="22" fill="${m}"/><circle cx="75" cy="93" r="16" fill="${d}"/>
+          <text x="100" y="160" text-anchor="middle" font-size="8" fill="#6d665b">${p.box && p.papers ? "Full set" : p.box ? "Box only" : p.papers ? "Papers only" : "Watch only"}</text>
+        </svg></div>`;
+      }
+      const styles = ["","transform:rotate(-18deg) scale(1.06)","transform:scaleX(.42) rotate(10deg)","","transform:scale(1.85) translateY(6%)","transform:scale(1.45) translate(16%,-8%)","",""];
+      return `<div style="${bg}">${watchSVG(p, size, styles[view])}</div>`;
+    }
+
+    function gallerySlot(p, view, size) {
+      if (view === 0) return `<img class="photo" src="${photoFor(p)}" alt="${p.maison} ${p.model} — ${GALLERY_VIEWS[view]}" />`;
+      return watchView(p, view, size);
     }
 
     function parseRoute() {
@@ -626,6 +849,8 @@
       if (q.papers === "1") list = list.filter((p) => p.papers && p.box);
       if (q.era) list = list.filter((p) => p.era === q.era);
       if (q.gender) list = list.filter((p) => p.gender === q.gender || p.gender === "Unisex");
+      if (q.metal === "gold") list = list.filter((p) => /gold/i.test(p.case));
+      if (q.movement === "Automatic") list = list.filter((p) => /automatic/i.test(p.movement));
       if (q.price) {
         const [a, b] = q.price.split("-").map(Number);
         list = list.filter((p) => p.price >= a && p.price <= b);
@@ -643,6 +868,7 @@
         <div class="card-art">
           ${p.certified ? `<span class="badge">Certified</span>` : (p.limited ? `<span class="badge">Limited</span>` : "")}
           <button class="save ${on ? "on" : ""}" data-save="${p.id}" aria-label="Save">${on ? "♥" : "♡"}</button>
+          <span class="photo-count">8 photos</span>
           ${watchSVG(p, 180)}
         </div>
         <div class="card-body">
@@ -657,7 +883,7 @@
     function home() {
       const featured = PRODUCTS.filter((p) => p.certified).slice(0, 4);
       const arrivals = [...PRODUCTS].sort((a, b) => b.year - a.year).slice(0, 4);
-      const types = ["Dive", "Dress", "Chronograph", "GMT", "Pilot", "Field", "Skeleton", "Moonphase"];
+      const types = ["Dive", "Dress", "Chronograph", "GMT", "Pilot", "Field", "Skeleton", "Moonphase", "Pocket"];
       return `<div class="wrap hero">
         <div>
           <p class="kicker">Collectors · Ateliers · Private sellers</p>
@@ -708,6 +934,60 @@
         <div class="article-grid">
           ${ARTICLES.map(a => `<a class="article" href="#/article/${a.id}"><span class="tag">${a.tag}</span><h3>${a.title}</h3><p>${a.dek}</p></a>`).join("")}
         </div>
+      </div></section>
+      ${exploreBand()}
+      ${popularBand()}
+      ${reviewsBand(state.reviewPage)}`;
+    }
+
+    function exploreBand() {
+      const items = [
+        ["Men's watches","assets/explore-mens.svg","#/shop?gender=Men"],
+        ["Pre-owned watches","assets/explore-preowned.svg","#/shop?condition=Excellent"],
+        ["Pocket watches","assets/explore-pocket.jpg","#/shop?type=Pocket"],
+        ["Women's watches","assets/explore-womens.jpg","#/shop?gender=Women"],
+        ["Automatic watches","assets/explore-automatic.jpg","#/shop?movement=Automatic"],
+        ["Skeleton watches","assets/explore-skeleton.jpg","#/shop?type=Skeleton"],
+        ["Gold watches","assets/explore-gold.jpg","#/shop?metal=gold"],
+        ["Moon phase watches","assets/explore-moonphase.jpg","#/shop?type=Moonphase"]
+      ];
+      return `<section class="band"><div class="wrap">
+        <h2>Explore Vespera</h2>
+        <div class="explore-grid">
+          ${items.map(([label,src,href]) => `<a class="explore-card" href="${href}"><img src="${src}" alt="${label}"><span>${label}</span></a>`).join("")}
+        </div>
+        <div class="center"><a class="btn light" href="#/shop">Display all</a></div>
+      </div></section>`;
+    }
+
+    function popularBand() {
+      const cols = [[],[],[],[]];
+      PRODUCTS.forEach((p,i) => cols[i % 4].push(p));
+      return `<section class="band" style="padding-top:0"><div class="wrap">
+        <h2>Our most popular models</h2>
+        <div class="popular">
+          ${cols.map(col => `<div>${col.map(p => `<a href="#/listing/${p.id}">${p.maison} ${p.model}</a>`).join("")}</div>`).join("")}
+        </div>
+      </div></section>`;
+    }
+
+    function reviewsBand(page) {
+      const n = 3;
+      const start = ((page || 0) * n) % REVIEWS.length;
+      const slice = [];
+      for (let i = 0; i < n; i++) slice.push(REVIEWS[(start + i) % REVIEWS.length]);
+      const pages = Math.ceil(REVIEWS.length / n);
+      return `<section class="band" style="padding-top:12px"><div class="wrap">
+        <h2>What thousands of happy customers are saying about us.</h2>
+        <p class="trust"><span class="stars">★★★★★</span> TrustScore: Excellent with 4.7/5 stars · ${REVIEWS.length} reviews from around the globe. <a href="#/reviews" style="color:#93c5fd">Read all reviews</a></p>
+        <div class="review-row">
+          ${slice.map(r => `<article class="review-card">
+            <div class="review-top"><span class="stars">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</span><span>${r.when}</span></div>
+            <p>“${r.text}”</p>
+            <div class="who"><div class="avatar">${r.name[0]}</div><div><strong>${r.name}</strong><div class="meta" style="color:#93a0b0">${r.country}</div></div></div>
+          </article>`).join("")}
+        </div>
+        <div class="dots">${Array.from({length: pages}, (_,i) => `<button type="button" class="${i===((page||0)%pages)?"on":""}" data-reviews="${i}"></button>`).join("")}</div>
       </div></section>`;
     }
 
@@ -724,7 +1004,7 @@
           <label>Type</label>
           <select id="fType">
             <option value="">All types</option>
-            ${["Dive","Dress","Chronograph","GMT","Pilot","Field","Skeleton","Moonphase"].map(t=>`<option ${q.type===t?"selected":""}>${t}</option>`).join("")}
+            ${["Dive","Dress","Chronograph","GMT","Pilot","Field","Skeleton","Moonphase","Pocket"].map(t=>`<option ${q.type===t?"selected":""}>${t}</option>`).join("")}
           </select>
           <label>Condition</label>
           <select id="fCond">
@@ -768,29 +1048,36 @@
       if (!p) return `<div class="wrap page"><h2>Listing not found</h2><p><a href="#/shop">Return to shop</a></p></div>`;
       const related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
       const on = state.saved.includes(p.id);
+      const thumbs = GALLERY_VIEWS.map((label, i) => `<button type="button" class="${i===0?"on":""}" data-thumb="${i}" aria-label="${label}">${i===0?`<img src="${photoFor(p)}" alt="">`:watchView(p, i, 70)}</button>`).join("");
       return `<div class="wrap">
         <p class="crumbs"><a href="#/">Home</a> / <a href="#/shop">Shop</a> / <a href="#/brand/${p.slug}">${p.maison}</a> / ${p.model}</p>
         <div class="detail">
-          <div class="detail-art">${watchSVG(p, 420)}</div>
+          <div class="gallery">
+            <div class="gallery-main" id="galleryMain">${gallerySlot(p, 0, 420)}<span class="gallery-label" id="galleryLabel">${GALLERY_VIEWS[0]} · 1 / 8</span></div>
+            <div class="gallery-thumbs">${thumbs}</div>
+          </div>
           <div>
             <p class="kicker">${p.maison}${p.certified ? " · Certified" : ""}${p.limited ? " · Limited" : ""}</p>
             <h1 style="font-size:48px">${p.model}</h1>
             <p class="lede" style="margin-top:12px">${p.desc}</p>
             <p class="price" style="font-size:36px">${money(p.price)}</p>
+            <div class="options">
+              <div class="opt"><span>Condition</span><strong>${p.condition}</strong></div>
+              <div class="opt"><span>Year</span><strong>${p.year}</strong></div>
+              <div class="opt"><span>Scope of delivery</span><strong>${p.box && p.papers ? "Box & papers" : p.box ? "Box" : p.papers ? "Papers" : "Watch only"}</strong></div>
+              <div class="opt"><span>Availability</span><strong>In stock · ${p.location}</strong></div>
+            </div>
             <div class="row" style="margin:18px 0">
               <button class="btn" data-inquire="${p.id}">Request to purchase</button>
               <button class="btn ghost" data-save="${p.id}">${on ? "Saved" : "Save listing"}</button>
             </div>
             <table class="spec">
               <tr><th>Reference</th><td>${p.ref}</td></tr>
-              <tr><th>Year</th><td>${p.year}</td></tr>
-              <tr><th>Condition</th><td>${p.condition}</td></tr>
               <tr><th>Type</th><td>${p.type}</td></tr>
               <tr><th>Movement</th><td>${p.movement}</td></tr>
               <tr><th>Case</th><td>${p.case}</td></tr>
               <tr><th>Water resistance</th><td>${p.water}</td></tr>
               <tr><th>Dial</th><td>${p.dial}</td></tr>
-              <tr><th>Box / papers</th><td>${p.box ? "Box" : "No box"} · ${p.papers ? "Papers" : "No papers"}</td></tr>
               <tr><th>Location</th><td>${p.location}</td></tr>
             </table>
             <div class="dealer-box">
@@ -998,12 +1285,44 @@
       </div>`;
     }
 
+    function infoPage(kicker, title, html) {
+      return `<div class="wrap page prose"><p class="kicker">${kicker}</p><h1>${title}</h1>${html}</div>`;
+    }
+
+    function reviewsPage() {
+      return `<div class="wrap page">
+        <p class="kicker">Reviews</p>
+        <h1>Customer reviews</h1>
+        <p class="lede">TrustScore 4.7/5 · ${REVIEWS.length} published notes in this original catalogue.</p>
+        <div style="display:grid;gap:12px">
+          ${REVIEWS.map(r => `<article class="panel"><div style="display:flex;justify-content:space-between"><span style="color:#3b82f6">${"★".repeat(r.stars)}</span><span class="meta">${r.when}</span></div><p>“${r.text}”</p><strong>${r.name}</strong> · ${r.country}</article>`).join("")}
+        </div>
+      </div>`;
+    }
+
+    const INFO = {
+      "buyer-protection": ["Buyers","Buyer protection","<p>Certified purchases can use a payment hold until you confirm the watch matches the eight listing photographs and the written condition.</p>"],
+      escrow: ["Buyers","Payment via the escrow service","<p>Funds are held until inspection and delivery are confirmed. This demonstration does not move real money.</p>"],
+      authenticity: ["Buyers","Commitment to authenticity","<p>Certified listings are written as inspected pieces. Private listings are sold as described by the seller.</p>"],
+      returns: ["Buyers","Easy returns","<p>Certified orders may be returned within 14 days if the watch differs from the listing. Private sales follow the seller’s terms.</p>"],
+      "private-sellers": ["Sellers","Selling as a private seller","<p>List from your collection without a dealer account. Price for a private sale; certified inspection is optional.</p>"],
+      commercial: ["Sellers","Selling commercially","<p>Dealers can publish multiple listings, invoices, and workshop notes. See the dealers directory.</p>"],
+      appraisal: ["Sellers","Free appraisal","<p>Send photographs and a reference. In this demo the form is stored only in your browser.</p>"],
+      "seller-advice": ["Sellers","Advice for private sellers","<p>Photograph the dial, caseback, clasp, and papers. State the service history. Ask a fair price.</p>"],
+      jobs: ["Company","Jobs","<p>Vespera is a demonstration catalogue and is not hiring.</p>"],
+      press: ["Company","Press","<p>For story material about this original marketplace, use the contact page.</p>"],
+      legal: ["Company","Legal details","<p>Vespera Horology Ltd. is a fictional imprint for this sample website. Listings are not offers for sale.</p>"],
+      accessibility: ["Legal","Declaration on accessibility","<p>Pages are structured with headings, skip links, and keyboard-focusable controls. If something is in the way, write via Contact.</p>"],
+      cookies: ["Legal","Manage cookies","<p>This file stores saved watches and inquiries in localStorage only. No advertising cookies are set.</p>"],
+      sitemap: ["Legal","Sitemap","<p><a href=\"#/\">Home</a> · <a href=\"#/shop\">Shop</a> · <a href=\"#/brands\">Brands</a> · <a href=\"#/sell\">Sell</a> · <a href=\"#/magazine\">Magazine</a> · <a href=\"#/reviews\">Reviews</a> · <a href=\"#/help\">Help</a> · <a href=\"#/contact\">Contact</a></p>"]
+    };
+
     function render() {
       const { parts, q } = parseRoute();
       const root = parts[0] || "";
       const view = $("view");
       const cta = $("footerCta");
-      cta.style.display = (root === "sell") ? "none" : "";
+      cta.style.display = (!root || root === "sell") ? "none" : "";
       let html = "";
       if (!root) html = home();
       else if (root === "shop") html = shop(q);
@@ -1023,6 +1342,8 @@
       else if (root === "account") html = account();
       else if (root === "saved") html = savedPage();
       else if (root === "inquiries") html = inquiriesPage();
+      else if (root === "reviews") html = reviewsPage();
+      else if (INFO[root]) html = infoPage(...INFO[root]);
       else html = `<div class="wrap page"><h1>Page not found</h1><p><a href="#/">Back to Vespera</a></p></div>`;
       view.innerHTML = html;
       window.scrollTo(0, 0);
@@ -1077,6 +1398,7 @@
     }
 
     document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    $("regionGrid").innerHTML = REGIONS.map(([flag, name]) => `<a href="#/shop"><span>${flag}</span>${name}</a>`).join("");
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
       <a href="#/shop?sort=new">New arrivals</a><a href="#/shop?certified=1">Certified</a>
@@ -1086,6 +1408,26 @@
     document.body.addEventListener("click", (e) => {
       const save = e.target.closest("[data-save]");
       if (save) { e.preventDefault(); toggleSave(save.getAttribute("data-save")); return; }
+      const thumb = e.target.closest("[data-thumb]");
+      if (thumb) {
+        e.preventDefault();
+        const i = Number(thumb.getAttribute("data-thumb"));
+        const p = PRODUCTS.find((x) => x.id === parseRoute().parts[1]);
+        if (!p || !$("galleryMain")) return;
+        $("galleryMain").innerHTML = gallerySlot(p, i, 420) + `<span class="gallery-label">${GALLERY_VIEWS[i]} · ${i + 1} / 8</span>`;
+        document.querySelectorAll("[data-thumb]").forEach((b) => b.classList.toggle("on", b === thumb));
+        return;
+      }
+      const rev = e.target.closest("[data-reviews]");
+      if (rev) {
+        e.preventDefault();
+        state.reviewPage = Number(rev.getAttribute("data-reviews"));
+        const band = rev.closest(".band");
+        const box = document.createElement("div");
+        box.innerHTML = reviewsBand(state.reviewPage);
+        band.replaceWith(box.firstElementChild);
+        return;
+      }
       const go = e.target.closest("[data-go]");
       if (go) { e.preventDefault(); closeSearch(); closeDrawer(); location.hash = go.getAttribute("data-go"); return; }
       const inq = e.target.closest("[data-inquire]");

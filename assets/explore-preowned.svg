@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 933" role="img" aria-label="Pre-owned watches">
+  <rect width="1400" height="933" fill="#6b4a2c"/>
+  <rect x="80" y="80" width="1240" height="773" fill="#8a6238"/>
+  <ellipse cx="980" cy="480" rx="280" ry="280" fill="#1a1a1a"/>
+  <ellipse cx="980" cy="480" rx="240" ry="240" fill="#111"/>
+  <ellipse cx="980" cy="480" rx="40" ry="40" fill="#2c2c2c"/>
+  <g transform="translate(420 470)">
+    <circle r="210" fill="#c9a227"/>
+    <circle r="188" fill="#e6cf96"/>
+    <circle r="8" fill="#7a5a20"/>
+    <line x1="0" y1="0" x2="0" y2="-80" stroke="#5a3f12" stroke-width="6" stroke-linecap="round"/>
+    <line x1="0" y1="0" x2="62" y2="20" stroke="#5a3f12" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>
