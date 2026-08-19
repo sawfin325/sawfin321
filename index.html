@@ -884,12 +884,12 @@
     ];
 
     const VIDEOS = [
-      { id: "bench-talk", title: "Keeping a collection like a journal | Bench Talk with Mara Ellison", date: "Jul 10, 2026", duration: "15:10", thumb: "assets/videos/bench-talk.jpg", src: "assets/videos/bench-talk.mp4", series: "Bench Talk with Mara Ellison", featured: true },
-      { id: "collectors-table", title: "Vespera table, Geneva: collectors, steel, and a long lunch", date: "Jun 24, 2026", duration: "1:10", thumb: "assets/videos/collectors-table.jpg", src: "assets/videos/collectors-table.mp4", featured: true },
-      { id: "maker-collector", title: "From the bench to the wrist: Julian Hart’s own watches", date: "May 28, 2026", duration: "20:33", thumb: "assets/videos/maker-collector.jpg", src: "assets/videos/maker-collector.mp4", series: "Bench Talk with Julian Hart", featured: true },
-      { id: "nocturne", title: "Atelier film: Maison Elowen Nocturne in gold and steel", date: "May 12, 2026", duration: "0:06", thumb: "assets/videos/nocturne-thumb.jpg", src: "assets/videos/nocturne.mp4" },
-      { id: "abyss", title: "Atelier film: Calder Abyss 300 under lamp light", date: "Apr 30, 2026", duration: "0:06", thumb: "assets/videos/abyss-thumb.jpg", src: "assets/videos/abyss.mp4" },
-      { id: "track", title: "Atelier film: Helion Trackmaster on the register", date: "Apr 18, 2026", duration: "0:06", thumb: "assets/videos/track-thumb.jpg", src: "assets/videos/track.mp4" }
+      { id: "bench-talk", title: "Keeping a collection like a journal | Bench Talk with Mara Ellison", date: "Jul 10, 2026", duration: "0:10", thumb: "assets/videos/bench-talk.jpg", src: "assets/videos/bench-talk.mp4", series: "Bench Talk with Mara Ellison", featured: true },
+      { id: "collectors-table", title: "At the bench: tweezers, a loupe, and a pocket watch", date: "Jun 24, 2026", duration: "0:16", thumb: "assets/videos/collectors-table.jpg", src: "assets/videos/collectors-table.mp4", featured: true },
+      { id: "maker-collector", title: "Gold on the wrist: a skeleton watch in motion", date: "May 28, 2026", duration: "0:08", thumb: "assets/videos/maker-collector.jpg", src: "assets/videos/maker-collector.mp4", featured: true },
+      { id: "nocturne", title: "Chronograph close-up: subdials, date, tachymeter", date: "May 12, 2026", duration: "0:16", thumb: "assets/videos/nocturne.jpg", src: "assets/videos/nocturne.mp4" },
+      { id: "abyss", title: "The atelier table: magnifier, parts tray, daylight", date: "Apr 30, 2026", duration: "0:16", thumb: "assets/videos/abyss.jpg", src: "assets/videos/abyss.mp4" },
+      { id: "track", title: "A watchmaker at the bench, from the shop floor", date: "Apr 18, 2026", duration: "0:14", thumb: "assets/videos/track.jpg", src: "assets/videos/track.mp4" }
     ];
 
     const DEALERS = [
@@ -1379,7 +1379,7 @@
       return `<section class="band" style="padding-top:28px"><div class="wrap">
         <h2>Lights, Camera, Action: Our Latest Videos</h2>
         <div class="video-grid">${featured.map(videoCard).join("")}</div>
-        <div class="center"><a class="btn light" href="#/videos">To YouTube</a></div>
+        <div class="center"><a class="btn light" href="#/videos">All films</a></div>
       </div></section>`;
     }
 
@@ -1401,7 +1401,7 @@
       return `<div class="wrap page">
         <p class="kicker">Film</p>
         <h1>Lights, camera, action</h1>
-        <p class="lede">Original Vespera films. Press play on the homepage strip or here. These are not licensed clips from another marketplace.</p>
+        <p class="lede">Films hosted on this site. Press play. There is no YouTube channel.</p>
         <div class="video-grid" style="margin-top:28px">${VIDEOS.map(videoCard).join("")}</div>
       </div>`;
     }
