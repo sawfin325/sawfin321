@@ -330,8 +330,44 @@
     .options .opt {
       border: 1px solid var(--line); background: var(--paper); padding: 10px 12px; display: flex; justify-content: space-between; gap: 12px;
     }
-    .band { background: #0a111c; color: #eef2f6; padding: 56px 0; }
-    .band h2 { color: #fff; font-family: var(--sans); font-weight: 650; letter-spacing: 0; font-size: 28px; }
+    .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 22px; }
+    .video-card { color: #fff; cursor: pointer; background: none; border: 0; padding: 0; text-align: left; width: 100%; font: inherit; }
+    .video-thumb { position: relative; border-radius: 12px; overflow: hidden; background: #151c26; }
+    .video-thumb img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    .video-play {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    .video-play:after {
+      content: ""; display: block; width: 0; height: 0;
+      border-left: 16px solid #0b0f14; border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+      margin-left: 4px;
+    }
+    .video-time {
+      position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.72); color: #fff;
+      font-size: 12px; padding: 3px 7px; border-radius: 4px; letter-spacing: .04em;
+    }
+    .video-series {
+      position: absolute; left: 14px; right: 14px; top: 42%; transform: translateY(-50%);
+      text-align: center; font-weight: 750; letter-spacing: .08em; text-transform: uppercase;
+      font-size: clamp(13px, 1.5vw, 18px); text-shadow: 0 2px 12px rgba(0,0,0,.7); pointer-events: none;
+    }
+    .video-mark {
+      position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border: 1.5px solid #fff; border-radius: 50%;
+      display: grid; place-items: center; font-size: 11px; font-weight: 700; letter-spacing: .08em;
+    }
+    .video-card h3 { margin: 12px 0 4px; font-family: var(--sans); font-size: 16px; font-weight: 600; letter-spacing: 0; line-height: 1.35; }
+    .video-card .when { color: #93a0b0; font-size: 13px; }
+    .guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .guide-card {
+      border: 1px solid #3a4656; border-radius: 12px; padding: 22px 20px; min-height: 180px;
+    }
+    .guide-card h3 { font-family: var(--sans); font-size: 18px; font-weight: 650; letter-spacing: 0; margin: 0 0 10px; color: #fff; }
+    .guide-card p { margin: 0; color: #c9d2dc; font-size: 14px; line-height: 1.55; }
+    .video-modal { width: min(920px, 100%); background: #0b0f14; }
+    .video-modal video { width: 100%; max-height: 72vh; background: #000; }
+    .video-modal h3 { margin: 12px 0 0; font-family: var(--sans); font-size: 18px; }
     .explore-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 22px; }
     .explore-card { color: #fff; }
     .explore-card img, .explore-card .ph {
@@ -380,7 +416,8 @@
       .menu-toggle { display: grid; }
       .brand-logos { grid-template-columns: repeat(4, 1fr); }
       .hero-stage { width: min(520px, 62%); }
-      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row { grid-template-columns: 1fr 1fr; }
+      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid { grid-template-columns: 1fr 1fr; }
+      .guide-grid { grid-template-columns: 1fr 1fr; }
       .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
       .filters { position: static; }
@@ -392,7 +429,7 @@
       form .grid { grid-template-columns: 1fr; }
       .hero-stage { width: 100%; right: -8%; opacity: .42; }
       .hero-copy h1 { max-width: 14ch; }
-      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail { grid-template-columns: 1fr; }
+      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail, .video-grid, .guide-grid { grid-template-columns: 1fr; }
       .popular, .regions { grid-template-columns: 1fr 1fr; }
       .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .util .wrap { justify-content: flex-end; }
@@ -493,6 +530,7 @@
       </div>
       <div class="nav-item"><a href="#/shop?certified=1">Best deals</a></div>
       <div class="nav-item"><a href="#/magazine">Magazine</a></div>
+      <div class="nav-item"><a href="#/videos">Videos</a></div>
       <div class="nav-item">
         <a href="#/brands">Watch collection</a>
         <div class="mega two">
@@ -595,6 +633,13 @@
     <div class="search-box">
       <input id="searchInput" type="search" placeholder="Search by maison, model, or reference" autocomplete="off" />
       <div class="search-hits" id="searchHits"></div>
+    </div>
+  </div>
+  <div class="overlay" id="videoOverlay" role="dialog" aria-label="Watch video">
+    <div class="modal video-modal">
+      <video id="videoPlayer" controls playsinline></video>
+      <h3 id="videoHeading"></h3>
+      <button type="button" class="btn ghost" id="videoClose" style="margin-top:14px">Close</button>
     </div>
   </div>
   <div class="overlay" id="orderOverlay" role="dialog" aria-label="Order">
@@ -838,6 +883,15 @@
       { id: "moonphase-care", title: "A moonphase is a calendar you can forget", tag: "Complications", dek: "Most modern moons are 29.5-day approximations. Treat them kindly.", body: "<p>A Stellara Celestine or Solenne Étoile will keep a handsome moon for years if you do not force the date around midnight. When the disc is changing, the mechanism is in mesh; a quick pull on the crown can chip a tooth you will not see until the moon starts to drift.</p><p>If you buy vintage, budget for a specialist. Moonphase correctors and perpetual levers do not enjoy generalist oiling. Ask the dealer who last opened the watch, and whether the moon disc is original — refinished night skies are common and not a scandal, but they should be disclosed.</p>" }
     ];
 
+    const VIDEOS = [
+      { id: "bench-talk", title: "Keeping a collection like a journal | Bench Talk with Mara Ellison", date: "Jul 10, 2026", duration: "15:10", thumb: "assets/videos/bench-talk.jpg", src: "assets/videos/bench-talk.mp4", series: "Bench Talk with Mara Ellison", featured: true },
+      { id: "collectors-table", title: "Vespera table, Geneva: collectors, steel, and a long lunch", date: "Jun 24, 2026", duration: "1:10", thumb: "assets/videos/collectors-table.jpg", src: "assets/videos/collectors-table.mp4", featured: true },
+      { id: "maker-collector", title: "From the bench to the wrist: Julian Hart’s own watches", date: "May 28, 2026", duration: "20:33", thumb: "assets/videos/maker-collector.jpg", src: "assets/videos/maker-collector.mp4", series: "Bench Talk with Julian Hart", featured: true },
+      { id: "nocturne", title: "Atelier film: Maison Elowen Nocturne in gold and steel", date: "May 12, 2026", duration: "0:06", thumb: "assets/videos/nocturne-thumb.jpg", src: "assets/videos/nocturne.mp4" },
+      { id: "abyss", title: "Atelier film: Calder Abyss 300 under lamp light", date: "Apr 30, 2026", duration: "0:06", thumb: "assets/videos/abyss-thumb.jpg", src: "assets/videos/abyss.mp4" },
+      { id: "track", title: "Atelier film: Helion Trackmaster on the register", date: "Apr 18, 2026", duration: "0:06", thumb: "assets/videos/track-thumb.jpg", src: "assets/videos/track.mp4" }
+    ];
+
     const DEALERS = [
       { name: "Atelier Nord", city: "Geneva", focus: "Elowen, Rochefort, Nymara" },
       { name: "Canton Horology", city: "Zurich", focus: "Quill & Crown, Stellara" },
@@ -1010,6 +1064,22 @@
     }
 
     function closeOrder() { $("orderOverlay").classList.remove("show"); }
+
+    function closeVideo() {
+      const player = $("videoPlayer");
+      if (player) { player.pause(); player.removeAttribute("src"); player.load(); }
+      $("videoOverlay").classList.remove("show");
+    }
+
+    function openVideo(id) {
+      const v = VIDEOS.find((x) => x.id === id);
+      if (!v) return;
+      const player = $("videoPlayer");
+      $("videoHeading").textContent = v.title;
+      player.src = v.src;
+      $("videoOverlay").classList.add("show");
+      player.play().catch(() => {});
+    }
 
     function refreshAuthUi() {
       const el = $("authLink");
@@ -1234,7 +1304,9 @@
       </div></section>
       ${exploreBand()}
       ${popularBand()}
-      ${reviewsBand(state.reviewPage)}`;
+      ${reviewsBand(state.reviewPage)}
+      ${videoBand()}
+      ${guideBand()}`;
     }
 
     function exploreBand() {
@@ -1286,6 +1358,52 @@
         </div>
         <div class="dots">${Array.from({length: pages}, (_,i) => `<button type="button" class="${i===((page||0)%pages)?"on":""}" data-reviews="${i}"></button>`).join("")}</div>
       </div></section>`;
+    }
+
+    function videoCard(v) {
+      return `<button type="button" class="video-card" data-video="${v.id}">
+        <div class="video-thumb">
+          <img src="${v.thumb}" alt="">
+          ${v.series ? `<div class="video-series">${v.series}</div>` : ""}
+          <span class="video-mark">V</span>
+          <span class="video-play" aria-hidden="true"></span>
+          <span class="video-time">${v.duration}</span>
+        </div>
+        <h3>${v.title}</h3>
+        <div class="when">${v.date}</div>
+      </button>`;
+    }
+
+    function videoBand() {
+      const featured = VIDEOS.filter((v) => v.featured);
+      return `<section class="band" style="padding-top:28px"><div class="wrap">
+        <h2>Lights, Camera, Action: Our Latest Videos</h2>
+        <div class="video-grid">${featured.map(videoCard).join("")}</div>
+        <div class="center"><a class="btn light" href="#/videos">To YouTube</a></div>
+      </div></section>`;
+    }
+
+    function guideBand() {
+      const guides = [
+        ["Luxury watches", "A luxury watch is finished to a standard you can see: movement, case, and dial. On Vespera that means independent maisons as well as serious tool watches."],
+        ["Used watches", "The pre-owned market is where most collectors actually buy. Condition, papers, and honest photographs matter more than a boutique sticker."],
+        ["Sell watches", "List from your collection. Buyers order on WhatsApp or email. The desk confirms the piece before anything is paid."],
+        ["Buying a watch", "There is no card checkout. Order a listing on WhatsApp or email. Certified pieces can be inspected against the eight photographs."]
+      ];
+      return `<section class="band" style="padding-top:8px;padding-bottom:48px"><div class="wrap">
+        <div class="guide-grid">
+          ${guides.map(([t,p]) => `<article class="guide-card"><h3>${t}</h3><p>${p}</p></article>`).join("")}
+        </div>
+      </div></section>`;
+    }
+
+    function videosPage() {
+      return `<div class="wrap page">
+        <p class="kicker">Film</p>
+        <h1>Lights, camera, action</h1>
+        <p class="lede">Original Vespera films. Press play on the homepage strip or here. These are not licensed clips from another marketplace.</p>
+        <div class="video-grid" style="margin-top:28px">${VIDEOS.map(videoCard).join("")}</div>
+      </div>`;
     }
 
     function shop(q) {
@@ -1663,7 +1781,7 @@
       legal: ["Company","Legal details","<p>Vespera Horology Ltd. is a fictional imprint for this sample website. Listings are not offers for sale.</p>"],
       accessibility: ["Legal","Declaration on accessibility","<p>Pages are structured with headings, skip links, and keyboard-focusable controls. If something is in the way, write via Contact.</p>"],
       cookies: ["Legal","Manage cookies","<p>This file stores saved watches and inquiries in localStorage only. No advertising cookies are set.</p>"],
-      sitemap: ["Legal","Sitemap","<p><a href=\"#/\">Home</a> · <a href=\"#/shop\">Shop</a> · <a href=\"#/brands\">Brands</a> · <a href=\"#/sell\">Sell</a> · <a href=\"#/magazine\">Magazine</a> · <a href=\"#/reviews\">Reviews</a> · <a href=\"#/help\">Help</a> · <a href=\"#/contact\">Contact</a></p>"]
+      sitemap: ["Legal","Sitemap","<p><a href=\"#/\">Home</a> · <a href=\"#/shop\">Shop</a> · <a href=\"#/brands\">Brands</a> · <a href=\"#/sell\">Sell</a> · <a href=\"#/magazine\">Magazine</a> · <a href=\"#/videos\">Videos</a> · <a href=\"#/reviews\">Reviews</a> · <a href=\"#/help\">Help</a> · <a href=\"#/contact\">Contact</a></p>"]
     };
 
     function render() {
@@ -1680,6 +1798,7 @@
       else if (root === "brand") html = brandPage(parts[1], q);
       else if (root === "sell") html = sellPage();
       else if (root === "magazine") html = magazine();
+      else if (root === "videos") html = videosPage();
       else if (root === "article") html = article(parts[1]);
       else if (root === "authenticate") html = authenticate();
       else if (root === "dealers") html = dealers();
@@ -1697,6 +1816,7 @@
       view.innerHTML = html;
       window.scrollTo(0, 0);
       closeOrder();
+      closeVideo();
       bindView();
       startHeroAnim();
       refreshAuthUi();
@@ -1859,13 +1979,15 @@
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
       <a href="#/shop?sort=new">New arrivals</a><a href="#/shop?certified=1">Certified</a>
-      <a href="#/sell">Sell</a><a href="#/magazine">Magazine</a><a href="#/authenticate">Authenticate</a>
+      <a href="#/sell">Sell</a><a href="#/magazine">Magazine</a><a href="#/videos">Videos</a><a href="#/authenticate">Authenticate</a>
       <a href="#/help">Help</a><a href="#/contact">Contact</a><a href="#/account">Account</a>
       <a href="tel:+19132785312">+1 913-278-5312</a>
       <a href="mailto:luxerywatchsales@gmail.com">luxerywatchsales@gmail.com</a>
       <a href="https://wa.me/19132785312" target="_blank" rel="noopener">WhatsApp</a>`;
 
     document.body.addEventListener("click", (e) => {
+      const vid = e.target.closest("[data-video]");
+      if (vid) { e.preventDefault(); openVideo(vid.getAttribute("data-video")); return; }
       const save = e.target.closest("[data-save]");
       if (save) { e.preventDefault(); toggleSave(save.getAttribute("data-save")); return; }
       const thumb = e.target.closest("[data-thumb]");
@@ -1904,13 +2026,15 @@
     $("searchOpen").onclick = openSearch;
     if ($("searchIcon")) $("searchIcon").onclick = openSearch;
     $("searchOverlay").onclick = (e) => { if (e.target.id === "searchOverlay") closeSearch(); };
+    $("videoOverlay").onclick = (e) => { if (e.target.id === "videoOverlay") closeVideo(); };
+    $("videoClose").onclick = closeVideo;
     $("orderOverlay").onclick = (e) => { if (e.target.id === "orderOverlay") closeOrder(); };
     $("orderClose").onclick = closeOrder;
     $("orderWa").addEventListener("click", () => setTimeout(closeOrder, 400));
     $("orderMail").addEventListener("click", () => setTimeout(closeOrder, 400));
     $("searchInput").addEventListener("input", (e) => searchHits(e.target.value));
     $("searchInput").addEventListener("keydown", (e) => { if (e.key === "Escape") closeSearch(); if (e.key === "Enter") { const t = e.target.value.trim(); closeSearch(); location.hash = "#/shop?q=" + encodeURIComponent(t); } });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeOrder(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeOrder(); closeVideo(); } });
     $("menuBtn").onclick = () => { $("drawer").classList.add("show"); $("backdrop").classList.add("show"); };
     $("backdrop").onclick = closeDrawer;
     $("drawer").addEventListener("click", (e) => { if (e.target.id === "closeDrawer" || e.target.tagName === "A") closeDrawer(); });
