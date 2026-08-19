@@ -280,6 +280,20 @@
       z-index: 80; display: none; letter-spacing: .04em; font-size: 13px;
     }
     .toast.show { display: block; }
+    .only-narrow { display: none; }
+    .contact-card h3 { margin: 0 0 8px; }
+    .contact-card a.line { display: block; padding: 4px 0; color: #e8eef5; }
+    .contact-card a.line:hover { color: var(--gold); }
+    .btn.wa { background: #25d366; border-color: #25d366; color: #0b0f14; }
+    .btn.wa:hover { opacity: .92; }
+    .order-modal { width: min(520px, 100%); }
+    .order-modal h2 { font-size: 28px; margin-bottom: 10px; }
+    .order-modal .row { margin: 18px 0; }
+    .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .form-msg { color: var(--danger); font-size: 13px; min-height: 1.2em; margin: 8px 0 0; }
+    @media (max-width: 640px) {
+      .account-grid { grid-template-columns: 1fr; }
+    }
     .mobile-drawer {
       position: fixed; inset: 0 30% 0 0; background: var(--paper); z-index: 70; transform: translateX(-110%);
       transition: transform .25s ease; padding: 24px; overflow: auto; border-right: 1px solid var(--line);
@@ -382,6 +396,7 @@
       .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .util .wrap { justify-content: flex-end; }
       .util-left { display: none; }
+      .only-narrow { display: inline; }
     }
   </style>
 </head>
@@ -391,11 +406,15 @@
     <div class="wrap">
       <nav class="util-left" aria-label="Utility">
         <a href="#/help">Help</a>
+        <a href="#/contact">Contact</a>
+        <a class="util-phone" href="tel:+19132785312">+1 913-278-5312</a>
+        <a href="mailto:luxerywatchsales@gmail.com">luxerywatchsales@gmail.com</a>
         <a href="#/dealers">Dealers</a>
         <a href="#/authenticate">Authentication</a>
         <a href="#/sell">Sell a watch</a>
       </nav>
       <div class="util-right">
+        <a class="util-phone only-narrow" href="tel:+19132785312">+1 913-278-5312</a>
         <button type="button" id="currencyBtn" aria-label="Currency">USD</button>
         <button type="button" id="langBtn" aria-label="Language">English</button>
         <a href="#/account">Account</a>
@@ -421,7 +440,7 @@
       </button>
       <div class="mast-right">
         <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
-        <a href="#/account">Log in or register</a>
+        <a href="#/account" id="authLink">Log in or register</a>
         <a class="icon-btn" href="#/saved" aria-label="Saved watches"><span>♡</span><span class="count" id="savedCount" hidden>0</span></a>
         <a class="icon-btn" href="#/inquiries" aria-label="Purchase inquiries"><span>✉</span><span class="count" id="inqCount" hidden>0</span></a>
       </div>
@@ -537,6 +556,9 @@
           <h4>Personalized support</h4>
           <a href="#/help">Frequently asked questions</a>
           <a href="#/contact">Contact</a>
+          <a href="tel:+19132785312">+1 913-278-5312</a>
+          <a href="mailto:luxerywatchsales@gmail.com">luxerywatchsales@gmail.com</a>
+          <a href="https://wa.me/19132785312" target="_blank" rel="noopener">WhatsApp</a>
         </div>
         <div>
           <h4>Payment methods</h4>
@@ -572,6 +594,18 @@
     <div class="search-box">
       <input id="searchInput" type="search" placeholder="Search by maison, model, or reference" autocomplete="off" />
       <div class="search-hits" id="searchHits"></div>
+    </div>
+  </div>
+  <div class="overlay" id="orderOverlay" role="dialog" aria-label="Order">
+    <div class="modal order-modal">
+      <h2 id="orderTitle">Order this watch</h2>
+      <p id="orderCopy"></p>
+      <div class="row">
+        <a class="btn wa" id="orderWa" target="_blank" rel="noopener">Order on WhatsApp</a>
+        <a class="btn" id="orderMail">Order by email</a>
+      </div>
+      <p class="meta" id="orderAccountHint"></p>
+      <button type="button" class="btn ghost" id="orderClose">Close</button>
     </div>
   </div>
   <div class="backdrop" id="backdrop"></div>
@@ -864,9 +898,18 @@
       { name: "Mark Jensen", country: "Denmark", when: "3 weeks ago", stars: 5, text: "North Sea 500. Valve, bezel, and bracelet shots. Professional listing." }
     ];
 
+    const CONTACT = {
+      phone: "+19132785312",
+      phonePretty: "+1 913-278-5312",
+      email: "luxerywatchsales@gmail.com",
+      wa: "19132785312"
+    };
+
     const state = {
       saved: JSON.parse(localStorage.getItem("vespera-saved") || "[]"),
       inquiries: JSON.parse(localStorage.getItem("vespera-inq") || "[]"),
+      users: JSON.parse(localStorage.getItem("vespera-users") || "[]"),
+      session: JSON.parse(localStorage.getItem("vespera-session") || "null"),
       currency: "USD",
       lang: "English",
       reviewPage: 0
@@ -880,6 +923,101 @@
       return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
     }
 
+    function esc(s) {
+      return String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    function currentUser() {
+      if (!state.session || !state.session.email) return null;
+      return state.users.find((u) => u.email === state.session.email) || null;
+    }
+
+    async function sha256(text) {
+      try {
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+        return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+      } catch {
+        let h = 2166136261;
+        for (let i = 0; i < text.length; i++) {
+          h ^= text.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return "x" + (h >>> 0).toString(16);
+      }
+    }
+
+    function waLink(text) {
+      return `https://wa.me/${CONTACT.wa}?text=${encodeURIComponent(text)}`;
+    }
+
+    function mailLink(subject, body) {
+      return `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function contactCard(extra) {
+      return `<div class="contact-card panel">
+        <h3>Contact the desk</h3>
+        <p>Write, call, or message on WhatsApp. Orders are placed directly with this desk — not by card on the page.</p>
+        <a class="line" href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a>
+        <a class="line" href="mailto:${CONTACT.email}">${CONTACT.email}</a>
+        <div class="row" style="margin-top:14px">
+          <a class="btn wa" href="${waLink("Hello, I have a question about a Vespera watch.")}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn ghost" href="mailto:${CONTACT.email}">Email</a>
+        </div>
+        ${extra || ""}
+      </div>`;
+    }
+
+    function orderText(p) {
+      const u = currentUser();
+      const who = u ? `Buyer: ${u.name} (${u.email}${u.phone ? ", " + u.phone : ""})` : "Buyer: guest (no account yet)";
+      return [
+        `I would like to order this watch from Vespera.`,
+        `${p.maison} ${p.model}`,
+        `Reference: ${p.ref}`,
+        `Year: ${p.year} · ${p.condition}`,
+        `Asking price: ${money(p.price)}`,
+        `Listing: ${location.href.split("#")[0]}#/listing/${p.id}`,
+        who
+      ].join("\n");
+    }
+
+    function openOrder(p) {
+      const overlay = $("orderOverlay");
+      $("orderTitle").textContent = "Order this watch";
+      $("orderCopy").textContent = `There is no checkout cart. Order ${p.maison} ${p.model} (${p.ref}) directly on WhatsApp or by email. The desk will confirm availability and payment.`;
+      const msg = orderText(p);
+      $("orderWa").href = waLink(msg);
+      $("orderMail").href = mailLink(`Order: ${p.maison} ${p.model} ${p.ref}`, msg);
+      const u = currentUser();
+      $("orderAccountHint").innerHTML = u
+        ? `Ordering as <strong>${esc(u.name)}</strong>. Your name and email are included in the message.`
+        : `Optional: <a href="#/account">create an account</a> so we have your name on file, then send the WhatsApp or email order.`;
+      overlay.classList.add("show");
+    }
+
+    function openChannelPrompt(title, copy, subject, body) {
+      $("orderTitle").textContent = title;
+      $("orderCopy").textContent = copy;
+      $("orderWa").href = waLink(body);
+      $("orderMail").href = mailLink(subject, body);
+      const u = currentUser();
+      $("orderAccountHint").innerHTML = u
+        ? `Sending as <strong>${esc(u.name)}</strong>.`
+        : `You can <a href="#/account">create an account</a> first, or send WhatsApp / email now.`;
+      $("orderOverlay").classList.add("show");
+    }
+
+    function closeOrder() { $("orderOverlay").classList.remove("show"); }
+
+    function refreshAuthUi() {
+      const el = $("authLink");
+      if (!el) return;
+      const u = currentUser();
+      el.textContent = u ? u.name : "Log in or register";
+      el.href = "#/account";
+    }
+
     function toast(msg) {
       const el = $("toast");
       el.textContent = msg;
@@ -890,10 +1028,13 @@
     function persist() {
       localStorage.setItem("vespera-saved", JSON.stringify(state.saved));
       localStorage.setItem("vespera-inq", JSON.stringify(state.inquiries));
+      localStorage.setItem("vespera-users", JSON.stringify(state.users));
+      localStorage.setItem("vespera-session", JSON.stringify(state.session));
       $("savedCount").hidden = !state.saved.length;
       $("savedCount").textContent = state.saved.length;
       $("inqCount").hidden = !state.inquiries.length;
       $("inqCount").textContent = state.inquiries.length;
+      refreshAuthUi();
     }
 
     function toggleSave(id, ev) {
@@ -1241,9 +1382,10 @@
               <div class="opt"><span>Availability</span><strong>In stock · ${p.location}</strong></div>
             </div>
             <div class="row" style="margin:18px 0">
-              <button class="btn" data-inquire="${p.id}">Request to purchase</button>
+              <button class="btn" data-inquire="${p.id}">Order this watch</button>
               <button class="btn ghost" data-save="${p.id}">${on ? "Saved" : "Save listing"}</button>
             </div>
+            <p class="meta">Orders are placed by WhatsApp or email. There is no card checkout.</p>
             <table class="spec">
               <tr><th>Reference</th><td>${p.ref}</td></tr>
               <tr><th>Type</th><td>${p.type}</td></tr>
@@ -1254,8 +1396,12 @@
               <tr><th>Location</th><td>${p.location}</td></tr>
             </table>
             <div class="dealer-box">
-              <strong>${p.dealer}</strong>
-              <p class="meta">Listed from ${p.location}. Purchase requests are sent to this seller. Vespera does not process card payments on the page.</p>
+              <strong>Order with the Vespera desk</strong>
+              <p class="meta">WhatsApp or email the listing. Phone ${CONTACT.phonePretty} · ${CONTACT.email}</p>
+              <div class="row" style="margin-top:12px">
+                <a class="btn wa" href="${waLink(orderText(p))}" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn ghost" href="${mailLink("Order: " + p.maison + " " + p.model + " " + p.ref, orderText(p))}">Email</a>
+              </div>
             </div>
           </div>
         </div>
@@ -1296,11 +1442,11 @@
         <div class="prose">
           <p class="kicker">Sellers</p>
           <h1>List a watch</h1>
-          <p>Tell us the maison, reference, and condition. This demonstration stores the inquiry in your browser only — nothing is sent to a server.</p>
+          <p>Tell us the maison, reference, and condition. We will reply on WhatsApp or email (${CONTACT.email}, ${CONTACT.phonePretty}).</p>
           <div class="steps" style="grid-template-columns:1fr;margin-top:24px">
             <div class="step"><b>01</b> Describe the piece and set an asking price.</div>
-            <div class="step"><b>02</b> Choose private listing or certified inspection.</div>
-            <div class="step"><b>03</b> Buyers send a purchase request; you accept or decline.</div>
+            <div class="step"><b>02</b> Send the listing on WhatsApp or email.</div>
+            <div class="step"><b>03</b> The desk confirms and publishes the watch.</div>
           </div>
         </div>
         <form class="panel" id="sellForm">
@@ -1315,7 +1461,7 @@
             <div class="full"><label>Notes</label><textarea name="notes" placeholder="Box, papers, service history"></textarea></div>
             <div class="full"><label>Contact email</label><input name="email" type="email" required /></div>
           </div>
-          <button class="btn" style="margin-top:16px" type="submit">Submit listing request</button>
+          <button class="btn" style="margin-top:16px" type="submit">Send listing via WhatsApp or email</button>
         </form>
       </div>`;
     }
@@ -1354,8 +1500,8 @@
           <div class="step"><b>04</b><h3>Release</h3><p>The watch ships to the buyer; the seller is paid.</p></div>
         </div>
         <div class="panel" style="margin-top:28px">
-          <h3>What we do not claim</h3>
-          <p>Vespera is a demonstration catalogue. No real inspections, escrow, or shipping take place from this page.</p>
+          <h3>Questions about a listing?</h3>
+          <p>Call ${CONTACT.phonePretty} or write ${CONTACT.email}. Certified inspection notes can also be requested on WhatsApp.</p>
         </div>
       </div>`;
     }
@@ -1375,8 +1521,8 @@
       return `<div class="wrap page prose">
         <p class="kicker">Company</p>
         <h1>About Vespera</h1>
-        <p>Vespera is an original luxury-watch marketplace created as a self-contained website. The maisons, listings, dealers, and essays are fictional. They are not copied from another platform and are not offered for sale.</p>
-        <p>The catalogue is meant to feel like a serious collector’s room: filters for type and condition, certified versus private listings, and purchase requests instead of a checkout cart.</p>
+        <p>Vespera is an original luxury-watch marketplace. The maisons and catalogue are original. To buy a watch, order directly on WhatsApp or email — there is no card checkout.</p>
+        <p>Desk: <a href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a> · <a href="mailto:${CONTACT.email}">${CONTACT.email}</a></p>
       </div>`;
     }
 
@@ -1386,17 +1532,13 @@
           <p class="kicker">Help centre</p>
           <h1>Questions</h1>
           <h3>How do I buy?</h3>
-          <p>Open a listing and send a purchase request. The seller receives it (in this demo, it is stored in your browser).</p>
-          <h3>What does certified mean?</h3>
-          <p>A certified tag means the listing is written as if it passed inspection. See Authentication for the story of that process.</p>
-          <h3>Can I sell without a dealer?</h3>
-          <p>Yes. Use Sell a watch and choose a private listing in the notes.</p>
+          <p>Open a listing and choose <strong>Order this watch</strong>. You will be asked to send the order on WhatsApp or by email. The desk confirms the piece and payment. There is no card checkout on the site.</p>
+          <h3>How do I create an account?</h3>
+          <p>Use <a href="#/account">Log in or register</a>. Create a collector account with your name, email, and password. You can then log in on this browser whenever you return.</p>
+          <h3>How do I reach you?</h3>
+          <p>Phone <a href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a>, email <a href="mailto:${CONTACT.email}">${CONTACT.email}</a>, or WhatsApp the same number.</p>
         </div>
-        <div class="panel">
-          <h3>Still stuck?</h3>
-          <p>Write to the contact page. This demo does not send email.</p>
-          <a class="btn" href="#/contact">Contact</a>
-        </div>
+        ${contactCard(`<p class="meta" style="margin-top:14px"><a href="#/contact">Open the contact page</a></p>`)}
       </div>`;
     }
 
@@ -1405,21 +1547,24 @@
         <div class="prose">
           <p class="kicker">Contact</p>
           <h1>Write to Vespera</h1>
-          <p>Desk hours are weekdays, in this story, from Geneva. Messages stay in your browser.</p>
+          <p>Orders and questions go to the desk on WhatsApp or email. Call ${CONTACT.phonePretty} or write ${CONTACT.email}.</p>
+          ${contactCard()}
         </div>
         <form class="panel" id="contactForm">
-          <label>Name</label><input name="name" required />
-          <label>Email</label><input name="email" type="email" required />
-          <label>Message</label><textarea name="msg" required></textarea>
-          <button class="btn" style="margin-top:16px" type="submit">Send message</button>
+          <h3>Send a message</h3>
+          <p class="meta">This opens your email app to ${CONTACT.email}, or you can switch to WhatsApp on the next step.</p>
+          <label>Name</label><input name="name" required value="${esc((currentUser() || {}).name || "")}" />
+          <label>Email</label><input name="email" type="email" required value="${esc((currentUser() || {}).email || "")}" />
+          <label>Message</label><textarea name="msg" required placeholder="Ask about a listing or an order"></textarea>
+          <button class="btn" style="margin-top:16px" type="submit">Continue to WhatsApp or email</button>
         </form>
       </div>`;
     }
 
     function privacy() {
       return `<div class="wrap page prose"><p class="kicker">Legal</p><h1>Privacy</h1>
-        <p>This page is a static demonstration. Saved watches and purchase requests are kept in localStorage on your device. No analytics, accounts, or payment data are collected by a server from this file.</p>
-        <p>If you publish a copy, you are responsible for any real privacy notice you add.</p></div>`;
+        <p>Collector accounts (name, email, optional phone, and a hashed password) are stored in this browser with localStorage so you can log in again on this device. Orders are sent by you to ${CONTACT.email} or WhatsApp ${CONTACT.phonePretty}.</p>
+        <p>Saved watches are also kept on this device. No payment cards are taken on the page.</p></div>`;
     }
 
     function terms() {
@@ -1429,20 +1574,45 @@
     }
 
     function account() {
-      return `<div class="wrap page split">
-        <div>
-          <p class="kicker">Collectors</p>
-          <h1>Account</h1>
-          <p class="lede">This demo has no passwords. Your saved list and inquiries live in this browser.</p>
-          <div class="row">
-            <a class="btn" href="#/saved">Saved watches (${state.saved.length})</a>
-            <a class="btn ghost" href="#/inquiries">Inquiries (${state.inquiries.length})</a>
+      const u = currentUser();
+      if (u) {
+        return `<div class="wrap page split">
+          <div>
+            <p class="kicker">Collectors</p>
+            <h1>Hello, ${esc(u.name)}</h1>
+            <p class="lede">You are signed in. Saved watches stay on this device. Orders still go out on WhatsApp or email.</p>
+            <p>Email: ${esc(u.email)}${u.phone ? `<br/>Phone: ${esc(u.phone)}` : ""}</p>
+            <div class="row">
+              <a class="btn" href="#/saved">Saved watches (${state.saved.length})</a>
+              <a class="btn ghost" href="#/inquiries">Orders (${state.inquiries.length})</a>
+              <button class="btn ghost" type="button" id="logoutBtn">Log out</button>
+            </div>
           </div>
-        </div>
-        <div class="panel">
-          <h3>Preferences</h3>
-          <p>Currency: ${state.currency}<br/>Language: ${state.lang}</p>
-          <p class="meta">Use the controls in the top bar to switch USD, EUR, or GBP.</p>
+          ${contactCard()}
+        </div>`;
+      }
+      return `<div class="wrap page">
+        <p class="kicker">Collectors</p>
+        <h1>Log in or create an account</h1>
+        <p class="lede">Register with your name, email, and a password. You can then log in whenever you return to this site on this browser. Orders are still sent on WhatsApp or email.</p>
+        <div class="account-grid" style="margin-top:28px">
+          <form class="panel" id="loginForm">
+            <h3>Log in</h3>
+            <label>Email</label><input name="email" type="email" required autocomplete="username" />
+            <label>Password</label><input name="password" type="password" required autocomplete="current-password" />
+            <p class="form-msg" id="loginMsg"></p>
+            <button class="btn" type="submit">Log in</button>
+          </form>
+          <form class="panel" id="registerForm">
+            <h3>Create an account</h3>
+            <label>Full name</label><input name="name" required autocomplete="name" />
+            <label>Email</label><input name="email" type="email" required autocomplete="username" />
+            <label>Phone (optional)</label><input name="phone" type="tel" placeholder="${CONTACT.phonePretty}" autocomplete="tel" />
+            <label>Password</label><input name="password" type="password" required minlength="6" autocomplete="new-password" />
+            <label>Confirm password</label><input name="confirm" type="password" required minlength="6" autocomplete="new-password" />
+            <p class="form-msg" id="registerMsg"></p>
+            <button class="btn gold" type="submit">Create account</button>
+          </form>
         </div>
       </div>`;
     }
@@ -1456,9 +1626,10 @@
     }
 
     function inquiriesPage() {
-      if (!state.inquiries.length) return `<div class="wrap page"><p class="kicker">Account</p><h1>Purchase inquiries</h1><div class="empty">No requests yet.</div></div>`;
-      return `<div class="wrap page"><p class="kicker">Account</p><h1>Purchase inquiries</h1>
-        ${state.inquiries.map(i => `<div class="panel" style="margin-bottom:12px"><strong>${i.model}</strong><p class="meta">${i.maison} · ${money(i.price)} · ${i.when}</p></div>`).join("")}
+      if (!state.inquiries.length) return `<div class="wrap page"><p class="kicker">Account</p><h1>Orders</h1><p class="lede">Orders are sent on WhatsApp or email. Open a listing and choose Order this watch.</p><div class="empty">No orders started yet.</div></div>`;
+      return `<div class="wrap page"><p class="kicker">Account</p><h1>Orders</h1>
+        <p class="lede">These are pieces you started to order. Finish on WhatsApp (${CONTACT.phonePretty}) or ${CONTACT.email}.</p>
+        ${state.inquiries.map(i => `<div class="panel" style="margin-bottom:12px"><strong>${esc(i.model)}</strong><p class="meta">${esc(i.maison)} · ${money(i.price)} · ${esc(i.when)}</p></div>`).join("")}
       </div>`;
     }
 
@@ -1478,16 +1649,16 @@
     }
 
     const INFO = {
-      "buyer-protection": ["Buyers","Buyer protection","<p>Certified purchases can use a payment hold until you confirm the watch matches the eight listing photographs and the written condition.</p>"],
-      escrow: ["Buyers","Payment via the escrow service","<p>Funds are held until inspection and delivery are confirmed. This demonstration does not move real money.</p>"],
+      "buyer-protection": ["Buyers","Buyer protection",`<p>Order on WhatsApp or email. The desk confirms the watch against the eight listing photographs before you pay. Phone ${CONTACT.phonePretty} or ${CONTACT.email}.</p>`],
+      escrow: ["Buyers","Payment via the escrow service","<p>Payment is arranged with the desk after you order on WhatsApp or email. Funds are not taken by card on this page.</p>"],
       authenticity: ["Buyers","Commitment to authenticity","<p>Certified listings are written as inspected pieces. Private listings are sold as described by the seller.</p>"],
       returns: ["Buyers","Easy returns","<p>Certified orders may be returned within 14 days if the watch differs from the listing. Private sales follow the seller’s terms.</p>"],
       "private-sellers": ["Sellers","Selling as a private seller","<p>List from your collection without a dealer account. Price for a private sale; certified inspection is optional.</p>"],
       commercial: ["Sellers","Selling commercially","<p>Dealers can publish multiple listings, invoices, and workshop notes. See the dealers directory.</p>"],
-      appraisal: ["Sellers","Free appraisal","<p>Send photographs and a reference. In this demo the form is stored only in your browser.</p>"],
+      appraisal: ["Sellers","Free appraisal",`<p>Send photographs and a reference on WhatsApp or email (${CONTACT.email}) or call ${CONTACT.phonePretty}.</p>`],
       "seller-advice": ["Sellers","Advice for private sellers","<p>Photograph the dial, caseback, clasp, and papers. State the service history. Ask a fair price.</p>"],
       jobs: ["Company","Jobs","<p>Vespera is a demonstration catalogue and is not hiring.</p>"],
-      press: ["Company","Press","<p>For story material about this original marketplace, use the contact page.</p>"],
+      press: ["Company","Press",`<p>For press, write ${CONTACT.email} or call ${CONTACT.phonePretty}.</p>`],
       legal: ["Company","Legal details","<p>Vespera Horology Ltd. is a fictional imprint for this sample website. Listings are not offers for sale.</p>"],
       accessibility: ["Legal","Declaration on accessibility","<p>Pages are structured with headings, skip links, and keyboard-focusable controls. If something is in the way, write via Contact.</p>"],
       cookies: ["Legal","Manage cookies","<p>This file stores saved watches and inquiries in localStorage only. No advertising cookies are set.</p>"],
@@ -1524,8 +1695,10 @@
       else html = `<div class="wrap page"><h1>Page not found</h1><p><a href="#/">Back to Vespera</a></p></div>`;
       view.innerHTML = html;
       window.scrollTo(0, 0);
+      closeOrder();
       bindView();
       startHeroAnim();
+      refreshAuthUi();
     }
 
     const HERO_PAIRS = [
@@ -1575,13 +1748,75 @@
       if (sell) sell.onsubmit = (e) => {
         e.preventDefault();
         const fd = new FormData(sell);
+        const u = currentUser();
+        const body = [
+          "I would like to list a watch on Vespera.",
+          `Maison: ${fd.get("maison")}`,
+          `Model: ${fd.get("model")}`,
+          `Reference: ${fd.get("ref") || "—"}`,
+          `Year: ${fd.get("year") || "—"}`,
+          `Condition: ${fd.get("condition")}`,
+          `Asking price: ${fd.get("price")} USD`,
+          `Notes: ${fd.get("notes") || "—"}`,
+          `Seller email: ${fd.get("email")}`,
+          u ? `Account: ${u.name} (${u.email})` : "No collector account yet"
+        ].join("\n");
         state.inquiries.unshift({ maison: fd.get("maison"), model: fd.get("model"), price: Number(fd.get("price")), when: new Date().toLocaleString() });
         persist();
-        toast("Listing request saved in this browser");
-        location.hash = "#/inquiries";
+        openChannelPrompt("Send this listing", "Send the listing to the desk on WhatsApp or email. They will confirm and publish it.", `Listing request: ${fd.get("maison")} ${fd.get("model")}`, body);
       };
       const contact = $("contactForm");
-      if (contact) contact.onsubmit = (e) => { e.preventDefault(); toast("Message saved locally — nothing was sent"); contact.reset(); };
+      if (contact) contact.onsubmit = (e) => {
+        e.preventDefault();
+        const fd = new FormData(contact);
+        const body = `Name: ${fd.get("name")}\nEmail: ${fd.get("email")}\n\n${fd.get("msg")}`;
+        openChannelPrompt("Send your message", "Choose WhatsApp or email. Both reach the same desk.", `Message from ${fd.get("name")}`, body);
+      };
+      const login = $("loginForm");
+      if (login) login.onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(login);
+        const email = String(fd.get("email") || "").trim().toLowerCase();
+        const password = String(fd.get("password") || "");
+        const user = state.users.find((x) => x.email === email);
+        const msg = $("loginMsg");
+        if (!user || user.pass !== await sha256(user.salt + password)) {
+          msg.textContent = "Email or password is incorrect.";
+          return;
+        }
+        state.session = { email: user.email };
+        persist();
+        toast("Signed in");
+        render();
+      };
+      const register = $("registerForm");
+      if (register) register.onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(register);
+        const msg = $("registerMsg");
+        const name = String(fd.get("name") || "").trim();
+        const email = String(fd.get("email") || "").trim().toLowerCase();
+        const phone = String(fd.get("phone") || "").trim();
+        const password = String(fd.get("password") || "");
+        const confirm = String(fd.get("confirm") || "");
+        if (password.length < 6) { msg.textContent = "Use at least 6 characters for the password."; return; }
+        if (password !== confirm) { msg.textContent = "Passwords do not match."; return; }
+        if (state.users.some((x) => x.email === email)) { msg.textContent = "An account with that email already exists. Log in instead."; return; }
+        const salt = (crypto.getRandomValues(new Uint32Array(2)).join("") + Date.now());
+        const pass = await sha256(salt + password);
+        state.users.push({ name, email, phone, salt, pass, created: new Date().toISOString() });
+        state.session = { email };
+        persist();
+        toast("Account created");
+        render();
+      };
+      const logout = $("logoutBtn");
+      if (logout) logout.onclick = () => {
+        state.session = null;
+        persist();
+        toast("Signed out");
+        render();
+      };
     }
 
     function openSearch() {
@@ -1624,7 +1859,10 @@
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
       <a href="#/shop?sort=new">New arrivals</a><a href="#/shop?certified=1">Certified</a>
       <a href="#/sell">Sell</a><a href="#/magazine">Magazine</a><a href="#/authenticate">Authenticate</a>
-      <a href="#/help">Help</a><a href="#/account">Account</a>`;
+      <a href="#/help">Help</a><a href="#/contact">Contact</a><a href="#/account">Account</a>
+      <a href="tel:+19132785312">+1 913-278-5312</a>
+      <a href="mailto:luxerywatchsales@gmail.com">luxerywatchsales@gmail.com</a>
+      <a href="https://wa.me/19132785312" target="_blank" rel="noopener">WhatsApp</a>`;
 
     document.body.addEventListener("click", (e) => {
       const save = e.target.closest("[data-save]");
@@ -1653,20 +1891,25 @@
       if (go) { e.preventDefault(); closeSearch(); closeDrawer(); location.hash = go.getAttribute("data-go"); return; }
       const inq = e.target.closest("[data-inquire]");
       if (inq) {
+        e.preventDefault();
         const p = findProduct(inq.getAttribute("data-inquire"));
         if (!p) return;
         state.inquiries.unshift({ maison: p.maison, model: p.model, price: p.price, when: new Date().toLocaleString() });
         persist();
-        toast("Purchase request saved");
-        render();
+        openOrder(p);
       }
     });
 
     $("searchOpen").onclick = openSearch;
     if ($("searchIcon")) $("searchIcon").onclick = openSearch;
     $("searchOverlay").onclick = (e) => { if (e.target.id === "searchOverlay") closeSearch(); };
+    $("orderOverlay").onclick = (e) => { if (e.target.id === "orderOverlay") closeOrder(); };
+    $("orderClose").onclick = closeOrder;
+    $("orderWa").addEventListener("click", () => setTimeout(closeOrder, 400));
+    $("orderMail").addEventListener("click", () => setTimeout(closeOrder, 400));
     $("searchInput").addEventListener("input", (e) => searchHits(e.target.value));
     $("searchInput").addEventListener("keydown", (e) => { if (e.key === "Escape") closeSearch(); if (e.key === "Enter") { const t = e.target.value.trim(); closeSearch(); location.hash = "#/shop?q=" + encodeURIComponent(t); } });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeOrder(); });
     $("menuBtn").onclick = () => { $("drawer").classList.add("show"); $("backdrop").classList.add("show"); };
     $("backdrop").onclick = closeDrawer;
     $("drawer").addEventListener("click", (e) => { if (e.target.id === "closeDrawer" || e.target.tagName === "A") closeDrawer(); });
