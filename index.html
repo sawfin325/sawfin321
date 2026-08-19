@@ -90,13 +90,51 @@
     .mega a:hover, .mega button:hover { color: #fff; }
     .mega .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
 
-    .hero-bleed { position: relative; background: #000; }
-    .hero-bleed img { width: 100%; height: min(72vh, 640px); object-fit: cover; display: block; filter: brightness(.72); }
-    .hero-copy { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; }
+    .hero-bleed { position: relative; background: #050505; height: min(72vh, 640px); overflow: hidden; }
+    .hero-leather {
+      position: absolute; inset: 0;
+      background: url("assets/hero-leather.jpg") center/cover no-repeat;
+      transform: scale(1.04);
+      animation: leatherDrift 22s ease-in-out infinite;
+    }
+    @keyframes leatherDrift {
+      0%, 100% { transform: scale(1.05) translate3d(0,0,0); }
+      50% { transform: scale(1.14) translate3d(-2%, 1.2%, 0); }
+    }
+    .hero-stage { position: absolute; right: 4%; top: 8%; width: min(620px, 54%); height: 84%; pointer-events: none; }
+    .hw {
+      position: absolute; width: 48%; filter: drop-shadow(0 28px 28px rgba(0,0,0,.55));
+      mix-blend-mode: lighten;
+    }
+    .hw-a { left: 2%; bottom: 14%; animation: watchInA 1.15s cubic-bezier(.16,1,.3,1) both, watchFloatA 5.5s ease-in-out 1.15s infinite; }
+    .hw-b { right: 0; bottom: 0; width: 54%; animation: watchInB 1.35s .18s cubic-bezier(.16,1,.3,1) both, watchFloatB 6.2s ease-in-out 1.35s infinite; }
+    @keyframes watchInA {
+      from { opacity: 0; transform: translateX(-120px) rotate(-28deg) scale(.86); }
+      to { opacity: 1; transform: translateX(0) rotate(-18deg) scale(1); }
+    }
+    @keyframes watchInB {
+      from { opacity: 0; transform: translateX(140px) rotate(24deg) scale(.86); }
+      to { opacity: 1; transform: translateX(0) rotate(12deg) scale(1); }
+    }
+    @keyframes watchFloatA {
+      0%,100% { transform: translateX(0) translateY(0) rotate(-18deg); }
+      50% { transform: translateX(8px) translateY(-14px) rotate(-15deg); }
+    }
+    @keyframes watchFloatB {
+      0%,100% { transform: translateX(0) translateY(0) rotate(12deg); }
+      50% { transform: translateX(-10px) translateY(-18px) rotate(9deg); }
+    }
+    .hero-copy { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; z-index: 2; }
     .hero-copy .wrap { color: #fff; }
-    .hero-copy h1 { font-family: var(--sans); font-weight: 750; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; max-width: 14ch; color: #fff; }
-    .hero-copy .sub { display: block; font-size: 18px; margin: 10px 0 22px; color: #e8eef5; letter-spacing: .04em; text-transform: uppercase; }
-    .btn.discover { background: rgba(12,16,22,.72); border: 1px solid #fff; color: #fff; padding: 12px 22px; }
+    .hero-copy h1 { font-family: var(--sans); font-weight: 750; font-size: clamp(28px, 4.2vw, 48px); line-height: 1.08; max-width: 16ch; color: #fff; text-transform: uppercase; letter-spacing: .04em; }
+    .hero-copy .eyebrow { font-size: 15px; margin-bottom: 8px; color: #e8eef5; }
+    .hero-copy .sub { display: block; font-size: 22px; margin: 0 0 22px; color: #fff; letter-spacing: .08em; text-transform: uppercase; font-weight: 750; }
+    .btn.discover { background: rgba(12,16,22,.55); border: 1px solid #fff; color: #fff; padding: 12px 22px; }
+    .pager { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
+    .pager a, .pager span { border: 1px solid #243040; padding: 8px 12px; min-width: 40px; text-align: center; }
+    .pager a.on { background: #fff; color: #0b0f14; }
+    .mega.buy { min-width: min(980px, 92vw); grid-template-columns: 1.4fr 1fr .8fr; gap: 32px; }
+    .mega .display-all { margin-top: 12px; color: #93c5fd; }
     .brand-bar { background: #0b0f14; padding: 36px 0 28px; border-bottom: 1px solid #1c2733; }
     .brand-bar h2 { color: #fff; font-family: var(--sans); font-size: 22px; font-weight: 650; margin-bottom: 18px; }
     .brand-logos { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
@@ -181,6 +219,7 @@
     }
     .filter-actions { display: flex; gap: 8px; margin-top: 16px; }
     .results-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
+    .results-head .meta { color: var(--muted); margin: 8px 0 0; }
     .empty { padding: 48px; text-align: center; border: 1px dashed var(--line); background: var(--paper); color: var(--muted); }
 
     .detail { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 36px 0 72px; }
@@ -323,6 +362,7 @@
       .primary { display: none; }
       .menu-toggle { display: grid; }
       .brand-logos { grid-template-columns: repeat(4, 1fr); }
+      .hero-stage { width: min(520px, 62%); }
       .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row { grid-template-columns: 1fr 1fr; }
       .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
       .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
@@ -333,6 +373,8 @@
       .wrap { width: min(var(--max), calc(100% - 24px)); }
       .cards, .maison-row, .stats { grid-template-columns: 1fr 1fr; }
       form .grid { grid-template-columns: 1fr; }
+      .hero-stage { width: 100%; right: -8%; opacity: .42; }
+      .hero-copy h1 { max-width: 14ch; }
       .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail { grid-template-columns: 1fr; }
       .popular, .regions { grid-template-columns: 1fr 1fr; }
       .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
@@ -373,7 +415,7 @@
         </div>
       </a>
       <button class="search-open" id="searchOpen" type="button">
-        <span>⌕</span> <span>Search through 35 watches worldwide</span>
+        <span>⌕</span> <span id="searchCountLabel">Search through 14,000 watches worldwide</span>
       </button>
       <div class="mast-right">
         <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
@@ -385,40 +427,35 @@
     <nav class="primary wrap" aria-label="Primary">
       <div class="nav-item">
         <a href="#/shop">Buy a watch</a>
-        <div class="mega wide">
+        <div class="mega wide buy">
           <div>
-            <h4>Browse</h4>
-            <button data-go="#/shop">All listings</button>
-            <button data-go="#/shop?condition=Unworn">New / unworn</button>
-            <button data-go="#/shop?condition=Excellent">Pre-owned</button>
-            <button data-go="#/shop?certified=1">Certified</button>
-            <button data-go="#/shop?era=Vintage">Vintage</button>
-            <button data-go="#/shop?limited=1">Limited editions</button>
-            <button data-go="#/shop?gender=Women">Women’s watches</button>
-            <button data-go="#/shop?gender=Men">Men’s watches</button>
+            <h4>Brands</h4>
+            <div class="brand-grid" id="buyBrandMega"></div>
+            <a class="display-all" href="#/brands">Display all</a>
           </div>
           <div>
-            <h4>By price</h4>
-            <button data-go="#/shop?price=0-3000">Under $3,000</button>
-            <button data-go="#/shop?price=3000-8000">$3,000 – $8,000</button>
-            <button data-go="#/shop?price=8000-20000">$8,000 – $20,000</button>
-            <button data-go="#/shop?price=20000-50000">$20,000 – $50,000</button>
-            <button data-go="#/shop?price=50000-999999">$50,000 and above</button>
-            <button data-go="#/shop?papers=1">Box &amp; papers</button>
+            <h4>Categories</h4>
+            <button data-go="#/shop?cat=mens">Men's watches</button>
+            <button data-go="#/shop?cat=womens">Women's watches</button>
+            <button data-go="#/shop?cat=preowned">Pre-owned watches</button>
+            <button data-go="#/shop?cat=mechanical">Mechanical watches</button>
+            <button data-go="#/shop?cat=automatic">Automatic watches</button>
+            <button data-go="#/shop?cat=vintage">Vintage watches</button>
+            <button data-go="#/shop?cat=chronograph">Chronographs</button>
+            <button data-go="#/shop?cat=dive">Diving watches</button>
+            <button data-go="#/shop?cat=pilot">Pilot's watches</button>
+            <button data-go="#/shop?cat=military">Military watches</button>
+            <button data-go="#/shop?cat=swiss">Swiss watches</button>
+            <button data-go="#/shop?cat=affordable">Affordable watches</button>
+            <button data-go="#/shop?cat=straps">Bracelets and straps</button>
+            <button data-go="#/shop?cat=parts">Parts and accessories</button>
+            <a class="display-all" href="#/shop">Display all</a>
           </div>
           <div>
-            <h4>By collection</h4>
-            <button data-go="#/shop?type=Dive">Dive</button>
-            <button data-go="#/shop?type=Dress">Dress</button>
-            <button data-go="#/shop?type=Chronograph">Chronograph</button>
-            <button data-go="#/shop?type=GMT">GMT &amp; travel</button>
-            <button data-go="#/shop?type=Pilot">Pilot</button>
-            <button data-go="#/shop?type=Field">Field</button>
-            <button data-go="#/shop?type=Skeleton">Skeleton</button>
-            <button data-go="#/shop?type=Moonphase">Moonphase</button>
-            <button data-go="#/shop?type=Pocket">Pocket watches</button>
-            <button data-go="#/shop?metal=gold">Gold watches</button>
-            <button data-go="#/shop?movement=Automatic">Automatic</button>
+            <h4>Services</h4>
+            <a href="#/brands">Watch collection</a>
+            <a href="#/appraisal">Appraisal</a>
+            <a href="#/shop">Advanced search</a>
           </div>
         </div>
       </div>
@@ -583,7 +620,15 @@
       { slug: "frost", name: "Frost & Tide", origin: "Oslo", founded: 1984, note: "Cold-water divers and titanium GMTs." },
       { slug: "kestrel", name: "Kestrel", origin: "Toulouse", founded: 1935, note: "Pilot watches with cathedral hands." },
       { slug: "valois", name: "Valois", origin: "Lyon", founded: 1861, note: "Filigree-thin dress pieces in yellow gold." },
-      { slug: "stellara", name: "Stellara", origin: "Neuchâtel", founded: 1998, note: "Moonphase and celestial complications." }
+      { slug: "stellara", name: "Stellara", origin: "Neuchâtel", founded: 1998, note: "Moonphase and celestial complications." },
+      { slug: "aureline", name: "Aureline", origin: "Geneva", founded: 1947, note: "Gold dress watches with enamel signatures." },
+      { slug: "blackwater", name: "Blackwater", origin: "Glasgow", founded: 1979, note: "Tool watches built for wet weather." },
+      { slug: "corvus", name: "Corvus", origin: "Basel", founded: 1966, note: "Pilot chronographs and cathedral hands." },
+      { slug: "damaris", name: "Damaris", origin: "Paris", founded: 1951, note: "Jewelry watches and diamond bezels." },
+      { slug: "emberoak", name: "Ember & Oak", origin: "Copenhagen", founded: 2004, note: "Bronze divers and field reissues." },
+      { slug: "fairlie", name: "Fairlie", origin: "Edinburgh", founded: 1932, note: "Military-issue field watches." },
+      { slug: "gossamer", name: "Gossamer", origin: "Le Locle", founded: 1919, note: "Ultra-thin automatics." },
+      { slug: "hartland", name: "Hartland", origin: "Zurich", founded: 1988, note: "Accessible steel sports watches." }
     ];
 
     const PRODUCTS = [
@@ -623,6 +668,158 @@
       { id: "ly-openface", maison: "Lysander", slug: "lysander", model: "Open Face 1902", ref: "LY-OF-02", year: 1902, condition: "Very good", price: 4100, type: "Pocket", gender: "Unisex", movement: "Manual pocket, LY-P", case: "48mm, yellow gold open face", water: "Not rated", dial: "Porcelain", dialColor: "#efe6d2", metal: "#c9a227", bezel: "smooth", papers: false, box: false, certified: false, limited: false, era: "Vintage", location: "London", dealer: "Private seller", desc: "Open-face city pocket watch. Hairlines on the porcelain, original bow." },
       { id: "ny-oval", maison: "Nymara", slug: "nymara", model: "Iris Oval", ref: "NY-OV-22", year: 2022, condition: "Like new", price: 9800, type: "Dress", gender: "Women", movement: "Quartz, NY-Q8", case: "24mm oval, 18k yellow gold", water: "30m", dial: "Pearl", dialColor: "#f0e6ea", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Paris", dealer: "Maison Rive", desc: "Oval jewelry watch worn twice. Original pearl strap included." }
     ];
+
+    const PER_CAT = 1000;
+    const CATS = [
+      { slug: "mens", label: "Men's watches", pick: (p) => p.gender !== "Women" },
+      { slug: "womens", label: "Women's watches", pick: (p) => p.gender === "Women" || p.gender === "Unisex" },
+      { slug: "preowned", label: "Pre-owned watches", pick: (p) => p.condition !== "Unworn" },
+      { slug: "mechanical", label: "Mechanical watches", pick: (p) => /manual|automatic/i.test(p.movement) },
+      { slug: "automatic", label: "Automatic watches", pick: (p) => /automatic/i.test(p.movement) },
+      { slug: "vintage", label: "Vintage watches", pick: (p) => p.era === "Vintage" },
+      { slug: "chronograph", label: "Chronographs", pick: (p) => p.type === "Chronograph" },
+      { slug: "dive", label: "Diving watches", pick: (p) => p.type === "Dive" },
+      { slug: "pilot", label: "Pilot's watches", pick: (p) => p.type === "Pilot" },
+      { slug: "military", label: "Military watches", pick: (p) => p.type === "Field" || p.type === "Pilot" },
+      { slug: "swiss", label: "Swiss watches", pick: (p) => ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland"].includes(p.slug) },
+      { slug: "affordable", label: "Affordable watches", pick: (p) => p.price < 5000 },
+      { slug: "straps", label: "Bracelets and straps", pick: (p) => true, accessory: "strap" },
+      { slug: "parts", label: "Parts and accessories", pick: (p) => true, accessory: "parts" }
+    ];
+    const TOTAL_WATCHES = CATS.length * PER_CAT;
+    const PAGE_SIZE = 24;
+    const CONDITIONS = ["Unworn", "Like new", "Excellent", "Very good", "Good"];
+    const CITIES = ["Geneva","Zurich","Paris","London","Milan","Hamburg","Oslo","Tokyo","New York","Singapore","Dubai","Madrid"];
+
+    function templatesFor(cat) {
+      const list = PRODUCTS.filter(cat.pick);
+      return list.length ? list : PRODUCTS;
+    }
+
+    function makeListing(cat, n) {
+      const tpls = templatesFor(cat);
+      const t = tpls[n % tpls.length];
+      const brand = MAISONS[n % MAISONS.length];
+      const cond = CONDITIONS[n % CONDITIONS.length];
+      const year = t.era === "Vintage" || cat.slug === "vintage" ? 1952 + (n % 38) : 2009 + (n % 17);
+      const price = Math.max(180, Math.round(t.price * (0.78 + (n % 45) / 100)));
+      const accessory = cat.accessory;
+      return {
+        ...t,
+        id: `g-${cat.slug}-${n + 1}`,
+        photoId: t.id,
+        maison: brand.name,
+        slug: brand.slug,
+        model: accessory === "strap" ? `${t.model} bracelet ${n + 1}` : accessory === "parts" ? `${t.model} kit ${n + 1}` : `${t.model} ${String(n + 1).padStart(4, "0")}`,
+        ref: `${(t.ref || "VS").replace(/\s+/g, "")}-${n + 1}`,
+        year,
+        condition: cat.slug === "preowned" && cond === "Unworn" ? "Excellent" : cond,
+        price: accessory ? Math.round(price * 0.08) : (cat.slug === "affordable" ? 420 + (n % 4200) : price),
+        gender: cat.slug === "womens" ? "Women" : cat.slug === "mens" ? "Men" : t.gender,
+        type: accessory === "strap" ? "Strap" : accessory === "parts" ? "Accessory" : (cat.slug === "dive" ? "Dive" : cat.slug === "chronograph" ? "Chronograph" : cat.slug === "pilot" ? "Pilot" : t.type),
+        era: cat.slug === "vintage" ? "Vintage" : t.era,
+        certified: n % 4 !== 0,
+        papers: n % 3 !== 0,
+        box: n % 5 !== 0,
+        location: CITIES[n % CITIES.length],
+        category: cat.slug,
+        desc: accessory ? `Original ${accessory} listing ${n + 1} for ${t.model}. Photographed with the matching watch.` : `${t.desc} Catalogue number ${n + 1} in ${cat.label.toLowerCase()}.`
+      };
+    }
+
+    function makeBrandListing(brand, n) {
+      const cat = CATS[n % CATS.length];
+      const p = makeListing(cat, n);
+      return { ...p, id: `g-b-${brand.slug}-${n + 1}`, slug: brand.slug, maison: brand.name };
+    }
+
+    function findProduct(id) {
+      const hand = PRODUCTS.find((x) => x.id === id);
+      if (hand) return { ...hand, photoId: hand.photoId || hand.id };
+      let m = /^g-b-([a-z]+)-(\d+)$/.exec(id || "");
+      if (m) {
+        const brand = MAISONS.find((x) => x.slug === m[1]);
+        const n = Number(m[2]) - 1;
+        if (!brand || n < 0 || n >= PER_CAT) return null;
+        return makeBrandListing(brand, n);
+      }
+      m = /^g-([a-z]+)-(\d+)$/.exec(id || "");
+      if (!m) return null;
+      const cat = CATS.find((c) => c.slug === m[1]);
+      const n = Number(m[2]) - 1;
+      if (!cat || n < 0 || n >= PER_CAT) return null;
+      return makeListing(cat, n);
+    }
+
+    function queryString(q, page) {
+      const params = new URLSearchParams();
+      Object.entries(q || {}).forEach(([k, v]) => {
+        if (k === "page" || v == null || v === "") return;
+        params.set(k, String(v));
+      });
+      if (page && page > 1) params.set("page", String(page));
+      const s = params.toString();
+      return s ? "?" + s : "";
+    }
+
+    function pager(q, total, hashBase) {
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      const page = Math.min(pages, Math.max(1, Number(q.page || 1)));
+      const base = hashBase || "#/shop";
+      const link = (p) => base + queryString(q, p);
+      let html = `<nav class="pager" aria-label="Pagination">`;
+      if (page > 1) html += `<a href="${link(page - 1)}">Prev</a>`;
+      const start = Math.max(1, page - 3);
+      const end = Math.min(pages, page + 3);
+      if (start > 1) html += `<a href="${link(1)}">1</a>`;
+      for (let p = start; p <= end; p++) html += `<a class="${p === page ? "on" : ""}" href="${link(p)}">${p}</a>`;
+      if (end < pages) html += `<a href="${link(pages)}">${pages}</a>`;
+      if (page < pages) html += `<a href="${link(page + 1)}">Next</a>`;
+      html += `<span>${page} / ${pages}</span></nav>`;
+      return { page, pages, html };
+    }
+
+    function hasExtraFilters(q) {
+      return !!(q.q || q.type || q.condition || q.limited || q.papers || q.era || q.gender || q.metal || q.movement || q.price || q.sort);
+    }
+
+    function slicePage(list, q) {
+      const total = list.length;
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      const page = Math.min(pages, Math.max(1, Number(q.page || 1)));
+      const start = (page - 1) * PAGE_SIZE;
+      return { list: list.slice(start, start + PAGE_SIZE), total };
+    }
+
+    function virtualSlice(q, makeAt, total) {
+      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      const page = Math.min(pages, Math.max(1, Number(q.page || 1)));
+      const start = (page - 1) * PAGE_SIZE;
+      const list = [];
+      for (let i = 0; i < PAGE_SIZE && start + i < total; i++) list.push(makeAt(start + i));
+      return { list, total };
+    }
+
+    function pagedFiltered(q) {
+      const cat = CATS.find((c) => c.slug === q.cat);
+      const brand = q.maison ? MAISONS.find((m) => m.slug === q.maison) : null;
+      const makeAt = cat
+        ? (i) => makeListing(cat, i)
+        : brand
+          ? (i) => makeBrandListing(brand, i)
+          : (i) => makeListing(CATS[Math.floor(i / PER_CAT)], i % PER_CAT);
+      const pool = (cat || brand) ? PER_CAT : TOTAL_WATCHES;
+      if (hasExtraFilters(q)) return slicePage(filtered(q), q);
+      if (q.certified === "1") {
+        const indices = [];
+        for (let i = 0; i < pool; i++) {
+          const n = cat || brand ? i : (i % PER_CAT);
+          if (n % 4 !== 0) indices.push(i);
+        }
+        return virtualSlice(q, (j) => makeAt(indices[j]), indices.length);
+      }
+      return virtualSlice(q, makeAt, pool);
+    }
 
     const ARTICLES = [
       { id: "reading-a-movement", title: "How to read a movement through the caseback", tag: "Collecting", dek: "What anglage, perlage, and a clean keyless works actually tell you.", body: "<p>A display caseback is not a guarantee of quality, but it is a map. Start at the balance: a free-sprung stud and a well-shaped overcoil suggest more finishing time than a simple regulator. Then look at the bridges. Anglage that catches light in a continuous ribbon is different from a stamped bevel that dies at every corner.</p><p>On Vespera listings, independent maisons such as Ardent and Rochefort tend to show the work. Factory movements can still be honest — look for even polishing and screws that have not been chewed by a poor service.</p><p>If the seller will not show a movement photograph on a piece above a few thousand, treat that as information, not an oversight.</p>" },
@@ -790,9 +987,10 @@
     }
 
     function productPhotos(p) {
+      const base = p.photoId || p.id;
       const shots = [];
       for (let n = 1; n <= 8; n++) {
-        shots.push(n === 1 ? `assets/watches/${p.id}.jpg` : `assets/watches/${p.id}-${n}.jpg`);
+        shots.push(n === 1 ? `assets/watches/${base}.jpg` : `assets/watches/${base}-${n}.jpg`);
       }
       return shots;
     }
@@ -802,7 +1000,8 @@
     }
 
     function gallerySlot(p, view) {
-      return `<img class="photo" src="${photoFor(p, view)}" alt="${p.maison} ${p.model} — ${GALLERY_VIEWS[view]}" onerror="this.onerror=null;this.src='assets/watches/${p.id}.jpg'" />`;
+      const pid = p.photoId || p.id;
+      return `<img class="photo" src="${photoFor(p, view)}" alt="${p.maison} ${p.model} — ${GALLERY_VIEWS[view]}" onerror="this.onerror=null;this.src='assets/watches/${pid}.jpg'" />`;
     }
 
     function parseRoute() {
@@ -815,10 +1014,17 @@
     }
 
     function filtered(q) {
-      let list = PRODUCTS.slice();
+      const cat = CATS.find((c) => c.slug === q.cat);
+      let list;
+      if (cat) list = Array.from({ length: PER_CAT }, (_, i) => makeListing(cat, i));
+      else if (q.maison) {
+        const b = MAISONS.find((m) => m.slug === q.maison);
+        list = b ? Array.from({ length: PER_CAT }, (_, i) => makeBrandListing(b, i)) : [];
+      } else {
+        list = CATS.flatMap((c) => Array.from({ length: PER_CAT }, (_, i) => makeListing(c, i)));
+      }
       const s = (q.q || "").trim().toLowerCase();
       if (s) list = list.filter((p) => (p.maison + p.model + p.ref + p.type + p.dial).toLowerCase().includes(s));
-      if (q.maison) list = list.filter((p) => p.slug === q.maison);
       if (q.type) list = list.filter((p) => p.type === q.type);
       if (q.condition) {
         if (q.condition === "Excellent") list = list.filter((p) => ["Excellent", "Like new", "Very good", "Good"].includes(p.condition));
@@ -829,7 +1035,7 @@
       if (q.papers === "1") list = list.filter((p) => p.papers && p.box);
       if (q.era) list = list.filter((p) => p.era === q.era);
       if (q.gender) list = list.filter((p) => p.gender === q.gender || p.gender === "Unisex");
-      if (q.metal === "gold") list = list.filter((p) => /gold/i.test(p.case));
+      if (q.metal === "gold") list = list.filter((p) => /gold/i.test(p.case || ""));
       if (q.movement === "Automatic") list = list.filter((p) => /automatic/i.test(p.movement));
       if (q.price) {
         const [a, b] = q.price.split("-").map(Number);
@@ -838,7 +1044,7 @@
       if (q.sort === "price-asc") list.sort((a, b) => a.price - b.price);
       else if (q.sort === "price-desc") list.sort((a, b) => b.price - a.price);
       else if (q.sort === "new") list.sort((a, b) => b.year - a.year);
-      else list.sort((a, b) => a.maison.localeCompare(b.maison) || a.price - b.price);
+      else if (q.sort === "bestsellers") list.sort((a, b) => Number(b.certified) - Number(a.certified) || b.price - a.price);
       return list;
     }
 
@@ -849,7 +1055,7 @@
           ${p.certified ? `<span class="badge">Certified</span>` : (p.limited ? `<span class="badge">Limited</span>` : "")}
           <button class="save ${on ? "on" : ""}" data-save="${p.id}" aria-label="Save">${on ? "♥" : "♡"}</button>
           <span class="photo-count">8 photos</span>
-          <img class="product-photo" src="assets/watches/${p.id}.jpg" alt="${p.maison} ${p.model}" onerror="this.style.background='#151c26'" />
+          <img class="product-photo" src="assets/watches/${p.photoId || p.id}.jpg" alt="${p.maison} ${p.model}" onerror="this.onerror=null;this.src='assets/watches/${p.photoId || p.id}.jpg'" />
         </div>
         <div class="card-body">
           <div class="maison">${p.maison}</div>
@@ -863,13 +1069,16 @@
     function home() {
       const featured = PRODUCTS.filter((p) => p.certified).slice(0, 4);
       const arrivals = [...PRODUCTS].sort((a, b) => b.year - a.year).slice(0, 4);
-      const types = ["Dive", "Dress", "Chronograph", "GMT", "Pilot", "Field", "Skeleton", "Moonphase", "Pocket"];
       return `<section class="hero-bleed">
-        <img src="assets/hero-bestsellers.jpg" alt="Steel sport watch and GMT watch on black leather" />
+        <div class="hero-leather" aria-hidden="true"></div>
+        <div class="hero-stage" id="heroStage">
+          <img class="hw hw-a" src="assets/hero-watch-square.jpg" alt="Square-case steel sports watch">
+          <img class="hw hw-b" src="assets/hero-watch-gmt.jpg" alt="GMT sports watch">
+        </div>
         <div class="hero-copy"><div class="wrap">
-          <h1>What watch enthusiasts are wearing</h1>
-          <span class="sub">Bestsellers &amp; watch classics</span>
-          <a class="btn discover" href="#/shop">Discover now</a>
+          <p class="eyebrow">What watch enthusiasts are wearing</p>
+          <h1>Bestsellers &amp; watch classics</h1>
+          <a class="btn discover" href="#/shop?sort=bestsellers">Discover now</a>
         </div></div>
       </section>
       <section class="brand-bar"><div class="wrap">
@@ -887,7 +1096,7 @@
       <section><div class="wrap">
         <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by type</h2></div></div>
         <div class="type-grid">
-          ${types.map(t => `<a class="type-card" href="#/shop?type=${encodeURIComponent(t)}"><em>Collection</em><strong>${t}</strong></a>`).join("")}
+          ${CATS.map(c => `<a class="type-card" href="#/shop?cat=${c.slug}"><em>1,000 listings</em><strong>${c.label}</strong></a>`).join("")}
         </div>
       </div></section>
       <section><div class="wrap">
@@ -911,11 +1120,11 @@
 
     function exploreBand() {
       const items = [
-        ["Men's watches","assets/watches/el-nocturne-40.jpg","#/shop?gender=Men"],
-        ["Pre-owned watches","assets/watches/ly-1958.jpg","#/shop?condition=Excellent"],
+        ["Men's watches","assets/watches/el-nocturne-40.jpg","#/shop?cat=mens"],
+        ["Pre-owned watches","assets/watches/ly-1958.jpg","#/shop?cat=preowned"],
         ["Pocket watches","assets/explore-pocket.jpg","#/shop?type=Pocket"],
-        ["Women's watches","assets/explore-womens.jpg","#/shop?gender=Women"],
-        ["Automatic watches","assets/explore-automatic.jpg","#/shop?movement=Automatic"],
+        ["Women's watches","assets/explore-womens.jpg","#/shop?cat=womens"],
+        ["Automatic watches","assets/explore-automatic.jpg","#/shop?cat=automatic"],
         ["Skeleton watches","assets/explore-skeleton.jpg","#/shop?type=Skeleton"],
         ["Gold watches","assets/explore-gold.jpg","#/shop?metal=gold"],
         ["Moon phase watches","assets/explore-moonphase.jpg","#/shop?type=Moonphase"]
@@ -961,13 +1170,19 @@
     }
 
     function shop(q) {
-      const list = filtered(q);
+      const { list, total } = pagedFiltered(q);
+      const cat = CATS.find((c) => c.slug === q.cat);
+      const { html: pagerHtml } = pager(q, total);
       const maisons = MAISONS.map(m => `<option value="${m.slug}" ${q.maison===m.slug?"selected":""}>${m.name}</option>`).join("");
+      const cats = CATS.map(c => `<option value="${c.slug}" ${q.cat===c.slug?"selected":""}>${c.label}</option>`).join("");
+      const heading = cat ? cat.label : (q.maison ? (MAISONS.find(m => m.slug === q.maison) || {}).name || "Maison" : "Catalogue");
       return `<div class="wrap shop-layout">
         <aside class="filters">
           <h3>Filter</h3>
           <label>Search</label>
           <input id="fQ" value="${q.q || ""}" placeholder="Model or reference" />
+          <label>Category</label>
+          <select id="fCat"><option value="">All categories</option>${cats}</select>
           <label>Maison</label>
           <select id="fMaison"><option value="">All maisons</option>${maisons}</select>
           <label>Type</label>
@@ -992,6 +1207,7 @@
           <label>Sort</label>
           <select id="fSort">
             <option value="">Featured</option>
+            <option value="bestsellers" ${q.sort==="bestsellers"?"selected":""}>Bestsellers</option>
             <option value="new" ${q.sort==="new"?"selected":""}>Newest year</option>
             <option value="price-asc" ${q.sort==="price-asc"?"selected":""}>Price, low to high</option>
             <option value="price-desc" ${q.sort==="price-desc"?"selected":""}>Price, high to low</option>
@@ -1005,24 +1221,35 @@
         </aside>
         <div>
           <div class="results-head">
-            <div><p class="kicker">Catalogue</p><h2>${list.length} listing${list.length===1?"":"s"}</h2></div>
+            <div><p class="kicker">${cat ? "1,000 in this category" : "Full catalogue"}</p><h2>${heading}</h2><p class="meta">${total.toLocaleString()} listing${total===1?"":"s"}</p></div>
           </div>
-          ${list.length ? `<div class="cards">${list.map(card).join("")}</div>` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
+          ${list.length ? `<div class="cards">${list.map(card).join("")}</div>${pagerHtml}` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
         </div>
       </div>`;
     }
 
     function listing(id) {
-      const p = PRODUCTS.find((x) => x.id === id);
+      const p = findProduct(id);
       if (!p) return `<div class="wrap page"><h2>Listing not found</h2><p><a href="#/shop">Return to shop</a></p></div>`;
-      const related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
+      const pid = p.photoId || p.id;
+      let related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
+      if (related.length < 4) {
+        const brand = MAISONS.find((m) => m.slug === p.slug);
+        const start = Math.max(0, (Number((String(p.id).match(/(\d+)$/) || [0, 1])[1]) || 1) % PER_CAT);
+        if (brand) {
+          for (let i = 1; related.length < 4 && i < 12; i++) {
+            const r = makeBrandListing(brand, (start + i) % PER_CAT);
+            if (r.id !== p.id) related.push(r);
+          }
+        }
+      }
       const on = state.saved.includes(p.id);
-      const thumbs = GALLERY_VIEWS.map((label, i) => `<button type="button" class="${i===0?"on":""}" data-thumb="${i}" aria-label="${label}"><img src="${photoFor(p, i)}" alt="${label}" onerror="this.onerror=null;this.src='assets/watches/${p.id}.jpg'"></button>`).join("");
+      const thumbs = GALLERY_VIEWS.map((label, i) => `<button type="button" class="${i===0?"on":""}" data-thumb="${i}" aria-label="${label}"><img src="${photoFor(p, i)}" alt="${label}" onerror="this.onerror=null;this.src='assets/watches/${pid}.jpg'"></button>`).join("");
       return `<div class="wrap">
         <p class="crumbs"><a href="#/">Home</a> / <a href="#/shop">Shop</a> / <a href="#/brand/${p.slug}">${p.maison}</a> / ${p.model}</p>
         <div class="detail">
           <div class="gallery">
-            <div class="gallery-main" id="galleryMain">${gallerySlot(p, 0, 420)}<span class="gallery-label" id="galleryLabel">${GALLERY_VIEWS[0]} · 1 / 8</span></div>
+            <div class="gallery-main" id="galleryMain">${gallerySlot(p, 0)}<span class="gallery-label" id="galleryLabel">${GALLERY_VIEWS[0]} · 1 / 8</span></div>
             <div class="gallery-thumbs">${thumbs}</div>
           </div>
           <div>
@@ -1063,23 +1290,27 @@
       return `<div class="wrap page">
         <p class="kicker">Directory</p>
         <h1>Maisons</h1>
-        <p class="lede">Sixteen original ateliers in this catalogue. None are licensed names from other platforms.</p>
+        <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has 1,000 listings. None are licensed names from other platforms.</p>
         <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:28px">
           ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
         </div>
       </div>`;
     }
 
-    function brandPage(slug) {
+    function brandPage(slug, q) {
       const m = MAISONS.find((x) => x.slug === slug);
       if (!m) return `<div class="wrap page"><h2>Maison not found</h2></div>`;
-      const list = PRODUCTS.filter((p) => p.slug === slug);
+      const query = { ...(q || {}), maison: slug };
+      const { list, total } = pagedFiltered(query);
+      const { html: pagerHtml } = pager(query, total, `#/brand/${slug}`);
       return `<div class="wrap page">
         <p class="crumbs"><a href="#/brands">Maisons</a> / ${m.name}</p>
-        <p class="kicker">${m.origin} · Est. ${m.founded}</p>
+        <p class="kicker">${m.origin} · Est. ${m.founded} · 1,000 listings</p>
         <h1>${m.name}</h1>
         <p class="lede">${m.note}</p>
+        <p class="meta">${total.toLocaleString()} watches from this maison</p>
         <div class="cards">${list.map(card).join("")}</div>
+        ${pagerHtml}
       </div>`;
     }
 
@@ -1240,7 +1471,7 @@
     }
 
     function savedPage() {
-      const list = PRODUCTS.filter((p) => state.saved.includes(p.id));
+      const list = state.saved.map(findProduct).filter(Boolean);
       return `<div class="wrap page">
         <p class="kicker">Account</p><h1>Saved watches</h1>
         ${list.length ? `<div class="cards">${list.map(card).join("")}</div>` : `<div class="empty">You have not saved any listings yet.</div>`}
@@ -1297,7 +1528,7 @@
       else if (root === "shop") html = shop(q);
       else if (root === "listing") html = listing(parts[1]);
       else if (root === "brands") html = brandsPage();
-      else if (root === "brand") html = brandPage(parts[1]);
+      else if (root === "brand") html = brandPage(parts[1], q);
       else if (root === "sell") html = sellPage();
       else if (root === "magazine") html = magazine();
       else if (root === "article") html = article(parts[1]);
@@ -1317,6 +1548,35 @@
       view.innerHTML = html;
       window.scrollTo(0, 0);
       bindView();
+      startHeroAnim();
+    }
+
+    const HERO_PAIRS = [
+      ["assets/hero-watch-square.jpg", "assets/hero-watch-gmt.jpg"],
+      ["assets/watches/el-nocturne-40.jpg", "assets/watches/so-etoile.jpg"],
+      ["assets/watches/ca-abyss.jpg", "assets/watches/bh-expedition.jpg"],
+      ["assets/watches/he-track.jpg", "assets/watches/ny-iris.jpg"]
+    ];
+
+    function startHeroAnim() {
+      if (window.__heroT) { clearInterval(window.__heroT); window.__heroT = null; }
+      const a = document.querySelector(".hw-a");
+      const b = document.querySelector(".hw-b");
+      if (!a || !b) return;
+      let i = 0;
+      window.__heroT = setInterval(() => {
+        const left = document.querySelector(".hw-a");
+        const right = document.querySelector(".hw-b");
+        if (!left || !right) { clearInterval(window.__heroT); window.__heroT = null; return; }
+        i = (i + 1) % HERO_PAIRS.length;
+        left.src = HERO_PAIRS[i][0];
+        right.src = HERO_PAIRS[i][1];
+        left.style.animation = "none";
+        right.style.animation = "none";
+        void left.offsetWidth;
+        left.style.animation = "";
+        right.style.animation = "";
+      }, 5200);
     }
 
     function bindView() {
@@ -1324,6 +1584,7 @@
       if (apply) apply.onclick = () => {
         const params = new URLSearchParams();
         const q = $("fQ").value.trim(); if (q) params.set("q", q);
+        const cat = $("fCat") && $("fCat").value; if (cat) params.set("cat", cat);
         const m = $("fMaison").value; if (m) params.set("maison", m);
         const t = $("fType").value; if (t) params.set("type", t);
         const c = $("fCond").value; if (c) params.set("condition", c);
@@ -1357,8 +1618,20 @@
     function searchHits(term) {
       const t = term.trim().toLowerCase();
       if (!t) { $("searchHits").innerHTML = ""; return; }
-      const hits = PRODUCTS.filter((p) => (p.maison + " " + p.model + " " + p.ref + " " + p.type).toLowerCase().includes(t)).slice(0, 8);
-      $("searchHits").innerHTML = hits.length ? hits.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches.</p>`;
+      const hits = [];
+      PRODUCTS.forEach((p) => {
+        if ((p.maison + " " + p.model + " " + p.ref + " " + p.type).toLowerCase().includes(t)) hits.push(p);
+      });
+      MAISONS.forEach((m) => {
+        if (hits.length >= 8) return;
+        if (m.name.toLowerCase().includes(t)) hits.push(makeBrandListing(m, 0));
+      });
+      CATS.forEach((c) => {
+        if (hits.length >= 8) return;
+        if (c.label.toLowerCase().includes(t)) hits.push(makeListing(c, 0));
+      });
+      const shown = hits.slice(0, 8);
+      $("searchHits").innerHTML = shown.length ? shown.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches. Press Enter to search the 14,000-watch catalogue.</p>`;
     }
 
     function closeDrawer() {
@@ -1367,6 +1640,8 @@
     }
 
     document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    document.getElementById("buyBrandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${TOTAL_WATCHES.toLocaleString()} watches worldwide`;
     $("regionGrid").innerHTML = REGIONS.map(([flag, name]) => `<a href="#/shop"><span>${flag}</span>${name}</a>`).join("");
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
@@ -1381,7 +1656,7 @@
       if (thumb) {
         e.preventDefault();
         const i = Number(thumb.getAttribute("data-thumb"));
-        const p = PRODUCTS.find((x) => x.id === parseRoute().parts[1]);
+        const p = findProduct(parseRoute().parts[1]);
         if (!p || !$("galleryMain")) return;
         $("galleryMain").innerHTML = gallerySlot(p, i, 420) + `<span class="gallery-label">${GALLERY_VIEWS[i]} · ${i + 1} / 8</span>`;
         document.querySelectorAll("[data-thumb]").forEach((b) => b.classList.toggle("on", b === thumb));
@@ -1401,7 +1676,8 @@
       if (go) { e.preventDefault(); closeSearch(); closeDrawer(); location.hash = go.getAttribute("data-go"); return; }
       const inq = e.target.closest("[data-inquire]");
       if (inq) {
-        const p = PRODUCTS.find((x) => x.id === inq.getAttribute("data-inquire"));
+        const p = findProduct(inq.getAttribute("data-inquire"));
+        if (!p) return;
         state.inquiries.unshift({ maison: p.maison, model: p.model, price: p.price, when: new Date().toLocaleString() });
         persist();
         toast("Purchase request saved");

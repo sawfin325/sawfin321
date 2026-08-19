@@ -6,6 +6,7 @@ Vespera is a fictional catalogue: original maisons, menus, listings, and copy. I
 
 ## Pages
 
-- Home with Explore (8 pictured collections), popular models, and customer reviews
+- Home with an animated leather hero, Explore collections, popular models, and customer reviews
+- 1,000 listings in each shop category (14,000 watches across the catalogue) and 1,000 listings per maison
 - Each listing has an 8-image gallery (studio photo plus seven detail views)
 - Footer: buy/sell/about, apps, payments, regional shop, legal
