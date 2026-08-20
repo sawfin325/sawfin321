@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="mobile-fix" />
+  <meta name="vespera-build" content="why-buy" />
   <title>Vespera — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -245,6 +245,43 @@
     .stat { border-top: 1px solid var(--line); padding-top: 12px; }
     .stat b { display: block; font-family: var(--serif); font-size: 28px; font-weight: 500; }
     .stat span { color: var(--muted); font-size: 13px; }
+
+    .why-band { background: #0d1218; border-top: 1px solid #1c2733; border-bottom: 1px solid #1c2733; }
+    .why-intro { max-width: 42em; margin-bottom: 32px; }
+    .why-intro h2 {
+      font-family: var(--sans); font-size: clamp(28px, 4vw, 42px); font-weight: 650;
+      color: #fff; letter-spacing: -0.02em; line-height: 1.15;
+    }
+    .why-intro p { color: #c9d2dc; font-size: 17px; line-height: 1.65; margin: 14px 0 0; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .why-card {
+      border: 1px solid #243040; background: #151c26; padding: 26px 24px; min-height: 210px;
+    }
+    .why-card:hover { border-color: var(--gold); }
+    .why-card .n { color: var(--gold); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; display: block; }
+    .why-card h3 { font-family: var(--sans); font-size: 20px; font-weight: 650; color: #fff; margin: 0 0 10px; letter-spacing: 0; }
+    .why-card p { margin: 0; color: #c9d2dc; font-size: 15px; line-height: 1.65; }
+    .why-stats {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 18px;
+      margin-top: 36px; border-top: 1px solid #243040; padding-top: 28px;
+    }
+    .why-stat b { display: block; font-family: var(--serif); font-size: clamp(26px, 4vw, 34px); color: #fff; font-weight: 500; }
+    .why-stat span { color: #9aa7b5; font-size: 13px; line-height: 1.4; }
+    .why-split {
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center;
+      margin-top: 48px;
+    }
+    .why-photo { border: 1px solid #243040; overflow: hidden; background: #151c26; }
+    .why-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .why-copy h2 { font-family: var(--sans); font-size: clamp(24px, 3vw, 32px); color: #fff; font-weight: 650; margin-bottom: 12px; }
+    .why-copy p { color: #c9d2dc; font-size: 16px; line-height: 1.7; margin: 0 0 14px; }
+    .why-steps { display: grid; gap: 16px; margin: 22px 0 26px; }
+    .why-step { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: start; }
+    .why-step b {
+      font-family: var(--serif); font-size: 22px; color: var(--gold); font-weight: 500; line-height: 1.2;
+    }
+    .why-step strong { display: block; color: #fff; font-size: 15px; margin-bottom: 4px; }
+    .why-step span { color: #9aa7b5; font-size: 14px; line-height: 1.5; }
 
     section { padding: 56px 0; }
     .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 28px; }
@@ -521,7 +558,9 @@
     @media (max-width: 980px) {
       .brand-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .hero-stage { width: min(520px, 58%); }
-      .hero, .detail, .split, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid { grid-template-columns: 1fr 1fr; }
+      .hero, .detail, .split, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid, .why-grid { grid-template-columns: 1fr 1fr; }
+      .why-stats { grid-template-columns: 1fr 1fr; }
+      .why-split { grid-template-columns: 1fr; gap: 24px; }
       .shop-layout { grid-template-columns: 1fr; }
       .guide-grid { grid-template-columns: 1fr 1fr; }
       .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -540,7 +579,8 @@
       .hero-copy { align-items: flex-end; padding-bottom: 32px; }
       .hero-copy h1 { max-width: 12ch; font-size: clamp(22px, 7.4vw, 34px); }
       .hero-copy .eyebrow { font-size: 13px; }
-      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail, .split, .video-grid, .guide-grid, .article-grid, .steps { grid-template-columns: 1fr; }
+      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail, .split, .video-grid, .guide-grid, .article-grid, .steps, .why-grid { grid-template-columns: 1fr; }
+      .why-card { min-height: 0; }
       .popular, .regions { grid-template-columns: 1fr 1fr; }
       .gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .gallery-main { min-height: 0; }
@@ -1593,6 +1633,7 @@
           ${MAISONS.slice(0,8).map(m => `<button class="maison-chip" data-go="#/brand/${m.slug}"><strong>${m.name.split(" ")[0]}</strong><span>${m.origin}</span></button>`).join("")}
         </div>
       </div>
+      ${whyBand()}
       <section><div class="wrap">
         <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by type</h2></div></div>
         <div class="type-grid">
@@ -1618,6 +1659,52 @@
       ${reviewsBand(state.reviewPage)}
       ${videoBand()}
       ${guideBand()}`;
+    }
+
+    function whyBand() {
+      const reasons = [
+        ["01", "Independent maisons", "The catalogue is original ateliers — Elowen, Calder, Solenne, Quill &amp; Crown — not licensed mall names. You are buying a watch with a story you can actually follow."],
+        ["02", "Eight photographs, not one", "Every listing is shot from eight angles: dial, case, lugs, movement, clasp. You judge the piece before you write, not after it arrives."],
+        ["03", "Certified, when it matters", "Certified watches are inspected against the photographs. Condition, box, and papers are written in plain language so there are fewer surprises at the door."],
+        ["04", "A desk that answers", `Orders go to a person on WhatsApp or email — ${CONTACT.phonePretty} and ${CONTACT.email}. There is no card checkout and no chatbot. Ask about a reference; they will answer.`],
+        ["05", "Asking prices already cut", "Every watch on Vespera is listed at 40% below its previous asking price. What you see is what the desk will confirm, shown in your own currency."],
+        ["06", "Honest pre-owned", "Vintage and used pieces carry a grade, a year, and notes on wear. Collectors buy here because a tropical dial is described as tropical, not as unworn."]
+      ];
+      return `<section class="why-band"><div class="wrap">
+        <div class="why-intro">
+          <p class="kicker">Why collectors buy here</p>
+          <h2>A watch should be chosen with a clear head.</h2>
+          <p>Vespera is built for people who want to see the piece, speak to a person, and pay the price on the listing. Independent maisons, studio photographs, and a desk you can actually reach — that is the whole argument.</p>
+        </div>
+        <div class="why-grid">
+          ${reasons.map(([n,t,p]) => `<article class="why-card"><span class="n">${n}</span><h3>${t}</h3><p>${p}</p></article>`).join("")}
+        </div>
+        <div class="why-stats">
+          <div class="why-stat"><b>${TOTAL_WATCHES.toLocaleString(state.locale || "en")}</b><span>Listings across ${CATS.length} rooms, worldwide</span></div>
+          <div class="why-stat"><b>${MAISONS.length}</b><span>Original maisons, none borrowed from other platforms</span></div>
+          <div class="why-stat"><b>8</b><span>Studio photographs on every watch</span></div>
+          <div class="why-stat"><b>40%</b><span>Off the previous asking price, on every listing</span></div>
+        </div>
+        <div class="why-split">
+          <div class="why-photo">
+            <img src="assets/watches/so-etoile.jpg" alt="Gold moonphase dress watch photographed for a Vespera listing">
+          </div>
+          <div class="why-copy">
+            <p class="kicker">How a purchase works</p>
+            <h2>No cart. A conversation, then the watch.</h2>
+            <p>Most collectors already know what they want. We do not make you create a basket, guess at shipping, or enter a card on the page. You open the listing, order it, and the desk confirms it is still available.</p>
+            <div class="why-steps">
+              <div class="why-step"><b>01</b><div><strong>Choose the watch</strong><span>Filter by maison, type, or condition. Open the eight photographs. Save it if you need a night to think.</span></div></div>
+              <div class="why-step"><b>02</b><div><strong>Order on WhatsApp or email</strong><span>The message includes the reference, the asking price, and your collector account if you are signed in.</span></div></div>
+              <div class="why-step"><b>03</b><div><strong>The desk confirms</strong><span>Availability, payment, and shipping are agreed with a person. If the watch is not as described, write immediately — the number is on every page.</span></div></div>
+            </div>
+            <div class="row">
+              <a class="btn gold" href="#/shop">Browse the catalogue</a>
+              <a class="btn ghost" href="#/help">How buying works</a>
+            </div>
+          </div>
+        </div>
+      </div></section>`;
     }
 
     function exploreBand() {
