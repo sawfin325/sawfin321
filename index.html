@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="luxerywatchsales" />
+  <meta name="vespera-build" content="cat-photos" />
   <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -303,6 +303,37 @@
     .type-card:hover { border-color: var(--ink); }
     .type-card em { font-style: normal; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
     .type-card strong { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+    .cat-photo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .cat-tile {
+      position: relative; display: block; overflow: hidden; border-radius: 10px; color: #fff;
+      background: #151c26; min-height: 0;
+    }
+    .cat-tile img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .cat-tile:after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.15) 20%, rgba(0,0,0,.72) 100%);
+    }
+    .cat-tile em, .cat-tile span { position: absolute; z-index: 1; left: 14px; right: 14px; }
+    .cat-tile em { top: 12px; font-style: normal; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #dbeafe; }
+    .cat-tile span { bottom: 14px; font-size: 18px; font-weight: 650; line-height: 1.2; }
+    .cat-landing { padding: 28px 0 8px; }
+    .cat-landing h1 { font-family: var(--sans); font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: #fff; margin: 8px 0 18px; }
+    .model-strip {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin: 0 0 20px;
+    }
+    .model-card {
+      background: #151c26; border-radius: 10px; overflow: hidden; color: #fff; border: 1px solid #1c2733;
+    }
+    .model-card img { width: 100%; aspect-ratio: 1; object-fit: cover; background: #ece6da; display: block; }
+    .model-card .body { padding: 12px 14px 14px; }
+    .model-card .maison { font-size: 12px; color: #93a0b0; margin-bottom: 4px; }
+    .model-card strong { display: block; font-size: 15px; font-weight: 650; margin-bottom: 6px; }
+    .model-card .from { color: #e8eef5; font-size: 14px; }
+    .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+    .cat-chips a {
+      border: 1px solid #3a4656; border-radius: 99px; padding: 8px 14px; font-size: 13px; color: #e8eef5;
+    }
+    .cat-chips a:hover, .cat-chips a.on { background: #2563eb; border-color: #2563eb; color: #fff; }
 
     .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
     .card {
@@ -556,7 +587,9 @@
     @media (max-width: 980px) {
       .brand-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .hero-stage { width: min(520px, 58%); }
-      .hero, .detail, .split, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid, .why-grid { grid-template-columns: 1fr 1fr; }
+      .hero, .detail, .split, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid, .why-grid, .cat-photo-grid { grid-template-columns: 1fr 1fr; }
+      .model-strip { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 8px; }
+      .model-card { flex: 0 0 200px; }
       .why-stats { grid-template-columns: 1fr 1fr; }
       .why-split { grid-template-columns: 1fr; gap: 24px; }
       .shop-layout { grid-template-columns: 1fr; }
@@ -932,20 +965,20 @@
 
     const PER_CAT = 1000;
     const CATS = [
-      { slug: "mens", label: "Men's watches", pick: (p) => p.gender !== "Women" },
-      { slug: "womens", label: "Women's watches", pick: (p) => p.gender === "Women" || p.gender === "Unisex" },
-      { slug: "preowned", label: "Pre-owned watches", pick: (p) => p.condition !== "Unworn" },
-      { slug: "mechanical", label: "Mechanical watches", pick: (p) => /manual|automatic/i.test(p.movement) },
-      { slug: "automatic", label: "Automatic watches", pick: (p) => /automatic/i.test(p.movement) },
-      { slug: "vintage", label: "Vintage watches", pick: (p) => p.era === "Vintage" },
-      { slug: "chronograph", label: "Chronographs", pick: (p) => p.type === "Chronograph" },
-      { slug: "dive", label: "Diving watches", pick: (p) => p.type === "Dive" },
-      { slug: "pilot", label: "Pilot's watches", pick: (p) => p.type === "Pilot" },
-      { slug: "military", label: "Military watches", pick: (p) => p.type === "Field" || p.type === "Pilot" },
-      { slug: "swiss", label: "Swiss watches", pick: (p) => ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland"].includes(p.slug) },
-      { slug: "affordable", label: "Affordable watches", pick: (p) => p.price < 5000 },
-      { slug: "straps", label: "Bracelets and straps", pick: (p) => true, accessory: "strap" },
-      { slug: "parts", label: "Parts and accessories", pick: (p) => true, accessory: "parts" }
+      { slug: "mens", label: "Men's watches", photo: "assets/watches/el-nocturne-40.jpg", pick: (p) => p.gender !== "Women" },
+      { slug: "womens", label: "Women's watches", photo: "assets/explore-womens.jpg", pick: (p) => p.gender === "Women" || p.gender === "Unisex" },
+      { slug: "preowned", label: "Pre-owned watches", photo: "assets/watches/ly-1958.jpg", pick: (p) => p.condition !== "Unworn" },
+      { slug: "mechanical", label: "Mechanical watches", photo: "assets/watches/ar-type3.jpg", pick: (p) => /manual|automatic/i.test(p.movement) },
+      { slug: "automatic", label: "Automatic watches", photo: "assets/explore-automatic.jpg", pick: (p) => /automatic/i.test(p.movement) },
+      { slug: "vintage", label: "Vintage watches", photo: "assets/watches/qc-hunter.jpg", pick: (p) => p.era === "Vintage" },
+      { slug: "chronograph", label: "Chronographs", photo: "assets/watches/he-track.jpg", pick: (p) => p.type === "Chronograph" },
+      { slug: "dive", label: "Diving watches", photo: "assets/watches/ca-abyss.jpg", pick: (p) => p.type === "Dive" },
+      { slug: "pilot", label: "Pilot's watches", photo: "assets/watches/ke-dawn.jpg", pick: (p) => p.type === "Pilot" },
+      { slug: "military", label: "Military watches", photo: "assets/watches/bh-field-iv.jpg", pick: (p) => p.type === "Field" || p.type === "Pilot" },
+      { slug: "swiss", label: "Swiss watches", photo: "assets/watches/qc-sov.jpg", pick: (p) => ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland"].includes(p.slug) },
+      { slug: "affordable", label: "Affordable watches", photo: "assets/watches/ha-1964.jpg", pick: (p) => p.price < 5000 },
+      { slug: "straps", label: "Bracelets and straps", photo: "assets/watches/pe-world.jpg", pick: (p) => true, accessory: "strap" },
+      { slug: "parts", label: "Parts and accessories", photo: "assets/explore-skeleton.jpg", pick: (p) => true, accessory: "parts" }
     ];
     const TOTAL_WATCHES = CATS.length * PER_CAT;
     const PAGE_SIZE = 24;
@@ -1628,9 +1661,9 @@
       </div>
       ${whyBand()}
       <section><div class="wrap">
-        <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by type</h2></div></div>
-        <div class="type-grid">
-          ${CATS.map(c => `<a class="type-card" href="#/shop?cat=${c.slug}"><em>1,000 listings</em><strong>${c.label}</strong></a>`).join("")}
+        <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by category</h2></div></div>
+        <div class="cat-photo-grid">
+          ${CATS.map(c => `<a class="cat-tile" href="#/shop?cat=${c.slug}"><img src="${c.photo}" alt="${c.label}"><em>1,000 listings</em><span>${c.label}</span></a>`).join("")}
         </div>
       </div></section>
       <section><div class="wrap">
@@ -1798,6 +1831,50 @@
       ${guideBand()}`;
     }
 
+    function featuredForCat(cat) {
+      const tpls = templatesFor(cat);
+      const seen = new Set();
+      const out = [];
+      tpls.forEach((t) => {
+        if (seen.has(t.id) || out.length >= 5) return;
+        seen.add(t.id);
+        out.push(t);
+      });
+      return out;
+    }
+
+    function catLanding(cat, q) {
+      const featured = featuredForCat(cat);
+      const chips = [
+        ["All in " + cat.label, `#/shop?cat=${cat.slug}`, !q.condition && !q.certified],
+        ["Used", `#/shop?cat=${cat.slug}&condition=Excellent`, q.condition === "Excellent"],
+        ["New / Unworn", `#/shop?cat=${cat.slug}&condition=Unworn`, q.condition === "Unworn"],
+        ["Certified", `#/shop?cat=${cat.slug}&certified=1`, q.certified === "1"]
+      ];
+      featured.slice(0, 3).forEach((t) => {
+        const key = t.model.split(" ")[0];
+        chips.push([t.model, `#/shop?cat=${cat.slug}&q=${encodeURIComponent(key)}`, q.q === key]);
+      });
+      return `<div class="wrap cat-landing">
+        <p class="crumbs"><a href="#/">Home</a> / <a href="#/shop">Shop</a> / ${cat.label}</p>
+        <h1>${cat.label}</h1>
+        <div class="model-strip">
+          ${featured.map((t) => `<a class="model-card" href="#/listing/${t.id}">
+            <img src="assets/watches/${t.photoId || t.id}.jpg" alt="${t.maison} ${t.model}">
+            <div class="body">
+              <div class="maison">${t.maison}</div>
+              <strong>${t.model}</strong>
+              <div class="from">from ${money(t.price)}</div>
+            </div>
+          </a>`).join("")}
+        </div>
+        <div class="cat-chips">
+          ${chips.map(([label, href, on]) => `<a class="${on ? "on" : ""}" href="${href}">${label}</a>`).join("")}
+        </div>
+        <p class="meta">${PER_CAT.toLocaleString()} listings including featured pieces</p>
+      </div>`;
+    }
+
     function shop(q) {
       const { list, total } = pagedFiltered(q);
       const cat = CATS.find((c) => c.slug === q.cat);
@@ -1805,7 +1882,8 @@
       const maisons = MAISONS.map(m => `<option value="${m.slug}" ${q.maison===m.slug?"selected":""}>${m.name}</option>`).join("");
       const cats = CATS.map(c => `<option value="${c.slug}" ${q.cat===c.slug?"selected":""}>${c.label}</option>`).join("");
       const heading = cat ? cat.label : (q.maison ? (MAISONS.find(m => m.slug === q.maison) || {}).name || "Maison" : "Catalogue");
-      return `<div class="wrap shop-layout">
+      return `${cat ? catLanding(cat, q) : ""}
+      <div class="wrap shop-layout">
         <aside class="filters">
           <h3>Filter</h3>
           <label>Search</label>
