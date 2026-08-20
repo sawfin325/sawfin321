@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="english-translate" />
-  <title>Vespera — Independent marketplace for exceptional timepieces</title>
-  <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
+  <meta name="vespera-build" content="luxerywatchsales" />
+  <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
+  <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="assets/favicon.ico" sizes="any" />
@@ -70,7 +70,7 @@
     .menu-toggle { grid-area: menu; }
     .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; justify-self: start; color: #fff; min-width: 0; }
     .brand svg { width: 34px; height: 34px; flex: 0 0 34px; }
-    .brand-name { font-family: var(--sans); font-size: 22px; letter-spacing: .18em; font-weight: 700; }
+    .brand-name { font-family: var(--sans); font-size: clamp(12px, 1.7vw, 16px); letter-spacing: .04em; font-weight: 700; white-space: nowrap; }
     .brand small { display: none; }
     .search-open { grid-area: search; min-width: 0; }
     #authLink { grid-area: auth; color: #c9d2dc; padding: 0 6px; white-space: nowrap; }
@@ -584,7 +584,7 @@
       .gallery-main { min-height: 0; }
       .gallery-main img.photo { height: auto; aspect-ratio: 1; max-height: 70vw; }
       .guide-card { min-height: 0; padding: 22px 18px; }
-      .brand-name { font-size: 17px; letter-spacing: .12em; }
+      .brand-name { font-size: 13px; letter-spacing: .03em; }
       .brand svg { width: 28px; height: 28px; flex-basis: 28px; }
       .icon-btn { width: 36px; height: 36px; }
       h1 { font-size: clamp(32px, 9vw, 48px); }
@@ -623,7 +623,7 @@
   <header class="site">
     <div class="wrap mast">
       <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
-      <a class="brand notranslate" href="#/" aria-label="Vespera home">
+      <a class="brand notranslate" href="#/" aria-label="luxerywatchsales home">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <circle cx="32" cy="32" r="20" fill="none" stroke="#c4a36a" stroke-width="1.5"/>
           <circle cx="32" cy="32" r="2.2" fill="#c4a36a"/>
@@ -631,7 +631,7 @@
           <path d="M32 32l14-5" fill="none" stroke="#c4a36a" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <div>
-          <div class="brand-name">VESPERA</div>
+          <div class="brand-name">luxerywatchsales</div>
         </div>
       </a>
       <button class="search-open" id="searchOpen" type="button">
@@ -761,7 +761,7 @@
   <section class="cta" id="footerCta">
     <div class="wrap">
       <p class="kicker">Private sellers &amp; ateliers</p>
-      <h2>Place a watch with Vespera</h2>
+      <h2>Place a watch with luxerywatchsales</h2>
       <p>List a piece from your collection. Buyers request a purchase; you confirm the sale. Inspection and payment hold are optional extras on certified listings.</p>
       <div class="row" style="margin-top:22px">
         <a class="btn gold" href="#/sell">Start a listing</a>
@@ -774,21 +774,21 @@
     <div class="wrap">
       <div class="foot-top">
         <div>
-          <h4>Buy on Vespera</h4>
-          <a href="#/buyer-protection">Vespera Buyer Protection</a>
+          <h4>Buy on luxerywatchsales</h4>
+          <a href="#/buyer-protection">luxerywatchsales Buyer Protection</a>
           <a href="#/escrow">Payment via the escrow service</a>
           <a href="#/authenticity">Commitment to authenticity</a>
           <a href="#/returns">Easy returns</a>
         </div>
         <div>
-          <h4>Sell on Vespera</h4>
+          <h4>Sell on luxerywatchsales</h4>
           <a href="#/private-sellers">Selling watches as a private seller</a>
           <a href="#/commercial">Selling watches commercially</a>
           <a href="#/appraisal">Free appraisal</a>
           <a href="#/seller-advice">Advice for private sellers</a>
         </div>
         <div>
-          <h4>About Vespera</h4>
+          <h4>About luxerywatchsales</h4>
           <a href="#/about">About us</a>
           <a href="#/jobs">Jobs</a>
           <a href="#/press">Press</a>
@@ -1083,9 +1083,9 @@
     }
 
     const ARTICLES = [
-      { id: "reading-a-movement", title: "How to read a movement through the caseback", tag: "Collecting", dek: "What anglage, perlage, and a clean keyless works actually tell you.", body: "<p>A display caseback is not a guarantee of quality, but it is a map. Start at the balance: a free-sprung stud and a well-shaped overcoil suggest more finishing time than a simple regulator. Then look at the bridges. Anglage that catches light in a continuous ribbon is different from a stamped bevel that dies at every corner.</p><p>On Vespera listings, independent maisons such as Ardent and Rochefort tend to show the work. Factory movements can still be honest — look for even polishing and screws that have not been chewed by a poor service.</p><p>If the seller will not show a movement photograph on a piece above a few thousand, treat that as information, not an oversight.</p>" },
+      { id: "reading-a-movement", title: "How to read a movement through the caseback", tag: "Collecting", dek: "What anglage, perlage, and a clean keyless works actually tell you.", body: "<p>A display caseback is not a guarantee of quality, but it is a map. Start at the balance: a free-sprung stud and a well-shaped overcoil suggest more finishing time than a simple regulator. Then look at the bridges. Anglage that catches light in a continuous ribbon is different from a stamped bevel that dies at every corner.</p><p>On luxerywatchsales listings, independent maisons such as Ardent and Rochefort tend to show the work. Factory movements can still be honest — look for even polishing and screws that have not been chewed by a poor service.</p><p>If the seller will not show a movement photograph on a piece above a few thousand, treat that as information, not an oversight.</p>" },
       { id: "bronze-patina", title: "Bronze divers, and when patina is a problem", tag: "Materials", dek: "Aluminum bronze ages in air. That is the point — until it is not.", body: "<p>Bronze is chosen because it changes. A Calder Abyss in aluminum bronze will pick up greens and browns where the wrist oils sit. That is expected. What is not expected is pitting that breaks the brushed finish into craters, or verdigris creeping under a crystal gasket.</p><p>Ask for photographs in daylight, not only studio yellow. Wipe tests from a recent service are useful. If a seller has coated the case in lacquer to freeze the colour, say so in the listing — collectors disagree on whether that is a kindness or a concealment.</p>" },
-      { id: "selling-quietly", title: "Selling a watch without turning it into a performance", tag: "Selling", dek: "A clean listing beats a dramatic origin story.", body: "<p>Buyers on a marketplace are not your dinner guests. They want the reference, the year, the service history, and whether the clasp code matches the period. Lead with those. A short note on why you are selling is enough; a novel is not.</p><p>On Vespera, certified listings go through inspection and a payment hold. Private listings do not. Price them accordingly. The fastest sales we see are complete sets with unedited wrist photographs and a measured asking price — not the highest number in the room.</p>" },
+      { id: "selling-quietly", title: "Selling a watch without turning it into a performance", tag: "Selling", dek: "A clean listing beats a dramatic origin story.", body: "<p>Buyers on a marketplace are not your dinner guests. They want the reference, the year, the service history, and whether the clasp code matches the period. Lead with those. A short note on why you are selling is enough; a novel is not.</p><p>On luxerywatchsales, certified listings go through inspection and a payment hold. Private listings do not. Price them accordingly. The fastest sales we see are complete sets with unedited wrist photographs and a measured asking price — not the highest number in the room.</p>" },
       { id: "moonphase-care", title: "A moonphase is a calendar you can forget", tag: "Complications", dek: "Most modern moons are 29.5-day approximations. Treat them kindly.", body: "<p>A Stellara Celestine or Solenne Étoile will keep a handsome moon for years if you do not force the date around midnight. When the disc is changing, the mechanism is in mesh; a quick pull on the crown can chip a tooth you will not see until the moon starts to drift.</p><p>If you buy vintage, budget for a specialist. Moonphase correctors and perpetual levers do not enjoy generalist oiling. Ask the dealer who last opened the watch, and whether the moon disc is original — refinished night skies are common and not a scandal, but they should be disclosed.</p>" }
     ];
 
@@ -1139,7 +1139,7 @@
       { name: "Felix Braun", country: "Austria", when: "1 week ago", stars: 5, text: "Sold my Lysander through a private listing. Three serious requests in a week." },
       { name: "Mei Chen", country: "Taiwan", when: "1 week ago", stars: 5, text: "Quill & Crown steel sovereign. Enamel dial was as white as the macro shot." },
       { name: "Hugo Silva", country: "Brazil", when: "1 week ago", stars: 5, text: "Appraised a family pocket watch for free, then listed it. The hunter case photos were excellent." },
-      { name: "Sarah Quinn", country: "Canada", when: "1 week ago", stars: 5, text: "Protection was the reason I used Vespera. Funds sat in hold until I confirmed." },
+      { name: "Sarah Quinn", country: "Canada", when: "1 week ago", stars: 5, text: "Protection was the reason I used luxerywatchsales. Funds sat in hold until I confirmed." },
       { name: "Anders Holm", country: "Sweden", when: "1 week ago", stars: 4, text: "Kestrel chrono cream dial. One hairline on the crystal, disclosed in the listing." },
       { name: "Leila Farouk", country: "Egypt", when: "8 days ago", stars: 5, text: "Peregrine GMT two-tone. Bezel action described accurately." },
       { name: "Peter Walsh", country: "Ireland", when: "8 days ago", stars: 5, text: "Straightforward FAQ and a human on the contact form, even in this demo story." },
@@ -1360,7 +1360,7 @@
         <a class="line" href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a>
         <a class="line" href="mailto:${CONTACT.email}">${CONTACT.email}</a>
         <div class="row" style="margin-top:14px">
-          <a class="btn wa" href="${waLink("Hello, I have a question about a Vespera watch.")}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn wa" href="${waLink("Hello, I have a question about a luxerywatchsales watch.")}" target="_blank" rel="noopener">WhatsApp</a>
           <a class="btn ghost" href="mailto:${CONTACT.email}">Email</a>
         </div>
         ${extra || ""}
@@ -1371,7 +1371,7 @@
       const u = currentUser();
       const who = u ? `Buyer: ${u.name} (${u.email}${u.phone ? ", " + u.phone : ""})` : "Buyer: guest (no account yet)";
       return [
-        `I would like to order this watch from Vespera.`,
+        `I would like to order this watch from luxerywatchsales.`,
         `${p.maison} ${p.model}`,
         `Reference: ${p.ref}`,
         `Year: ${p.year} · ${p.condition}`,
@@ -1660,14 +1660,14 @@
         ["02", "Eight photographs, not one", "Every listing is shot from eight angles: dial, case, lugs, movement, clasp. You judge the piece before you write, not after it arrives."],
         ["03", "Certified, when it matters", "Certified watches are inspected against the photographs. Condition, box, and papers are written in plain language so there are fewer surprises at the door."],
         ["04", "A desk that answers", `Orders go to a person on WhatsApp or email — ${CONTACT.phonePretty} and ${CONTACT.email}. There is no card checkout and no chatbot. Ask about a reference; they will answer.`],
-        ["05", "Asking prices already cut", "Every watch on Vespera is listed at 40% below its previous asking price. What you see is what the desk will confirm, shown in your own currency."],
+        ["05", "Asking prices already cut", "Every watch on luxerywatchsales is listed at 40% below its previous asking price. What you see is what the desk will confirm, shown in your own currency."],
         ["06", "Honest pre-owned", "Vintage and used pieces carry a grade, a year, and notes on wear. Collectors buy here because a tropical dial is described as tropical, not as unworn."]
       ];
       return `<section class="why-band"><div class="wrap">
         <div class="why-intro">
           <p class="kicker">Why collectors buy here</p>
           <h2>A watch should be chosen with a clear head.</h2>
-          <p>Vespera is built for people who want to see the piece, speak to a person, and pay the price on the listing. Independent maisons, studio photographs, and a desk you can actually reach — that is the whole argument.</p>
+          <p>luxerywatchsales is built for people who want to see the piece, speak to a person, and pay the price on the listing. Independent maisons, studio photographs, and a desk you can actually reach — that is the whole argument.</p>
         </div>
         <div class="why-grid">
           ${reasons.map(([n,t,p]) => `<article class="why-card"><span class="n">${n}</span><h3>${t}</h3><p>${p}</p></article>`).join("")}
@@ -1680,7 +1680,7 @@
         </div>
         <div class="why-split">
           <div class="why-photo">
-            <img src="assets/watches/so-etoile.jpg" alt="Gold moonphase dress watch photographed for a Vespera listing">
+            <img src="assets/watches/so-etoile.jpg" alt="Gold moonphase dress watch photographed for a luxerywatchsales listing">
           </div>
           <div class="why-copy">
             <p class="kicker">How a purchase works</p>
@@ -1712,7 +1712,7 @@
         ["Moon phase watches","assets/explore-moonphase.jpg","#/shop?type=Moonphase"]
       ];
       return `<section class="band"><div class="wrap">
-        <h2>Explore Vespera</h2>
+        <h2>Explore luxerywatchsales</h2>
         <div class="explore-grid">
           ${items.map(([label,src,href]) => `<a class="explore-card" href="${href}"><img src="${src}" alt="${label}"><span>${label}</span></a>`).join("")}
         </div>
@@ -1776,10 +1776,10 @@
 
     function guideBand() {
       const guides = [
-        ["Luxury watches", "A luxury watch is more than a high price. Collectors look for precious metals such as gold or platinum, a mechanical movement, and an atelier whose finishing you can see on the case and the dial. On Vespera that means independent maisons — Elowen, Solenne, Calder, Quill & Crown, and the rest of the catalogue — from daily steel sports watches to gold complications. Browse by type, metal, and budget to find the piece you have been waiting for.", "#/shop"],
+        ["Luxury watches", "A luxury watch is more than a high price. Collectors look for precious metals such as gold or platinum, a mechanical movement, and an atelier whose finishing you can see on the case and the dial. On luxerywatchsales that means independent maisons — Elowen, Solenne, Calder, Quill & Crown, and the rest of the catalogue — from daily steel sports watches to gold complications. Browse by type, metal, and budget to find the piece you have been waiting for.", "#/shop"],
         ["Used watches", "Pre-owned watches from the 1960s and 1970s have a character you cannot buy new: gilt printing, tropical dials, and cases that have already lived a life. Some are serious collector objects; others are quietly priced legends that still wear well every day. The used rooms mix certified rarities with accessible daily watches. Eight photographs, a condition grade, and notes on box and papers are there so you can judge the watch before you write the desk.", "#/shop?cat=preowned"],
-        ["Sell watches", "A watch in a drawer can move. Create a free listing on the sell page, then send it to the Vespera desk on WhatsApp or email — there is no fee to start. The desk confirms the maison, reference, and condition, then publishes the watch. When a collector orders, they write the same desk; you agree payment and shipping together, and the conversation stays in one place until the piece is on its way.", "#/sell"],
-        ["Buying a watch", "Buying on Vespera is direct. There is no card checkout on the page. Order a listing on WhatsApp or email; the desk confirms it is still available and answers questions against the eight studio photographs. Certified pieces have been inspected. If the watch is not as described, write or call immediately — the number and email are on every page — and the desk will hold the order until it is put right.", "#/help"]
+        ["Sell watches", "A watch in a drawer can move. Create a free listing on the sell page, then send it to the luxerywatchsales desk on WhatsApp or email — there is no fee to start. The desk confirms the maison, reference, and condition, then publishes the watch. When a collector orders, they write the same desk; you agree payment and shipping together, and the conversation stays in one place until the piece is on its way.", "#/sell"],
+        ["Buying a watch", "Buying on luxerywatchsales is direct. There is no card checkout on the page. Order a listing on WhatsApp or email; the desk confirms it is still available and answers questions against the eight studio photographs. Certified pieces have been inspected. If the watch is not as described, write or call immediately — the number and email are on every page — and the desk will hold the order until it is put right.", "#/help"]
       ];
       return `<section class="guide-band"><div class="wrap">
         <div class="guide-grid">
@@ -1908,7 +1908,7 @@
               <tr><th>Location</th><td>${p.location}</td></tr>
             </table>
             <div class="dealer-box">
-              <strong>Order with the Vespera desk</strong>
+              <strong>Order with the luxerywatchsales desk</strong>
               <p class="meta">WhatsApp or email the listing. Phone ${CONTACT.phonePretty} · ${CONTACT.email}</p>
               <div class="row" style="margin-top:12px">
                 <a class="btn wa" href="${waLink(orderText(p))}" target="_blank" rel="noopener">WhatsApp</a>
@@ -1984,7 +1984,7 @@
       return `<div class="wrap page">
         <p class="kicker">Magazine</p>
         <h1>Notes from the bench</h1>
-        <p class="lede">Short essays for collectors. Original to Vespera.</p>
+        <p class="lede">Short essays for collectors. Original to luxerywatchsales.</p>
         <div class="article-grid" style="margin-top:28px">
           ${ARTICLES.map(a => `<a class="article" href="#/article/${a.id}"><span class="tag">${a.tag}</span><h3>${a.title}</h3><p>${a.dek}</p></a>`).join("")}
         </div>
@@ -2009,7 +2009,7 @@
         <h1>Authentication &amp; inspection</h1>
         <p class="lede">Certified listings are examined by an independent bench before the buyer pays. Private listings skip this step and are priced accordingly.</p>
         <div class="steps">
-          <div class="step"><b>01</b><h3>Receive</h3><p>The seller ships to a Vespera inspection desk, fully insured.</p></div>
+          <div class="step"><b>01</b><h3>Receive</h3><p>The seller ships to a luxerywatchsales inspection desk, fully insured.</p></div>
           <div class="step"><b>02</b><h3>Examine</h3><p>Case, movement, serial, and accessories are checked against the listing.</p></div>
           <div class="step"><b>03</b><h3>Hold</h3><p>Funds sit in a payment hold until the buyer confirms receipt.</p></div>
           <div class="step"><b>04</b><h3>Release</h3><p>The watch ships to the buyer; the seller is paid.</p></div>
@@ -2035,8 +2035,8 @@
     function about() {
       return `<div class="wrap page prose">
         <p class="kicker">Company</p>
-        <h1>About Vespera</h1>
-        <p>Vespera is an original luxury-watch marketplace. The maisons and catalogue are original. To buy a watch, order directly on WhatsApp or email — there is no card checkout.</p>
+        <h1>About luxerywatchsales</h1>
+        <p>luxerywatchsales is an original luxury-watch marketplace. The maisons and catalogue are original. To buy a watch, order directly on WhatsApp or email — there is no card checkout.</p>
         <p>Desk: <a href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a> · <a href="mailto:${CONTACT.email}">${CONTACT.email}</a></p>
       </div>`;
     }
@@ -2062,7 +2062,7 @@
       return `<div class="wrap page split">
         <div class="prose">
           <p class="kicker">Contact</p>
-          <h1>Write to Vespera</h1>
+          <h1>Write to luxerywatchsales</h1>
           <p>Orders and questions go to the desk on WhatsApp or email. Call ${CONTACT.phonePretty} or write ${CONTACT.email}.</p>
           ${contactCard()}
         </div>
@@ -2085,7 +2085,7 @@
 
     function terms() {
       return `<div class="wrap page prose"><p class="kicker">Legal</p><h1>Terms of use</h1>
-        <p>Listings, maisons, and prices are fictional sample data. Nothing on this site is an offer to sell a genuine watch. Do not use Vespera’s names or copy to impersonate another marketplace.</p>
+        <p>Listings, maisons, and prices are fictional sample data. Nothing on this site is an offer to sell a genuine watch. Do not use luxerywatchsales’s names or copy to impersonate another marketplace.</p>
         <p>The software in this file is provided as-is for browsing the demonstration catalogue.</p></div>`;
     }
 
@@ -2173,9 +2173,9 @@
       commercial: ["Sellers","Selling commercially","<p>Dealers can publish multiple listings, invoices, and workshop notes. See the dealers directory.</p>"],
       appraisal: ["Sellers","Free appraisal",`<p>Send photographs and a reference on WhatsApp or email (${CONTACT.email}) or call ${CONTACT.phonePretty}.</p>`],
       "seller-advice": ["Sellers","Advice for private sellers","<p>Photograph the dial, caseback, clasp, and papers. State the service history. Ask a fair price.</p>"],
-      jobs: ["Company","Jobs","<p>Vespera is a demonstration catalogue and is not hiring.</p>"],
+      jobs: ["Company","Jobs","<p>luxerywatchsales is a demonstration catalogue and is not hiring.</p>"],
       press: ["Company","Press",`<p>For press, write ${CONTACT.email} or call ${CONTACT.phonePretty}.</p>`],
-      legal: ["Company","Legal details","<p>Vespera Horology Ltd. is a fictional imprint for this sample website. Listings are not offers for sale.</p>"],
+      legal: ["Company","Legal details","<p>luxerywatchsales Horology Ltd. is a fictional imprint for this sample website. Listings are not offers for sale.</p>"],
       accessibility: ["Legal","Declaration on accessibility","<p>Pages are structured with headings, skip links, and keyboard-focusable controls. If something is in the way, write via Contact.</p>"],
       cookies: ["Legal","Manage cookies","<p>This file stores saved watches and inquiries in localStorage only. No advertising cookies are set.</p>"],
       sitemap: ["Legal","Sitemap","<p><a href=\"#/\">Home</a> · <a href=\"#/shop\">Shop</a> · <a href=\"#/brands\">Brands</a> · <a href=\"#/sell\">Sell</a> · <a href=\"#/magazine\">Magazine</a> · <a href=\"#/videos\">Videos</a> · <a href=\"#/reviews\">Reviews</a> · <a href=\"#/help\">Help</a> · <a href=\"#/contact\">Contact</a></p>"]
@@ -2209,7 +2209,7 @@
       else if (root === "inquiries") html = inquiriesPage();
       else if (root === "reviews") html = reviewsPage();
       else if (INFO[root]) html = infoPage(...INFO[root]);
-      else html = `<div class="wrap page"><h1>Page not found</h1><p><a href="#/">Back to Vespera</a></p></div>`;
+      else html = `<div class="wrap page"><h1>Page not found</h1><p><a href="#/">Back to luxerywatchsales</a></p></div>`;
       view.innerHTML = html;
       window.scrollTo(0, 0);
       closeOrder();
@@ -2270,7 +2270,7 @@
         const fd = new FormData(sell);
         const u = currentUser();
         const body = [
-          "I would like to list a watch on Vespera.",
+          "I would like to list a watch on luxerywatchsales.",
           `Maison: ${fd.get("maison")}`,
           `Model: ${fd.get("model")}`,
           `Reference: ${fd.get("ref") || "—"}`,

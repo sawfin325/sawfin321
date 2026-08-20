@@ -1,8 +1,8 @@
-# Vespera
+# luxerywatchsales
 
 An original luxury-watch marketplace demo. Open `index.html` in a browser.
 
-Vespera is a fictional catalogue: original maisons, menus, listings, and copy. It is not affiliated with any commercial watch marketplace.
+luxerywatchsales is a fictional catalogue: original maisons, menus, listings, and copy. It is not affiliated with any commercial watch marketplace.
 
 ## Pages
 
