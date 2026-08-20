@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="brand-50k" />
+  <meta name="vespera-build" content="brand-nav-50k" />
   <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -162,6 +162,7 @@
       min-width: 560px; padding: 22px; z-index: 30;
     }
     .nav-item:hover .mega, .nav-item:focus-within .mega { display: grid; }
+    .nav-item.menu-hold .mega { display: none !important; }
     .mega.wide { min-width: min(920px, 90vw); grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
     .mega.two { min-width: 640px; grid-template-columns: 1fr 1fr; gap: 24px; }
     .mega h4 { margin: 0 0 10px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
@@ -670,7 +671,7 @@
       </a>
       <button class="search-open" id="searchOpen" type="button">
         <span>⌕</span>
-        <span class="search-copy-full" id="searchCountLabel">Search through watches worldwide</span>
+        <span class="search-copy-full" id="searchCountLabel">Search through 2,400,000 watches worldwide</span>
         <span class="search-copy-short">Search watches</span>
       </button>
       <a href="#/account" id="authLink">Log in or register</a>
@@ -729,7 +730,7 @@
           <div>
             <h4>Brands</h4>
             <div class="brand-col" id="buyBrandMegaA"></div>
-            <a class="display-all" href="#/brands">Display all</a>
+            <a class="display-all" href="#/brands" data-go="#/brands">Display all</a>
           </div>
           <div>
             <h4 aria-hidden="true">&nbsp;</h4>
@@ -755,7 +756,7 @@
             <button data-go="#/shop?cat=affordable">Affordable watches</button>
             <button data-go="#/shop?cat=straps">Bracelets and straps</button>
             <button data-go="#/shop?cat=parts">Parts and accessories</button>
-            <a class="display-all" href="#/shop">Display all</a>
+            <a class="display-all" href="#/shop" data-go="#/shop">Display all</a>
           </div>
           <div>
             <h4>Services</h4>
@@ -1121,7 +1122,7 @@
       for (let p = start; p <= end; p++) html += `<a class="${p === page ? "on" : ""}" href="${link(p)}">${p}</a>`;
       if (end < pages) html += `<a href="${link(pages)}">${pages}</a>`;
       if (page < pages) html += `<a href="${link(page + 1)}">Next</a>`;
-      html += `<span>${page} / ${pages}</span></nav>`;
+      html += `<span>${page} / ${pages} · ${total.toLocaleString()} listings</span></nav>`;
       return { page, pages, html };
     }
 
@@ -1776,7 +1777,7 @@
       <section class="brand-bar"><div class="wrap">
         <h2>All maisons</h2>
         <div class="brand-logos">
-          ${MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("")}
+          ${MAISONS.map(m => `<a href="#/brand/${m.slug}" data-go="#/brand/${m.slug}">${m.name}</a>`).join("")}
         </div>
       </div></section>
       <div class="wrap" style="padding-top:48px">
@@ -2001,10 +2002,10 @@
       </div>`;
     }
 
-    function shop(q) {
+    function shop(q, hashBase) {
       const { list, total } = pagedFiltered(q);
       const cat = CATS.find((c) => c.slug === q.cat);
-      const { html: pagerHtml } = pager(q, total);
+      const { html: pagerHtml } = pager(q, total, hashBase);
       const maisons = MAISONS.map(m => `<option value="${m.slug}" ${q.maison===m.slug?"selected":""}>${m.name}</option>`).join("");
       const cats = CATS.map(c => `<option value="${c.slug}" ${q.cat===c.slug?"selected":""}>${c.label}</option>`).join("");
       const heading = cat ? cat.label : (q.maison ? (MAISONS.find(m => m.slug === q.maison) || {}).name || "Maison" : "Catalogue");
@@ -2132,7 +2133,7 @@
         <h1>Maisons</h1>
         <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has ${PER_BRAND.toLocaleString()} listings — ${TOTAL_WATCHES.toLocaleString()} watches in all. None are licensed names from other platforms.</p>
         <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:28px">
-          ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
+          ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}" data-go="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
         </div>
       </div>`;
     }
@@ -2141,17 +2142,14 @@
       const m = MAISONS.find((x) => x.slug === slug);
       if (!m) return `<div class="wrap page"><h2>Maison not found</h2></div>`;
       const query = { ...(q || {}), maison: slug };
-      const { list, total } = pagedFiltered(query);
-      const { html: pagerHtml } = pager(query, total, `#/brand/${slug}`);
-      return `<div class="wrap page">
+      const lastPage = Math.max(1, Math.ceil(PER_BRAND / PAGE_SIZE));
+      return `<div class="wrap page" style="padding-bottom:8px">
         <p class="crumbs"><a href="#/brands">Maisons</a> / ${m.name}</p>
-        <p class="kicker">${m.origin} · Est. ${m.founded} · ${PER_BRAND.toLocaleString()} listings</p>
+        <p class="kicker">${m.origin} · Est. ${m.founded}</p>
         <h1>${m.name}</h1>
         <p class="lede">${m.note}</p>
-        <p class="meta">${total.toLocaleString()} watches from this maison</p>
-        <div class="cards">${list.map(card).join("")}</div>
-        ${pagerHtml}
-      </div>`;
+        <p class="meta">${PER_BRAND.toLocaleString()} listings from this maison · <a href="#/brand/${m.slug}?page=${lastPage}">Jump to last page</a></p>
+      </div>${shop(query, `#/brand/${slug}`)}`;
     }
 
     function sellPage() {
@@ -2418,6 +2416,7 @@
       window.scrollTo(0, 0);
       closeOrder();
       closeVideo();
+      updateSearchCount();
       bindView();
       startHeroAnim();
       refreshAuthUi();
@@ -2570,19 +2569,33 @@
       $("searchHits").innerHTML = shown.length ? shown.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches. Press Enter to search the ${TOTAL_WATCHES.toLocaleString()}-watch catalogue.</p>`;
     }
 
+    function closeMegas() {
+      document.querySelectorAll(".nav-item").forEach((n) => {
+        n.classList.add("menu-hold");
+        n.addEventListener("mouseleave", () => n.classList.remove("menu-hold"), { once: true });
+      });
+      const ae = document.activeElement;
+      if (ae && ae !== document.body && typeof ae.blur === "function") ae.blur();
+    }
+
+    function updateSearchCount() {
+      const n = TOTAL_WATCHES.toLocaleString(state.locale || "en");
+      if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${n} watches worldwide`;
+    }
+
     function closeDrawer() {
       $("drawer").classList.remove("show");
       $("backdrop").classList.remove("show");
     }
 
-    document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}" data-go="#/brand/${m.slug}">${m.name}</a>`).join("");
     (function fillBuyBrands() {
       const mid = Math.ceil(MAISONS.length / 2);
-      const link = (m) => `<a href="#/brand/${m.slug}">${m.name}</a>`;
+      const link = (m) => `<a href="#/brand/${m.slug}" data-go="#/brand/${m.slug}">${m.name}</a>`;
       document.getElementById("buyBrandMegaA").innerHTML = MAISONS.slice(0, mid).map(link).join("");
       document.getElementById("buyBrandMegaB").innerHTML = MAISONS.slice(mid).map(link).join("");
     })();
-    if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${TOTAL_WATCHES.toLocaleString(state.locale || "en")} watches worldwide`;
+    updateSearchCount();
     $("regionGrid").innerHTML = REGIONS.map(([code, name]) => `<a href="#/shop"><img class="flag" src="assets/flags/${code}.svg" alt="" width="22" height="15">${name}</a>`).join("");
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
@@ -2618,8 +2631,19 @@
         band.replaceWith(box.firstElementChild);
         return;
       }
+      const megaLink = e.target.closest(".mega a, .mega button");
+      if (megaLink) closeMegas();
       const go = e.target.closest("[data-go]");
-      if (go) { e.preventDefault(); closeSearch(); closeDrawer(); location.hash = go.getAttribute("data-go"); return; }
+      if (go) {
+        e.preventDefault();
+        closeSearch();
+        closeDrawer();
+        closeMegas();
+        const next = go.getAttribute("data-go");
+        if ((location.hash || "#/") === next) render();
+        else location.hash = next;
+        return;
+      }
       const inq = e.target.closest("[data-inquire]");
       if (inq) {
         e.preventDefault();
