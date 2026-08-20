@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="brand-nav-50k" />
+  <meta name="vespera-build" content="brand-own-watches" />
   <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -958,6 +958,57 @@
       { slug: "holmwood", name: "Holmwood", origin: "Bienne", founded: 1894, note: "Swiss dress automatics with long power reserves." }
     ];
 
+    const MAISON_STYLE = {
+      elowen: { kind: "dress", lines: ["Nocturne 36", "Nocturne 40 Steel", "Vespers", "Candlewick", "Salon 34", "Rue Basse"] },
+      brannock: { kind: "field", lines: ["Field Service Mk IV", "Expedition GMT", "Issue Mk II", "Surveyor", "Border", "Hillwatch"] },
+      solenne: { kind: "moon", lines: ["Étoile Perpetuelle", "Rive Gauche Chrono", "Minuit", "Lunaire", "Pont des Arts", "Calendrier"] },
+      calder: { kind: "dive", lines: ["Abyss 300", "Abyss 300 Bronze", "Compact 36 Dive", "Trench 200", "Harbour", "Plate 500"] },
+      nymara: { kind: "jewelry", lines: ["Iris 28", "Iris 28 Diamond", "Iris Oval", "Camellia", "Satin 22", "Rivière"] },
+      helion: { kind: "chrono", lines: ["Trackmaster 2.0", "Trackmaster Gold", "Gridline 42", "Paddock", "Monza Steel", "Relay"] },
+      ardent: { kind: "skeleton", lines: ["Type 1", "Type 3 Skeleton", "Type 5", "Atelier Steel", "Bridge", "Series 12"] },
+      lysander: { kind: "dress", lines: ["Ultra-Thin 1958", "City Minute", "Open Face 1902", "Embankment", "Farringdon", "Thin Line"] },
+      quill: { kind: "dress", lines: ["Sovereign 40", "Sovereign Steel", "Sovereign Hunter", "Crest", "Enamel Noir", "Chapter"] },
+      peregrine: { kind: "gmt", lines: ["World Traveller", "World Traveller Two-Tone", "Atlantic", "Second City", "Meridian 41", "Stopover"] },
+      rochefort: { kind: "skeleton", lines: ["Openworked 41", "Minute Repeater Study", "Sonnerie", "Anglage", "Côtes", "Vallée"] },
+      halcyon: { kind: "tool", lines: ["Reissue 1964", "Diver Compact", "Service 36", "Gilt Field", "Compact Tool", "Canopy"] },
+      frost: { kind: "dive", lines: ["North Sea 500", "Ice GMT", "Fjord", "Pack Ice", "Valve 300", "Glacier"] },
+      kestrel: { kind: "pilot", lines: ["Dawn Patrol", "Dawn Patrol Chrono", "Onion 39", "Flightdeck", "Cathedral", "Toulouse"] },
+      valois: { kind: "dress", lines: ["Fil de Temps", "Soie 35", "Lyon Thin", "Feuille", "Chambre", "Or Fin"] },
+      stellara: { kind: "moon", lines: ["Celestine Moon", "Celestine Gold", "Aventurine", "Night Disc", "Pointer Sky", "Lune 36"] },
+      aureline: { kind: "dress", lines: ["Signature Enamel", "Oratoire", "Geneva 36", "Cloisonné", "Petit Feu", "Carreau"] },
+      blackwater: { kind: "tool", lines: ["Wet Weather", "Clyde 40", "Rainfield", "Quay Tool", "Storm", "Pontoon"] },
+      corvus: { kind: "pilot", lines: ["Night Run", "Cathedral Chrono", "Basel Deck", "Crow", "Beacon", "Overcast"] },
+      damaris: { kind: "jewelry", lines: ["Bezel Diamond", "Silk 26", "Pavé", "Tuileries", "Camée", "Blanc"] },
+      emberoak: { kind: "dive", lines: ["Bronze Field", "Oak Diver", "Patina 42", "Reissue Tool", "Ember", "Coastal"] },
+      fairlie: { kind: "field", lines: ["Issue 1932", "Service Sand", "Regiment", "Khaki 38", "Ordnance", "Parade"] },
+      gossamer: { kind: "dress", lines: ["Extra-Thin Auto", "Locle 37", "Veil", "Whisper", "Calibre Slim", "Lawn"] },
+      hartland: { kind: "sports", lines: ["Steel Sport", "Zürich 40", "Daily", "Link", "Access", "Park"] },
+      ivorylane: { kind: "dress", lines: ["Evening Gold", "Lane 34", "Candle", "Opera", "Quiet 36", "Cloak"] },
+      juniper: { kind: "field", lines: ["Highland", "Sand Dial", "Moor", "Tweed", "Ridge", "Bothies"] },
+      kepler: { kind: "gmt", lines: ["Star Chart", "Night Sky", "Orbit", "Atlas GMT", "Meridian Star", "Eclipse"] },
+      millow: { kind: "dress", lines: ["Petit Or", "Enamel Sign", "Millow 32", "Atelier Gold", "Vésenaz", "Calme"] },
+      osier: { kind: "sports", lines: ["Woven Steel", "Lille Sport", "Basket", "Link 39", "Court", "Plaît"] },
+      orchard: { kind: "dress", lines: ["Garden Dial", "Kent Gold", "Leaf", "Grove", "Harvest", "Espalier"] },
+      palisade: { kind: "dive", lines: ["Winter Tool", "Compact Diver", "Ice Harbour", "Montreal 40", "Snowcap", "Lock"] },
+      quaystone: { kind: "dive", lines: ["Coastal Coin", "Brighton 41", "Shingle", "Tide 200", "Pier", "Spray"] },
+      redwood: { kind: "field", lines: ["Bronze Field", "Timber", "Portland 38", "Trail", "Resin", "Grove Tool"] },
+      sable: { kind: "jewelry", lines: ["Dark Dial", "Diamond Index", "Antwerp 28", "Noir", "Satin Night", "Pavé Slim"] },
+      thornfield: { kind: "pocket", lines: ["Hunter Case", "Open Face York", "Estate", "Spring Lid", "Chapter Ring", "Bow"] },
+      umber: { kind: "dress", lines: ["Earth Auto", "Umber Slim", "Clay", "Ochre", "Neuchâtel 38", "Dusk"] },
+      veridian: { kind: "pilot", lines: ["Green Dial", "Cathedral", "Dublin Deck", "Moss", "Flightdeck Green", "Shannon"] },
+      wexford: { kind: "gmt", lines: ["Harbour GMT", "Compact Tide", "Quay 40", "Ferry", "Beacon Dual", "Nautical"] },
+      yarrow: { kind: "field", lines: ["Military Issue", "Glasgow Sand", "Ordnance 38", "Khaki", "Service Y", "Barrack"] },
+      zephyrus: { kind: "gmt", lines: ["Titanium Travel", "Nice Air", "Light GMT", "Mistral", "Cabin", "Riviera Dual"] },
+      alderly: { kind: "dress", lines: ["Railway Minute", "Manchester 36", "Platform", "Timetable", "Station Gold", "Clerks"] },
+      briar: { kind: "sports", lines: ["Brushed Steel", "Vermont 39", "Small Series", "Orchard Sport", "Trail Steel", "Bench"] },
+      cairn: { kind: "dive", lines: ["Stone Grey", "Field Reissue", "Aberdeen 40", "Granite", "North Diver", "Stack"] },
+      dunlin: { kind: "chrono", lines: ["Shore Chrono", "Cornwall 41", "Bi-compax", "Plover", "Estuary", "Tide Timer"] },
+      eyrie: { kind: "pilot", lines: ["Alpine Onion", "Innsbruck 39", "Ridge Pilot", "Cathedral Alp", "Overflight", "Pass"] },
+      flint: { kind: "tool", lines: ["Hard Steel", "Sheffield Tool", "Forge", "Issue 41", "Grit", "Works"] },
+      gilder: { kind: "pocket", lines: ["Gilt Dress", "Enamel Hunter", "Amsterdam Open", "Leaf Gold", "Canal", "Bow 48"] },
+      holmwood: { kind: "dress", lines: ["Reserve Auto", "Bienne 38", "Long Spring", "Canton", "Slim Gold", "Jura"] }
+    };
+
     const PRODUCTS = [
       { id: "el-nocturne-36", maison: "Maison Elowen", slug: "elowen", model: "Nocturne 36", ref: "EL-N36-001", year: 2023, condition: "Unworn", price: 12800, type: "Dress", gender: "Unisex", movement: "Automatic, caliber EL-720", case: "36mm, 18k yellow gold", water: "30m", dial: "Champagne", dialColor: "#e6cf96", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Geneva", dealer: "Atelier Nord", desc: "A compact gold dress watch with a sunburst champagne dial and dauphine hands. Unworn, full set." },
       { id: "el-nocturne-40", maison: "Maison Elowen", slug: "elowen", model: "Nocturne 40 Steel", ref: "EL-N40-214", year: 2021, condition: "Excellent", price: 6200, type: "Dress", gender: "Men", movement: "Automatic, caliber EL-720", case: "40mm, stainless steel", water: "50m", dial: "Argenté", dialColor: "#e8e4dc", metal: "#b7c0c8", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Zurich", dealer: "Canton Horology", desc: "Steel Nocturne with a fine silver dial. Light hairlines on the clasp only." },
@@ -1043,41 +1094,112 @@
       return MAISONS[n % MAISONS.length];
     }
 
-    function makeListing(cat, n) {
-      const tpls = templatesFor(cat);
-      const t = tpls[n % tpls.length];
-      const brand = maisonFor(cat, n);
+    function kindMatches(p, kind) {
+      if (kind === "dress") return p.type === "Dress";
+      if (kind === "jewelry") return p.gender === "Women" || /gold/i.test(p.case || "");
+      if (kind === "field") return p.type === "Field" || p.type === "Pilot";
+      if (kind === "chrono") return p.type === "Chronograph";
+      if (kind === "dive") return p.type === "Dive";
+      if (kind === "gmt") return p.type === "GMT";
+      if (kind === "skeleton") return p.type === "Skeleton";
+      if (kind === "moon") return p.type === "Moonphase";
+      if (kind === "pocket") return p.type === "Pocket";
+      if (kind === "pilot") return p.type === "Pilot" || p.type === "Chronograph";
+      if (kind === "sports") return p.type === "GMT" || p.type === "Chronograph" || (p.type === "Dress" && /steel/i.test(p.case || ""));
+      if (kind === "tool") return p.type === "Field" || p.type === "Dive";
+      return true;
+    }
+
+    const BRAND_TPL_CACHE = new Map();
+
+    function brandTemplates(brand) {
+      let list = BRAND_TPL_CACHE.get(brand.slug);
+      if (list) return list;
+      const style = MAISON_STYLE[brand.slug] || { kind: "dress", lines: [brand.name] };
+      const own = PRODUCTS.filter((p) => p.slug === brand.slug);
+      const donors = PRODUCTS.filter((p) => kindMatches(p, style.kind));
+      const extra = donors.filter((d) => d.slug !== brand.slug);
+      const pool = own.length ? own.concat(extra) : (donors.length ? donors : PRODUCTS);
+      const shift = Math.max(0, MAISONS.findIndex((m) => m.slug === brand.slug));
+      const prefix = (brand.slug.slice(0, 2) + brand.slug.slice(-1)).toUpperCase();
+      list = style.lines.map((model, i) => {
+        let src;
+        if (own[i]) src = own[i];
+        else if (extra.length) src = extra[(i - own.length + shift) % extra.length];
+        else src = pool[(i + shift) % pool.length];
+        return {
+          ...src,
+          photoId: (own[i] || src).id,
+          maison: brand.name,
+          slug: brand.slug,
+          model,
+          ref: `${prefix}-${String(i + 1).padStart(2, "0")}`,
+          type: own[i] ? own[i].type : src.type,
+          desc: `${brand.name} ${model}. ${brand.note}`
+        };
+      });
+      BRAND_TPL_CACHE.set(brand.slug, list);
+      return list;
+    }
+
+    function fillListing(t, n, id) {
       const cond = CONDITIONS[n % CONDITIONS.length];
-      const year = t.era === "Vintage" || cat.slug === "vintage" ? 1952 + (n % 38) : 2009 + (n % 17);
+      const year = t.era === "Vintage" ? 1952 + (n % 38) : 2009 + (n % 17);
       const price = Math.max(180, Math.round(t.price * (0.78 + (n % 45) / 100)));
-      const accessory = cat.accessory;
       return {
         ...t,
-        id: `g-${cat.slug}-${n + 1}`,
-        photoId: t.id,
-        maison: brand.name,
-        slug: brand.slug,
-        model: accessory === "strap" ? `${t.model} bracelet ${n + 1}` : accessory === "parts" ? `${t.model} kit ${n + 1}` : `${t.model} ${String(n + 1).padStart(5, "0")}`,
+        id,
+        photoId: t.photoId || t.id,
+        model: `${t.model} ${String(n + 1).padStart(5, "0")}`,
         ref: `${(t.ref || "VS").replace(/\s+/g, "")}-${n + 1}`,
         year,
-        condition: cat.slug === "preowned" && cond === "Unworn" ? "Excellent" : cond,
-        price: accessory ? Math.round(price * 0.08) : (cat.slug === "affordable" ? Math.round((420 + (n % 4200)) * 0.6) : price),
-        gender: cat.slug === "womens" ? "Women" : cat.slug === "mens" ? "Men" : t.gender,
-        type: accessory === "strap" ? "Strap" : accessory === "parts" ? "Accessory" : (cat.slug === "dive" ? "Dive" : cat.slug === "chronograph" ? "Chronograph" : cat.slug === "pilot" ? "Pilot" : cat.slug === "dress" ? "Dress" : cat.slug === "gmt" ? "GMT" : cat.slug === "moonphase" ? "Moonphase" : cat.slug === "pocket" ? "Pocket" : t.type),
-        era: cat.slug === "vintage" ? "Vintage" : t.era,
+        condition: cond,
+        price,
         certified: n % 4 !== 0,
         papers: n % 3 !== 0,
         box: n % 5 !== 0,
         location: CITIES[n % CITIES.length],
-        category: cat.slug,
-        desc: accessory ? `Original ${accessory} listing ${n + 1} for ${t.model}. Photographed with the matching watch.` : `${t.desc} Catalogue number ${n + 1} in ${cat.label.toLowerCase()}.`
+        desc: `${t.desc} Catalogue number ${n + 1}.`
       };
     }
 
+    function makeListing(cat, n) {
+      const accessory = cat.accessory;
+      const brand = maisonFor(cat, n);
+      let tpls = brandTemplates(brand);
+      const fit = tpls.filter(cat.pick);
+      if (fit.length) tpls = fit;
+      const t = tpls[n % tpls.length];
+      const row = fillListing(t, n, `g-${cat.slug}-${n + 1}`);
+      row.maison = brand.name;
+      row.slug = brand.slug;
+      row.category = cat.slug;
+      if (accessory === "strap") {
+        row.model = `${t.model} bracelet ${n + 1}`;
+        row.type = "Strap";
+        row.price = Math.round(row.price * 0.08);
+        row.desc = `Original strap listing ${n + 1} for ${t.model}.`;
+      } else if (accessory === "parts") {
+        row.model = `${t.model} kit ${n + 1}`;
+        row.type = "Accessory";
+        row.price = Math.round(row.price * 0.08);
+        row.desc = `Original parts listing ${n + 1} for ${t.model}.`;
+      } else if (cat.slug === "womens") row.gender = "Women";
+      else if (cat.slug === "mens") row.gender = "Men";
+      if (cat.slug === "preowned" && row.condition === "Unworn") row.condition = "Excellent";
+      if (cat.slug === "vintage") row.era = "Vintage";
+      if (cat.slug === "affordable") row.price = Math.round((420 + (n % 4200)) * 0.6);
+      return row;
+    }
+
     function makeBrandListing(brand, n) {
-      const cat = CATS[n % CATS.length];
-      const p = makeListing(cat, n);
-      return { ...p, id: `g-b-${brand.slug}-${n + 1}`, slug: brand.slug, maison: brand.name };
+      const tpls = brandTemplates(brand);
+      const t = tpls[n % tpls.length];
+      const row = fillListing(t, n, `g-b-${brand.slug}-${n + 1}`);
+      row.maison = brand.name;
+      row.slug = brand.slug;
+      row.category = "brand";
+      return row;
     }
 
     function findProduct(id) {
@@ -2148,7 +2270,7 @@
         <p class="kicker">${m.origin} · Est. ${m.founded}</p>
         <h1>${m.name}</h1>
         <p class="lede">${m.note}</p>
-        <p class="meta">${PER_BRAND.toLocaleString()} listings from this maison · <a href="#/brand/${m.slug}?page=${lastPage}">Jump to last page</a></p>
+        <p class="meta">${PER_BRAND.toLocaleString()} listings from this maison · <a href="#/brand/${m.slug}?page=${lastPage}" data-go="#/brand/${m.slug}?page=${lastPage}">Jump to last page</a></p>
       </div>${shop(query, `#/brand/${slug}`)}`;
     }
 
