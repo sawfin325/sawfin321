@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="cat-photos" />
+  <meta name="vespera-build" content="catalogue-scale" />
   <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -212,11 +212,12 @@
     .pager { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
     .pager a, .pager span { border: 1px solid #243040; padding: 8px 12px; min-width: 40px; text-align: center; }
     .pager a.on { background: #fff; color: #0b0f14; }
-    .mega.buy { min-width: min(980px, 92vw); grid-template-columns: 1.4fr 1fr .8fr; gap: 32px; }
+    .mega.buy { min-width: min(1120px, 96vw); grid-template-columns: 1fr 1fr 1.15fr .85fr; gap: 28px; }
+    .mega.buy .brand-col a { padding: 4px 0; font-size: 13px; }
     .mega .display-all { margin-top: 12px; color: #93c5fd; }
     .brand-bar { background: #0b0f14; padding: 36px 0 28px; border-bottom: 1px solid #1c2733; }
     .brand-bar h2 { color: #fff; font-family: var(--sans); font-size: 22px; font-weight: 650; margin-bottom: 18px; }
-    .brand-logos { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
+    .brand-logos { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
     .brand-logos a { color: #c9d2dc; border: 1px solid #243040; padding: 16px 8px; text-align: center; font-weight: 650; letter-spacing: .04em; }
     .brand-logos a:hover { color: #fff; border-color: #fff; }
 
@@ -286,13 +287,13 @@
     .section-head p { margin: 8px 0 0; color: var(--muted); }
     .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
 
-    .maison-row { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
+    .maison-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
     .maison-chip {
       border: 1px solid var(--line); background: var(--paper); padding: 16px 10px; text-align: center; cursor: pointer;
       min-height: 86px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
     }
     .maison-chip:hover { border-color: var(--gold); }
-    .maison-chip strong { font-family: var(--serif); font-size: 15px; font-weight: 500; }
+    .maison-chip strong { font-family: var(--serif); font-size: 13px; font-weight: 500; line-height: 1.25; }
     .maison-chip span { font-size: 11px; color: var(--muted); letter-spacing: .06em; }
 
     .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -669,7 +670,7 @@
       </a>
       <button class="search-open" id="searchOpen" type="button">
         <span>⌕</span>
-        <span class="search-copy-full" id="searchCountLabel">Search through 14,000 watches worldwide</span>
+        <span class="search-copy-full" id="searchCountLabel">Search through watches worldwide</span>
         <span class="search-copy-short">Search watches</span>
       </button>
       <a href="#/account" id="authLink">Log in or register</a>
@@ -727,8 +728,12 @@
         <div class="mega wide buy">
           <div>
             <h4>Brands</h4>
-            <div class="brand-grid" id="buyBrandMega"></div>
+            <div class="brand-col" id="buyBrandMegaA"></div>
             <a class="display-all" href="#/brands">Display all</a>
+          </div>
+          <div>
+            <h4 aria-hidden="true">&nbsp;</h4>
+            <div class="brand-col" id="buyBrandMegaB"></div>
           </div>
           <div>
             <h4>Categories</h4>
@@ -742,6 +747,10 @@
             <button data-go="#/shop?cat=dive">Diving watches</button>
             <button data-go="#/shop?cat=pilot">Pilot's watches</button>
             <button data-go="#/shop?cat=military">Military watches</button>
+            <button data-go="#/shop?cat=dress">Dress watches</button>
+            <button data-go="#/shop?cat=gmt">GMT and travel</button>
+            <button data-go="#/shop?cat=moonphase">Moonphase</button>
+            <button data-go="#/shop?cat=pocket">Pocket watches</button>
             <button data-go="#/shop?cat=swiss">Swiss watches</button>
             <button data-go="#/shop?cat=affordable">Affordable watches</button>
             <button data-go="#/shop?cat=straps">Bracelets and straps</button>
@@ -921,7 +930,31 @@
       { slug: "emberoak", name: "Ember & Oak", origin: "Copenhagen", founded: 2004, note: "Bronze divers and field reissues." },
       { slug: "fairlie", name: "Fairlie", origin: "Edinburgh", founded: 1932, note: "Military-issue field watches." },
       { slug: "gossamer", name: "Gossamer", origin: "Le Locle", founded: 1919, note: "Ultra-thin automatics." },
-      { slug: "hartland", name: "Hartland", origin: "Zurich", founded: 1988, note: "Accessible steel sports watches." }
+      { slug: "hartland", name: "Hartland", origin: "Zurich", founded: 1988, note: "Accessible steel sports watches." },
+      { slug: "ivorylane", name: "Ivory Lane", origin: "London", founded: 1921, note: "Evening dress watches in quiet gold." },
+      { slug: "juniper", name: "Juniper", origin: "Edinburgh", founded: 1946, note: "Highland field watches with sand dials." },
+      { slug: "kepler", name: "Kepler", origin: "Munich", founded: 1963, note: "Star-chart bezels and night-sky GMTs." },
+      { slug: "millow", name: "Millow", origin: "Geneva", founded: 1908, note: "Small gold dress pieces with enamel signatures." },
+      { slug: "osier", name: "Osier", origin: "Lille", founded: 1957, note: "Woven-bracelet sports watches." },
+      { slug: "orchard", name: "Orchard", origin: "Kent", founded: 1933, note: "Garden-dial dress watches in steel and gold." },
+      { slug: "palisade", name: "Palisade", origin: "Montreal", founded: 1974, note: "Winter tool watches and compact divers." },
+      { slug: "quaystone", name: "Quaystone", origin: "Brighton", founded: 1981, note: "Coastal divers with coin-edge bezels." },
+      { slug: "redwood", name: "Redwood", origin: "Portland", founded: 1992, note: "Bronze field watches and timber-strap kits." },
+      { slug: "sable", name: "Sable", origin: "Antwerp", founded: 1948, note: "Dark-dial dress watches with diamond indexes." },
+      { slug: "thornfield", name: "Thornfield", origin: "York", founded: 1911, note: "English pocket watches and hunter cases." },
+      { slug: "umber", name: "Umber", origin: "Neuchâtel", founded: 2001, note: "Earthy palettes on slim automatics." },
+      { slug: "veridian", name: "Veridian", origin: "Dublin", founded: 1968, note: "Green-dial pilots and cathedral hands." },
+      { slug: "wexford", name: "Wexford", origin: "Wexford", founded: 1955, note: "Harbour divers and compact GMTs." },
+      { slug: "yarrow", name: "Yarrow", origin: "Glasgow", founded: 1939, note: "Military-issue field watches." },
+      { slug: "zephyrus", name: "Zephyrus", origin: "Nice", founded: 1977, note: "Light titanium travel watches." },
+      { slug: "alderly", name: "Alderly", origin: "Manchester", founded: 1929, note: "Railway-minute dress watches." },
+      { slug: "briar", name: "Briar", origin: "Vermont", founded: 2008, note: "Small-series steel with brushed cases." },
+      { slug: "cairn", name: "Cairn", origin: "Aberdeen", founded: 1960, note: "Stone-grey divers and field reissues." },
+      { slug: "dunlin", name: "Dunlin", origin: "Cornwall", founded: 1986, note: "Shore-watch chronographs." },
+      { slug: "eyrie", name: "Eyrie", origin: "Innsbruck", founded: 1952, note: "Alpine pilots with onion crowns." },
+      { slug: "flint", name: "Flint", origin: "Sheffield", founded: 1941, note: "Hard-steel tool watches." },
+      { slug: "gilder", name: "Gilder", origin: "Amsterdam", founded: 1918, note: "Gilt dress pieces and enamel pocket watches." },
+      { slug: "holmwood", name: "Holmwood", origin: "Bienne", founded: 1894, note: "Swiss dress automatics with long power reserves." }
     ];
 
     const PRODUCTS = [
@@ -963,7 +996,8 @@
     ];
     PRODUCTS.forEach((p) => { p.price = Math.round(p.price * 0.6); });
 
-    const PER_CAT = 1000;
+    const PER_CAT = 1200;
+    const SWISS_SLUGS = ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland","millow","umber","holmwood"];
     const CATS = [
       { slug: "mens", label: "Men's watches", photo: "assets/watches/el-nocturne-40.jpg", pick: (p) => p.gender !== "Women" },
       { slug: "womens", label: "Women's watches", photo: "assets/explore-womens.jpg", pick: (p) => p.gender === "Women" || p.gender === "Unisex" },
@@ -975,7 +1009,11 @@
       { slug: "dive", label: "Diving watches", photo: "assets/watches/ca-abyss.jpg", pick: (p) => p.type === "Dive" },
       { slug: "pilot", label: "Pilot's watches", photo: "assets/watches/ke-dawn.jpg", pick: (p) => p.type === "Pilot" },
       { slug: "military", label: "Military watches", photo: "assets/watches/bh-field-iv.jpg", pick: (p) => p.type === "Field" || p.type === "Pilot" },
-      { slug: "swiss", label: "Swiss watches", photo: "assets/watches/qc-sov.jpg", pick: (p) => ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland"].includes(p.slug) },
+      { slug: "dress", label: "Dress watches", photo: "assets/explore-gold.jpg", pick: (p) => p.type === "Dress" },
+      { slug: "gmt", label: "GMT and travel", photo: "assets/watches/pe-world.jpg", pick: (p) => p.type === "GMT" },
+      { slug: "moonphase", label: "Moonphase", photo: "assets/explore-moonphase.jpg", pick: (p) => p.type === "Moonphase" },
+      { slug: "pocket", label: "Pocket watches", photo: "assets/explore-pocket.jpg", pick: (p) => p.type === "Pocket" },
+      { slug: "swiss", label: "Swiss watches", photo: "assets/watches/qc-sov.jpg", pick: (p) => SWISS_SLUGS.includes(p.slug) },
       { slug: "affordable", label: "Affordable watches", photo: "assets/watches/ha-1964.jpg", pick: (p) => p.price < 5000 },
       { slug: "straps", label: "Bracelets and straps", photo: "assets/watches/pe-world.jpg", pick: (p) => true, accessory: "strap" },
       { slug: "parts", label: "Parts and accessories", photo: "assets/explore-skeleton.jpg", pick: (p) => true, accessory: "parts" }
@@ -990,10 +1028,18 @@
       return list.length ? list : PRODUCTS;
     }
 
+    function maisonFor(cat, n) {
+      if (cat && cat.slug === "swiss") {
+        const swiss = MAISONS.filter((m) => SWISS_SLUGS.includes(m.slug));
+        return swiss[n % swiss.length];
+      }
+      return MAISONS[n % MAISONS.length];
+    }
+
     function makeListing(cat, n) {
       const tpls = templatesFor(cat);
       const t = tpls[n % tpls.length];
-      const brand = MAISONS[n % MAISONS.length];
+      const brand = maisonFor(cat, n);
       const cond = CONDITIONS[n % CONDITIONS.length];
       const year = t.era === "Vintage" || cat.slug === "vintage" ? 1952 + (n % 38) : 2009 + (n % 17);
       const price = Math.max(180, Math.round(t.price * (0.78 + (n % 45) / 100)));
@@ -1010,7 +1056,7 @@
         condition: cat.slug === "preowned" && cond === "Unworn" ? "Excellent" : cond,
         price: accessory ? Math.round(price * 0.08) : (cat.slug === "affordable" ? Math.round((420 + (n % 4200)) * 0.6) : price),
         gender: cat.slug === "womens" ? "Women" : cat.slug === "mens" ? "Men" : t.gender,
-        type: accessory === "strap" ? "Strap" : accessory === "parts" ? "Accessory" : (cat.slug === "dive" ? "Dive" : cat.slug === "chronograph" ? "Chronograph" : cat.slug === "pilot" ? "Pilot" : t.type),
+        type: accessory === "strap" ? "Strap" : accessory === "parts" ? "Accessory" : (cat.slug === "dive" ? "Dive" : cat.slug === "chronograph" ? "Chronograph" : cat.slug === "pilot" ? "Pilot" : cat.slug === "dress" ? "Dress" : cat.slug === "gmt" ? "GMT" : cat.slug === "moonphase" ? "Moonphase" : cat.slug === "pocket" ? "Pocket" : t.type),
         era: cat.slug === "vintage" ? "Vintage" : t.era,
         certified: n % 4 !== 0,
         papers: n % 3 !== 0,
@@ -1648,22 +1694,22 @@
         </div></div>
       </section>
       <section class="brand-bar"><div class="wrap">
-        <h2>Popular brands</h2>
+        <h2>All maisons</h2>
         <div class="brand-logos">
-          ${MAISONS.slice(0,8).map(m => `<a href="#/brand/${m.slug}">${m.name.split(" ")[0]}</a>`).join("")}
+          ${MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("")}
         </div>
       </div></section>
       <div class="wrap" style="padding-top:48px">
         <div class="section-head"><div><p class="kicker">Maisons</p><h2>Shop by atelier</h2></div><a href="#/brands">All maisons →</a></div>
         <div class="maison-row">
-          ${MAISONS.slice(0,8).map(m => `<button class="maison-chip" data-go="#/brand/${m.slug}"><strong>${m.name.split(" ")[0]}</strong><span>${m.origin}</span></button>`).join("")}
+          ${MAISONS.map(m => `<button class="maison-chip" data-go="#/brand/${m.slug}"><strong>${m.name}</strong><span>${m.origin}</span></button>`).join("")}
         </div>
       </div>
       ${whyBand()}
       <section><div class="wrap">
         <div class="section-head"><div><p class="kicker">Collections</p><h2>Shop by category</h2></div></div>
         <div class="cat-photo-grid">
-          ${CATS.map(c => `<a class="cat-tile" href="#/shop?cat=${c.slug}"><img src="${c.photo}" alt="${c.label}"><em>1,000 listings</em><span>${c.label}</span></a>`).join("")}
+          ${CATS.map(c => `<a class="cat-tile" href="#/shop?cat=${c.slug}"><img src="${c.photo}" alt="${c.label}"><em>${PER_CAT.toLocaleString()} listings</em><span>${c.label}</span></a>`).join("")}
         </div>
       </div></section>
       <section><div class="wrap">
@@ -1737,12 +1783,12 @@
       const items = [
         ["Men's watches","assets/watches/el-nocturne-40.jpg","#/shop?cat=mens"],
         ["Pre-owned watches","assets/watches/ly-1958.jpg","#/shop?cat=preowned"],
-        ["Pocket watches","assets/explore-pocket.jpg","#/shop?type=Pocket"],
+        ["Pocket watches","assets/explore-pocket.jpg","#/shop?cat=pocket"],
         ["Women's watches","assets/explore-womens.jpg","#/shop?cat=womens"],
         ["Automatic watches","assets/explore-automatic.jpg","#/shop?cat=automatic"],
         ["Skeleton watches","assets/explore-skeleton.jpg","#/shop?type=Skeleton"],
         ["Gold watches","assets/explore-gold.jpg","#/shop?metal=gold"],
-        ["Moon phase watches","assets/explore-moonphase.jpg","#/shop?type=Moonphase"]
+        ["Moon phase watches","assets/explore-moonphase.jpg","#/shop?cat=moonphase"]
       ];
       return `<section class="band"><div class="wrap">
         <h2>Explore luxerywatchsales</h2>
@@ -1928,7 +1974,7 @@
         </aside>
         <div>
           <div class="results-head">
-            <div><p class="kicker">${cat ? "1,000 in this category" : "Full catalogue"}</p><h2>${heading}</h2><p class="meta">${total.toLocaleString()} listing${total===1?"":"s"}</p></div>
+            <div><p class="kicker">${cat ? PER_CAT.toLocaleString() + " in this category" : TOTAL_WATCHES.toLocaleString() + " in the catalogue"}</p><h2>${heading}</h2><p class="meta">${total.toLocaleString()} listing${total===1?"":"s"}</p></div>
           </div>
           ${list.length ? `<div class="cards">${list.map(card).join("")}</div>${pagerHtml}` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
         </div>
@@ -2004,7 +2050,7 @@
       return `<div class="wrap page">
         <p class="kicker">Directory</p>
         <h1>Maisons</h1>
-        <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has 1,000 listings. None are licensed names from other platforms.</p>
+        <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has ${PER_CAT.toLocaleString()} listings. The shop holds ${TOTAL_WATCHES.toLocaleString()} watches across ${CATS.length} rooms. None are licensed names from other platforms.</p>
         <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:28px">
           ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
         </div>
@@ -2019,7 +2065,7 @@
       const { html: pagerHtml } = pager(query, total, `#/brand/${slug}`);
       return `<div class="wrap page">
         <p class="crumbs"><a href="#/brands">Maisons</a> / ${m.name}</p>
-        <p class="kicker">${m.origin} · Est. ${m.founded} · 1,000 listings</p>
+        <p class="kicker">${m.origin} · Est. ${m.founded} · ${PER_CAT.toLocaleString()} listings</p>
         <h1>${m.name}</h1>
         <p class="lede">${m.note}</p>
         <p class="meta">${total.toLocaleString()} watches from this maison</p>
@@ -2441,7 +2487,7 @@
         if (c.label.toLowerCase().includes(t)) hits.push(makeListing(c, 0));
       });
       const shown = hits.slice(0, 8);
-      $("searchHits").innerHTML = shown.length ? shown.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches. Press Enter to search the 14,000-watch catalogue.</p>`;
+      $("searchHits").innerHTML = shown.length ? shown.map(p => `<div class="hit" data-go="#/listing/${p.id}"><span><strong>${p.maison}</strong> ${p.model}<br><span class="meta">${p.ref}</span></span><span>${money(p.price)}</span></div>`).join("") : `<p class="meta">No matches. Press Enter to search the ${TOTAL_WATCHES.toLocaleString()}-watch catalogue.</p>`;
     }
 
     function closeDrawer() {
@@ -2450,7 +2496,12 @@
     }
 
     document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
-    document.getElementById("buyBrandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
+    (function fillBuyBrands() {
+      const mid = Math.ceil(MAISONS.length / 2);
+      const link = (m) => `<a href="#/brand/${m.slug}">${m.name}</a>`;
+      document.getElementById("buyBrandMegaA").innerHTML = MAISONS.slice(0, mid).map(link).join("");
+      document.getElementById("buyBrandMegaB").innerHTML = MAISONS.slice(mid).map(link).join("");
+    })();
     if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${TOTAL_WATCHES.toLocaleString(state.locale || "en")} watches worldwide`;
     $("regionGrid").innerHTML = REGIONS.map(([code, name]) => `<a href="#/shop"><img class="flag" src="assets/flags/${code}.svg" alt="" width="22" height="15">${name}</a>`).join("");
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
