@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="catalogue-scale" />
+  <meta name="vespera-build" content="brand-50k" />
   <title>luxerywatchsales — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="luxerywatchsales is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -997,7 +997,9 @@
     PRODUCTS.forEach((p) => { p.price = Math.round(p.price * 0.6); });
 
     const PER_CAT = 1200;
+    const PER_BRAND = 50000;
     const SWISS_SLUGS = ["elowen","calder","ardent","quill","rochefort","stellara","aureline","gossamer","hartland","millow","umber","holmwood"];
+    const TPL_CACHE = new Map();
     const CATS = [
       { slug: "mens", label: "Men's watches", photo: "assets/watches/el-nocturne-40.jpg", pick: (p) => p.gender !== "Women" },
       { slug: "womens", label: "Women's watches", photo: "assets/explore-womens.jpg", pick: (p) => p.gender === "Women" || p.gender === "Unisex" },
@@ -1018,21 +1020,25 @@
       { slug: "straps", label: "Bracelets and straps", photo: "assets/watches/pe-world.jpg", pick: (p) => true, accessory: "strap" },
       { slug: "parts", label: "Parts and accessories", photo: "assets/explore-skeleton.jpg", pick: (p) => true, accessory: "parts" }
     ];
-    const TOTAL_WATCHES = CATS.length * PER_CAT;
+    const CAT_TOTAL = CATS.length * PER_CAT;
+    const TOTAL_WATCHES = MAISONS.length * PER_BRAND;
     const PAGE_SIZE = 24;
+    const SWISS_MAISONS = MAISONS.filter((m) => SWISS_SLUGS.includes(m.slug));
     const CONDITIONS = ["Unworn", "Like new", "Excellent", "Very good", "Good"];
     const CITIES = ["Geneva","Zurich","Paris","London","Milan","Hamburg","Oslo","Tokyo","New York","Singapore","Dubai","Madrid"];
 
     function templatesFor(cat) {
-      const list = PRODUCTS.filter(cat.pick);
-      return list.length ? list : PRODUCTS;
+      let list = TPL_CACHE.get(cat.slug);
+      if (!list) {
+        list = PRODUCTS.filter(cat.pick);
+        if (!list.length) list = PRODUCTS;
+        TPL_CACHE.set(cat.slug, list);
+      }
+      return list;
     }
 
     function maisonFor(cat, n) {
-      if (cat && cat.slug === "swiss") {
-        const swiss = MAISONS.filter((m) => SWISS_SLUGS.includes(m.slug));
-        return swiss[n % swiss.length];
-      }
+      if (cat && cat.slug === "swiss") return SWISS_MAISONS[n % SWISS_MAISONS.length];
       return MAISONS[n % MAISONS.length];
     }
 
@@ -1050,7 +1056,7 @@
         photoId: t.id,
         maison: brand.name,
         slug: brand.slug,
-        model: accessory === "strap" ? `${t.model} bracelet ${n + 1}` : accessory === "parts" ? `${t.model} kit ${n + 1}` : `${t.model} ${String(n + 1).padStart(4, "0")}`,
+        model: accessory === "strap" ? `${t.model} bracelet ${n + 1}` : accessory === "parts" ? `${t.model} kit ${n + 1}` : `${t.model} ${String(n + 1).padStart(5, "0")}`,
         ref: `${(t.ref || "VS").replace(/\s+/g, "")}-${n + 1}`,
         year,
         condition: cat.slug === "preowned" && cond === "Unworn" ? "Excellent" : cond,
@@ -1080,7 +1086,7 @@
       if (m) {
         const brand = MAISONS.find((x) => x.slug === m[1]);
         const n = Number(m[2]) - 1;
-        if (!brand || n < 0 || n >= PER_CAT) return null;
+        if (!brand || n < 0 || n >= PER_BRAND) return null;
         return makeBrandListing(brand, n);
       }
       m = /^g-([a-z]+)-(\d+)$/.exec(id || "");
@@ -1119,8 +1125,8 @@
       return { page, pages, html };
     }
 
-    function hasExtraFilters(q) {
-      return !!(q.q || q.type || q.condition || q.limited || q.papers || q.era || q.gender || q.metal || q.movement || q.price || q.sort);
+    function hasFieldFilters(q) {
+      return !!(q.q || q.type || q.condition || q.limited || q.papers || q.era || q.gender || q.metal || q.movement || q.price);
     }
 
     function slicePage(list, q) {
@@ -1140,25 +1146,134 @@
       return { list, total };
     }
 
+    function certifiedCount(pool) {
+      return pool - Math.ceil(pool / 4);
+    }
+
+    function certifiedIndex(j) {
+      return Math.floor(j / 3) * 4 + (j % 3) + 1;
+    }
+
+    function uncertifiedIndex(j) {
+      return j * 4;
+    }
+
+    function listingMatches(p, q) {
+      const s = (q.q || "").trim().toLowerCase();
+      if (s && !(p.maison + p.model + p.ref + p.type + p.dial).toLowerCase().includes(s)) return false;
+      if (q.type && p.type !== q.type) return false;
+      if (q.condition) {
+        if (q.condition === "Excellent") {
+          if (!["Excellent", "Like new", "Very good", "Good"].includes(p.condition)) return false;
+        } else if (p.condition !== q.condition) return false;
+      }
+      if (q.certified === "1" && !p.certified) return false;
+      if (q.limited === "1" && !p.limited) return false;
+      if (q.papers === "1" && !(p.papers && p.box)) return false;
+      if (q.era && p.era !== q.era) return false;
+      if (q.gender && p.gender !== q.gender && p.gender !== "Unisex") return false;
+      if (q.metal === "gold" && !/gold/i.test(p.case || "")) return false;
+      if (q.movement === "Automatic" && !/automatic/i.test(p.movement)) return false;
+      if (q.price) {
+        const [a, b] = q.price.split("-").map(Number);
+        if (p.price < a || p.price > b) return false;
+      }
+      return true;
+    }
+
+    function sortRecords(rows, sort) {
+      if (sort === "price-asc") rows.sort((a, b) => a.price - b.price || a.i - b.i);
+      else if (sort === "price-desc") rows.sort((a, b) => b.price - a.price || a.i - b.i);
+      else if (sort === "new") rows.sort((a, b) => b.year - a.year || a.i - b.i);
+      else if (sort === "bestsellers") rows.sort((a, b) => Number(b.certified) - Number(a.certified) || b.price - a.price || a.i - b.i);
+    }
+
+    function maisonFromQuery(q) {
+      if (q.maison) return MAISONS.find((m) => m.slug === q.maison) || null;
+      const s = (q.q || "").trim().toLowerCase();
+      if (!s || s.length < 3) return null;
+      return MAISONS.find((m) => m.slug === s || m.name.toLowerCase() === s) ||
+        MAISONS.find((m) => m.name.toLowerCase().startsWith(s) || m.slug.startsWith(s)) || null;
+    }
+
+    function makeGlobalBrandAt(i) {
+      const brand = MAISONS[Math.floor(i / PER_BRAND)];
+      return makeBrandListing(brand, i % PER_BRAND);
+    }
+
+    let MATCH_CACHE = { sig: "", indices: null };
+
+    function matchIndices(q, makeAt, pool) {
+      const { page, ...rest } = q;
+      const sig = pool + "|" + JSON.stringify(rest);
+      if (MATCH_CACHE.sig === sig) return MATCH_CACHE.indices;
+      const rows = [];
+      for (let i = 0; i < pool; i++) {
+        const p = makeAt(i);
+        if (!listingMatches(p, q)) continue;
+        rows.push({ i, price: p.price, year: p.year, certified: p.certified });
+      }
+      sortRecords(rows, q.sort);
+      const indices = rows.map((r) => r.i);
+      MATCH_CACHE = { sig, indices };
+      return indices;
+    }
+
     function pagedFiltered(q) {
       const cat = CATS.find((c) => c.slug === q.cat);
-      const brand = q.maison ? MAISONS.find((m) => m.slug === q.maison) : null;
-      const makeAt = cat
-        ? (i) => makeListing(cat, i)
-        : brand
-          ? (i) => makeBrandListing(brand, i)
-          : (i) => makeListing(CATS[Math.floor(i / PER_CAT)], i % PER_CAT);
-      const pool = (cat || brand) ? PER_CAT : TOTAL_WATCHES;
-      if (hasExtraFilters(q)) return slicePage(filtered(q), q);
-      if (q.certified === "1") {
-        const indices = [];
-        for (let i = 0; i < pool; i++) {
-          const n = cat || brand ? i : (i % PER_CAT);
-          if (n % 4 !== 0) indices.push(i);
+      let brand = q.maison ? MAISONS.find((m) => m.slug === q.maison) : null;
+      let filterQ = q;
+      if (!cat && !brand && (q.q || "").trim()) {
+        const hinted = maisonFromQuery(q);
+        if (hinted) {
+          brand = hinted;
+          const s = q.q.trim().toLowerCase();
+          if (hinted.slug === s || hinted.name.toLowerCase() === s) {
+            filterQ = { ...q, q: "", maison: hinted.slug };
+          }
         }
-        return virtualSlice(q, (j) => makeAt(indices[j]), indices.length);
       }
-      return virtualSlice(q, makeAt, pool);
+      let makeAt;
+      let pool;
+      if (cat) {
+        makeAt = (i) => makeListing(cat, i);
+        pool = PER_CAT;
+      } else if (brand) {
+        makeAt = (i) => makeBrandListing(brand, i);
+        pool = PER_BRAND;
+      } else {
+        makeAt = makeGlobalBrandAt;
+        pool = TOTAL_WATCHES;
+      }
+      const fields = hasFieldFilters(filterQ);
+      if (!fields && !filterQ.sort) {
+        if (filterQ.certified === "1") {
+          const total = certifiedCount(pool);
+          return virtualSlice(filterQ, (j) => makeAt(certifiedIndex(j)), total);
+        }
+        return virtualSlice(filterQ, makeAt, pool);
+      }
+      if (!fields && filterQ.sort) {
+        if (pool > 80000) {
+          const certN = certifiedCount(pool);
+          const makeBest = (j) => j < certN ? makeAt(certifiedIndex(j)) : makeAt(uncertifiedIndex(j - certN));
+          return virtualSlice(filterQ, makeBest, pool);
+        }
+        const rows = [];
+        for (let i = 0; i < pool; i++) {
+          const p = makeAt(i);
+          if (filterQ.certified === "1" && !p.certified) continue;
+          rows.push({ i, price: p.price, year: p.year, certified: p.certified });
+        }
+        sortRecords(rows, filterQ.sort);
+        return virtualSlice(filterQ, (j) => makeAt(rows[j].i), rows.length);
+      }
+      if (pool > 80000) {
+        makeAt = (i) => makeListing(CATS[Math.floor(i / PER_CAT)], i % PER_CAT);
+        pool = CAT_TOTAL;
+      }
+      const indices = matchIndices(filterQ, makeAt, pool);
+      return virtualSlice(filterQ, (j) => makeAt(indices[j]), indices.length);
     }
 
     const ARTICLES = [
@@ -1625,41 +1740,6 @@
       return { parts, q, path: "/" + parts.join("/") };
     }
 
-    function filtered(q) {
-      const cat = CATS.find((c) => c.slug === q.cat);
-      let list;
-      if (cat) list = Array.from({ length: PER_CAT }, (_, i) => makeListing(cat, i));
-      else if (q.maison) {
-        const b = MAISONS.find((m) => m.slug === q.maison);
-        list = b ? Array.from({ length: PER_CAT }, (_, i) => makeBrandListing(b, i)) : [];
-      } else {
-        list = CATS.flatMap((c) => Array.from({ length: PER_CAT }, (_, i) => makeListing(c, i)));
-      }
-      const s = (q.q || "").trim().toLowerCase();
-      if (s) list = list.filter((p) => (p.maison + p.model + p.ref + p.type + p.dial).toLowerCase().includes(s));
-      if (q.type) list = list.filter((p) => p.type === q.type);
-      if (q.condition) {
-        if (q.condition === "Excellent") list = list.filter((p) => ["Excellent", "Like new", "Very good", "Good"].includes(p.condition));
-        else list = list.filter((p) => p.condition === q.condition);
-      }
-      if (q.certified === "1") list = list.filter((p) => p.certified);
-      if (q.limited === "1") list = list.filter((p) => p.limited);
-      if (q.papers === "1") list = list.filter((p) => p.papers && p.box);
-      if (q.era) list = list.filter((p) => p.era === q.era);
-      if (q.gender) list = list.filter((p) => p.gender === q.gender || p.gender === "Unisex");
-      if (q.metal === "gold") list = list.filter((p) => /gold/i.test(p.case || ""));
-      if (q.movement === "Automatic") list = list.filter((p) => /automatic/i.test(p.movement));
-      if (q.price) {
-        const [a, b] = q.price.split("-").map(Number);
-        list = list.filter((p) => p.price >= a && p.price <= b);
-      }
-      if (q.sort === "price-asc") list.sort((a, b) => a.price - b.price);
-      else if (q.sort === "price-desc") list.sort((a, b) => b.price - a.price);
-      else if (q.sort === "new") list.sort((a, b) => b.year - a.year);
-      else if (q.sort === "bestsellers") list.sort((a, b) => Number(b.certified) - Number(a.certified) || b.price - a.price);
-      return list;
-    }
-
     function card(p) {
       const on = state.saved.includes(p.id);
       return `<article class="card" data-go="#/listing/${p.id}">
@@ -1752,7 +1832,7 @@
           ${reasons.map(([n,t,p]) => `<article class="why-card"><span class="n">${n}</span><h3>${t}</h3><p>${p}</p></article>`).join("")}
         </div>
         <div class="why-stats">
-          <div class="why-stat"><b>${TOTAL_WATCHES.toLocaleString(state.locale || "en")}</b><span>Listings across ${CATS.length} rooms, worldwide</span></div>
+          <div class="why-stat"><b>${TOTAL_WATCHES.toLocaleString(state.locale || "en")}</b><span>${PER_BRAND.toLocaleString()} listings on every maison, worldwide</span></div>
           <div class="why-stat"><b>${MAISONS.length}</b><span>Original maisons, none borrowed from other platforms</span></div>
           <div class="why-stat"><b>8</b><span>Studio photographs on every watch</span></div>
           <div class="why-stat"><b>40%</b><span>Off the previous asking price, on every listing</span></div>
@@ -1974,7 +2054,7 @@
         </aside>
         <div>
           <div class="results-head">
-            <div><p class="kicker">${cat ? PER_CAT.toLocaleString() + " in this category" : TOTAL_WATCHES.toLocaleString() + " in the catalogue"}</p><h2>${heading}</h2><p class="meta">${total.toLocaleString()} listing${total===1?"":"s"}</p></div>
+            <div><p class="kicker">${cat ? PER_CAT.toLocaleString() + " in this category" : q.maison ? PER_BRAND.toLocaleString() + " from this maison" : TOTAL_WATCHES.toLocaleString() + " in the catalogue"}</p><h2>${heading}</h2><p class="meta">${total.toLocaleString()} listing${total===1?"":"s"}</p></div>
           </div>
           ${list.length ? `<div class="cards">${list.map(card).join("")}</div>${pagerHtml}` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
         </div>
@@ -1989,10 +2069,10 @@
       let related = PRODUCTS.filter((x) => x.slug === p.slug && x.id !== p.id).slice(0, 4);
       if (related.length < 4) {
         const brand = MAISONS.find((m) => m.slug === p.slug);
-        const start = Math.max(0, (Number((String(p.id).match(/(\d+)$/) || [0, 1])[1]) || 1) % PER_CAT);
+        const start = Math.max(0, (Number((String(p.id).match(/(\d+)$/) || [0, 1])[1]) || 1) % PER_BRAND);
         if (brand) {
           for (let i = 1; related.length < 4 && i < 12; i++) {
-            const r = makeBrandListing(brand, (start + i) % PER_CAT);
+            const r = makeBrandListing(brand, (start + i) % PER_BRAND);
             if (r.id !== p.id) related.push(r);
           }
         }
@@ -2050,7 +2130,7 @@
       return `<div class="wrap page">
         <p class="kicker">Directory</p>
         <h1>Maisons</h1>
-        <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has ${PER_CAT.toLocaleString()} listings. The shop holds ${TOTAL_WATCHES.toLocaleString()} watches across ${CATS.length} rooms. None are licensed names from other platforms.</p>
+        <p class="lede">${MAISONS.length} original ateliers in this catalogue. Each maison has ${PER_BRAND.toLocaleString()} listings — ${TOTAL_WATCHES.toLocaleString()} watches in all. None are licensed names from other platforms.</p>
         <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:28px">
           ${MAISONS.map(m => `<a class="type-card" href="#/brand/${m.slug}"><em>${m.origin} · ${m.founded}</em><strong>${m.name}</strong><p class="meta">${m.note}</p></a>`).join("")}
         </div>
@@ -2065,7 +2145,7 @@
       const { html: pagerHtml } = pager(query, total, `#/brand/${slug}`);
       return `<div class="wrap page">
         <p class="crumbs"><a href="#/brands">Maisons</a> / ${m.name}</p>
-        <p class="kicker">${m.origin} · Est. ${m.founded} · ${PER_CAT.toLocaleString()} listings</p>
+        <p class="kicker">${m.origin} · Est. ${m.founded} · ${PER_BRAND.toLocaleString()} listings</p>
         <h1>${m.name}</h1>
         <p class="lede">${m.note}</p>
         <p class="meta">${total.toLocaleString()} watches from this maison</p>
