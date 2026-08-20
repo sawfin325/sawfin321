@@ -1,41 +1,74 @@
 const SITE = {
-  name: "meridian",
-  listingCount: "670,440",
+  name: "chrono24",
+  listingCount: "670,418",
   countries: 132,
 };
 
+const MENU_BRANDS_LEFT = [
+  "Gauri", "Rolex", "Patek Philippe", "Breitling", "Cartier", "IWC",
+  "Jaeger-LeCoultre", "Hublot", "Vacheron Constantin", "A. Lange & Söhne", "Breguet", "Hamilton", "Oris",
+];
+const MENU_BRANDS_RIGHT = [
+  "Omega", "Audemars Piguet", "Tudor", "Panerai", "Seiko", "TAG Heuer",
+  "Zenith", "Longines", "Richard Mille", "Ulysse Nardin", "NOMOS", "Sinn",
+];
+
+const MENU_CATEGORIES = [
+  { name: "Men's Watches", slug: "mens" },
+  { name: "Women's Watches", slug: "womens" },
+  { name: "Pre-Owned Watches", slug: "preowned" },
+  { name: "Mechanical Watches", slug: "mechanical" },
+  { name: "Automatic Watches", slug: "automatic" },
+  { name: "Vintage Watches", slug: "vintage" },
+  { name: "Chronographs", slug: "chrono" },
+  { name: "Diving Watches", slug: "dive" },
+  { name: "Pilot's Watches", slug: "pilot" },
+  { name: "Military Watches", slug: "military" },
+  { name: "Swiss Watches", slug: "swiss" },
+  { name: "Affordable Watches", slug: "affordable" },
+  { name: "Bracelets and Straps", slug: "straps" },
+  { name: "Parts and Accessories", slug: "parts" },
+];
+
 const BRANDS = [
+  { name: "Gauri", count: 20 },
   { name: "Rolex", count: 184230 },
+  { name: "Omega", count: 96820 },
   { name: "Patek Philippe", count: 18240 },
+  { name: "Audemars Piguet", count: 15410 },
   { name: "Breitling", count: 41210 },
   { name: "Cartier", count: 33880 },
-  { name: "IWC", count: 22140 },
-  { name: "Omega", count: 96820 },
-  { name: "Audemars Piguet", count: 15410 },
   { name: "Tudor", count: 28760 },
+  { name: "IWC", count: 22140 },
   { name: "Panerai", count: 19320 },
   { name: "Seiko", count: 54110 },
   { name: "TAG Heuer", count: 36440 },
   { name: "Jaeger-LeCoultre", count: 11280 },
   { name: "Hublot", count: 14890 },
   { name: "Longines", count: 22100 },
-  { name: "Grand Seiko", count: 8760 },
   { name: "Zenith", count: 7340 },
   { name: "Vacheron Constantin", count: 5120 },
   { name: "A. Lange & Söhne", count: 2180 },
+  { name: "Breguet", count: 1640 },
+  { name: "Hamilton", count: 8920 },
+  { name: "Oris", count: 6540 },
+  { name: "Richard Mille", count: 980 },
+  { name: "Ulysse Nardin", count: 1420 },
+  { name: "NOMOS", count: 4210 },
+  { name: "Sinn", count: 3180 },
+  { name: "Grand Seiko", count: 8760 },
   { name: "Tissot", count: 19840 },
-  { name: "Nomos", count: 4210 },
 ];
 
 const POPULAR_MODELS = [
+  "Gauri Lotus", "Gauri Tikka", "Gauri Saffron", "Gauri Midnight",
   "Rolex Datejust", "Rolex Submariner", "Rolex Daytona", "Omega Speedmaster",
   "Audemars Piguet Royal Oak", "Rolex Day-Date", "Rolex GMT-Master II", "Patek Philippe Nautilus",
   "Omega Seamaster", "Breitling Navitimer", "Rolex Oyster Perpetual", "Patek Philippe Calatrava",
   "Cartier Santos", "Cartier Tank", "Tudor Black Bay", "IWC Pilot's Watch",
-  "Panerai Luminor", "Rolex Explorer", "Rolex Sky-Dweller", "Omega Constellation",
-  "TAG Heuer Carrera", "Patek Philippe Aquanaut", "AP Royal Oak Offshore", "Rolex Yacht-Master",
-  "Jaeger-LeCoultre Reverso", "Hublot Big Bang", "Longines HydroConquest", "Grand Seiko Snowflake",
-  "Zenith El Primero", "Vacheron Overseas", "Rolex Sea-Dweller", "Omega Planet Ocean",
+  "Panerai Luminor", "Gauri Heritage", "Gauri Temple", "Gauri Pearl",
+  "Gauri Royale", "Hublot Big Bang", "Longines HydroConquest", "Grand Seiko Snowflake",
+  "Zenith El Primero", "Vacheron Overseas", "Richard Mille RM 011", "Breguet Classique",
 ];
 
 const CATEGORIES = [
@@ -90,7 +123,7 @@ const SEED = [
   { brand: "Vacheron Constantin", model: "Overseas", ref: "4500V/110A-B126", year: 2019, price: 26800, img: "watch-royal-oak.jpg", cats: ["mens","preowned","automatic"], movement: "Automatic", case: "Steel, 41 mm", condition: "Used (Very good)" },
   { brand: "A. Lange & Söhne", model: "Saxonia Moon Phase", ref: "384.026", year: 2018, price: 31200, img: "watch-moonphase.jpg", cats: ["mens","moonphase","gold"], movement: "Manual winding", case: "Pink gold, 40 mm", condition: "Used (Very good)" },
   { brand: "Tissot", model: "PRX Powermatic 80", ref: "T137.407.11.351.00", year: 2024, price: 695, img: "watch-santos.jpg", cats: ["mens","automatic"], movement: "Automatic", case: "Steel, 40 mm", condition: "New" },
-  { brand: "Nomos", model: "Tangente", ref: "139", year: 2023, price: 1980, img: "watch-pilot.jpg", cats: ["mens"], movement: "Manual winding", case: "Steel, 35 mm", condition: "New" },
+  { brand: "NOMOS", model: "Tangente", ref: "139", year: 2023, price: 1980, img: "watch-pilot.jpg", cats: ["mens","mechanical","affordable"], movement: "Manual winding", case: "Steel, 35 mm", condition: "New" },
   { brand: "Omega", model: "Constellation", ref: "131.20.36.20.02.001", year: 2022, price: 5120, img: "watch-womens.jpg", cats: ["womens","automatic"], movement: "Automatic", case: "Steel, 36 mm", condition: "Used (Mint)" },
   { brand: "Rolex", model: "Yacht-Master 40", ref: "126622", year: 2021, price: 14200, img: "watch-submariner.jpg", cats: ["mens","preowned","automatic"], movement: "Automatic", case: "Steel and platinum, 40 mm", condition: "Used (Very good)" },
   { brand: "Patek Philippe", model: "Aquanaut", ref: "5167A", year: 2019, price: 79500, img: "watch-nautilus.jpg", cats: ["mens","preowned","automatic"], movement: "Automatic", case: "Steel, 40.8 mm", condition: "Used (Very good)" },
@@ -110,7 +143,40 @@ const SEED = [
   { brand: "Patek Philippe", model: "Grand Complications", ref: "5270P", year: 2015, price: 186000, img: "watch-moonphase.jpg", cats: ["mens","moonphase","preowned"], movement: "Manual winding", case: "Platinum, 41 mm", condition: "Used (Very good)" },
   { brand: "Omega", model: "De Ville Prestige", ref: "424.10.40.20.02.001", year: 2022, price: 3120, img: "watch-pilot.jpg", cats: ["mens","automatic"], movement: "Automatic", case: "Steel, 39.5 mm", condition: "Used (Mint)" },
   { brand: "Patek Philippe", model: "Hunter Pocket Watch", ref: "6000J", year: 1998, price: 22400, img: "watch-pocket.jpg", cats: ["pocket","gold","preowned"], movement: "Manual winding", case: "Yellow gold, 47 mm", condition: "Used (Very good)" },
-  { brand: "A. Lange & Söhne", model: "Open-face Pocket Watch", ref: "860.032", year: 1992, price: 18600, img: "watch-pocket.jpg", cats: ["pocket","gold","preowned"], movement: "Manual winding", case: "Yellow gold, 49 mm", condition: "Used (Good)" },
+  { brand: "A. Lange & Söhne", model: "Open-face Pocket Watch", ref: "860.032", year: 1992, price: 18600, img: "watch-pocket.jpg", cats: ["pocket","gold","preowned","vintage"], movement: "Manual winding", case: "Yellow gold, 49 mm", condition: "Used (Good)" },
+  { brand: "Breguet", model: "Classique", ref: "5177BA", year: 2019, price: 18900, img: "watch-gold.jpg", cats: ["mens","gold","swiss","mechanical"], movement: "Automatic", case: "Yellow gold, 38 mm", condition: "Used (Very good)" },
+  { brand: "Breguet", model: "Type XX", ref: "2067ST", year: 2023, price: 16850, img: "watch-daytona.jpg", cats: ["mens","chrono","pilot","swiss","automatic"], movement: "Automatic", case: "Steel, 42 mm", condition: "New" },
+  { brand: "Hamilton", model: "Khaki Field", ref: "H70455533", year: 2022, price: 545, img: "watch-pilot.jpg", cats: ["mens","military","pilot","affordable","automatic"], movement: "Automatic", case: "Steel, 38 mm", condition: "New" },
+  { brand: "Hamilton", model: "Jazzmaster", ref: "H32451111", year: 2021, price: 890, img: "watch-datejust.jpg", cats: ["mens","automatic","affordable"], movement: "Automatic", case: "Steel, 40 mm", condition: "Used (Mint)" },
+  { brand: "Oris", model: "Aquis Date", ref: "01.733.7730", year: 2023, price: 2100, img: "watch-seamaster.jpg", cats: ["mens","dive","automatic","swiss"], movement: "Automatic", case: "Steel, 43.5 mm", condition: "New" },
+  { brand: "Oris", model: "Big Crown Pointer Date", ref: "01.754.7741", year: 2020, price: 1650, img: "watch-pilot.jpg", cats: ["mens","pilot","automatic","swiss"], movement: "Automatic", case: "Steel, 40 mm", condition: "Used (Very good)" },
+  { brand: "Richard Mille", model: "RM 011", ref: "RM011", year: 2018, price: 245000, img: "watch-skeleton.jpg", cats: ["mens","skeleton","chrono","preowned"], movement: "Automatic", case: "Titanium, 50 mm", condition: "Used (Very good)" },
+  { brand: "Richard Mille", model: "RM 035", ref: "RM035", year: 2021, price: 198000, img: "watch-skeleton.jpg", cats: ["mens","skeleton","preowned"], movement: "Automatic", case: "NTPT carbon, 49.9 mm", condition: "Used (Mint)" },
+  { brand: "Ulysse Nardin", model: "Marine Diver", ref: "263-33", year: 2019, price: 8900, img: "watch-seamaster.jpg", cats: ["mens","dive","automatic","swiss"], movement: "Automatic", case: "Steel, 44 mm", condition: "Used (Good)" },
+  { brand: "Ulysse Nardin", model: "Blast", ref: "1723-400", year: 2022, price: 22400, img: "watch-skeleton.jpg", cats: ["mens","skeleton","automatic","swiss"], movement: "Automatic", case: "Carbon, 45 mm", condition: "Used (Mint)" },
+  { brand: "NOMOS", model: "Club Sport", ref: "781", year: 2023, price: 2800, img: "watch-datejust.jpg", cats: ["mens","automatic","affordable"], movement: "Automatic", case: "Steel, 42 mm", condition: "New" },
+  { brand: "Sinn", model: "856 UTC", ref: "856.010", year: 2021, price: 2190, img: "watch-gmt.jpg", cats: ["mens","pilot","military","automatic"], movement: "Automatic", case: "Steel, 40 mm", condition: "Used (Very good)" },
+  { brand: "Sinn", model: "104 St Sa I", ref: "104.011", year: 2022, price: 1650, img: "watch-pilot.jpg", cats: ["mens","pilot","chrono","automatic"], movement: "Automatic", case: "Steel, 41 mm", condition: "New" },
+  { brand: "Gauri", model: "Lotus", ref: "GR-LT-36", year: 2024, price: 12400, img: "gauri-lotus.jpg", cats: ["womens","gold","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 36 mm", condition: "New" },
+  { brand: "Gauri", model: "Lotus", ref: "GR-LT-36", year: 2022, price: 9800, img: "gauri-lotus.jpg", cats: ["womens","gold","automatic","preowned","swiss"], movement: "Automatic", case: "Yellow gold, 36 mm", condition: "Used (Very good)" },
+  { brand: "Gauri", model: "Tikka", ref: "GR-TK-28", year: 2025, price: 18600, img: "gauri-tikka.jpg", cats: ["womens","gold","swiss"], movement: "Quartz", case: "Yellow gold, 28 mm", condition: "New" },
+  { brand: "Gauri", model: "Tikka", ref: "GR-TK-28", year: 2021, price: 14200, img: "gauri-tikka.jpg", cats: ["womens","gold","preowned","swiss"], movement: "Quartz", case: "Yellow gold, 28 mm", condition: "Used (Mint)" },
+  { brand: "Gauri", model: "Saffron Chronograph", ref: "GR-SF-42", year: 2024, price: 16850, img: "gauri-saffron.jpg", cats: ["mens","gold","chrono","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 42 mm", condition: "New" },
+  { brand: "Gauri", model: "Saffron Chronograph", ref: "GR-SF-42", year: 2020, price: 12900, img: "gauri-saffron.jpg", cats: ["mens","gold","chrono","automatic","preowned","swiss"], movement: "Automatic", case: "Yellow gold, 42 mm", condition: "Used (Good)" },
+  { brand: "Gauri", model: "Midnight", ref: "GR-MN-41", year: 2025, price: 8900, img: "gauri-midnight.jpg", cats: ["mens","automatic","swiss"], movement: "Automatic", case: "Steel, 41 mm", condition: "New" },
+  { brand: "Gauri", model: "Midnight", ref: "GR-MN-41", year: 2023, price: 7200, img: "gauri-midnight.jpg", cats: ["mens","automatic","preowned","swiss"], movement: "Automatic", case: "Steel, 41 mm", condition: "Used (Very good)" },
+  { brand: "Gauri", model: "Heritage Moon", ref: "GR-HR-39", year: 2024, price: 15400, img: "gauri-heritage.jpg", cats: ["mens","moonphase","mechanical","swiss"], movement: "Automatic", case: "Steel, 39 mm", condition: "New" },
+  { brand: "Gauri", model: "Heritage Moon", ref: "GR-HR-39", year: 2019, price: 11250, img: "gauri-heritage.jpg", cats: ["mens","moonphase","preowned","vintage","swiss"], movement: "Automatic", case: "Steel, 39 mm", condition: "Used (Very good)" },
+  { brand: "Gauri", model: "Temple", ref: "GR-TP-27", year: 2025, price: 21400, img: "gauri-temple.jpg", cats: ["womens","gold","mechanical","swiss"], movement: "Manual winding", case: "Yellow gold, 27 x 41 mm", condition: "New" },
+  { brand: "Gauri", model: "Temple", ref: "GR-TP-27", year: 2018, price: 16800, img: "gauri-temple.jpg", cats: ["womens","gold","preowned","vintage","swiss"], movement: "Manual winding", case: "Yellow gold, 27 x 41 mm", condition: "Used (Good)" },
+  { brand: "Gauri", model: "Pearl", ref: "GR-PR-30", year: 2024, price: 7600, img: "gauri-pearl.jpg", cats: ["womens","gold","swiss"], movement: "Quartz", case: "Rose gold, 30 mm", condition: "New" },
+  { brand: "Gauri", model: "Pearl", ref: "GR-PR-30", year: 2022, price: 5900, img: "gauri-pearl.jpg", cats: ["womens","gold","preowned","swiss"], movement: "Quartz", case: "Rose gold, 30 mm", condition: "Used (Mint)" },
+  { brand: "Gauri", model: "Royale Diver", ref: "GR-RD-42", year: 2025, price: 24800, img: "gauri-royale.jpg", cats: ["mens","gold","dive","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 42 mm", condition: "New" },
+  { brand: "Gauri", model: "Royale Diver", ref: "GR-RD-42", year: 2021, price: 18950, img: "gauri-royale.jpg", cats: ["mens","gold","dive","automatic","preowned","swiss"], movement: "Automatic", case: "Yellow gold, 42 mm", condition: "Used (Very good)" },
+  { brand: "Gauri", model: "Lotus Skeleton", ref: "GR-LS-38", year: 2024, price: 19600, img: "watch-skeleton.jpg", cats: ["womens","skeleton","gold","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 38 mm", condition: "New" },
+  { brand: "Gauri", model: "Maang", ref: "GR-MG-34", year: 2023, price: 11200, img: "gauri-pearl.jpg", cats: ["womens","gold","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 34 mm", condition: "Used (Mint)" },
+  { brand: "Gauri", model: "Saffron Chronograph", ref: "GR-SF-42G", year: 2025, price: 27400, img: "gauri-saffron.jpg", cats: ["mens","gold","chrono","automatic","swiss"], movement: "Automatic", case: "Yellow gold, 42 mm", condition: "New" },
+  { brand: "Gauri", model: "Midnight GMT", ref: "GR-MN-GMT", year: 2024, price: 10400, img: "gauri-midnight.jpg", cats: ["mens","automatic","swiss"], movement: "Automatic", case: "Steel, 41 mm", condition: "New" },
 ];
 
 function slugify(s) {
@@ -121,6 +187,16 @@ const WATCHES = SEED.map((w, i) => {
   const seller = SELLERS[i % SELLERS.length];
   const box = i % 5 !== 2;
   const papers = i % 4 !== 1;
+  const swiss = new Set(["Rolex","Omega","Patek Philippe","Audemars Piguet","Breitling","Cartier","IWC","Jaeger-LeCoultre","Hublot","Vacheron Constantin","A. Lange & Söhne","Breguet","Oris","Ulysse Nardin","Zenith","Longines","TAG Heuer","Tudor","Gauri","Richard Mille"]);
+  const cats = w.cats.slice();
+  if (swiss.has(w.brand) && !cats.includes("swiss")) cats.push("swiss");
+  if (w.year <= 2010 && !cats.includes("vintage")) cats.push("vintage");
+  if (/chrono|daytona|speedmaster|carrera|navitimer/i.test(w.model) && !cats.includes("chrono")) cats.push("chrono");
+  if (/submariner|seamaster|diver|aquis|sea-dweller|planet ocean/i.test(w.model) && !cats.includes("dive")) cats.push("dive");
+  if (/pilot|khaki|mark xviii|navitimer/i.test(w.model) && !cats.includes("pilot")) cats.push("pilot");
+  if (w.price < 2000 && !cats.includes("affordable")) cats.push("affordable");
+  if (/automatic/i.test(w.movement) && !cats.includes("automatic")) cats.push("automatic");
+  if (/manual/i.test(w.movement) && !cats.includes("mechanical")) cats.push("mechanical");
   return {
     id: slugify(`${w.brand}-${w.model}-${w.ref}-${i}`),
     brand: w.brand,
@@ -130,7 +206,7 @@ const WATCHES = SEED.map((w, i) => {
     price: w.price,
     image: "assets/watches/" + w.img,
     images: ["assets/watches/" + w.img],
-    cats: w.cats,
+    cats,
     movement: w.movement,
     case: w.case,
     condition: w.condition,

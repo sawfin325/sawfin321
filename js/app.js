@@ -39,15 +39,21 @@ function headerHTML() {
   const account = user
     ? `<a class="header-account" href="account.html">${iconUser()}<span>${user.name}</span></a>`
     : `<a class="header-account" href="login.html">${iconUser()}<span>Log in or register</span></a>`;
-  const brandLinks = BRANDS.slice(0, 12).map((b) =>
-    `<a href="search.html?brand=${encodeURIComponent(b.name)}">${b.name}</a>`
+  const left = MENU_BRANDS_LEFT.map((name) =>
+    `<a class="row${name === "Gauri" ? " featured" : ""}" href="search.html?brand=${encodeURIComponent(name)}">${name}</a>`
+  ).join("");
+  const right = MENU_BRANDS_RIGHT.map((name) =>
+    `<a class="row" href="search.html?brand=${encodeURIComponent(name)}">${name}</a>`
+  ).join("");
+  const cats = MENU_CATEGORIES.map((c) =>
+    `<a class="row" href="search.html?cat=${encodeURIComponent(c.slug)}">${c.name}</a>`
   ).join("");
   return `
-  <div class="promo">Have you tried the Meridian app? <a href="apps.html">Discover now</a></div>
+  <div class="promo">Have you tried the Chrono24 app? <a href="apps.html">Discover now</a></div>
   <header class="header">
     <div class="wrap header-row">
-      <button class="menu-btn btn-ghost" type="button" aria-label="Menu" data-menu>☰</button>
-      <a class="logo" href="index.html">meridian</a>
+      <button class="menu-btn" type="button" aria-label="Menu" data-menu>☰</button>
+      <a class="logo" href="index.html">chrono24</a>
       <form class="search" action="search.html" method="get">
         <input name="q" type="search" placeholder="Search through ${SITE.listingCount} watches worldwide" value="${params().get("q") || ""}" />
         <button type="submit" aria-label="Search">${iconSearch()}</button>
@@ -55,9 +61,39 @@ function headerHTML() {
       ${account}
     </div>
     <nav class="nav wrap" id="main-nav">
-      <div class="nav-item">
+      <div class="nav-item has-mega">
         <a class="nav-link" href="search.html">Buy a watch <span class="caret">▾</span></a>
-        <div class="dropdown">${brandLinks}<a href="brands.html">All brands</a><a href="search.html?cat=mens">Men's watches</a><a href="search.html?cat=womens">Women's watches</a></div>
+        <div class="mega">
+          <div class="wrap mega-grid">
+            <div>
+              <h4>Brands</h4>
+              <div class="mega-brands">
+                <div>${left}</div>
+                <div>${right}</div>
+              </div>
+              <a class="more" href="brands.html">Display all</a>
+            </div>
+            <div>
+              <h4>Categories</h4>
+              ${cats}
+              <a class="more" href="search.html">Display all</a>
+            </div>
+            <div>
+              <h4>Services</h4>
+              <a class="row" href="collection.html">Watch Collection</a>
+              <a class="row" href="sell.html">Appraisal</a>
+              <a class="row" href="search.html">Advanced Search</a>
+              <a class="mega-card" href="search.html?brand=Gauri">
+                <img src="assets/lifestyle/hero-bestsellers.jpg" alt="Top models">
+                <div class="cap">
+                  <span style="opacity:.8;font-size:12px">On the wrists of watch enthusiasts.</span>
+                  <strong>TOP MODELS ON CHRONO24.</strong>
+                  <span class="btn btn-light">Discover now</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="nav-item">
         <a class="nav-link" href="sell.html">Sell a watch <span class="caret">▾</span></a>
@@ -86,11 +122,11 @@ function headerHTML() {
 
 function footerHTML() {
   const cols = [
-    ["Buy on Meridian", [["security.html","Buyer Protection"],["security.html#escrow","Payment via the Escrow Service"],["security.html#authenticity","Commitment to Authenticity"],["faq.html","Easy Returns"]]],
-    ["Sell on Meridian", [["sell.html","Selling as a Private Seller"],["sell.html","Selling Commercially"],["sell.html","Free Appraisal"],["faq.html","Advice for private sellers"]]],
-    ["About Meridian", [["about.html","About us"],["about.html","Jobs"],["about.html","Press"],["about.html","Legal Details"]]],
+    ["Buy on Chrono24", [["security.html","Buyer Protection"],["security.html#escrow","Payment via the Escrow Service"],["security.html#authenticity","Commitment to Authenticity"],["faq.html","Easy Returns"]]],
+    ["Sell on Chrono24", [["sell.html","Selling as a Private Seller"],["sell.html","Selling Commercially"],["sell.html","Free Appraisal"],["faq.html","Advice for private sellers"]]],
+    ["About Chrono24", [["about.html","About us"],["about.html","Jobs"],["about.html","Press"],["about.html","Legal Details"]]],
     ["Personalized support", [["faq.html","Frequently Asked Questions"],["contact.html","Contact"]]],
-    ["Meridian Apps", [["apps.html","iOS App Store"],["apps.html","Google Play"]]],
+    ["Chrono24 Apps", [["apps.html","iOS App Store"],["apps.html","Google Play"]]],
     ["Payment methods", [["security.html","Visa · Mastercard · Amex"],["security.html","Wire transfer"],["security.html","Pay over time"]]],
   ];
   return `
@@ -98,7 +134,7 @@ function footerHTML() {
     <div class="wrap">
       <div class="footer-top">
         <div>
-          <h4>Meridian Newsletter</h4>
+          <h4>Chrono24 Newsletter</h4>
           <p>Market stories, new listings, and collector notes — free.</p>
           <form class="search" style="max-width:360px;margin-top:10px" data-newsletter>
             <input type="email" required placeholder="Email address" />
@@ -127,7 +163,7 @@ function footerHTML() {
           <a href="about.html">Manage Cookies</a> ·
           <a href="about.html">Terms &amp; Conditions</a>
         </div>
-        <div>© ${new Date().getFullYear()} Meridian Marketplace — a demo recreation inspired by chrono24.com. Not affiliated with Chrono24.</div>
+        <div>© ${new Date().getFullYear()} Chrono24 demo recreation. Not affiliated with Chrono24 GmbH.</div>
       </div>
     </div>
   </footer>`;
@@ -180,6 +216,13 @@ function mountChrome() {
   const menu = $("[data-menu]");
   if (menu) menu.addEventListener("click", () => $("#main-nav").classList.toggle("open"));
   document.body.addEventListener("click", (e) => {
+    const buy = e.target.closest(".has-mega > .nav-link");
+    if (buy && window.matchMedia("(max-width: 980px)").matches) {
+      e.preventDefault();
+      buy.parentElement.classList.toggle("open");
+    }
+  });
+  document.body.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-fav]");
     if (!btn) return;
     e.preventDefault();
@@ -196,6 +239,16 @@ function mountChrome() {
   });
 }
 
+function uniqueByModel(list) {
+  const seen = new Set();
+  return list.filter((w) => {
+    const key = w.brand + w.model;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function renderHome() {
   const brands = $("#popular-brands");
   if (brands) brands.innerHTML = BRANDS.slice(0, 10).map((b) =>
@@ -205,13 +258,14 @@ function renderHome() {
   if (explore) explore.innerHTML = CATEGORIES.map((c) =>
     `<a class="tile" href="search.html?cat=${c.slug}"><img src="${c.image}" alt=""><span>${c.name}</span></a>`
   ).join("");
+  const gauri = $("#gauri-models");
+  if (gauri) gauri.innerHTML = uniqueByModel(WATCHES.filter((w) => w.brand === "Gauri")).map(watchCard).join("");
   const popular = $("#popular-models");
-  if (popular) popular.innerHTML = WATCHES.slice(0, 8).map(watchCard).join("");
+  if (popular) popular.innerHTML = uniqueByModel(WATCHES).slice(0, 8).map(watchCard).join("");
   const links = $("#model-links");
-  if (links) links.innerHTML = POPULAR_MODELS.map((m) => {
-    const brand = m.split(" ")[0];
-    return `<a href="search.html?q=${encodeURIComponent(m)}">${m}</a>`;
-  }).join("");
+  if (links) links.innerHTML = POPULAR_MODELS.map((m) =>
+    `<a href="search.html?q=${encodeURIComponent(m)}">${m}</a>`
+  ).join("");
   const reviews = $("#review-row");
   if (reviews) reviews.innerHTML = REVIEWS.slice(0, 3).map((r) =>
     `<article class="review"><div class="stars">★★★★★</div><p>“${r.text}”</p><div class="who"><div class="avatar">${r.name[0]}</div><div>${r.name}<br>${r.loc}</div></div></article>`
@@ -221,7 +275,7 @@ function renderHome() {
     `<a class="article" href="article.html?id=${a.id}"><img src="${a.image}" alt=""><div class="tag">${a.tag}</div><h3>${a.title}</h3><div class="byline">${a.author} · ${a.date} · ${a.read}</div></a>`
   ).join("");
   const ig = $("#ig-grid");
-  if (ig) ig.innerHTML = INSTAGRAM.map((src) => `<img src="${src}" alt="Meridian on Instagram">`).join("");
+  if (ig) ig.innerHTML = INSTAGRAM.map((src) => `<img src="${src}" alt="Chrono24 on Instagram">`).join("");
   const vids = $("#video-grid");
   if (vids) vids.innerHTML = VIDEOS.map((v) =>
     `<article class="video"><div class="play">▶</div><img src="${v.image}" alt=""><h3>${v.title}</h3><p>${v.host} · ${v.time} · ${v.date}</p></article>`
@@ -247,7 +301,7 @@ function renderListing() {
   const root = $("#listing");
   if (!root) return;
   const w = WATCHES.find((x) => x.id === params().get("id")) || WATCHES[0];
-  document.title = `${w.brand} ${w.model} | meridian`;
+  document.title = `${w.brand} ${w.model} | Chrono24`;
   root.innerHTML = `
     <div class="crumbs wrap"><a href="index.html">Home</a> / <a href="search.html?brand=${encodeURIComponent(w.brand)}">${w.brand} watches</a> / ${w.model}</div>
     <div class="product wrap">
@@ -266,7 +320,7 @@ function renderListing() {
         <div class="price-lg">${money(w.price)}</div>
         <p>Ships from ${w.location}. Insured worldwide shipping.</p>
         <button class="btn btn-block" data-buy>Buy</button>
-        <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Meridian Certified available · Buyer Protection included</p>
+        <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Chrono24 Certified available · Buyer Protection included</p>
         <div class="seller">
           <div>
             <strong>${w.seller.name}</strong><br>
@@ -323,7 +377,7 @@ function renderArticle() {
   const el = $("#article");
   if (!el) return;
   const a = ARTICLES.find((x) => x.id === params().get("id")) || ARTICLES[0];
-  document.title = `${a.title} | meridian Magazine`;
+  document.title = `${a.title} | Chrono24 Magazine`;
   el.innerHTML = `
     <div class="crumbs"><a href="index.html">Home</a> / <a href="magazine.html">Magazine</a> / ${a.tag}</div>
     <p class="tag">${a.tag}</p>
@@ -331,7 +385,7 @@ function renderArticle() {
     <p class="byline">${a.author} · ${a.date} · ${a.read}</p>
     <img src="${a.image}" alt="" style="width:100%;max-height:420px;object-fit:cover;margin:18px 0">
     <p style="font-size:18px;max-width:720px">${a.body}</p>
-    <p style="max-width:720px;color:var(--muted)">This magazine is part of the Meridian demo site. Stories are original summaries written for the clone and are not copied from Chrono24.</p>`;
+    <p style="max-width:720px;color:var(--muted)">Original magazine copy for this demo. Not copied from Chrono24 editorial.</p>`;
 }
 
 function renderCollection() {
