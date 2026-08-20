@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="vespera-build" content="favicon-translate" />
+  <meta name="vespera-build" content="english-translate" />
   <title>Vespera — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -91,12 +91,12 @@
       border: 1px solid var(--gold);
       box-shadow: inset 0 0 0 1px rgba(196,163,106,.18), 0 8px 18px rgba(0,0,0,.35);
       border-radius: 2px; padding: 5px 10px 5px 8px; min-height: 40px;
-      width: 100%; min-width: 0;
+      width: 100%; min-width: 0; position: relative; overflow: hidden;
     }
     .gt-globe { width: 18px; height: 18px; flex: 0 0 18px; color: var(--gold); }
     #google_translate_element {
-      display: flex; align-items: center; min-width: 0; flex: 1;
-      width: 100% !important; max-width: 100% !important;
+      position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important;
+      overflow: hidden !important; opacity: 0 !important; pointer-events: none !important;
     }
     #google_translate_element .goog-te-gadget,
     #google_translate_element table {
@@ -106,7 +106,6 @@
       font-family: var(--sans) !important; font-size: 0 !important;
       color: transparent !important; line-height: 1 !important;
     }
-    #google_translate_element .goog-te-combo,
     .gt-fallback {
       appearance: none; -webkit-appearance: none;
       background: #111 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23c4a36a' d='M1 1l5 5 5-5'/></svg>") no-repeat right 8px center;
@@ -115,18 +114,10 @@
       cursor: pointer; max-width: 100%; width: 100%; border-radius: 1px;
       font-family: var(--sans) !important;
     }
-    #google_translate_element .goog-te-combo:hover,
     .gt-fallback:hover { border-color: var(--gold); }
-    #google_translate_element .goog-te-combo:focus,
     .gt-fallback:focus { outline: 1px solid var(--gold); }
     .goog-logo-link { display: none !important; }
-    #google_translate_element .goog-te-gadget .goog-te-combo { display: inline-block !important; }
-    #google_translate_element table { margin: 0 !important; }
     #google_translate_element img, #google_translate_element a { display: none !important; }
-    .gt-frame select:nth-of-type(n+2),
-    #google_translate_element select:nth-of-type(n+2),
-    .goog-te-gadget select:nth-of-type(n+2),
-    .gt-frame:has(.goog-te-combo) .gt-fallback { display: none !important; }
     iframe.skiptranslate,
     iframe.goog-te-banner-frame, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; border: 0 !important; }
     body > .skiptranslate { display: none !important; }
@@ -660,35 +651,35 @@
           <label class="sr" for="langFallback">Language</label>
           <select id="langFallback" class="gt-fallback notranslate" aria-label="Language">
             <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="nl">Nederlands</option>
-            <option value="pl">Polski</option>
-            <option value="ru">Русский</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh-CN">中文</option>
-            <option value="zh-TW">中文 (繁體)</option>
-            <option value="ar">العربية</option>
-            <option value="hi">हिन्दी</option>
-            <option value="tr">Türkçe</option>
-            <option value="sv">Svenska</option>
-            <option value="da">Dansk</option>
-            <option value="fi">Suomi</option>
-            <option value="no">Norsk</option>
-            <option value="el">Ελληνικά</option>
-            <option value="he">עברית</option>
-            <option value="th">ไทย</option>
-            <option value="vi">Tiếng Việt</option>
-            <option value="id">Indonesia</option>
-            <option value="uk">Українська</option>
-            <option value="cs">Čeština</option>
-            <option value="hu">Magyar</option>
-            <option value="ro">Română</option>
-            <option value="bg">Български</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="nl">Dutch</option>
+            <option value="pl">Polish</option>
+            <option value="ru">Russian</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="zh-CN">Chinese</option>
+            <option value="zh-TW">Chinese (Traditional)</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+            <option value="tr">Turkish</option>
+            <option value="sv">Swedish</option>
+            <option value="da">Danish</option>
+            <option value="fi">Finnish</option>
+            <option value="no">Norwegian</option>
+            <option value="el">Greek</option>
+            <option value="he">Hebrew</option>
+            <option value="th">Thai</option>
+            <option value="vi">Vietnamese</option>
+            <option value="id">Indonesian</option>
+            <option value="uk">Ukrainian</option>
+            <option value="cs">Czech</option>
+            <option value="hu">Hungarian</option>
+            <option value="ro">Romanian</option>
+            <option value="bg">Bulgarian</option>
           </select>
         </div>
       </div>
@@ -1212,8 +1203,7 @@
     const $ = (id) => document.getElementById(id);
 
     function cookieGoogTrans() {
-      const m = document.cookie.match(/(?:^|;\s*)googtrans=\/[^/]+\/([^;]+)/);
-      return m ? decodeURIComponent(m[1]).trim() : "";
+      return "";
     }
 
     function visitLocaleTag() {
@@ -1269,10 +1259,10 @@
       const lang = $("langBtn");
       const fallback = $("langFallback");
       if (cur) cur.textContent = state.currency;
-      if (lang) lang.textContent = state.lang;
+      if (lang) lang.textContent = "English";
       if (fallback) {
-        const want = googleLangFromTag(state.locale || state.langCode);
-        if ([...fallback.options].some((o) => o.value === want)) fallback.value = want;
+        const saved = localStorage.getItem("vespera-translate-lang") || "en";
+        if ([...fallback.options].some((o) => o.value === saved)) fallback.value = saved;
       }
     }
 
@@ -2458,58 +2448,43 @@
       refreshPrices();
     };
     $("langBtn").onclick = () => {
-      const combo = document.querySelector(".goog-te-combo") || $("langFallback");
+      const combo = $("langFallback");
       if (combo) { combo.focus(); combo.click(); }
     };
     const langFallback = $("langFallback");
     if (langFallback) {
       langFallback.addEventListener("change", (e) => {
-        const v = e.target.value;
+        const v = e.target.value || "en";
+        localStorage.setItem("vespera-translate-lang", v);
         applyLanguageFromGoogle(v);
-        if (!document.querySelector(".goog-te-combo")) {
-          document.cookie = "googtrans=/en/" + v + ";path=/";
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo) {
+          combo.value = v;
+          combo.dispatchEvent(new Event("change"));
         }
       });
     }
 
     function pruneTranslateCombos() {
-      const frame = document.querySelector(".gt-frame");
-      if (!frame) return;
-      const selects = [...frame.querySelectorAll("select")];
-      const google = selects.filter((s) => s.classList.contains("goog-te-combo"));
-      const keep = google[0] || selects[0];
-      selects.forEach((s) => {
-        if (s !== keep) s.remove();
-      });
       const fallback = $("langFallback");
-      if (fallback && google[0]) fallback.style.display = "none";
+      if (fallback) fallback.style.display = "";
     }
 
     function bindGoogleCombo(combo) {
       pruneTranslateCombos();
-      combo = document.querySelector(".goog-te-combo") || combo;
-      if (!combo || combo.dataset.bound) return;
-      combo.dataset.bound = "1";
-      combo.addEventListener("change", () => applyLanguageFromGoogle(combo.value));
-      if (combo.value) applyLanguageFromGoogle(combo.value);
     }
 
     function refreshGoogleTranslate() {
-      if (window.__gtRefresh) clearTimeout(window.__gtRefresh);
-      window.__gtRefresh = setTimeout(() => {
-        const combo = document.querySelector(".goog-te-combo");
-        if (!combo) return;
-        bindGoogleCombo(combo);
-        const lang = combo.value;
-        if (!lang || lang === "en") return;
-        const keep = lang;
-        combo.value = "en";
-        combo.dispatchEvent(new Event("change"));
-        setTimeout(() => {
-          combo.value = keep;
-          combo.dispatchEvent(new Event("change"));
-        }, 40);
-      }, 140);
+      pruneTranslateCombos();
+    }
+
+    function clearGoogTransCookies() {
+      const expire = "Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "googtrans=; expires=" + expire + "; path=/";
+      document.cookie = "googtrans=/en/en; path=/";
+      try {
+        document.cookie = "googtrans=; expires=" + expire + "; path=/; domain=" + location.hostname;
+      } catch (e) {}
     }
 
     window.googleTranslateElementInit = function () {
@@ -2518,12 +2493,21 @@
       new google.translate.TranslateElement(opts, "google_translate_element");
       setTimeout(() => {
         pruneTranslateCombos();
-        bindGoogleCombo(document.querySelector(".goog-te-combo"));
+        const saved = localStorage.getItem("vespera-translate-lang") || "en";
+        const combo = document.querySelector(".goog-te-combo");
+        const pick = $("langFallback");
+        if (pick) pick.value = saved;
+        if (combo && saved && saved !== "en") {
+          combo.value = saved;
+          combo.dispatchEvent(new Event("change"));
+        }
         syncLocaleButtons();
       }, 200);
     };
 
-    new MutationObserver(() => bindGoogleCombo(document.querySelector(".goog-te-combo")))
+    clearGoogTransCookies();
+
+    new MutationObserver(() => pruneTranslateCombos())
       .observe(document.body, { childList: true, subtree: true });
 
     (function loadGoogleTranslate() {
