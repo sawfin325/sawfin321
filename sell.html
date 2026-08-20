@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sell a watch | meridian</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+  <div class="wrap page-head">
+    <div class="crumbs"><a href="index.html">Home</a> / Sell</div>
+    <h1>Start selling on Meridian</h1>
+    <p>Create a free listing. Buyers pay into escrow, you ship, and you are paid after delivery.</p>
+  </div>
+  <section class="section wrap" id="how">
+    <h2>How selling works</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><p>Enter the brand, model, and photos</p></div>
+      <div class="step"><div class="n">2</div><p>We suggest a price from comparable listings</p></div>
+      <div class="step"><div class="n">3</div><p>A buyer pays into escrow</p></div>
+      <div class="step"><div class="n">4</div><p>You ship. Funds release after delivery</p></div>
+    </div>
+  </section>
+  <section class="section wrap">
+    <form class="form" id="sell-form">
+      <h2>Create a listing</h2>
+      <label>Brand <input name="brand" required placeholder="Rolex" /></label>
+      <label>Model <input name="model" required placeholder="Submariner Date" /></label>
+      <label>Reference <input name="ref" placeholder="116610LN" /></label>
+      <label>Year <input name="year" type="number" min="1900" max="2026" /></label>
+      <label>Price (USD) <input name="price" type="number" required min="1" /></label>
+      <label>Condition
+        <select name="condition">
+          <option>New</option>
+          <option selected>Used (Very good)</option>
+          <option>Used (Good)</option>
+          <option>Used (Fair)</option>
+        </select>
+      </label>
+      <label>Description <textarea name="desc" rows="5" placeholder="Box, papers, service history, wear..."></textarea></label>
+      <p><button class="btn" type="submit">Publish listing</button></p>
+      <p class="notice" id="sell-note" hidden>Your listing would go live after photo review. This demo does not publish to a live marketplace.</p>
+    </form>
+  </section>
+  <div id="site-footer"></div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("sell-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("sell-note").hidden = false;
+      toast("Listing saved locally as a demo.");
+    });
+  </script>
+</body>
+</html>
