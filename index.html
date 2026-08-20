@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="vespera-build" content="translate-40off" />
+  <meta name="vespera-build" content="guide-cards" />
   <title>Vespera — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -403,12 +403,16 @@
     }
     .video-card h3 { margin: 12px 0 4px; font-family: var(--sans); font-size: 16px; font-weight: 600; letter-spacing: 0; line-height: 1.35; }
     .video-card .when { color: #93a0b0; font-size: 13px; }
-    .guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .guide-band { background: #0a111c; padding: 40px 0 56px; }
+    .guide-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
     .guide-card {
-      border: 1px solid #3a4656; border-radius: 12px; padding: 22px 20px; min-height: 180px;
+      display: flex; flex-direction: column; text-align: left;
+      border: 1px solid rgba(255,255,255,.22); border-radius: 2px;
+      padding: 28px 24px 32px; min-height: 280px; background: transparent; color: inherit;
     }
-    .guide-card h3 { font-family: var(--sans); font-size: 18px; font-weight: 650; letter-spacing: 0; margin: 0 0 10px; color: #fff; }
-    .guide-card p { margin: 0; color: #c9d2dc; font-size: 14px; line-height: 1.55; }
+    .guide-card:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.025); }
+    .guide-card h3 { font-family: var(--sans); font-size: 22px; font-weight: 700; letter-spacing: 0; margin: 0 0 14px; color: #fff; }
+    .guide-card p { margin: 0; color: #d5dde6; font-size: 14px; line-height: 1.65; }
     .video-modal { width: min(920px, 100%); background: #0b0f14; }
     .video-modal video { width: 100%; max-height: 72vh; background: #000; }
     .video-modal h3 { margin: 12px 0 0; font-family: var(--sans); font-size: 18px; }
@@ -1621,14 +1625,14 @@
 
     function guideBand() {
       const guides = [
-        ["Luxury watches", "A luxury watch is finished to a standard you can see: movement, case, and dial. On Vespera that means independent maisons as well as serious tool watches."],
-        ["Used watches", "The pre-owned market is where most collectors actually buy. Condition, papers, and honest photographs matter more than a boutique sticker."],
-        ["Sell watches", "List from your collection. Buyers order on WhatsApp or email. The desk confirms the piece before anything is paid."],
-        ["Buying a watch", "There is no card checkout. Order a listing on WhatsApp or email. Certified pieces can be inspected against the eight photographs."]
+        ["Luxury watches", "A luxury watch is more than a high price. Collectors look for precious metals such as gold or platinum, a mechanical movement, and an atelier whose finishing you can see on the case and the dial. On Vespera that means independent maisons — Elowen, Solenne, Calder, Quill & Crown, and the rest of the catalogue — from daily steel sports watches to gold complications. Browse by type, metal, and budget to find the piece you have been waiting for.", "#/shop"],
+        ["Used watches", "Pre-owned watches from the 1960s and 1970s have a character you cannot buy new: gilt printing, tropical dials, and cases that have already lived a life. Some are serious collector objects; others are quietly priced legends that still wear well every day. The used rooms mix certified rarities with accessible daily watches. Eight photographs, a condition grade, and notes on box and papers are there so you can judge the watch before you write the desk.", "#/shop?cat=preowned"],
+        ["Sell watches", "A watch in a drawer can move. Create a free listing on the sell page, then send it to the Vespera desk on WhatsApp or email — there is no fee to start. The desk confirms the maison, reference, and condition, then publishes the watch. When a collector orders, they write the same desk; you agree payment and shipping together, and the conversation stays in one place until the piece is on its way.", "#/sell"],
+        ["Buying a watch", "Buying on Vespera is direct. There is no card checkout on the page. Order a listing on WhatsApp or email; the desk confirms it is still available and answers questions against the eight studio photographs. Certified pieces have been inspected. If the watch is not as described, write or call immediately — the number and email are on every page — and the desk will hold the order until it is put right.", "#/help"]
       ];
-      return `<section class="band" style="padding-top:8px;padding-bottom:48px"><div class="wrap">
+      return `<section class="guide-band"><div class="wrap">
         <div class="guide-grid">
-          ${guides.map(([t,p]) => `<article class="guide-card"><h3>${t}</h3><p>${p}</p></article>`).join("")}
+          ${guides.map(([t,p,href]) => `<a class="guide-card" href="${href}"><h3>${t}</h3><p>${p}</p></a>`).join("")}
         </div>
       </div></section>`;
     }
@@ -1639,7 +1643,8 @@
         <h1>Lights, camera, action</h1>
         <p class="lede">Films hosted on this site. Press play. There is no YouTube channel.</p>
         <div class="video-grid" style="margin-top:28px">${VIDEOS.map(videoCard).join("")}</div>
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function shop(q) {
@@ -1698,7 +1703,8 @@
           </div>
           ${list.length ? `<div class="cards">${list.map(card).join("")}</div>${pagerHtml}` : `<div class="empty">No watches match those filters. Clear them to see the full catalogue.</div>`}
         </div>
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function listing(id) {
@@ -1761,7 +1767,8 @@
           </div>
         </div>
         ${related.length ? `<div class="section-head"><h2>More from ${p.maison}</h2></div><div class="cards">${related.map(card).join("")}</div>` : ""}
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function brandsPage() {
@@ -1818,7 +1825,8 @@
           </div>
           <button class="btn" style="margin-top:16px" type="submit">Send listing via WhatsApp or email</button>
         </form>
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function magazine() {
@@ -1829,7 +1837,8 @@
         <div class="article-grid" style="margin-top:28px">
           ${ARTICLES.map(a => `<a class="article" href="#/article/${a.id}"><span class="tag">${a.tag}</span><h3>${a.title}</h3><p>${a.dek}</p></a>`).join("")}
         </div>
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function article(id) {
@@ -1894,7 +1903,8 @@
           <p>Phone <a href="tel:${CONTACT.phone}">${CONTACT.phonePretty}</a>, email <a href="mailto:${CONTACT.email}">${CONTACT.email}</a>, or WhatsApp the same number.</p>
         </div>
         ${contactCard(`<p class="meta" style="margin-top:14px"><a href="#/contact">Open the contact page</a></p>`)}
-      </div>`;
+      </div>
+      ${guideBand()}`;
     }
 
     function contact() {
