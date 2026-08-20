@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="vespera-build" content="no-apps" />
+  <meta name="vespera-build" content="translate-40off" />
   <title>Vespera — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -26,7 +26,7 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
-    body { min-height: 100vh; }
+    body { min-height: 100vh; top: 0 !important; }
     a { color: inherit; text-decoration: none; }
     button, input, select, textarea { font: inherit; color: inherit; }
     img, svg { max-width: 100%; display: block; }
@@ -52,9 +52,53 @@
     .brand-name { font-family: var(--sans); font-size: 22px; letter-spacing: .18em; font-weight: 700; }
     .brand small { display: none; }
     .mast-left, .mast-right { display: flex; align-items: center; gap: 8px; }
-    .mast-right { justify-content: flex-end; color: #c9d2dc; font-size: 13px; }
+    .mast-right { justify-content: flex-end; color: #c9d2dc; font-size: 13px; gap: 12px; }
     .mast-right a { color: #c9d2dc; padding: 0 6px; }
     .mast-right a:hover { color: #fff; }
+    .gt-slot {
+      display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+      min-width: 168px; flex: 0 0 auto;
+    }
+    .gt-kicker {
+      font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); font-weight: 650; text-align: left;
+    }
+    .gt-frame {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(180deg, #1c1810 0%, #0c0b09 100%);
+      border: 1px solid var(--gold);
+      box-shadow: inset 0 0 0 1px rgba(196,163,106,.18), 0 8px 18px rgba(0,0,0,.35);
+      border-radius: 2px; padding: 5px 10px 5px 8px; min-height: 40px;
+    }
+    .gt-globe { width: 18px; height: 18px; flex: 0 0 18px; color: var(--gold); }
+    #google_translate_element { display: flex; align-items: center; min-width: 0; flex: 1; }
+    #google_translate_element .goog-te-gadget {
+      font-family: var(--sans) !important; font-size: 0 !important;
+      color: transparent !important; line-height: 1 !important;
+    }
+    #google_translate_element .goog-te-combo,
+    .gt-fallback {
+      appearance: none; -webkit-appearance: none;
+      background: #111 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23c4a36a' d='M1 1l5 5 5-5'/></svg>") no-repeat right 8px center;
+      color: #f4f1ea !important; border: 1px solid #3a3328;
+      padding: 7px 26px 7px 8px; font-size: 12px !important; letter-spacing: .04em;
+      cursor: pointer; max-width: 150px; width: 100%; border-radius: 1px;
+      font-family: var(--sans) !important;
+    }
+    #google_translate_element .goog-te-combo:hover,
+    .gt-fallback:hover { border-color: var(--gold); }
+    #google_translate_element .goog-te-combo:focus,
+    .gt-fallback:focus { outline: 1px solid var(--gold); }
+    .goog-logo-link { display: none !important; }
+    #google_translate_element .goog-te-gadget .goog-te-combo { display: inline-block !important; }
+    #google_translate_element table { margin: 0 !important; }
+    #google_translate_element img, #google_translate_element a { display: none !important; }
+    iframe.goog-te-banner-frame, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; }
+    body > .skiptranslate { display: none !important; }
+    .goog-te-balloon-frame, #goog-gt-tt { display: none !important; }
+    .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
+    .goog-te-menu-frame { z-index: 120 !important; max-height: 360px; }
+    .money-amt { font: inherit; color: inherit; }
     .icon-btn {
       width: 40px; height: 40px; border: 1px solid transparent; background: transparent; border-radius: 50%;
       cursor: pointer; display: grid; place-items: center; color: #fff;
@@ -422,6 +466,7 @@
       .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
       .filters { position: static; }
       .hero { padding-top: 36px; }
+      .gt-kicker { display: none; }
     }
     @media (max-width: 640px) {
       .wrap { width: min(var(--max), calc(100% - 24px)); }
@@ -435,6 +480,10 @@
       .util .wrap { justify-content: flex-end; }
       .util-left { display: none; }
       .only-narrow { display: inline; }
+      .gt-kicker { display: none; }
+      .gt-slot { min-width: 132px; }
+      .gt-frame { min-height: 36px; padding: 3px 8px; }
+      #google_translate_element .goog-te-combo, .gt-fallback { max-width: 118px; padding: 5px 22px 5px 6px; }
     }
   </style>
 </head>
@@ -453,8 +502,8 @@
       </nav>
       <div class="util-right">
         <a class="util-phone only-narrow" href="tel:+19132785312">+1 913-278-5312</a>
-        <button type="button" id="currencyBtn" aria-label="Currency">USD</button>
-        <button type="button" id="langBtn" aria-label="Language">English</button>
+        <button type="button" id="currencyBtn" class="notranslate" aria-label="Currency">USD</button>
+        <button type="button" id="langBtn" class="notranslate" aria-label="Language">English</button>
         <a href="#/account">Account</a>
       </div>
     </div>
@@ -462,7 +511,7 @@
 
   <header class="site">
     <div class="wrap mast">
-      <a class="brand" href="#/" aria-label="Vespera home">
+      <a class="brand notranslate" href="#/" aria-label="Vespera home">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <circle cx="32" cy="32" r="20" fill="none" stroke="#c4a36a" stroke-width="1.5"/>
           <circle cx="32" cy="32" r="2.2" fill="#c4a36a"/>
@@ -479,6 +528,50 @@
       <div class="mast-right">
         <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
         <a href="#/account" id="authLink">Log in or register</a>
+        <div class="gt-slot notranslate" aria-label="Translate this site">
+          <span class="gt-kicker">Translate</span>
+          <div class="gt-frame">
+            <svg class="gt-globe" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
+            </svg>
+            <div id="google_translate_element">
+              <label class="sr" for="langFallback">Language</label>
+              <select id="langFallback" class="gt-fallback" aria-label="Language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+                <option value="pt">Português</option>
+                <option value="nl">Nederlands</option>
+                <option value="pl">Polski</option>
+                <option value="ru">Русский</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="zh-CN">中文</option>
+                <option value="zh-TW">中文 (繁體)</option>
+                <option value="ar">العربية</option>
+                <option value="hi">हिन्दी</option>
+                <option value="tr">Türkçe</option>
+                <option value="sv">Svenska</option>
+                <option value="da">Dansk</option>
+                <option value="fi">Suomi</option>
+                <option value="no">Norsk</option>
+                <option value="el">Ελληνικά</option>
+                <option value="he">עברית</option>
+                <option value="th">ไทย</option>
+                <option value="vi">Tiếng Việt</option>
+                <option value="id">Indonesia</option>
+                <option value="uk">Українська</option>
+                <option value="cs">Čeština</option>
+                <option value="hu">Magyar</option>
+                <option value="ro">Română</option>
+                <option value="bg">Български</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <a class="icon-btn" href="#/saved" aria-label="Saved watches"><span>♡</span><span class="count" id="savedCount" hidden>0</span></a>
         <a class="icon-btn" href="#/inquiries" aria-label="Purchase inquiries"><span>✉</span><span class="count" id="inqCount" hidden>0</span></a>
       </div>
@@ -723,6 +816,7 @@
       { id: "ly-openface", maison: "Lysander", slug: "lysander", model: "Open Face 1902", ref: "LY-OF-02", year: 1902, condition: "Very good", price: 4100, type: "Pocket", gender: "Unisex", movement: "Manual pocket, LY-P", case: "48mm, yellow gold open face", water: "Not rated", dial: "Porcelain", dialColor: "#efe6d2", metal: "#c9a227", bezel: "smooth", papers: false, box: false, certified: false, limited: false, era: "Vintage", location: "London", dealer: "Private seller", desc: "Open-face city pocket watch. Hairlines on the porcelain, original bow." },
       { id: "ny-oval", maison: "Nymara", slug: "nymara", model: "Iris Oval", ref: "NY-OV-22", year: 2022, condition: "Like new", price: 9800, type: "Dress", gender: "Women", movement: "Quartz, NY-Q8", case: "24mm oval, 18k yellow gold", water: "30m", dial: "Pearl", dialColor: "#f0e6ea", metal: "#c9a227", bezel: "smooth", papers: true, box: true, certified: true, limited: false, era: "Modern", location: "Paris", dealer: "Maison Rive", desc: "Oval jewelry watch worn twice. Original pearl strap included." }
     ];
+    PRODUCTS.forEach((p) => { p.price = Math.round(p.price * 0.6); });
 
     const PER_CAT = 1000;
     const CATS = [
@@ -769,7 +863,7 @@
         ref: `${(t.ref || "VS").replace(/\s+/g, "")}-${n + 1}`,
         year,
         condition: cat.slug === "preowned" && cond === "Unworn" ? "Excellent" : cond,
-        price: accessory ? Math.round(price * 0.08) : (cat.slug === "affordable" ? 420 + (n % 4200) : price),
+        price: accessory ? Math.round(price * 0.08) : (cat.slug === "affordable" ? Math.round((420 + (n % 4200)) * 0.6) : price),
         gender: cat.slug === "womens" ? "Women" : cat.slug === "mens" ? "Men" : t.gender,
         type: accessory === "strap" ? "Strap" : accessory === "parts" ? "Accessory" : (cat.slug === "dive" ? "Dive" : cat.slug === "chronograph" ? "Chronograph" : cat.slug === "pilot" ? "Pilot" : t.type),
         era: cat.slug === "vintage" ? "Vintage" : t.era,
@@ -960,23 +1054,165 @@
       wa: "19132785312"
     };
 
+    const FX = {
+      USD: 1, EUR: 0.92, GBP: 0.79, CHF: 0.88, JPY: 149, CNY: 7.24, TWD: 32.2, HKD: 7.82,
+      KRW: 1380, INR: 83.5, AUD: 1.52, CAD: 1.36, NZD: 1.66, SGD: 1.34, MYR: 4.47,
+      THB: 35.5, VND: 25400, IDR: 15800, PHP: 58, AED: 3.67, SAR: 3.75, QAR: 3.64,
+      KWD: 0.31, ILS: 3.7, EGP: 49.5, ZAR: 18.2, NGN: 1550, KES: 129, BRL: 5.05,
+      MXN: 17.1, ARS: 960, CLP: 940, COP: 4050, PEN: 3.75, SEK: 10.4, NOK: 10.6,
+      DKK: 6.88, PLN: 3.95, CZK: 23.2, HUF: 360, RON: 4.57, TRY: 34.2, RUB: 92,
+      UAH: 41, PKR: 278, BDT: 117, BGN: 1.80
+    };
+    const LANG_NAMES = {
+      en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português",
+      nl: "Nederlands", pl: "Polski", ru: "Русский", ja: "日本語", ko: "한국어", "zh-CN": "中文",
+      "zh-TW": "中文 (繁體)", zh: "中文", ar: "العربية", hi: "हिन्दी", tr: "Türkçe", sv: "Svenska",
+      da: "Dansk", fi: "Suomi", no: "Norsk", nb: "Norsk", el: "Ελληνικά", he: "עברית", th: "ไทย",
+      vi: "Tiếng Việt", id: "Indonesia", ms: "Melayu", uk: "Українська", cs: "Čeština", hu: "Magyar",
+      ro: "Română", bg: "Български", hr: "Hrvatski", sk: "Slovenčina", sl: "Slovenščina",
+      lt: "Lietuvių", lv: "Latviešu", et: "Eesti", fa: "فارسی", ur: "اردو", bn: "বাংলা",
+      sw: "Kiswahili", af: "Afrikaans", ca: "Català"
+    };
+    const GT_LANGS = "en,es,fr,de,it,pt,nl,pl,ru,ja,ko,zh-CN,zh-TW,ar,hi,tr,sv,da,fi,no,el,he,th,vi,id,ms,cs,hu,ro,uk,bg,hr,sk,sl,lt,lv,et,fa,ur,bn,sw,af,ca";
+
     const state = {
       saved: JSON.parse(localStorage.getItem("vespera-saved") || "[]"),
       inquiries: JSON.parse(localStorage.getItem("vespera-inq") || "[]"),
       users: JSON.parse(localStorage.getItem("vespera-users") || "[]"),
       session: JSON.parse(localStorage.getItem("vespera-session") || "null"),
       currency: "USD",
+      locale: "en-US",
+      langCode: "en",
       lang: "English",
+      currencyLocked: !!localStorage.getItem("vespera-currency-lock"),
       reviewPage: 0
     };
 
     const $ = (id) => document.getElementById(id);
 
-    function money(n) {
-      if (state.currency === "EUR") return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n * 0.92));
-      if (state.currency === "GBP") return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(Math.round(n * 0.79));
-      return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+    function cookieGoogTrans() {
+      const m = document.cookie.match(/(?:^|;\s*)googtrans=\/[^/]+\/([^;]+)/);
+      return m ? decodeURIComponent(m[1]).trim() : "";
     }
+
+    function visitLocaleTag() {
+      const gt = cookieGoogTrans();
+      if (gt) return gt.replace(/_/g, "-");
+      return String((navigator.languages && navigator.languages[0]) || navigator.language || "en-US");
+    }
+
+    function langCodeFromTag(tag) {
+      const t = String(tag || "en").replace(/_/g, "-");
+      const base = t.split("-")[0].toLowerCase();
+      if (base === "zh") return /tw|hant|hk|mo/i.test(t) ? "zh-TW" : "zh-CN";
+      if (base === "nb" || base === "nn") return "no";
+      return base;
+    }
+
+    function currencyFromLocale(tag) {
+      const t = String(tag || "en").replace(/_/g, "-");
+      const lang = t.split("-")[0].toLowerCase();
+      const region = (t.split("-")[1] || "").toUpperCase();
+      const byRegion = {
+        US: "USD", GB: "GBP", AU: "AUD", NZ: "NZD", CA: "CAD", JP: "JPY", CN: "CNY", TW: "TWD",
+        HK: "HKD", KR: "KRW", IN: "INR", SG: "SGD", MY: "MYR", TH: "THB", VN: "VND", ID: "IDR",
+        PH: "PHP", AE: "AED", SA: "SAR", QA: "QAR", KW: "KWD", IL: "ILS", EG: "EGP", ZA: "ZAR",
+        NG: "NGN", KE: "KES", BR: "BRL", MX: "MXN", AR: "ARS", CL: "CLP", CO: "COP", PE: "PEN",
+        CH: "CHF", SE: "SEK", NO: "NOK", DK: "DKK", PL: "PLN", CZ: "CZK", HU: "HUF", RO: "RON",
+        TR: "TRY", RU: "RUB", UA: "UAH", PK: "PKR", BD: "BDT", IE: "EUR", FR: "EUR", DE: "EUR",
+        ES: "EUR", IT: "EUR", NL: "EUR", BE: "EUR", AT: "EUR", PT: "EUR", FI: "EUR", GR: "EUR",
+        SK: "EUR", SI: "EUR", EE: "EUR", LV: "EUR", LT: "EUR", LU: "EUR", MT: "EUR", CY: "EUR", HR: "EUR"
+      };
+      if (region && byRegion[region]) return byRegion[region];
+      const byLang = {
+        en: "USD", de: "EUR", fr: "EUR", es: "EUR", it: "EUR", nl: "EUR", pt: "EUR", el: "EUR",
+        fi: "EUR", ga: "EUR", mt: "EUR", sk: "EUR", sl: "EUR", et: "EUR", lv: "EUR", lt: "EUR",
+        ja: "JPY", zh: "CNY", ko: "KRW", hi: "INR", ar: "AED", ru: "RUB", tr: "TRY", pl: "PLN",
+        sv: "SEK", da: "DKK", nb: "NOK", no: "NOK", cs: "CZK", hu: "HUF", ro: "RON", uk: "UAH",
+        th: "THB", vi: "VND", id: "IDR", ms: "MYR", he: "ILS", ur: "PKR", bn: "BDT", sw: "KES", af: "ZAR"
+      };
+      return byLang[lang] || "USD";
+    }
+
+    function googleLangFromTag(tag) {
+      const code = langCodeFromTag(tag);
+      return (code === "zh-CN" || code === "zh-TW") ? code : code.split("-")[0];
+    }
+
+    function seedGoogTransCookie() {
+      if (cookieGoogTrans()) return;
+      const tl = googleLangFromTag(visitLocaleTag());
+      if (!tl || tl === "en") return;
+      document.cookie = "googtrans=/en/" + tl + ";path=/";
+    }
+
+    function syncLocaleButtons() {
+      const cur = $("currencyBtn");
+      const lang = $("langBtn");
+      const fallback = $("langFallback");
+      if (cur) cur.textContent = state.currency;
+      if (lang) lang.textContent = state.lang;
+      if (fallback) {
+        const want = googleLangFromTag(state.locale || state.langCode);
+        if ([...fallback.options].some((o) => o.value === want)) fallback.value = want;
+      }
+    }
+
+    function applyVisitorLocale() {
+      const tag = visitLocaleTag();
+      state.locale = tag.replace(/_/g, "-");
+      state.langCode = langCodeFromTag(tag);
+      state.lang = LANG_NAMES[state.langCode] || LANG_NAMES[state.langCode.split("-")[0]] || "English";
+      const locked = localStorage.getItem("vespera-currency-lock");
+      if (locked && FX[locked]) {
+        state.currency = locked;
+        state.currencyLocked = true;
+      } else {
+        state.currency = currencyFromLocale(tag);
+        state.currencyLocked = false;
+      }
+      seedGoogTransCookie();
+      syncLocaleButtons();
+    }
+
+    function formatMoney(n) {
+      const cur = FX[state.currency] ? state.currency : "USD";
+      const converted = Number(n) * (FX[cur] || 1);
+      try {
+        return new Intl.NumberFormat(state.locale || "en-US", {
+          style: "currency",
+          currency: cur,
+          maximumFractionDigits: 0,
+          minimumFractionDigits: 0
+        }).format(converted);
+      } catch {
+        return cur + " " + Math.round(converted).toLocaleString(state.locale || "en");
+      }
+    }
+
+    function money(n) {
+      return `<span class="notranslate money-amt" data-usd="${Number(n)}">${formatMoney(n)}</span>`;
+    }
+
+    function refreshPrices() {
+      document.querySelectorAll(".money-amt").forEach((el) => {
+        const n = Number(el.getAttribute("data-usd"));
+        if (!Number.isNaN(n)) el.textContent = formatMoney(n);
+      });
+    }
+
+    function applyLanguageFromGoogle(value) {
+      if (!value) return;
+      const tag = String(value).replace(/_/g, "-");
+      state.locale = tag.length === 2 ? tag : tag;
+      state.langCode = langCodeFromTag(tag);
+      state.lang = LANG_NAMES[tag] || LANG_NAMES[state.langCode] || LANG_NAMES[state.langCode.split("-")[0]] || tag;
+      if (!state.currencyLocked) state.currency = currencyFromLocale(tag);
+      syncLocaleButtons();
+      refreshPrices();
+    }
+
+    applyVisitorLocale();
 
     function esc(s) {
       return String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -1031,7 +1267,7 @@
         `${p.maison} ${p.model}`,
         `Reference: ${p.ref}`,
         `Year: ${p.year} · ${p.condition}`,
-        `Asking price: ${money(p.price)}`,
+        `Asking price: ${formatMoney(p.price)}`,
         `Listing: ${location.href.split("#")[0]}#/listing/${p.id}`,
         who
       ].join("\n");
@@ -1435,11 +1671,11 @@
           <label>Price</label>
           <select id="fPrice">
             <option value="">Any price</option>
-            <option value="0-3000" ${q.price==="0-3000"?"selected":""}>Under $3,000</option>
-            <option value="3000-8000" ${q.price==="3000-8000"?"selected":""}>$3,000 – $8,000</option>
-            <option value="8000-20000" ${q.price==="8000-20000"?"selected":""}>$8,000 – $20,000</option>
-            <option value="20000-50000" ${q.price==="20000-50000"?"selected":""}>$20,000 – $50,000</option>
-            <option value="50000-999999" ${q.price==="50000-999999"?"selected":""}>$50,000+</option>
+            <option value="0-3000" ${q.price==="0-3000"?"selected":""}>Under ${formatMoney(3000)}</option>
+            <option value="3000-8000" ${q.price==="3000-8000"?"selected":""}>${formatMoney(3000)} – ${formatMoney(8000)}</option>
+            <option value="8000-20000" ${q.price==="8000-20000"?"selected":""}>${formatMoney(8000)} – ${formatMoney(20000)}</option>
+            <option value="20000-50000" ${q.price==="20000-50000"?"selected":""}>${formatMoney(20000)} – ${formatMoney(50000)}</option>
+            <option value="50000-999999" ${q.price==="50000-999999"?"selected":""}>${formatMoney(50000)}+</option>
           </select>
           <label>Sort</label>
           <select id="fSort">
@@ -1820,6 +2056,8 @@
       bindView();
       startHeroAnim();
       refreshAuthUi();
+      syncLocaleButtons();
+      refreshGoogleTranslate();
     }
 
     const HERO_PAIRS = [
@@ -1974,7 +2212,7 @@
 
     document.getElementById("brandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
     document.getElementById("buyBrandMega").innerHTML = MAISONS.map(m => `<a href="#/brand/${m.slug}">${m.name}</a>`).join("");
-    if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${TOTAL_WATCHES.toLocaleString()} watches worldwide`;
+    if ($("searchCountLabel")) $("searchCountLabel").textContent = `Search through ${TOTAL_WATCHES.toLocaleString(state.locale || "en")} watches worldwide`;
     $("regionGrid").innerHTML = REGIONS.map(([code, name]) => `<a href="#/shop"><img class="flag" src="assets/flags/${code}.svg" alt="" width="22" height="15">${name}</a>`).join("");
     $("drawer").innerHTML = `<button type="button" id="closeDrawer">Close</button>
       <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/brands">Brands</a>
@@ -2039,11 +2277,81 @@
     $("backdrop").onclick = closeDrawer;
     $("drawer").addEventListener("click", (e) => { if (e.target.id === "closeDrawer" || e.target.tagName === "A") closeDrawer(); });
     $("currencyBtn").onclick = () => {
-      state.currency = state.currency === "USD" ? "EUR" : state.currency === "EUR" ? "GBP" : "USD";
-      $("currencyBtn").textContent = state.currency;
-      render();
+      const cycle = ["USD", "EUR", "GBP", "JPY", "CNY", "INR", "AED", "AUD", "CAD", "CHF", "BRL", "MXN", "KRW", "SGD"];
+      if (state.currency && !cycle.includes(state.currency)) cycle.unshift(state.currency);
+      const i = Math.max(0, cycle.indexOf(state.currency));
+      state.currency = cycle[(i + 1) % cycle.length];
+      state.currencyLocked = true;
+      localStorage.setItem("vespera-currency-lock", state.currency);
+      syncLocaleButtons();
+      refreshPrices();
     };
-    $("langBtn").onclick = () => toast("This demonstration is written in English");
+    $("langBtn").onclick = () => {
+      const combo = document.querySelector(".goog-te-combo") || $("langFallback");
+      if (combo) { combo.focus(); combo.click(); }
+    };
+    const langFallback = $("langFallback");
+    if (langFallback) {
+      langFallback.addEventListener("change", (e) => {
+        const v = e.target.value;
+        applyLanguageFromGoogle(v);
+        if (!document.querySelector(".goog-te-combo")) {
+          document.cookie = "googtrans=/en/" + v + ";path=/";
+        }
+      });
+    }
+
+    function bindGoogleCombo(combo) {
+      if (!combo || combo.dataset.bound) return;
+      combo.dataset.bound = "1";
+      combo.addEventListener("change", () => applyLanguageFromGoogle(combo.value));
+      if (combo.value) applyLanguageFromGoogle(combo.value);
+    }
+
+    function refreshGoogleTranslate() {
+      if (window.__gtRefresh) clearTimeout(window.__gtRefresh);
+      window.__gtRefresh = setTimeout(() => {
+        const combo = document.querySelector(".goog-te-combo");
+        if (!combo) return;
+        bindGoogleCombo(combo);
+        const lang = combo.value;
+        if (!lang || lang === "en") return;
+        const keep = lang;
+        combo.value = "en";
+        combo.dispatchEvent(new Event("change"));
+        setTimeout(() => {
+          combo.value = keep;
+          combo.dispatchEvent(new Event("change"));
+        }, 40);
+      }, 140);
+    }
+
+    window.googleTranslateElementInit = function () {
+      if (!window.google || !google.translate) return;
+      const opts = { pageLanguage: "en", includedLanguages: GT_LANGS, autoDisplay: false };
+      try {
+        if (google.translate.TranslateElement.InlineLayout) {
+          opts.layout = google.translate.TranslateElement.InlineLayout.VERTICAL;
+        }
+      } catch (e) {}
+      new google.translate.TranslateElement(opts, "google_translate_element");
+      setTimeout(() => {
+        const combo = document.querySelector(".goog-te-combo");
+        bindGoogleCombo(combo);
+        syncLocaleButtons();
+      }, 200);
+    };
+
+    new MutationObserver(() => bindGoogleCombo(document.querySelector(".goog-te-combo")))
+      .observe(document.body, { childList: true, subtree: true });
+
+    (function loadGoogleTranslate() {
+      const s = document.createElement("script");
+      s.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      s.async = true;
+      document.body.appendChild(s);
+    })();
+
     window.addEventListener("hashchange", render);
     persist();
     if (!location.hash) location.hash = "#/";
