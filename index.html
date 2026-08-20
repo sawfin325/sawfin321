@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="vespera-build" content="guide-cards" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="vespera-build" content="mobile-fix" />
   <title>Vespera — Independent marketplace for exceptional timepieces</title>
   <meta name="description" content="Vespera is an original luxury watch marketplace for collectors and independent sellers. Browse fictional maisons, pre-owned listings, and certified pieces." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -25,39 +25,58 @@
       --max: 1240px;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
-    body { min-height: 100vh; top: 0 !important; }
+    html, body {
+      margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans);
+      width: 100%; max-width: 100%; overflow-x: hidden;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body { min-height: 100vh; top: 0 !important; position: static !important; min-width: 0 !important; }
     a { color: inherit; text-decoration: none; }
     button, input, select, textarea { font: inherit; color: inherit; }
     img, svg { max-width: 100%; display: block; }
+    img { height: auto; }
     .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .wrap {
+      width: 100%; max-width: var(--max); margin: 0 auto;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
     .gold { color: var(--gold); }
 
     .util {
       background: #070a0e; color: #c9d2dc; font-size: 12px; letter-spacing: .04em;
     }
-    .util .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; align-items: center; }
+    .util .wrap { display: flex; justify-content: space-between; gap: 16px; padding-top: 8px; padding-bottom: 8px; align-items: center; }
     .util nav, .util-right { display: flex; gap: 18px; flex-wrap: wrap; }
     .util a:hover, .util button:hover { color: #fff; }
     .util button { background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; text-transform: inherit; color: inherit; }
 
+    header.site, .util, main, footer.site, .cta, .guide-band, .brand-bar, .hero-bleed {
+      width: 100%; max-width: 100%;
+    }
     header.site {
       position: sticky; top: 0; z-index: 40; background: #0b0f14;
       border-bottom: 1px solid #1c2733;
     }
-    .mast { display: grid; grid-template-columns: auto 1fr auto; align-items: center; padding: 14px 0 10px; gap: 18px; }
-    .brand { display: flex; align-items: center; gap: 10px; justify-self: start; color: #fff; }
-    .brand svg { width: 34px; height: 34px; }
+    .mast {
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr) auto auto auto;
+      grid-template-areas: "brand search auth gt actions";
+      align-items: center; padding: 14px 0 10px; gap: 14px 12px;
+    }
+    .menu-toggle { grid-area: menu; }
+    .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; justify-self: start; color: #fff; min-width: 0; }
+    .brand svg { width: 34px; height: 34px; flex: 0 0 34px; }
     .brand-name { font-family: var(--sans); font-size: 22px; letter-spacing: .18em; font-weight: 700; }
     .brand small { display: none; }
-    .mast-left, .mast-right { display: flex; align-items: center; gap: 8px; }
-    .mast-right { justify-content: flex-end; color: #c9d2dc; font-size: 13px; gap: 12px; }
-    .mast-right a { color: #c9d2dc; padding: 0 6px; }
-    .mast-right a:hover { color: #fff; }
+    .search-open { grid-area: search; min-width: 0; }
+    #authLink { grid-area: auth; color: #c9d2dc; padding: 0 6px; white-space: nowrap; }
+    #authLink:hover { color: #fff; }
+    .mast-actions { grid-area: actions; display: flex; align-items: center; gap: 4px; }
     .gt-slot {
+      grid-area: gt;
       display: flex; flex-direction: column; align-items: stretch; gap: 3px;
-      min-width: 168px; flex: 0 0 auto;
+      min-width: 0; width: 180px;
     }
     .gt-kicker {
       font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
@@ -69,9 +88,17 @@
       border: 1px solid var(--gold);
       box-shadow: inset 0 0 0 1px rgba(196,163,106,.18), 0 8px 18px rgba(0,0,0,.35);
       border-radius: 2px; padding: 5px 10px 5px 8px; min-height: 40px;
+      width: 100%; min-width: 0;
     }
     .gt-globe { width: 18px; height: 18px; flex: 0 0 18px; color: var(--gold); }
-    #google_translate_element { display: flex; align-items: center; min-width: 0; flex: 1; }
+    #google_translate_element {
+      display: flex; align-items: center; min-width: 0; flex: 1;
+      width: 100% !important; max-width: 100% !important;
+    }
+    #google_translate_element .goog-te-gadget,
+    #google_translate_element table {
+      width: 100% !important; max-width: 100% !important;
+    }
     #google_translate_element .goog-te-gadget {
       font-family: var(--sans) !important; font-size: 0 !important;
       color: transparent !important; line-height: 1 !important;
@@ -82,7 +109,7 @@
       background: #111 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23c4a36a' d='M1 1l5 5 5-5'/></svg>") no-repeat right 8px center;
       color: #f4f1ea !important; border: 1px solid #3a3328;
       padding: 7px 26px 7px 8px; font-size: 12px !important; letter-spacing: .04em;
-      cursor: pointer; max-width: 150px; width: 100%; border-radius: 1px;
+      cursor: pointer; max-width: 100%; width: 100%; border-radius: 1px;
       font-family: var(--sans) !important;
     }
     #google_translate_element .goog-te-combo:hover,
@@ -93,15 +120,19 @@
     #google_translate_element .goog-te-gadget .goog-te-combo { display: inline-block !important; }
     #google_translate_element table { margin: 0 !important; }
     #google_translate_element img, #google_translate_element a { display: none !important; }
-    iframe.goog-te-banner-frame, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; }
+    iframe.skiptranslate,
+    iframe.goog-te-banner-frame, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; border: 0 !important; }
     body > .skiptranslate { display: none !important; }
+    .translated-ltr, .translated-rtl { margin-top: 0 !important; }
+    font { background: transparent !important; }
     .goog-te-balloon-frame, #goog-gt-tt { display: none !important; }
     .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
     .goog-te-menu-frame { z-index: 120 !important; max-height: 360px; }
     .money-amt { font: inherit; color: inherit; }
     .icon-btn {
+      position: relative;
       width: 40px; height: 40px; border: 1px solid transparent; background: transparent; border-radius: 50%;
-      cursor: pointer; display: grid; place-items: center; color: #fff;
+      cursor: pointer; display: grid; place-items: center; color: #fff; flex: 0 0 auto;
     }
     .icon-btn:hover { border-color: #2a3848; background: #151c26; }
     .icon-btn .count {
@@ -111,11 +142,16 @@
     .search-open {
       display: flex; align-items: center; gap: 8px; border: 1px solid #2a3848; background: #151c26;
       border-radius: 4px; padding: 11px 16px; cursor: pointer; color: #9aa7b5; width: 100%;
+      min-width: 0; overflow: hidden;
     }
+    .search-copy-full, .search-copy-short {
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+    }
+    .search-copy-short { display: none; }
     .search-open:hover { border-color: #3b82f6; color: #fff; }
     .menu-toggle { display: none; }
 
-    .primary { display: flex; justify-content: flex-start; gap: 2px; padding: 0 0 10px; }
+    .primary { display: flex; justify-content: flex-start; gap: 2px; padding: 0 0 10px; flex-wrap: wrap; }
     .nav-item { position: relative; }
     .nav-item > a, .nav-item > button {
       background: none; border: 0; cursor: pointer; padding: 10px 12px;
@@ -135,7 +171,7 @@
     .mega a:hover, .mega button:hover { color: #fff; }
     .mega .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
 
-    .hero-bleed { position: relative; background: #050505; height: min(72vh, 640px); overflow: hidden; }
+    .hero-bleed { position: relative; background: #050505; height: min(72vh, 640px); overflow: hidden; width: 100%; }
     .hero-leather {
       position: absolute; inset: 0;
       background: url("assets/hero-leather.jpg") center/cover no-repeat;
@@ -182,7 +218,7 @@
     .mega .display-all { margin-top: 12px; color: #93c5fd; }
     .brand-bar { background: #0b0f14; padding: 36px 0 28px; border-bottom: 1px solid #1c2733; }
     .brand-bar h2 { color: #fff; font-family: var(--sans); font-size: 22px; font-weight: 650; margin-bottom: 18px; }
-    .brand-logos { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
+    .brand-logos { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
     .brand-logos a { color: #c9d2dc; border: 1px solid #243040; padding: 16px 8px; text-align: center; font-weight: 650; letter-spacing: .04em; }
     .brand-logos a:hover { color: #fff; border-color: #fff; }
 
@@ -215,7 +251,7 @@
     .section-head p { margin: 8px 0 0; color: var(--muted); }
     .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
 
-    .maison-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
+    .maison-row { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
     .maison-chip {
       border: 1px solid var(--line); background: var(--paper); padding: 16px 10px; text-align: center; cursor: pointer;
       min-height: 86px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
@@ -233,7 +269,7 @@
     .type-card em { font-style: normal; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
     .type-card strong { font-family: var(--serif); font-size: 26px; font-weight: 500; }
 
-    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
     .card {
       background: var(--paper); border: 1px solid var(--line); cursor: pointer; display: flex; flex-direction: column;
     }
@@ -253,6 +289,9 @@
     .card-body .maison { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
     .card-body h3 { font-size: 18px; }
     .card-body .meta { color: var(--muted); font-size: 13px; }
+    .card-body h3, .type-card strong, .guide-card p, .brand-name {
+      overflow-wrap: anywhere; word-break: break-word;
+    }
     .price { margin-top: auto; padding-top: 10px; font-family: var(--serif); font-size: 20px; }
 
     .shop-layout { display: grid; grid-template-columns: 250px 1fr; gap: 28px; padding: 28px 0 64px; }
@@ -305,7 +344,7 @@
     .cta {
       background: var(--ink); color: #efe8db; padding: 56px 0; margin: 20px 0 0;
     }
-    .cta h2 { font-size: 42px; }
+    .cta h2 { font-size: clamp(28px, 5vw, 42px); }
     .cta p { color: #c9c0b0; max-width: 36em; }
 
     footer a { display: block; padding: 4px 0; }
@@ -458,36 +497,66 @@
     .legal nav, .social { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
     .social a { padding: 0; font-size: 18px; }
 
-    @media (max-width: 980px) {
-      .mast { grid-template-columns: auto 1fr auto; }
+    @media (max-width: 1100px) {
+      .mast {
+        grid-template-columns: auto minmax(0,1fr) auto;
+        grid-template-areas:
+          "menu brand actions"
+          "search search search"
+          "gt gt gt";
+        gap: 10px;
+      }
       .primary { display: none; }
       .menu-toggle { display: grid; }
-      .brand-logos { grid-template-columns: repeat(4, 1fr); }
-      .hero-stage { width: min(520px, 62%); }
-      .hero, .detail, .split, .shop-layout, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid { grid-template-columns: 1fr 1fr; }
+      #authLink { display: none; }
+      .gt-slot { width: 100%; max-width: none; }
+      .gt-kicker { display: none; }
+      #google_translate_element .goog-te-combo, .gt-fallback { max-width: none; }
+      .util-left { display: none; }
+      .util .wrap { justify-content: flex-end; }
+      .only-narrow { display: inline; }
+      .search-copy-full { display: none; }
+      .search-copy-short { display: inline; }
+    }
+    @media (max-width: 980px) {
+      .brand-logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .hero-stage { width: min(520px, 58%); }
+      .hero, .detail, .split, .article-grid, .type-grid, .steps, .foot-top, .foot-mid, .explore-grid, .review-row, .video-grid { grid-template-columns: 1fr 1fr; }
+      .shop-layout { grid-template-columns: 1fr; }
       .guide-grid { grid-template-columns: 1fr 1fr; }
-      .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
-      .cards, .maison-row { grid-template-columns: repeat(2, 1fr); }
+      .popular, .regions, .gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cards, .maison-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .filters { position: static; }
       .hero { padding-top: 36px; }
-      .gt-kicker { display: none; }
+      section { padding: 40px 0; }
     }
     @media (max-width: 640px) {
-      .wrap { width: min(var(--max), calc(100% - 24px)); }
-      .cards, .maison-row, .stats { grid-template-columns: 1fr 1fr; }
+      .wrap { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+      .detail h1 { font-size: clamp(28px, 8vw, 40px) !important; }
+      .cards, .maison-row, .stats, .brand-logos, .type-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
       form .grid { grid-template-columns: 1fr; }
-      .hero-stage { width: 100%; right: -8%; opacity: .42; }
-      .hero-copy h1 { max-width: 14ch; }
-      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail, .video-grid, .guide-grid { grid-template-columns: 1fr; }
+      .hero-bleed { height: min(62vh, 460px); }
+      .hero-stage { width: 72%; right: -4%; top: 22%; opacity: .45; }
+      .hero-copy { align-items: flex-end; padding-bottom: 32px; }
+      .hero-copy h1 { max-width: 12ch; font-size: clamp(22px, 7.4vw, 34px); }
+      .hero-copy .eyebrow { font-size: 13px; }
+      .explore-grid, .review-row, .foot-top, .foot-mid, .hero, .detail, .split, .video-grid, .guide-grid, .article-grid, .steps { grid-template-columns: 1fr; }
       .popular, .regions { grid-template-columns: 1fr 1fr; }
-      .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
-      .util .wrap { justify-content: flex-end; }
-      .util-left { display: none; }
-      .only-narrow { display: inline; }
-      .gt-kicker { display: none; }
-      .gt-slot { min-width: 132px; }
-      .gt-frame { min-height: 36px; padding: 3px 8px; }
-      #google_translate_element .goog-te-combo, .gt-fallback { max-width: 118px; padding: 5px 22px 5px 6px; }
+      .gallery-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .gallery-main { min-height: 0; }
+      .gallery-main img.photo { height: auto; aspect-ratio: 1; max-height: 70vw; }
+      .guide-card { min-height: 0; padding: 22px 18px; }
+      .brand-name { font-size: 17px; letter-spacing: .12em; }
+      .brand svg { width: 28px; height: 28px; flex-basis: 28px; }
+      .icon-btn { width: 36px; height: 36px; }
+      h1 { font-size: clamp(32px, 9vw, 48px); }
+      .section-head { align-items: start; flex-direction: column; }
+      .legal { flex-direction: column; }
+      .gt-frame { min-height: 38px; padding: 4px 8px; }
+    }
+    @media (max-width: 400px) {
+      .cards, .maison-row, .brand-logos { grid-template-columns: 1fr !important; }
+      .search-open { padding: 10px 12px; }
     }
   </style>
 </head>
@@ -515,6 +584,7 @@
 
   <header class="site">
     <div class="wrap mast">
+      <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
       <a class="brand notranslate" href="#/" aria-label="Vespera home">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <circle cx="32" cy="32" r="20" fill="none" stroke="#c4a36a" stroke-width="1.5"/>
@@ -527,55 +597,56 @@
         </div>
       </a>
       <button class="search-open" id="searchOpen" type="button">
-        <span>⌕</span> <span id="searchCountLabel">Search through 14,000 watches worldwide</span>
+        <span>⌕</span>
+        <span class="search-copy-full" id="searchCountLabel">Search through 14,000 watches worldwide</span>
+        <span class="search-copy-short">Search watches</span>
       </button>
-      <div class="mast-right">
-        <button class="icon-btn menu-toggle" id="menuBtn" aria-label="Open menu">☰</button>
-        <a href="#/account" id="authLink">Log in or register</a>
-        <div class="gt-slot notranslate" aria-label="Translate this site">
-          <span class="gt-kicker">Translate</span>
-          <div class="gt-frame">
-            <svg class="gt-globe" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
-            </svg>
-            <div id="google_translate_element">
-              <label class="sr" for="langFallback">Language</label>
-              <select id="langFallback" class="gt-fallback" aria-label="Language">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="it">Italiano</option>
-                <option value="pt">Português</option>
-                <option value="nl">Nederlands</option>
-                <option value="pl">Polski</option>
-                <option value="ru">Русский</option>
-                <option value="ja">日本語</option>
-                <option value="ko">한국어</option>
-                <option value="zh-CN">中文</option>
-                <option value="zh-TW">中文 (繁體)</option>
-                <option value="ar">العربية</option>
-                <option value="hi">हिन्दी</option>
-                <option value="tr">Türkçe</option>
-                <option value="sv">Svenska</option>
-                <option value="da">Dansk</option>
-                <option value="fi">Suomi</option>
-                <option value="no">Norsk</option>
-                <option value="el">Ελληνικά</option>
-                <option value="he">עברית</option>
-                <option value="th">ไทย</option>
-                <option value="vi">Tiếng Việt</option>
-                <option value="id">Indonesia</option>
-                <option value="uk">Українська</option>
-                <option value="cs">Čeština</option>
-                <option value="hu">Magyar</option>
-                <option value="ro">Română</option>
-                <option value="bg">Български</option>
-              </select>
-            </div>
+      <a href="#/account" id="authLink">Log in or register</a>
+      <div class="gt-slot notranslate" aria-label="Translate this site">
+        <span class="gt-kicker">Translate</span>
+        <div class="gt-frame">
+          <svg class="gt-globe" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
+          </svg>
+          <div id="google_translate_element">
+            <label class="sr" for="langFallback">Language</label>
+            <select id="langFallback" class="gt-fallback" aria-label="Language">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Português</option>
+              <option value="nl">Nederlands</option>
+              <option value="pl">Polski</option>
+              <option value="ru">Русский</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="zh-CN">中文</option>
+              <option value="zh-TW">中文 (繁體)</option>
+              <option value="ar">العربية</option>
+              <option value="hi">हिन्दी</option>
+              <option value="tr">Türkçe</option>
+              <option value="sv">Svenska</option>
+              <option value="da">Dansk</option>
+              <option value="fi">Suomi</option>
+              <option value="no">Norsk</option>
+              <option value="el">Ελληνικά</option>
+              <option value="he">עברית</option>
+              <option value="th">ไทย</option>
+              <option value="vi">Tiếng Việt</option>
+              <option value="id">Indonesia</option>
+              <option value="uk">Українська</option>
+              <option value="cs">Čeština</option>
+              <option value="hu">Magyar</option>
+              <option value="ro">Română</option>
+              <option value="bg">Български</option>
+            </select>
           </div>
         </div>
+      </div>
+      <div class="mast-actions">
         <a class="icon-btn" href="#/saved" aria-label="Saved watches"><span>♡</span><span class="count" id="savedCount" hidden>0</span></a>
         <a class="icon-btn" href="#/inquiries" aria-label="Purchase inquiries"><span>✉</span><span class="count" id="inqCount" hidden>0</span></a>
       </div>
