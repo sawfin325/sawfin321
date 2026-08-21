@@ -157,6 +157,44 @@ function pagerQuery(page) {
   return q ? `search.html?${q}` : "search.html";
 }
 
+function purchaseMessage(w) {
+  return `Hello, I want to purchase ${w.brand} ${w.model} (ref. ${w.ref}, listing ${w.id}) listed at ${money(w.price)}. Please confirm availability and send payment instructions.`;
+}
+
+function whatsappBuyHref(w) {
+  return `${CONTACT.whatsapp}?text=${encodeURIComponent(purchaseMessage(w))}`;
+}
+
+function emailBuyHref(w) {
+  const subject = `Purchase inquiry: ${w.brand} ${w.model} ${w.ref}`;
+  return `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(purchaseMessage(w))}`;
+}
+
+function openPurchasePrompt(w) {
+  let el = $("#buy-prompt");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "buy-prompt";
+    el.className = "buy-prompt";
+    document.body.appendChild(el);
+  }
+  const title = w ? `${w.brand} ${w.model}` : "this watch";
+  const wa = w ? whatsappBuyHref(w) : CONTACT.whatsapp;
+  const mail = w ? emailBuyHref(w) : `mailto:${CONTACT.email}`;
+  el.innerHTML = `
+    <div class="buy-prompt-card">
+      <button class="buy-prompt-close" type="button" aria-label="Close">&times;</button>
+      <h3>Purchase ${title}</h3>
+      <p>Complete this order by WhatsApp or email. We will confirm availability and send payment instructions. No card is charged on this page.</p>
+      <a class="btn btn-block" href="${wa}" target="_blank" rel="noopener">Continue on WhatsApp</a>
+      <a class="btn btn-outline btn-block" href="${mail}">Email ${CONTACT.email}</a>
+      <p class="buy-prompt-phone">Or call <a href="${CONTACT.tel}">${CONTACT.phone}</a></p>
+    </div>`;
+  el.classList.add("open");
+  el.querySelector(".buy-prompt-close").onclick = () => el.classList.remove("open");
+  el.onclick = (e) => { if (e.target === el) el.classList.remove("open"); };
+}
+
 function toast(msg) {
   let el = $(".toast");
   if (!el) {
@@ -278,7 +316,7 @@ function footerHTML() {
     ["Buy on Chrono24", [["security.html","Buyer Protection"],["security.html#escrow","Payment via the Escrow Service"],["security.html#authenticity","Commitment to Authenticity"],["faq.html","Easy Returns"]]],
     ["Sell on Chrono24", [["sell.html","Selling as a Private Seller"],["sell.html","Selling Commercially"],["sell.html","Free Appraisal"],["faq.html","Advice for private sellers"]]],
     ["About Chrono24", [["about.html","About us"],["about.html","Jobs"],["about.html","Press"],["about.html","Legal Details"]]],
-    ["Personalized support", [["faq.html","Frequently Asked Questions"],["contact.html","Contact"]]],
+    ["Personalized support", [["faq.html","Frequently asked questions"],["contact.html","Contact"]]],
     ["Chrono24 Apps", [["apps.html","iOS App Store"],["apps.html","Google Play"]]],
     ["Payment methods", [["security.html","Visa · Mastercard · Amex"],["security.html","Wire transfer"],["security.html","Pay over time"]]],
   ];
@@ -304,10 +342,24 @@ function footerHTML() {
         </div>
       </div>
       <div class="footer-cols">
-        ${cols.map(([h, links]) => `<div><h4>${h}</h4><ul>${links.map(([href,t]) => `<li><a href="${href}">${t}</a></li>`).join("")}</ul></div>`).join("")}
+        ${cols.map(([h, links]) => {
+          if (h === "Personalized support") {
+            return `<div><h4>${h}</h4><ul>${links.map(([href,t]) => `<li><a href="${href}">${t}</a></li>`).join("")}
+              <li><a href="${CONTACT.tel}">${CONTACT.phone}</a></li>
+              <li><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></li>
+              <li><a href="${CONTACT.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></li>
+            </ul></div>`;
+          }
+          if (h === "Payment methods") {
+            return `<div><h4>${h}</h4>
+              <div class="pay-pills"><span>VISA</span><span>Mastercard</span><span>AMEX</span><span>Wire transfer</span></div>
+            </div>`;
+          }
+          return `<div><h4>${h}</h4><ul>${links.map(([href,t]) => `<li><a href="${href}">${t}</a></li>`).join("")}</ul></div>`;
+        }).join("")}
       </div>
       <div class="countries">
-        ${COUNTRIES.map((c) => `<a href="search.html">${c}</a>`).join("")}
+        ${COUNTRIES.map((c) => `<a class="country" href="search.html"><img src="assets/flags/${c.code}.jpg" alt="" width="22" height="16">${c.name}</a>`).join("")}
       </div>
       <div class="legal">
         <div>
@@ -511,7 +563,7 @@ function renderListing() {
         <div class="price-lg">${money(w.price)}</div>
         <p>Ships from ${w.location}. Insured worldwide shipping.</p>
         <button class="btn btn-block" data-buy>Buy</button>
-        <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Chrono24 Certified available · Buyer Protection included</p>
+        <p style="margin:10px 0 0;font-size:13px;color:var(--muted)">Purchase via WhatsApp or email · ${CONTACT.phone}</p>
         <div class="seller">
           <div>
             <strong>${w.seller.name}</strong><br>
@@ -543,9 +595,7 @@ function renderListing() {
       <h2>Similar watches</h2>
       <div class="watch-grid">${similar.map(watchCard).join("")}</div>
     </section>`;
-  $("[data-buy]")?.addEventListener("click", () => {
-    toast("Buyer Protection checkout is a demo — no payment is taken.");
-  });
+  $("[data-buy]")?.addEventListener("click", () => openPurchasePrompt(w));
   $all(".thumbs img", root).forEach((thumb) => {
     thumb.addEventListener("click", () => {
       const main = $("#main-photo");

@@ -4,6 +4,13 @@ const SITE = {
   countries: 132,
 };
 
+const CONTACT = {
+  phone: "+1 913-278-5312",
+  tel: "tel:+19132785312",
+  email: "luxerywatchsales@gmail.com",
+  whatsapp: "https://wa.me/19132785312",
+};
+
 const MENU_BRANDS_LEFT = [
   "Gauri", "Rolex", "Patek Philippe", "Breitling", "Cartier", "IWC",
   "Jaeger-LeCoultre", "Hublot", "Vacheron Constantin", "A. Lange & Söhne", "Breguet", "Hamilton", "Oris",
@@ -274,8 +281,54 @@ const VIDEOS = [
 const INSTAGRAM = [1,2,3,4,5,6,7,8].map((n) => `assets/instagram/ig-${n}.jpg`);
 
 const COUNTRIES = [
-  "United States","United Kingdom","Deutschland","France","Italia","España","日本","中国","Suisse","Nederland",
-  "Australia","Canada","Hong Kong","Singapore","United Arab Emirates","한국","Brasil","México","Sverige","Norge",
+  { name: "United States", code: "us" },
+  { name: "United Kingdom", code: "gb" },
+  { name: "Deutschland", code: "de" },
+  { name: "France", code: "fr" },
+  { name: "Italia", code: "it" },
+  { name: "España", code: "es" },
+  { name: "日本", code: "jp" },
+  { name: "中国", code: "cn" },
+  { name: "Suisse", code: "ch" },
+  { name: "Nederland", code: "nl" },
+  { name: "Australia", code: "au" },
+  { name: "Canada", code: "ca" },
+  { name: "Hong Kong", code: "hk" },
+  { name: "Singapore", code: "sg" },
+  { name: "United Arab Emirates", code: "ae" },
+  { name: "한국", code: "kr" },
+  { name: "Brasil", code: "br" },
+  { name: "México", code: "mx" },
+  { name: "Sverige", code: "se" },
+  { name: "Norge", code: "no" },
+  { name: "Österreich", code: "at" },
+  { name: "Belgique", code: "be" },
+  { name: "Danmark", code: "dk" },
+  { name: "Suomi", code: "fi" },
+  { name: "Ireland", code: "ie" },
+  { name: "Portugal", code: "pt" },
+  { name: "Polska", code: "pl" },
+  { name: "Ελλάδα", code: "gr" },
+  { name: "Россия", code: "ru" },
+  { name: "Magyarország", code: "hu" },
+  { name: "Česko", code: "cz" },
+  { name: "România", code: "ro" },
+  { name: "Türkiye", code: "tr" },
+  { name: "India", code: "in" },
+  { name: "ประเทศไทย", code: "th" },
+  { name: "Malaysia", code: "my" },
+  { name: "Indonesia", code: "id" },
+  { name: "Pilipinas", code: "ph" },
+  { name: "New Zealand", code: "nz" },
+  { name: "South Africa", code: "za" },
+  { name: "Argentina", code: "ar" },
+  { name: "Chile", code: "cl" },
+  { name: "Colombia", code: "co" },
+  { name: "Israel", code: "il" },
+  { name: "Saudi Arabia", code: "sa" },
+  { name: "Qatar", code: "qa" },
+  { name: "臺灣", code: "tw" },
+  { name: "Luxembourg", code: "lu" },
 ];
 
 const SEEDS_BY_BRAND = {};
