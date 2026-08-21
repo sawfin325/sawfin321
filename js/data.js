@@ -1,5 +1,5 @@
 const SITE = {
-  name: "chrono24",
+  name: "luxerywatchsales",
   listingCount: "670,418",
   countries: 132,
 };

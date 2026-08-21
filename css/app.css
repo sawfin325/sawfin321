@@ -161,18 +161,29 @@ button { cursor: pointer; }
 }
 .header-row {
   display: grid;
-  grid-template-columns: 190px 1fr auto;
-  gap: 20px;
+  grid-template-columns: minmax(180px, 250px) 1fr auto;
+  gap: 16px;
   align-items: center;
   min-height: var(--header);
 }
 .logo {
   font-weight: 800;
-  font-size: 28px;
-  letter-spacing: -0.06em;
-  color: #fff;
-  line-height: 1;
-  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  color: #f6e27a;
+  line-height: 1.05;
+  text-transform: lowercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex: 0 0 36px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
 }
 .logo span { font-weight: 700; }
 

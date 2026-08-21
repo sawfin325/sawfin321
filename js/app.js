@@ -240,11 +240,11 @@ function headerHTML() {
     `<a class="row" href="search.html?cat=${encodeURIComponent(c.slug)}">${c.name}</a>`
   ).join("");
   return `
-  <div class="promo">Have you tried the Chrono24 app? <a href="apps.html">Discover now</a></div>
+  <div class="promo">Have you tried the luxerywatchsales app? <a href="apps.html">Discover now</a></div>
   <header class="header">
     <div class="wrap header-row">
       <button class="menu-btn" type="button" aria-label="Menu" data-menu>☰</button>
-      <a class="logo" href="index.html">chrono24</a>
+      <a class="logo" href="index.html"><img src="assets/favicon-48.png" width="36" height="36" alt="">luxerywatchsales</a>
       <form class="search" action="search.html" method="get">
         <input name="q" type="search" placeholder="Search through ${SITE.listingCount} watches worldwide" value="${params().get("q") || ""}" />
         <button type="submit" aria-label="Search">${iconSearch()}</button>
@@ -278,7 +278,7 @@ function headerHTML() {
                 <img src="assets/lifestyle/hero-bestsellers.jpg" alt="Top models">
                 <div class="cap">
                   <span style="opacity:.8;font-size:12px">On the wrists of watch enthusiasts.</span>
-                  <strong>TOP MODELS ON CHRONO24.</strong>
+                  <strong>TOP MODELS ON LUXERYWATCHSALES.</strong>
                   <span class="btn btn-light">Discover now</span>
                 </div>
               </a>
@@ -313,11 +313,11 @@ function headerHTML() {
 
 function footerHTML() {
   const cols = [
-    ["Buy on Chrono24", [["security.html","Buyer Protection"],["security.html#escrow","Payment via the Escrow Service"],["security.html#authenticity","Commitment to Authenticity"],["faq.html","Easy Returns"]]],
-    ["Sell on Chrono24", [["sell.html","Selling as a Private Seller"],["sell.html","Selling Commercially"],["sell.html","Free Appraisal"],["faq.html","Advice for private sellers"]]],
-    ["About Chrono24", [["about.html","About us"],["about.html","Jobs"],["about.html","Press"],["about.html","Legal Details"]]],
+    ["Buy on luxerywatchsales", [["security.html","Buyer Protection"],["security.html#escrow","Payment via the Escrow Service"],["security.html#authenticity","Commitment to Authenticity"],["faq.html","Easy Returns"]]],
+    ["Sell on luxerywatchsales", [["sell.html","Selling as a Private Seller"],["sell.html","Selling Commercially"],["sell.html","Free Appraisal"],["faq.html","Advice for private sellers"]]],
+    ["About luxerywatchsales", [["about.html","About us"],["about.html","Jobs"],["about.html","Press"],["about.html","Legal Details"]]],
     ["Personalized support", [["faq.html","Frequently asked questions"],["contact.html","Contact"]]],
-    ["Chrono24 Apps", [["apps.html","iOS App Store"],["apps.html","Google Play"]]],
+    ["luxerywatchsales Apps", [["apps.html","iOS App Store"],["apps.html","Google Play"]]],
     ["Payment methods", [["security.html","Visa · Mastercard · Amex"],["security.html","Wire transfer"],["security.html","Pay over time"]]],
   ];
   return `
@@ -325,7 +325,7 @@ function footerHTML() {
     <div class="wrap">
       <div class="footer-top">
         <div>
-          <h4>Chrono24 Newsletter</h4>
+          <h4>luxerywatchsales Newsletter</h4>
           <p>Market stories, new listings, and collector notes — free.</p>
           <form class="search" style="max-width:360px;margin-top:10px" data-newsletter>
             <input type="email" required placeholder="Email address" />
@@ -368,7 +368,7 @@ function footerHTML() {
           <a href="about.html">Manage Cookies</a> ·
           <a href="about.html">Terms &amp; Conditions</a>
         </div>
-        <div>© ${new Date().getFullYear()} Chrono24 demo recreation. Not affiliated with Chrono24 GmbH.</div>
+        <div>© ${new Date().getFullYear()} luxerywatchsales. Buyer support: ${CONTACT.phone}</div>
       </div>
     </div>
   </footer>`;
@@ -466,7 +466,7 @@ function renderHome() {
     `<a class="article" href="article.html?id=${a.id}"><img src="${a.image}" alt=""><div class="tag">${a.tag}</div><h3>${a.title}</h3><div class="byline">${a.author} · ${a.date} · ${a.read}</div></a>`
   ).join("");
   const ig = $("#ig-grid");
-  if (ig) ig.innerHTML = INSTAGRAM.map((src) => `<img src="${src}" alt="Chrono24 on Instagram">`).join("");
+  if (ig) ig.innerHTML = INSTAGRAM.map((src) => `<img src="${src}" alt="luxerywatchsales on Instagram">`).join("");
   const vids = $("#video-grid");
   if (vids) vids.innerHTML = VIDEOS.map((v) =>
     `<article class="video"><div class="play">▶</div><img src="${v.image}" alt=""><h3>${v.title}</h3><p>${v.host} · ${v.time} · ${v.date}</p></article>`
@@ -485,7 +485,7 @@ function renderSearch() {
     count.textContent = `${result.total.toLocaleString()} listings`;
     if (brand) count.textContent += " including promoted listings";
   }
-  document.title = brand ? `${brand} watches | Chrono24` : "Search luxury watches | Chrono24";
+  document.title = brand ? `${brand} watches | luxerywatchsales` : "Search luxury watches | luxerywatchsales";
   grid.innerHTML = result.items.length ? result.items.map(watchCard).join("") : `<p>No watches matched those filters.</p>`;
   const pager = $("#pager");
   if (pager) {
@@ -544,7 +544,7 @@ function renderListing() {
   const w = getWatchById(params().get("id")) || makeListing(BRANDS[0].name, 0);
   const n = Number((w.id.match(/-(\d+)$/) || ["", "0"])[1]);
   const similar = [1, 2, 3, 4].map((d) => makeListing(w.brand, n + d)).filter(Boolean);
-  document.title = `${w.brand} ${w.model} | Chrono24`;
+  document.title = `${w.brand} ${w.model} | luxerywatchsales`;
   root.innerHTML = `
     <div class="crumbs wrap"><a href="index.html">Home</a> / <a href="search.html?brand=${encodeURIComponent(w.brand)}">${w.brand} watches</a> / ${w.model}</div>
     <div class="product wrap">
@@ -625,7 +625,7 @@ function renderArticle() {
   const el = $("#article");
   if (!el) return;
   const a = ARTICLES.find((x) => x.id === params().get("id")) || ARTICLES[0];
-  document.title = `${a.title} | Chrono24 Magazine`;
+  document.title = `${a.title} | luxerywatchsales Magazine`;
   el.innerHTML = `
     <div class="crumbs"><a href="index.html">Home</a> / <a href="magazine.html">Magazine</a> / ${a.tag}</div>
     <p class="tag">${a.tag}</p>
