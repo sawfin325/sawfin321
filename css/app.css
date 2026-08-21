@@ -518,9 +518,44 @@ button { cursor: pointer; }
   background: #fff;
 }
 .range { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.toolbar {
-  display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px;
+.feat-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 18px 0 10px;
 }
+.feat-card {
+  background: var(--card);
+  padding: 12px;
+  text-align: center;
+}
+.feat-card img { height: 90px; width: auto; margin: 0 auto 8px; }
+.feat-card span { display: block; color: var(--muted); font-size: 13px; margin-top: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+.chips a {
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  font-size: 13px;
+  background: #fff;
+}
+.chips a:hover { background: var(--wash); }
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 28px 0 8px;
+}
+.pager a, .pager span {
+  min-width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  padding: 0 12px;
+}
+.pager .on { background: var(--navy); color: #fff; border-color: var(--navy); }
 .toolbar select { border: 1px solid var(--line); padding: 8px 10px; background: #fff; }
 
 /* Listing detail */
@@ -571,7 +606,7 @@ button { cursor: pointer; }
   .brand-grid, .explore-grid, .watch-grid, .ig-grid { grid-template-columns: repeat(2, 1fr); }
   .stats, .steps, .info-grid, .footer-cols, .link-grid, .article-grid, .video-grid, .review-row { grid-template-columns: 1fr 1fr; }
   .split, .reviews, .layout, .product, .footer-top { grid-template-columns: 1fr; }
-  .gallery img { height: 360px; }
+  .feat-row { grid-template-columns: repeat(2, 1fr); }
   .nav { display: none; }
   .nav.open { display: flex; flex-direction: column; background: var(--chrome); padding-bottom: 12px; }
   .menu-btn, .close-drawer { display: inline-flex; }

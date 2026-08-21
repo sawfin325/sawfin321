@@ -285,10 +285,60 @@ function renderHome() {
 function renderSearch() {
   const grid = $("#results");
   if (!grid) return;
-  const list = filterWatches();
+  const result = queryCatalog();
   const count = $("#result-count");
-  if (count) count.textContent = `${list.length.toLocaleString()} listings`;
-  grid.innerHTML = list.length ? list.map(watchCard).join("") : `<p>No watches matched those filters.</p>`;
+  const brand = params().get("brand") || "";
+  const heading = $("#search-heading");
+  if (heading) heading.textContent = brand ? `${brand} watches` : "Luxury watches";
+  if (count) {
+    count.textContent = `${result.total.toLocaleString()} listings`;
+    if (brand) count.textContent += " including promoted listings";
+  }
+  document.title = brand ? `${brand} watches | Chrono24` : "Search luxury watches | Chrono24";
+  grid.innerHTML = result.items.length ? result.items.map(watchCard).join("") : `<p>No watches matched those filters.</p>`;
+  const pager = $("#pager");
+  if (pager) {
+    const pages = result.pages;
+    const page = result.page;
+    const links = [];
+    if (page > 1) links.push(`<a href="${pagerQuery(page - 1)}">Previous</a>`);
+    const from = Math.max(1, page - 2);
+    const to = Math.min(pages, page + 2);
+    for (let i = from; i <= to; i++) {
+      links.push(i === page ? `<span class="on">${i}</span>` : `<a href="${pagerQuery(i)}">${i}</a>`);
+    }
+    if (page < pages) links.push(`<a href="${pagerQuery(page + 1)}">Next</a>`);
+    pager.innerHTML = links.join("");
+  }
+  const featured = $("#featured-models");
+  if (featured) {
+    const models = FEATURED_MODELS[brand];
+    if (models) {
+      featured.innerHTML = models.map((m) =>
+        `<a class="feat-card" href="search.html?brand=${encodeURIComponent(brand)}&q=${encodeURIComponent(m.model)}">
+          <img src="${m.img}" alt="${brand} ${m.model}">
+          <strong>${m.model}</strong>
+          <span>from ${money(m.from)}</span>
+        </a>`
+      ).join("");
+      featured.hidden = false;
+    } else featured.hidden = true;
+  }
+  const chips = $("#filter-chips");
+  if (chips && brand) {
+    const items = [["Used", "cat=preowned"], ["New/Unworn", ""]];
+    if (brand === "Rolex") items.push(["Datejust 36", "q=Datejust"]);
+    chips.innerHTML = items.map(([label, extra]) => {
+      const p = new URLSearchParams({ brand });
+      extra.split("&").forEach((pair) => {
+        if (!pair) return;
+        const [k, v] = pair.split("=");
+        if (k) p.set(k, decodeURIComponent(v || ""));
+      });
+      return `<a href="search.html?${p}">${label}</a>`;
+    }).join("");
+    chips.hidden = false;
+  }
   const brandSel = $("#filter-brand");
   if (brandSel && !brandSel.options.length) {
     brandSel.innerHTML = `<option value="">All brands</option>` + BRANDS.map((b) =>
@@ -300,7 +350,9 @@ function renderSearch() {
 function renderListing() {
   const root = $("#listing");
   if (!root) return;
-  const w = WATCHES.find((x) => x.id === params().get("id")) || WATCHES[0];
+  const w = getWatchById(params().get("id")) || makeListing(BRANDS[0].name, 0);
+  const n = Number((w.id.match(/-(\d+)$/) || ["", "0"])[1]);
+  const similar = [1, 2, 3, 4].map((d) => makeListing(w.brand, n + d)).filter(Boolean);
   document.title = `${w.brand} ${w.model} | Chrono24`;
   root.innerHTML = `
     <div class="crumbs wrap"><a href="index.html">Home</a> / <a href="search.html?brand=${encodeURIComponent(w.brand)}">${w.brand} watches</a> / ${w.model}</div>
@@ -350,7 +402,7 @@ function renderListing() {
     </section>
     <section class="section wrap">
       <h2>Similar watches</h2>
-      <div class="watch-grid">${WATCHES.filter((x) => x.brand === w.brand && x.id !== w.id).slice(0, 4).map(watchCard).join("")}</div>
+      <div class="watch-grid">${similar.map(watchCard).join("")}</div>
     </section>`;
   $("[data-buy]")?.addEventListener("click", () => {
     toast("Buyer Protection checkout is a demo — no payment is taken.");
@@ -391,22 +443,26 @@ function renderArticle() {
 function renderCollection() {
   const el = $("#collection-grid");
   if (!el) return;
-  const ids = favs();
-  const list = WATCHES.filter((w) => ids.includes(w.id));
+  const list = favs().map(getWatchById).filter(Boolean);
   el.innerHTML = list.length ? list.map(watchCard).join("") : `<p>Your collection is empty. Tap the heart on any listing to save it.</p>`;
 }
 
 function renderDeals() {
   const el = $("#deals-grid");
   if (!el) return;
-  const list = WATCHES.slice().sort((a, b) => a.price - b.price).slice(0, 12);
-  el.innerHTML = list.map(watchCard).join("");
+  const cheap = BRANDS.filter((b) => ["Seiko", "Tissot", "Hamilton", "NOMOS", "Oris", "Longines"].includes(b.name));
+  const list = [];
+  for (const b of cheap) {
+    for (let n = 0; n < 8; n++) list.push(makeListing(b.name, n));
+  }
+  list.sort((a, b) => a.price - b.price);
+  el.innerHTML = list.slice(0, 16).map(watchCard).join("");
 }
 
 function renderPulse() {
   const el = $("#pulse-table");
   if (!el) return;
-  el.innerHTML = WATCHES.slice(0, 16).map((w, i) => {
+  el.innerHTML = uniqueByModel(WATCHES).slice(0, 16).map((w, i) => {
     const chg = ((i % 7) - 3) * 1.4;
     const color = chg >= 0 ? "var(--green)" : "var(--danger)";
     return `<tr><td>${w.brand} ${w.model}</td><td>${money(w.price)}</td><td style="color:${color}">${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%</td><td>${w.views}</td></tr>`;

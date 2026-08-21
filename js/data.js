@@ -31,8 +31,8 @@ const MENU_CATEGORIES = [
 ];
 
 const BRANDS = [
-  { name: "Gauri", count: 20 },
-  { name: "Rolex", count: 184230 },
+  { name: "Gauri", count: 12500 },
+  { name: "Rolex", count: 116723 },
   { name: "Omega", count: 96820 },
   { name: "Patek Philippe", count: 18240 },
   { name: "Audemars Piguet", count: 15410 },
@@ -261,3 +261,27 @@ const COUNTRIES = [
   "United States","United Kingdom","Deutschland","France","Italia","España","日本","中国","Suisse","Nederland",
   "Australia","Canada","Hong Kong","Singapore","United Arab Emirates","한국","Brasil","México","Sverige","Norge",
 ];
+
+const SEEDS_BY_BRAND = {};
+for (const s of SEED) {
+  (SEEDS_BY_BRAND[s.brand] || (SEEDS_BY_BRAND[s.brand] = [])).push(s);
+}
+
+const FEATURED_MODELS = {
+  Rolex: [
+    { model: "GMT-Master II", from: 10764, img: "assets/watches/watch-gmt.jpg" },
+    { model: "Daytona", from: 16227, img: "assets/watches/watch-daytona.jpg" },
+    { model: "Submariner", from: 8264, img: "assets/watches/watch-submariner.jpg" },
+    { model: "Datejust", from: 1873, img: "assets/watches/watch-datejust.jpg" },
+    { model: "Day-Date", from: 9038, img: "assets/watches/watch-daydate.jpg" },
+  ],
+  Gauri: [
+    { model: "Lotus", from: 9800, img: "assets/watches/gauri-lotus.jpg" },
+    { model: "Tikka", from: 14200, img: "assets/watches/gauri-tikka.jpg" },
+    { model: "Saffron Chronograph", from: 12900, img: "assets/watches/gauri-saffron.jpg" },
+    { model: "Midnight", from: 7200, img: "assets/watches/gauri-midnight.jpg" },
+    { model: "Royale Diver", from: 18950, img: "assets/watches/gauri-royale.jpg" },
+  ],
+};
+
+SITE.listingCount = BRANDS.reduce((sum, b) => sum + b.count, 0).toLocaleString("en-US");

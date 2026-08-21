@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Search luxury watches | meridian</title>
+  <title>Search luxury watches | Chrono24</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/app.css" />
 </head>
@@ -11,7 +11,9 @@
   <div id="site-header"></div>
   <div class="page-head wrap">
     <div class="crumbs"><a href="index.html">Home</a> / Search</div>
-    <h1>Luxury watches</h1>
+    <h1 id="search-heading">Luxury watches</h1>
+    <div class="feat-row" id="featured-models" hidden></div>
+    <div class="chips" id="filter-chips" hidden></div>
   </div>
   <div class="layout wrap">
     <form class="filters" method="get" action="search.html">
@@ -60,10 +62,12 @@
         </form>
       </div>
       <div class="watch-grid" id="results"></div>
+      <nav class="pager" id="pager"></nav>
     </div>
   </div>
   <div id="site-footer"></div>
   <script src="js/data.js"></script>
+  <script src="js/catalog.js"></script>
   <script src="js/app.js"></script>
   <script>
     (function () {
