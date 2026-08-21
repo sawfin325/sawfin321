@@ -183,6 +183,22 @@ function slugify(s) {
   return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+const GALLERY_ALIASES = {
+  "rolex-submariner": "rolex-submariner-date",
+  "rolex-datejust": "rolex-datejust-36",
+  "rolex-day-date": "rolex-day-date-40",
+};
+
+function gallerySlug(brand, model) {
+  const slug = slugify(`${brand}-${model}`);
+  return GALLERY_ALIASES[slug] || slug;
+}
+
+function galleryPaths(brand, model) {
+  const slug = gallerySlug(brand, model);
+  return [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `assets/watches/galleries/${slug}/${String(n).padStart(2, "0")}.jpg`);
+}
+
 const WATCHES = SEED.map((w, i) => {
   const seller = SELLERS[i % SELLERS.length];
   const box = i % 5 !== 2;
@@ -204,8 +220,8 @@ const WATCHES = SEED.map((w, i) => {
     ref: w.ref,
     year: w.year,
     price: w.price,
-    image: "assets/watches/" + w.img,
-    images: ["assets/watches/" + w.img],
+    image: galleryPaths(w.brand, w.model)[i % 8],
+    images: galleryPaths(w.brand, w.model),
     cats,
     movement: w.movement,
     case: w.case,
@@ -269,18 +285,18 @@ for (const s of SEED) {
 
 const FEATURED_MODELS = {
   Rolex: [
-    { model: "GMT-Master II", from: 10764, img: "assets/watches/watch-gmt.jpg" },
-    { model: "Daytona", from: 16227, img: "assets/watches/watch-daytona.jpg" },
-    { model: "Submariner", from: 8264, img: "assets/watches/watch-submariner.jpg" },
-    { model: "Datejust", from: 1873, img: "assets/watches/watch-datejust.jpg" },
-    { model: "Day-Date", from: 9038, img: "assets/watches/watch-daydate.jpg" },
+    { model: "GMT-Master II", from: 10764, img: galleryPaths("Rolex", "GMT-Master II")[0] },
+    { model: "Daytona", from: 16227, img: galleryPaths("Rolex", "Daytona")[0] },
+    { model: "Submariner", from: 8264, img: galleryPaths("Rolex", "Submariner")[0] },
+    { model: "Datejust", from: 1873, img: galleryPaths("Rolex", "Datejust")[0] },
+    { model: "Day-Date", from: 9038, img: galleryPaths("Rolex", "Day-Date")[0] },
   ],
   Gauri: [
-    { model: "Lotus", from: 9800, img: "assets/watches/gauri-lotus.jpg" },
-    { model: "Tikka", from: 14200, img: "assets/watches/gauri-tikka.jpg" },
-    { model: "Saffron Chronograph", from: 12900, img: "assets/watches/gauri-saffron.jpg" },
-    { model: "Midnight", from: 7200, img: "assets/watches/gauri-midnight.jpg" },
-    { model: "Royale Diver", from: 18950, img: "assets/watches/gauri-royale.jpg" },
+    { model: "Lotus", from: 9800, img: galleryPaths("Gauri", "Lotus")[0] },
+    { model: "Tikka", from: 14200, img: galleryPaths("Gauri", "Tikka")[0] },
+    { model: "Saffron Chronograph", from: 12900, img: galleryPaths("Gauri", "Saffron Chronograph")[0] },
+    { model: "Midnight", from: 7200, img: galleryPaths("Gauri", "Midnight")[0] },
+    { model: "Royale Diver", from: 18950, img: galleryPaths("Gauri", "Royale Diver")[0] },
   ],
 };
 

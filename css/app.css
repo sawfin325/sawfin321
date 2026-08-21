@@ -400,6 +400,17 @@ button { cursor: pointer; }
   position: relative;
 }
 .watch-card .media img { max-height: 190px; width: auto; }
+.watch-card .shot-count {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  background: rgba(18, 22, 29, 0.78);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  padding: 3px 7px;
+  border-radius: 2px;
+}
 .heart {
   position: absolute;
   top: 10px;
@@ -562,9 +573,12 @@ button { cursor: pointer; }
 .product { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 32px; padding: 12px 0 48px; }
 .gallery { background: var(--card); position: relative; }
 .gallery img { width: 100%; height: 520px; object-fit: contain; background: var(--card); }
-.thumbs { display: flex; gap: 8px; margin-top: 10px; overflow: auto; }
-.thumbs img { width: 72px; height: 72px; object-fit: cover; background: var(--card); cursor: pointer; border: 1px solid transparent; }
+.thumbs { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.thumbs img { width: 100%; height: 72px; object-fit: cover; background: var(--card); cursor: pointer; border: 1px solid transparent; }
 .thumbs img.on { border-color: var(--navy); }
+@media (max-width: 720px) {
+  .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 .buybox { border: 1px solid var(--line); padding: 20px; }
 .views { color: var(--muted); font-size: 13px; }
 .buybox h1 { margin: 6px 0 4px; font-size: 26px; }

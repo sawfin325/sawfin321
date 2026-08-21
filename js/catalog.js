@@ -28,6 +28,7 @@ function makeListing(brand, n) {
   if (condition.startsWith("Used") && !cats.includes("preowned")) cats.push("preowned");
   if (/automatic/i.test(seed.movement) && !cats.includes("automatic")) cats.push("automatic");
   const bi = brandIndex(brand);
+  const gallery = galleryPaths(brand, seed.model);
   return {
     id: `w-${bi}-${n}`,
     brand,
@@ -35,8 +36,8 @@ function makeListing(brand, n) {
     ref: seed.ref,
     year,
     price,
-    image: "assets/watches/" + seed.img,
-    images: ["assets/watches/" + seed.img],
+    image: gallery[n % 8],
+    images: gallery,
     cats,
     movement: seed.movement,
     case: seed.case,

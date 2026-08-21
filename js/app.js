@@ -35,6 +35,7 @@ function makeListing(brand, n) {
   if (condition.startsWith("Used") && !cats.includes("preowned")) cats.push("preowned");
   if (/automatic/i.test(seed.movement) && !cats.includes("automatic")) cats.push("automatic");
   const bi = brandIndex(brand);
+  const gallery = galleryPaths(brand, seed.model);
   return {
     id: `w-${bi}-${n}`,
     brand,
@@ -42,8 +43,8 @@ function makeListing(brand, n) {
     ref: seed.ref,
     year,
     price,
-    image: "assets/watches/" + seed.img,
-    images: ["assets/watches/" + seed.img],
+    image: gallery[n % 8],
+    images: gallery,
     cats,
     movement: seed.movement,
     case: seed.case,
@@ -323,11 +324,13 @@ function footerHTML() {
 
 function watchCard(w) {
   const on = favs().includes(w.id) ? " on" : "";
+  const shots = (w.images && w.images.length) || 1;
   return `
   <article class="watch-card">
     <div class="media">
       <button class="heart${on}" type="button" data-fav="${w.id}" aria-label="Save">♥</button>
       <a href="listing.html?id=${encodeURIComponent(w.id)}"><img src="${w.image}" alt="${w.brand} ${w.model}" /></a>
+      <span class="shot-count">${shots} photos</span>
     </div>
     <div class="watch-meta">
       <a href="listing.html?id=${encodeURIComponent(w.id)}">
@@ -494,8 +497,8 @@ function renderListing() {
     <div class="crumbs wrap"><a href="index.html">Home</a> / <a href="search.html?brand=${encodeURIComponent(w.brand)}">${w.brand} watches</a> / ${w.model}</div>
     <div class="product wrap">
       <div>
-        <div class="gallery"><img id="main-photo" src="${w.image}" alt="${w.brand} ${w.model}"></div>
-        <div class="thumbs"><img class="on" src="${w.image}" alt=""></div>
+        <div class="gallery"><img id="main-photo" src="${(w.images && w.images[0]) || w.image}" alt="${w.brand} ${w.model}"></div>
+        <div class="thumbs">${(w.images || [w.image]).map((src, i) => `<img class="${i === 0 ? "on" : ""}" src="${src}" alt="${w.brand} ${w.model} · photo ${i + 1}">`).join("")}</div>
       </div>
       <aside class="buybox">
         <div class="views">${w.views.toLocaleString()} views in 48 hours</div>
@@ -542,6 +545,13 @@ function renderListing() {
     </section>`;
   $("[data-buy]")?.addEventListener("click", () => {
     toast("Buyer Protection checkout is a demo — no payment is taken.");
+  });
+  $all(".thumbs img", root).forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const main = $("#main-photo");
+      if (main) main.src = thumb.getAttribute("src");
+      $all(".thumbs img", root).forEach((t) => t.classList.toggle("on", t === thumb));
+    });
   });
 }
 
