@@ -25,6 +25,7 @@ KEEP_PACKS = {
     "gauri-heritage-moon",
     "rolex-yacht-master-40",
     "rolex-sea-dweller",
+    "seiko-prospex-diver",
     "rolex-submariner-date",
     "rolex-daytona",
     "rolex-datejust-36",
@@ -122,6 +123,7 @@ ANGLE_PREFIX = {
     "gauri-heritage-moon": "gauri-heritage",
     "rolex-yacht-master-40": "rolex-ym",
     "rolex-sea-dweller": "rolex-sd",
+    "seiko-prospex-diver": "seiko-prospex",
 }
 
 
