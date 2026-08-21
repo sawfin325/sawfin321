@@ -666,6 +666,7 @@ function renderPulse() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  mountScene();
   mountChrome();
   const page = document.body.dataset.page;
   if (page === "home") renderHome();
