@@ -295,7 +295,7 @@ function headerHTML() {
         </div>
       </div>
       <a class="nav-link" href="deals.html">Best Deals</a>
-      <a class="nav-link" href="magazine.html">Magazine</a>
+      <a class="nav-link" href="magazine.html">Blog</a>
       <a class="nav-link" href="collection.html">Watch Collection</a>
       <a class="nav-link" href="pulse.html">ChronoPulse</a>
       <a class="nav-link" href="faq.html">FAQ</a>
@@ -428,6 +428,17 @@ function mountChrome() {
     toast("You are subscribed.");
     news.reset();
   });
+  if (!$(".wa-float")) {
+    const wa = document.createElement("a");
+    wa.className = "wa-float";
+    wa.href = `${CONTACT.whatsapp}?text=${encodeURIComponent("Hello, I want to buy a watch from luxerywatchsales.")}`;
+    wa.target = "_blank";
+    wa.rel = "noopener";
+    wa.setAttribute("aria-label", "Chat on WhatsApp");
+    wa.title = "Chat on WhatsApp";
+    wa.innerHTML = `<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M19.1 17.5c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.7-1.4-3.7-3.2-.2-.3 0-.5.1-.6.2-.2.3-.4.5-.6.1-.2.2-.3.2-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2 3.2 4.9 4.4 1.8.8 2.5.8 3.4.7.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.2.1-1.3-.1-.2-.2-.2-.5-.3zM16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.1 1.6 5.9L4 29l8.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.3l-.4-.2-4.9 1 1-4.8-.2-.4A9.7 9.7 0 0 1 6.2 15C6.2 9.6 10.6 5.2 16 5.2S25.8 9.6 25.8 15 21.4 24.8 16 24.8z"/></svg>`;
+    document.body.appendChild(wa);
+  }
 }
 
 function uniqueByModel(list) {
@@ -441,6 +452,20 @@ function uniqueByModel(list) {
 }
 
 function renderHome() {
+  const feature = $("#featured-blog");
+  if (feature) {
+    const a = makePost(0);
+    feature.innerHTML = `
+      <a class="featured-blog-card" href="article.html?id=${a.id}">
+        <img src="${a.image}" alt="">
+        <div class="featured-blog-copy">
+          <div class="eyebrow">Journal · ${BLOG_COUNT.toLocaleString()} essays</div>
+          <h1>${a.title}</h1>
+          <p>${a.excerpt}</p>
+          <span class="btn btn-light">Read ${a.wordCount.toLocaleString()} words</span>
+        </div>
+      </a>`;
+  }
   const brands = $("#popular-brands");
   if (brands) brands.innerHTML = BRANDS.slice(0, 10).map((b) =>
     `<a class="brand-card" href="search.html?brand=${encodeURIComponent(b.name)}">${b.name}</a>`
@@ -462,9 +487,7 @@ function renderHome() {
     `<article class="review"><div class="stars">★★★★★</div><p>“${r.text}”</p><div class="who"><div class="avatar">${r.name[0]}</div><div>${r.name}<br>${r.loc}</div></div></article>`
   ).join("");
   const mag = $("#magazine-grid");
-  if (mag) mag.innerHTML = ARTICLES.map((a) =>
-    `<a class="article" href="article.html?id=${a.id}"><img src="${a.image}" alt=""><div class="tag">${a.tag}</div><h3>${a.title}</h3><div class="byline">${a.author} · ${a.date} · ${a.read}</div></a>`
-  ).join("");
+  if (mag) mag.innerHTML = [1, 2, 3, 4, 5, 6].map((n) => blogCard(makePost(n))).join("");
   const ig = $("#ig-grid");
   if (ig) ig.innerHTML = INSTAGRAM.map((src) => `<img src="${src}" alt="luxerywatchsales on Instagram">`).join("");
   const vids = $("#video-grid");
@@ -616,24 +639,48 @@ function renderBrands() {
 function renderMagazine() {
   const el = $("#magazine-list");
   if (!el) return;
-  el.innerHTML = ARTICLES.map((a) =>
-    `<a class="article" href="article.html?id=${a.id}"><img src="${a.image}" alt=""><div class="tag">${a.tag}</div><h3>${a.title}</h3><div class="byline">${a.author} · ${a.date} · ${a.read}</div></a>`
-  ).join("");
+  const result = queryBlog();
+  const count = $("#blog-count");
+  if (count) count.textContent = `${result.total.toLocaleString()} journal essays · page ${result.page} of ${result.pages.toLocaleString()}`;
+  const heading = $("#blog-heading");
+  if (heading) heading.textContent = "The luxerywatchsales journal";
+  el.innerHTML = result.items.map(blogCard).join("");
+  const pager = $("#blog-pager");
+  if (pager) {
+    const { page, pages } = result;
+    const href = (p) => (p > 1 ? `magazine.html?page=${p}` : "magazine.html");
+    const links = [];
+    if (page > 1) {
+      links.push(`<a href="${href(1)}">First</a>`);
+      links.push(`<a href="${href(page - 1)}">Previous</a>`);
+    }
+    const from = Math.max(1, page - 2);
+    const to = Math.min(pages, page + 2);
+    for (let i = from; i <= to; i++) {
+      links.push(i === page ? `<span class="on">${i}</span>` : `<a href="${href(i)}">${i}</a>`);
+    }
+    if (page < pages) {
+      links.push(`<a href="${href(page + 1)}">Next</a>`);
+      links.push(`<a href="${href(pages)}">Last</a>`);
+    }
+    pager.innerHTML = links.join("");
+  }
 }
 
 function renderArticle() {
   const el = $("#article");
   if (!el) return;
-  const a = ARTICLES.find((x) => x.id === params().get("id")) || ARTICLES[0];
-  document.title = `${a.title} | luxerywatchsales Magazine`;
+  const a = getPostById(params().get("id"));
+  document.title = `${a.title} | luxerywatchsales`;
   el.innerHTML = `
-    <div class="crumbs"><a href="index.html">Home</a> / <a href="magazine.html">Magazine</a> / ${a.tag}</div>
+    <div class="crumbs"><a href="index.html">Home</a> / <a href="magazine.html">Journal</a> / ${a.tag}</div>
     <p class="tag">${a.tag}</p>
     <h1>${a.title}</h1>
-    <p class="byline">${a.author} · ${a.date} · ${a.read}</p>
+    <p class="byline">${a.author} · ${a.date} · ${a.read} · ${a.wordCount.toLocaleString()} words</p>
     <img src="${a.image}" alt="" style="width:100%;max-height:420px;object-fit:cover;margin:18px 0">
-    <p style="font-size:18px;max-width:720px">${a.body}</p>
-    <p style="max-width:720px;color:var(--muted)">Original magazine copy for this demo. Not copied from Chrono24 editorial.</p>`;
+    <div class="blog-body">${a.bodyParas.map((p) => `<p>${p}</p>`).join("")}</div>
+    <p style="margin-top:28px"><a class="btn" href="search.html?brand=${encodeURIComponent(a.brand)}">Shop ${a.brand}</a>
+    <a class="btn btn-outline" href="${CONTACT.whatsapp}?text=${encodeURIComponent("Hello, I read " + a.title + " and I want to buy a " + a.brand + " " + a.model + ".")}" target="_blank" rel="noopener">Ask on WhatsApp</a></p>`;
 }
 
 function renderCollection() {
