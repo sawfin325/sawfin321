@@ -36,6 +36,9 @@ body {
   overflow-x: hidden;
 }
 body > *:not(#bg-3d) { position: relative; z-index: 1; }
+#site-header { z-index: 50; }
+body > .wa-float { z-index: 90; }
+body > .toast { z-index: 80; }
 
 #bg-3d {
   position: fixed;
@@ -252,7 +255,8 @@ button { cursor: pointer; }
   padding: 10px 0;
   z-index: 50;
 }
-.nav-item:hover > .dropdown { display: block; }
+.nav-item:hover > .dropdown,
+.nav-item.open > .dropdown { display: block; }
 .dropdown a, .dropdown button {
   display: block;
   width: 100%;
@@ -276,7 +280,8 @@ button { cursor: pointer; }
   padding: 28px 0 32px;
   z-index: 60;
 }
-.nav-item.has-mega:hover .mega { display: block; }
+.nav-item.has-mega:hover .mega,
+.nav-item.has-mega.open .mega { display: block; }
 .mega-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1.1fr;

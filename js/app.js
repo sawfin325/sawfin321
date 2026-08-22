@@ -408,9 +408,16 @@ function mountChrome() {
   if (menu) menu.addEventListener("click", () => $("#main-nav").classList.toggle("open"));
   document.body.addEventListener("click", (e) => {
     const buy = e.target.closest(".has-mega > .nav-link");
-    if (buy && window.matchMedia("(max-width: 980px)").matches) {
+    if (buy) {
       e.preventDefault();
-      buy.parentElement.classList.toggle("open");
+      const item = buy.parentElement;
+      const open = item.classList.contains("open");
+      $all(".nav-item.open").forEach((el) => el.classList.remove("open"));
+      if (!open) item.classList.add("open");
+      return;
+    }
+    if (!e.target.closest(".nav-item")) {
+      $all(".nav-item.open").forEach((el) => el.classList.remove("open"));
     }
   });
   document.body.addEventListener("click", (e) => {
@@ -452,20 +459,6 @@ function uniqueByModel(list) {
 }
 
 function renderHome() {
-  const feature = $("#featured-blog");
-  if (feature) {
-    const a = makePost(0);
-    feature.innerHTML = `
-      <a class="featured-blog-card" href="article.html?id=${a.id}">
-        <img src="${a.image}" alt="">
-        <div class="featured-blog-copy">
-          <div class="eyebrow">Journal · ${BLOG_COUNT.toLocaleString()} essays</div>
-          <h1>${a.title}</h1>
-          <p>${a.excerpt}</p>
-          <span class="btn btn-light">Read ${a.wordCount.toLocaleString()} words</span>
-        </div>
-      </a>`;
-  }
   const brands = $("#popular-brands");
   if (brands) brands.innerHTML = BRANDS.slice(0, 10).map((b) =>
     `<a class="brand-card" href="search.html?brand=${encodeURIComponent(b.name)}">${b.name}</a>`
