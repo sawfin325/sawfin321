@@ -25,15 +25,68 @@ def img(key, alt):
     return f'<img src="{IMG[key]}" alt="{alt}" loading="lazy">'
 
 
-def product_img(pup, alt, depth=0):
-    src = pup.get("photo") or IMG.get(pup.get("img", ""), "")
+def product_photos(pup):
+    photos = list(pup.get("photos") or [])
+    if pup.get("photo") and pup["photo"] not in photos:
+        photos.insert(0, pup["photo"])
+    return photos
+
+
+def resolve_src(src, depth=0):
     if src and not src.startswith("http"):
-        src = prefix(depth) + src
-    return f'<img src="{src}" alt="{alt}" loading="lazy">'
+        return prefix(depth) + src
+    return src
 
 
-# Real products are added from owner photos. Sample listings stay empty until photos arrive.
-PUPPIES = []
+def product_img(pup, alt, depth=0):
+    photos = product_photos(pup)
+    if photos:
+        src = resolve_src(photos[0], depth)
+        return f'<img src="{src}" alt="{alt}" loading="lazy">'
+    tone = pup.get("tone", "cream")
+    return f'<div class="photo-wait photo-wait-{tone}" aria-label="{alt}"><span>{pup["name"]}</span></div>'
+
+
+def gallery_html(pup):
+    photos = product_photos(pup)
+    if not photos:
+        return ""
+    thumbs = "\n".join(
+        f'<img src="{resolve_src(src, 1)}" alt="{pup["name"]} photo">' for src in photos
+    )
+    return f'<div class="gallery">{thumbs}</div>'
+
+
+PUPPIES = [
+    {
+        "slug": "blue-merle",
+        "name": "Blue Merle",
+        "color": "Blue merle",
+        "sex": "To confirm",
+        "age": "Puppy",
+        "weight": "Teacup size",
+        "status": "Available",
+        "price": "Inquire",
+        "tone": "merle",
+        "photos": [],
+        "temperament": "Tiny, fluffy, and alert, with a rare merle coat and a bright blue eye.",
+        "bio": "Product 1. A blue-merle Pomeranian puppy with a black-and-silver coat, tan points, and heterochromia — one ice-blue eye and one dark eye. Photos will appear here as soon as the owner files are attached.",
+    },
+    {
+        "slug": "cream",
+        "name": "Cream",
+        "color": "Cream",
+        "sex": "To confirm",
+        "age": "Puppy",
+        "weight": "Teacup size",
+        "status": "Available",
+        "price": "Inquire",
+        "tone": "cream",
+        "photos": [],
+        "temperament": "A round teddy-bear coat, calm face, and a classic cream puffball look.",
+        "bio": "Product 2. An exceptionally fluffy cream Pomeranian with a spherical teddy-bear coat, dark bead eyes, and a soft pinkish-brown nose. This listing is ready for the five cream-puppy photos the owner sent.",
+    },
+]
 
 
 BLOGS = [
@@ -350,9 +403,23 @@ def puppy_page(pup):
         if pup["status"] == "Available"
         else '<a class="btn" href="../puppies.html">See other puppies</a>'
     )
+    gallery = gallery_html(pup)
+    others_block = (
+        f'''<section class="section">
+  <div class="wrap">
+    <div class="section-head"><h2>Other puppies</h2><a class="btn ghost" href="../puppies.html">All puppies</a></div>
+    <div class="grid grid-3">{others}</div>
+  </div>
+</section>'''
+        if others
+        else ""
+    )
     body = f'''<section class="page-hero">
   <div class="wrap puppy-hero">
-    <div class="frame">{product_img(pup, pup["name"] + " the Pomeranian", 1)}</div>
+    <div>
+      <div class="frame">{product_img(pup, pup["name"] + " the Pomeranian", 1)}</div>
+      {gallery}
+    </div>
     <div>
       <p class="eyebrow">{pup["color"]} · {pup["sex"]}</p>
       <h1>{pup["name"]}</h1>
@@ -390,12 +457,7 @@ def puppy_page(pup):
     <p>Pickup is welcome by appointment. If you need delivery, see our <a href="../shipping.html">shipping and delivery information</a>.</p>
   </div>
 </section>
-<section class="section">
-  <div class="wrap">
-    <div class="section-head"><h2>Other puppies</h2><a class="btn ghost" href="../puppies.html">All puppies</a></div>
-    <div class="grid grid-3">{others}</div>
-  </div>
-</section>'''
+{others_block}'''
     return page(pup["name"], 1, "puppies", body)
 
 
