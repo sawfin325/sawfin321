@@ -399,6 +399,28 @@ function filterWatches() {
   return queryCatalog().items;
 }
 
+function placeMega() {
+  const header = $(".header");
+  const mega = $(".mega");
+  if (!header || !mega) return;
+  if (window.matchMedia("(max-width: 980px)").matches) {
+    mega.style.top = "";
+    mega.style.maxHeight = "";
+    return;
+  }
+  const bottom = Math.ceil(header.getBoundingClientRect().bottom);
+  mega.style.top = `${bottom}px`;
+  mega.style.maxHeight = `calc(100vh - ${bottom}px)`;
+}
+
+function closeMenus() {
+  $all(".nav-item.open").forEach((el) => {
+    el.classList.remove("open");
+    const btn = el.querySelector("[data-menu-panel]");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  });
+}
+
 function mountChrome() {
   const h = $("#site-header");
   const f = $("#site-footer");
@@ -412,25 +434,22 @@ function mountChrome() {
       e.preventDefault();
       const item = trigger.closest(".nav-item");
       const open = item.classList.contains("open");
-      $all(".nav-item.open").forEach((el) => {
-        el.classList.remove("open");
-        const btn = el.querySelector("[data-menu-panel]");
-        if (btn) btn.setAttribute("aria-expanded", "false");
-      });
+      closeMenus();
       if (!open) {
         item.classList.add("open");
         trigger.setAttribute("aria-expanded", "true");
+        placeMega();
       }
       return;
     }
-    if (!e.target.closest(".nav-item")) {
-      $all(".nav-item.open").forEach((el) => {
-        el.classList.remove("open");
-        const btn = el.querySelector("[data-menu-panel]");
-        if (btn) btn.setAttribute("aria-expanded", "false");
-      });
-    }
+    if (!e.target.closest(".nav-item")) closeMenus();
   });
+  document.body.addEventListener("mouseover", (e) => {
+    if (e.target.closest(".has-mega")) placeMega();
+  });
+  window.addEventListener("scroll", placeMega, { passive: true });
+  window.addEventListener("resize", placeMega);
+  placeMega();
   document.body.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-fav]");
     if (!btn) return;
