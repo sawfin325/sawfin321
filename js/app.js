@@ -1,0 +1,1022 @@
+const CART_KEY = "pallethaven-cart";
+const USERS_KEY = "pallethaven-users";
+const SESSION_KEY = "pallethaven-session";
+const ORDERS_KEY = "pallethaven-orders";
+const LISTINGS_KEY = "pallethaven-listings";
+const BLOG_KEY = "pallethaven-blog";
+const HIDDEN_BLOG_KEY = "pallethaven-blog-hidden";
+const ADMIN_KEY = "pallethaven-admin";
+const CONTACT_INFO = (typeof CONTACT !== "undefined" && CONTACT) || {
+  email: "Eu.wholesalestock@gmail.com",
+  phone: "+49 1577 8431615",
+  wa: "4915778431615"
+};
+const ADMIN_INFO = (typeof ADMIN !== "undefined" && ADMIN) || {
+  email: "eu.wholesalestock@gmail.com",
+  hash: ""
+};
+function mailHref(subject, body) {
+  let url = "mailto:" + CONTACT_INFO.email;
+  const q = [];
+  if (subject) q.push("subject=" + encodeURIComponent(subject));
+  if (body) q.push("body=" + encodeURIComponent(body));
+  return q.length ? url + "?" + q.join("&") : url;
+}
+function waHref(text) {
+  let url = "https://wa.me/" + CONTACT_INFO.wa;
+  return text ? url + "?text=" + encodeURIComponent(text) : url;
+}
+function lotImage(p) {
+  if (p && p.image && /^data:image\//.test(p.image)) return p.image;
+  return p && p.image ? imgSrc(p.image) : "";
+}
+
+function euro(n) {
+  return "€" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function imgSrc(path) {
+  if (!path) return "";
+  if (/^https?:/i.test(path)) return path;
+  return ROOT + path;
+}
+function productHref(slug) {
+  return ROOT + "product.html?p=" + encodeURIComponent(slug);
+}
+function priceLabel(p) {
+  if (p.priceMax && p.priceMax > p.price + 0.009) return euro(p.price) + " – " + euro(p.priceMax);
+  return euro(p.price);
+}
+
+let PRODUCT_INDEX = null;
+function loadListings() {
+  try { return JSON.parse(localStorage.getItem(LISTINGS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveListings(list) { localStorage.setItem(LISTINGS_KEY, JSON.stringify(list)); }
+function loadBlogPosts() {
+  try { return JSON.parse(localStorage.getItem(BLOG_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveBlogPosts(list) { localStorage.setItem(BLOG_KEY, JSON.stringify(list)); }
+function loadHiddenBlog() {
+  try { return JSON.parse(localStorage.getItem(HIDDEN_BLOG_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveHiddenBlog(list) { localStorage.setItem(HIDDEN_BLOG_KEY, JSON.stringify(list)); }
+function isAdmin() {
+  if (localStorage.getItem(ADMIN_KEY) === "1") return true;
+  const user = currentUser();
+  return !!(user && user.email && ADMIN_INFO.email && user.email.toLowerCase() === ADMIN_INFO.email);
+}
+function setAdmin(on) {
+  if (on) localStorage.setItem(ADMIN_KEY, "1");
+  else localStorage.removeItem(ADMIN_KEY);
+}
+function deleteBlog(slug) {
+  saveBlogPosts(loadBlogPosts().filter(p => p.slug !== slug));
+  const hidden = loadHiddenBlog();
+  if (!hidden.includes(slug)) {
+    hidden.push(slug);
+    saveHiddenBlog(hidden);
+  }
+}
+function visiblePublicPosts() {
+  const hidden = new Set(loadHiddenBlog());
+  return loadBlogPosts().filter(p => !hidden.has(p.slug));
+}
+function visibleEditorialPosts() {
+  const hidden = new Set(loadHiddenBlog());
+  return (typeof BLOG_POSTS !== "undefined" ? BLOG_POSTS : []).filter(p => !hidden.has(p.slug));
+}
+function blogDeleteBtn(slug) {
+  if (!isAdmin() || !slug) return "";
+  return `<button class="btn btn-sm blog-delete" type="button" data-delete-blog="${esc(slug)}">Delete</button>`;
+}
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function allProducts() {
+  return PRODUCTS.concat(loadListings());
+}
+function productBySlug(slug) {
+  const listed = loadListings().find(p => p.slug === slug);
+  if (listed) return listed;
+  if (!PRODUCT_INDEX) PRODUCT_INDEX = new Map(PRODUCTS.map(p => [p.slug, p]));
+  return PRODUCT_INDEX.get(slug);
+}
+
+function getCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveCart(items) {
+  localStorage.setItem(CART_KEY, JSON.stringify(items));
+  renderCartUI();
+}
+function cartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
+function cartTotal() {
+  return getCart().reduce((s, i) => {
+    const p = productBySlug(i.slug);
+    return s + (p ? p.price * i.qty : 0);
+  }, 0);
+}
+function addToCart(slug, qty = 1) {
+  const items = getCart();
+  const found = items.find(i => i.slug === slug);
+  if (found) found.qty += qty;
+  else items.push({ slug, qty });
+  saveCart(items);
+}
+function setQty(slug, qty) {
+  qty = Math.max(0, parseInt(qty, 10) || 0);
+  let items = getCart();
+  if (qty <= 0) items = items.filter(i => i.slug !== slug);
+  else {
+    const found = items.find(i => i.slug === slug);
+    if (found) found.qty = qty;
+  }
+  saveCart(items);
+}
+function categoryBySlug(slug) { return CATEGORIES.find(c => c.slug === slug); }
+function productsInCategory(slug) {
+  return allProducts().filter(p => p.category === slug);
+}
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ph:" + text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+function loadUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveUsers(users) { localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
+function getSession() {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY) || "null");
+  } catch { return null; }
+}
+function setSession(user, remember) {
+  const session = { email: user.email, name: user.name, company: user.company || "" };
+  const raw = JSON.stringify(session);
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
+  (remember ? localStorage : sessionStorage).setItem(SESSION_KEY, raw);
+}
+function currentUser() {
+  const session = getSession();
+  if (!session) return null;
+  return loadUsers().find(u => u.email === session.email) || session;
+}
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveOrder(order) {
+  const orders = loadOrders();
+  orders.unshift(order);
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
+
+function renderCartUI() {
+  const count = cartCount();
+  document.querySelectorAll("[data-cart-count]").forEach(el => el.textContent = count);
+  document.querySelectorAll("[data-cart-total]").forEach(el => el.textContent = euro(cartTotal()));
+  const mini = document.querySelector("[data-mini-cart]");
+  if (!mini) return;
+  const items = getCart();
+  if (!items.length) {
+    mini.innerHTML = `<div class="mini-empty"><p>No products in the cart.</p><a class="btn btn-dark btn-sm" href="${ROOT}winkel.html">Back to shop</a></div>`;
+    return;
+  }
+  mini.innerHTML = items.map(i => {
+    const p = productBySlug(i.slug);
+    if (!p) return "";
+    return `<div class="mini-item"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><div>${i.qty} × ${euro(p.price)}</div></div><strong>${euro(p.price * i.qty)}</strong></div>`;
+  }).join("") + `<div class="mini-total"><span>Subtotal</span><span>${euro(cartTotal())}</span></div>
+    <p class="form-note">Order by email or WhatsApp.</p>
+    <a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by email / WhatsApp</a>`;
+}
+
+function productOrderText(p, qty) {
+  qty = qty || 1;
+  return [
+    "PalletHaven-order",
+    "",
+    "Lot: " + p.name,
+    "Category: " + (p.category || ""),
+    "Qty: " + qty,
+    "Price: " + priceLabel(p),
+    p.short ? "Description: " + p.short : "",
+    "",
+    "I want to order this lot by email/WhatsApp."
+  ].filter(Boolean).join("\n");
+}
+
+function showOrderPrompt(p, qty) {
+  const modal = document.getElementById("order-modal");
+  if (!modal || !p) return;
+  const qtyN = qty || 1;
+  const msg = productOrderText(p, qtyN);
+  const body = modal.querySelector("[data-order-prompt-body]");
+  if (body) {
+    body.innerHTML = `<p><strong>${p.name}</strong></p>
+      <p class="price">${priceLabel(p)} · qty ${qtyN}</p>
+      <p>Choose how you want to send this order. We do not take online payment.</p>`;
+  }
+  const mail = modal.querySelector("[data-order-mail]");
+  const wa = modal.querySelector("[data-order-wa]");
+  if (mail) {
+    mail.href = mailHref("Order: " + p.name, msg);
+    mail.innerHTML = `Order by email<br><small>${CONTACT_INFO.email}</small>`;
+  }
+  if (wa) {
+    wa.href = waHref(msg);
+    wa.innerHTML = `Order by WhatsApp<br><small>${CONTACT_INFO.phone}</small>`;
+  }
+  modal.classList.add("open");
+}
+
+function orderActionsHtml(p, qty) {
+  const msg = productOrderText(p, qty || 1);
+  return `<div class="order-via">
+    <p class="form-note">Order this lot by email or WhatsApp.</p>
+    <p><a class="btn btn-dark btn-block" href="${mailHref("Order: " + p.name, msg)}">Order by email<br><small>${CONTACT_INFO.email}</small></a></p>
+    <p><a class="btn btn-dark btn-block" href="${waHref(msg)}">Order by WhatsApp<br><small>${CONTACT_INFO.phone}</small></a></p>
+  </div>`;
+}
+
+function productCard(p) {
+  const cat = categoryBySlug(p.category);
+  return `<article class="product-card">
+    <div class="thumb">
+      <a href="${productHref(p.slug)}"><img src="${lotImage(p)}" alt="${p.name}"></a>
+      <button class="quick" data-quick="${p.slug}">Quick view</button>
+    </div>
+    <div class="info">
+      <p class="product-cat">${cat ? cat.name : (p.category || "Community")}</p>
+      <h3><a href="${productHref(p.slug)}">${p.name}</a></h3>
+      <div class="price">${priceLabel(p)}</div>
+      <button class="btn btn-dark btn-sm btn-block" type="button" data-order="${p.slug}">Order</button>
+    </div>
+  </article>`;
+}
+
+function openQuick(slug) {
+  const p = productBySlug(slug);
+  if (!p) return;
+  const modal = document.getElementById("quick-modal");
+  modal.querySelector("img").src = lotImage(p);
+  modal.querySelector("img").alt = p.name;
+  modal.querySelector("h3").textContent = p.name;
+  modal.querySelector("[data-q-price]").textContent = priceLabel(p);
+  modal.querySelector("[data-q-desc]").textContent = p.short || "";
+  const mail = modal.querySelector("[data-q-mail]");
+  const wa = modal.querySelector("[data-q-wa]");
+  const msg = productOrderText(p, 1);
+  if (mail) mail.href = mailHref("Order: " + p.name, msg);
+  if (wa) wa.href = waHref(msg);
+  modal.querySelector("[data-q-link]").href = productHref(p.slug);
+  modal.classList.add("open");
+}
+
+function openLoginModal(e) {
+  if (e) e.preventDefault();
+  if (currentUser()) {
+    location.href = ROOT + "account.html";
+    return;
+  }
+  document.getElementById("login-modal")?.classList.add("open");
+}
+
+function renderHeaderAuth() {
+  const user = currentUser();
+  document.querySelectorAll("[data-open-login]").forEach(el => {
+    if (user) {
+      el.textContent = user.name ? user.name.split(" ")[0] : "Account";
+      el.classList.add("is-logged-in");
+    } else {
+      el.textContent = "LOGIN";
+      el.classList.remove("is-logged-in");
+    }
+  });
+}
+
+function showFormMessage(form, ok, text) {
+  const box = form.querySelector("[data-result]");
+  if (!box) return;
+  box.className = "alert " + (ok ? "alert-ok" : "alert-err");
+  box.textContent = text;
+}
+
+function bindAuth() {
+  document.querySelectorAll("[data-open-login]").forEach(el => {
+    el.addEventListener("click", openLoginModal);
+  });
+  document.querySelectorAll("[data-close-auth]").forEach(el => {
+    el.addEventListener("click", () => document.getElementById("login-modal")?.classList.remove("open"));
+  });
+  document.getElementById("login-modal")?.addEventListener("click", (e) => {
+    if (e.target.id === "login-modal") e.target.classList.remove("open");
+  });
+
+  document.querySelectorAll("[data-login]").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim().toLowerCase();
+      const password = form.password.value;
+      const remember = form.remember?.checked;
+      const users = loadUsers();
+      const user = users.find(u => u.email === email);
+      if (!user) {
+        showFormMessage(form, false, "No account found with this email address. Create an account first.");
+        return;
+      }
+      const hash = await sha256(password);
+      if (hash !== user.passwordHash) {
+        showFormMessage(form, false, "Incorrect password.");
+        return;
+      }
+      setSession(user, remember);
+      document.getElementById("login-modal")?.classList.remove("open");
+      location.href = ROOT + "account.html";
+    });
+  });
+
+  document.querySelectorAll("[data-register]").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim().toLowerCase();
+      const company = form.company?.value.trim() || "";
+      const password = form.password.value;
+      const password2 = form.password2.value;
+      if (password.length < 6) {
+        showFormMessage(form, false, "Choose a password of at least 6 characters.");
+        return;
+      }
+      if (password !== password2) {
+        showFormMessage(form, false, "Passwords do not match.");
+        return;
+      }
+      const users = loadUsers();
+      if (users.some(u => u.email === email)) {
+        showFormMessage(form, false, "This email address already has an account. Log in on the left.");
+        return;
+      }
+      const user = {
+        id: crypto.randomUUID(),
+        name,
+        email,
+        company,
+        passwordHash: await sha256(password),
+        createdAt: new Date().toISOString()
+      };
+      users.push(user);
+      saveUsers(users);
+      setSession(user, true);
+      document.getElementById("login-modal")?.classList.remove("open");
+      location.href = ROOT + "account.html";
+    });
+  });
+}
+
+function renderAccount() {
+  const panel = document.querySelector("[data-account-panel]");
+  if (!panel) return;
+  const user = currentUser();
+  const forms = document.querySelector("[data-auth-forms]");
+  if (!user) {
+    panel.innerHTML = "";
+    if (forms) forms.style.display = "";
+    return;
+  }
+  if (forms) forms.style.display = "none";
+  const orders = loadOrders().filter(o => o.email === user.email);
+  const orderHtml = orders.length
+    ? `<table class="cart-table"><thead><tr><th>Date</th><th>Lots</th><th>Total</th><th>Status</th></tr></thead><tbody>` +
+      orders.map(o => `<tr><td>${o.date}</td><td>${o.items.map(i => i.name + " × " + i.qty).join("<br>")}</td><td>${euro(o.total)}</td><td>${o.status}</td></tr>`).join("") +
+      `</tbody></table>`
+    : `<p>You have no orders yet. <a href="${ROOT}winkel.html">Browse the shop</a>.</p>`;
+  panel.innerHTML = `
+    <div class="account-dash">
+      <h2>Welcome, ${user.name || user.email}</h2>
+      <p>You are logged in as <strong>${user.email}</strong>${user.company ? " · " + user.company : ""}.</p>
+      <p><button class="btn btn-dark btn-sm" id="logout">Log out</button></p>
+      <h3>Account details</h3>
+      <form data-account-update class="account-update">
+        <div class="row">
+          <div><label>Name</label><input name="name" value="${user.name || ""}" required></div>
+          <div><label>Company name</label><input name="company" value="${user.company || ""}"></div>
+        </div>
+        <label>New password (optional)</label>
+        <input name="password" type="password" minlength="6" autocomplete="new-password">
+        <p><button class="btn btn-dark" type="submit">Save details</button></p>
+        <div data-result></div>
+      </form>
+      <h3>Orders</h3>
+      ${orderHtml}
+    </div>`;
+  document.getElementById("logout")?.addEventListener("click", () => {
+    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
+    location.href = ROOT + "account.html";
+  });
+  document.querySelector("[data-account-update]")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const users = loadUsers();
+    const idx = users.findIndex(u => u.email === user.email);
+    if (idx < 0) return;
+    users[idx].name = form.name.value.trim();
+    users[idx].company = form.company.value.trim();
+    if (form.password.value) users[idx].passwordHash = await sha256(form.password.value);
+    saveUsers(users);
+    setSession(users[idx], true);
+    showFormMessage(form, true, "Details saved.");
+    renderHeaderAuth();
+  });
+}
+
+function bindCommon() {
+  const menuBtn = document.querySelector("[data-menu]");
+  const mobile = document.querySelector("[data-mobile]");
+  if (menuBtn && mobile) menuBtn.addEventListener("click", () => mobile.classList.toggle("open"));
+
+  document.querySelectorAll("[data-search]").forEach(form => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = form.querySelector("input").value.trim();
+      location.href = ROOT + "winkel.html?s=" + encodeURIComponent(q);
+    });
+  });
+
+  document.body.addEventListener("click", (e) => {
+    const q = e.target.closest("[data-quick]");
+    if (q) { e.preventDefault(); openQuick(q.dataset.quick); }
+    const orderBtn = e.target.closest("[data-order]");
+    if (orderBtn) {
+      e.preventDefault();
+      const qtyEl = orderBtn.closest("[data-product-page], .product-card, .modal")?.querySelector("[data-qty]")
+        || document.querySelector("[data-qty]");
+      const qty = qtyEl ? parseInt(qtyEl.value, 10) || 1 : 1;
+      showOrderPrompt(productBySlug(orderBtn.dataset.order), qty);
+    }
+    const add = e.target.closest("[data-add]");
+    if (add) {
+      e.preventDefault();
+      const qtyEl = document.querySelector("[data-qty]");
+      const qty = qtyEl ? parseInt(qtyEl.value, 10) || 1 : 1;
+      addToCart(add.dataset.add, qty);
+      showOrderPrompt(productBySlug(add.dataset.add), qty);
+    }
+    if (e.target.closest("[data-close]")) document.getElementById("quick-modal")?.classList.remove("open");
+    if (e.target.closest("[data-close-order]")) document.getElementById("order-modal")?.classList.remove("open");
+    if (e.target.id === "order-modal") e.target.classList.remove("open");
+    const del = e.target.closest("[data-delete-blog]");
+    if (del) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+      const slug = del.dataset.deleteBlog;
+      if (!slug || !confirm("Delete this blog post? It will disappear from the site.")) return;
+      deleteBlog(slug);
+      if (location.pathname.includes("/blog/") || location.pathname.endsWith("bericht.html")) {
+        location.href = ROOT + "blog.html";
+        return;
+      }
+      renderBlogGrid();
+    }
+    if (e.target.closest("[data-admin-logout]")) {
+      e.preventDefault();
+      setAdmin(false);
+      renderBlogGrid();
+    }
+  });
+
+  document.querySelectorAll("[data-contact]").forEach(form => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const box = form.querySelector("[data-result]");
+      box.className = "alert alert-ok";
+      box.textContent = "Thanks. We will reply via " + CONTACT_INFO.email + " or WhatsApp " + CONTACT_INFO.phone + ".";
+      form.reset();
+    });
+  });
+
+  renderCartUI();
+  renderHeaderAuth();
+  bindAuth();
+}
+
+function renderShop() {
+  const grid = document.querySelector("[data-shop-grid]");
+  if (!grid) return;
+  const params = new URLSearchParams(location.search);
+  const q = (params.get("s") || "").toLowerCase();
+  const cat = grid.dataset.category || params.get("categorie") || "";
+  const sort = document.querySelector("[data-sort]");
+  const pager = document.querySelector("[data-pager]");
+  const PAGE_SIZE = 24;
+  let list = cat ? productsInCategory(cat) : allProducts().slice();
+  if (q) {
+    list = list.filter(p => (p.name + " " + (p.short || "") + " " + p.category).toLowerCase().includes(q));
+    const hint = document.querySelector("[data-search-hint]");
+    if (hint) hint.textContent = `Search results for “${params.get("s")}”`;
+  }
+  const apply = () => {
+    let shown = list.slice();
+    const v = sort ? sort.value : "featured";
+    if (v === "price-asc") shown.sort((a, b) => a.price - b.price);
+    if (v === "price-desc") shown.sort((a, b) => b.price - a.price);
+    if (v === "name") shown.sort((a, b) => a.name.localeCompare(b.name, "en"));
+    const pages = Math.max(1, Math.ceil(shown.length / PAGE_SIZE));
+    const page = Math.min(pages, Math.max(1, parseInt(params.get("page") || "1", 10)));
+    const slice = shown.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    grid.innerHTML = slice.map(productCard).join("") || "<p>No pallets found.</p>";
+    const count = document.querySelector("[data-result-count]");
+    if (count) count.textContent = shown.length.toLocaleString("en-US") + " results · page " + page + " of " + pages;
+    if (pager) pager.innerHTML = pagerHtml(page, pages);
+  };
+  if (sort) sort.addEventListener("change", () => {
+    const u = new URL(location.href);
+    u.searchParams.set("page", "1");
+    history.replaceState({}, "", u);
+    params.set("page", "1");
+    apply();
+  });
+  apply();
+}
+
+function pagerHtml(page, pages) {
+  if (pages <= 1) return "";
+  const url = (n) => {
+    const u = new URL(location.href);
+    u.searchParams.set("page", n);
+    return u.pathname + u.search;
+  };
+  const items = [];
+  const add = (n, label, disabled, active) => {
+    if (disabled) items.push(`<span class="off">${label}</span>`);
+    else if (active) items.push(`<span class="active">${label}</span>`);
+    else items.push(`<a href="${url(n)}">${label}</a>`);
+  };
+  add(page - 1, "Previous", page <= 1, false);
+  const start = Math.max(1, page - 3);
+  const end = Math.min(pages, page + 3);
+  if (start > 1) add(1, "1", false, page === 1);
+  if (start > 2) items.push("<span class='off'>…</span>");
+  for (let n = start; n <= end; n++) add(n, String(n), false, n === page);
+  if (end < pages - 1) items.push("<span class='off'>…</span>");
+  if (end < pages) add(pages, String(pages), false, page === pages);
+  add(page + 1, "Next", page >= pages, false);
+  return items.join("");
+}
+
+function renderProductPage() {
+  const mount = document.querySelector("[data-product-page]");
+  if (!mount) return;
+  const slug = new URLSearchParams(location.search).get("p");
+  const p = productBySlug(slug);
+  if (!p) {
+    mount.innerHTML = `<p>This lot was not found.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Back to shop</a></p>`;
+    return;
+  }
+  const cat = categoryBySlug(p.category) || { slug: "winkel", name: p.category || "Community pallet" };
+  document.title = p.name + " – PalletHaven";
+  const crumbs = document.querySelector("[data-product-crumbs]");
+  if (crumbs) crumbs.innerHTML = `<a href="${ROOT}index.html">Home</a> / <a href="${ROOT}winkel.html">Shop</a> / ${cat.name}`;
+  mount.innerHTML = `
+    <div class="product-layout">
+      <div class="gallery"><img src="${lotImage(p)}" alt="${p.name}"></div>
+      <div>
+        <p class="product-cat">${cat.name}</p>
+        <h1>${p.name}</h1>
+        <p class="price" style="font-size:1.6rem">${priceLabel(p)}</p>
+        <p>${p.short || ""}</p>
+        <div class="meta-list">
+          <div><span>Category</span><span>${cat.name}</span></div>
+          <div><span>Condition</span><span>${p.condition || "See lot description"}</span></div>
+          <div><span>Piece count</span><span>${p.items != null ? p.items : "Not specified"}</span></div>
+          <div><span>Estimated MSRP</span><span>${p.msrp ? euro(p.msrp) : "Unknown / no manifest"}</span></div>
+          <div><span>Shipping</span><span>LTL freight, quote after address</span></div>
+        </div>
+        <div class="qty-row">
+          <label>Qty <input type="number" min="1" value="1" data-qty></label>
+        </div>
+        ${orderActionsHtml(p, 1)}
+      </div>
+    </div>`;
+  const qtyInput = mount.querySelector("[data-qty]");
+  qtyInput?.addEventListener("change", () => {
+    const qty = parseInt(qtyInput.value, 10) || 1;
+    const box = mount.querySelector(".order-via");
+    if (box) box.outerHTML = orderActionsHtml(p, qty);
+  });
+}
+
+function renderCartPage() {
+  const table = document.querySelector("[data-cart-table]");
+  if (!table) return;
+  const draw = () => {
+    const items = getCart();
+    if (!items.length) {
+      table.innerHTML = `<p>Your cart is empty.</p><p><a class="btn btn-dark" href="${ROOT}winkel.html">Back to shop</a></p>`;
+      document.querySelector("[data-cart-totals]")?.replaceChildren();
+      return;
+    }
+    table.innerHTML = `<table class="cart-table"><thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>` +
+      items.map(i => {
+        const p = productBySlug(i.slug);
+        if (!p) return "";
+        return `<tr>
+          <td style="display:flex;gap:12px;align-items:center"><img src="${lotImage(p)}" alt=""><div><a href="${productHref(p.slug)}">${p.name}</a><br><button class="btn btn-sm" data-remove="${p.slug}">Delete</button></div></td>
+          <td>${euro(p.price)}</td>
+          <td><input type="number" min="1" value="${i.qty}" data-qty-slug="${p.slug}" style="width:70px"></td>
+          <td>${euro(p.price * i.qty)}</td>
+        </tr>`;
+      }).join("") + `</tbody></table>`;
+    const totals = document.querySelector("[data-cart-totals]");
+    if (totals) totals.innerHTML = `<div class="totals"><h3>Order by email or WhatsApp</h3><div><span>Subtotal</span><span>${euro(cartTotal())}</span></div><div><span>Shipping</span><span>Quote after address</span></div><div class="grand"><span>Total</span><span>${euro(cartTotal())}</span></div><p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by email</a><p><a class="btn btn-dark btn-block" href="${ROOT}afrekenen.html">Order by WhatsApp</a></p></div>`;
+  };
+  table.addEventListener("change", (e) => {
+    const slug = e.target.dataset.qtySlug;
+    if (slug) setQty(slug, e.target.value);
+    draw();
+  });
+  table.addEventListener("click", (e) => {
+    const rm = e.target.closest("[data-remove]");
+    if (rm) { setQty(rm.dataset.remove, 0); draw(); }
+  });
+  draw();
+}
+
+function orderMessage(form, items) {
+  const lines = items.map(i => {
+    const p = productBySlug(i.slug);
+    return `- ${p ? p.name : i.slug} × ${i.qty} (${p ? euro(p.price * i.qty) : ""})`;
+  });
+  return [
+    "New PalletHaven order",
+    "",
+    "Contact: " + form.name.value,
+    "E-mail: " + form.email.value,
+    "Phone: " + form.phone.value,
+    "Company: " + (form.company?.value || "-"),
+    "Address: " + form.address.value + ", " + form.zip.value + " " + form.city.value + ", " + form.country.value,
+    "",
+    "Lots:",
+    ...lines,
+    "",
+    "Total: " + euro(cartTotal()),
+    form.note?.value ? "Note: " + form.note.value : ""
+  ].filter(Boolean).join("\n");
+}
+
+function renderCheckout() {
+  const form = document.querySelector("[data-checkout]");
+  if (!form) return;
+  const summary = document.querySelector("[data-order-summary]");
+  const items = getCart();
+  if (!items.length) {
+    form.innerHTML = `<p>Your cart is empty.</p><a class="btn btn-dark" href="${ROOT}winkel.html">Go to the shop</a>`;
+    return;
+  }
+  const user = currentUser();
+  if (user) {
+    if (form.name) form.name.value = user.name || "";
+    if (form.email) form.email.value = user.email || "";
+    if (form.company) form.company.value = user.company || "";
+  }
+  if (summary) {
+    summary.innerHTML = items.map(i => {
+      const p = productBySlug(i.slug);
+      return `<div><span>${p.name} × ${i.qty}</span><strong>${euro(p.price * i.qty)}</strong></div>`;
+    }).join("") + `<div class="grand"><span>Total</span><span>${euro(cartTotal())}</span></div>
+      <p><a class="btn btn-dark btn-block" href="${mailHref("PalletHaven order", orderMessage(form, items))}">Order by email</a></p>
+      <p><a class="btn btn-dark btn-block" href="${waHref(orderMessage(form, items))}">Order by WhatsApp</a></p>
+      <p class="form-note">${CONTACT_INFO.email}<br>WhatsApp ${CONTACT_INFO.phone}</p>`;
+  }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const via = (e.submitter && e.submitter.value) || "email";
+    const email = (form.email.value || "").trim().toLowerCase();
+    const msg = orderMessage(form, getCart());
+    saveOrder({
+      id: crypto.randomUUID(),
+      email,
+      name: form.name.value,
+      date: new Date().toLocaleDateString("en-GB"),
+      total: cartTotal(),
+      status: "Sent via " + (via === "whatsapp" ? "WhatsApp" : "email"),
+      items: getCart().map(i => {
+        const p = productBySlug(i.slug);
+        return { slug: i.slug, name: p ? p.name : i.slug, qty: i.qty, price: p ? p.price : 0 };
+      })
+    });
+    localStorage.removeItem(CART_KEY);
+    renderCartUI();
+    if (via === "whatsapp") location.href = waHref(msg);
+    else location.href = mailHref("PalletHaven order", msg);
+    form.innerHTML = `<div class="alert alert-ok"><strong>Send your order now by email or WhatsApp.</strong>
+      <p>E-mail: <a href="${mailHref("PalletHaven order", msg)}">${CONTACT_INFO.email}</a></p>
+      <p>WhatsApp: <a href="${waHref(msg)}">${CONTACT_INFO.phone}</a></p>
+      ${user ? "<p>You can find this order under My account.</p>" : ""}</div>`;
+  });
+}
+
+function renderCommunity() {
+  const select = document.querySelector("[data-post-pallet] select[name=category]");
+  if (select && !select.options.length) {
+    CATEGORIES.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.slug;
+      opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  }
+  const grid = document.querySelector("[data-community-grid]");
+  if (grid) {
+    const list = loadListings();
+    grid.innerHTML = list.length ? list.map(productCard).join("") : "<p>No public pallets yet. List the first one.</p>";
+  }
+  const form = document.querySelector("[data-post-pallet]");
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = "1";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const file = form.photo?.files?.[0];
+    let image = "";
+    if (file) {
+      image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    const listing = {
+      slug: "community-" + Date.now(),
+      name: form.title.value.trim(),
+      category: form.category.value,
+      price: parseFloat(form.price.value) || 0,
+      priceMax: parseFloat(form.price.value) || 0,
+      items: form.items.value ? parseInt(form.items.value, 10) : null,
+      condition: "Community listing",
+      image,
+      short: form.description.value.trim() + " · Contact: " + form.name.value + " " + (form.phone.value || form.email.value),
+      seller: { name: form.name.value.trim(), email: form.email.value.trim(), phone: form.phone.value.trim() }
+    };
+    const list = loadListings();
+    list.unshift(listing);
+    saveListings(list);
+    showFormMessage(form, true, "Your pallet is live in the shop and on this page.");
+    form.reset();
+    renderCommunity();
+  });
+}
+
+function fileToJpegDataUrl(file, maxW = 1200) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxW / Math.max(img.width, 1));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      img.onerror = () => resolve(reader.result);
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function editorialBlogCard(post) {
+  const href = ROOT + "blog/" + post.slug + ".html";
+  return `<article class="blog-card">
+    <a href="${href}"><img src="${ROOT}${post.image}" alt="${esc(post.title)}"></a>
+    <div class="body">
+      <p class="meta">${esc(post.date)}</p>
+      <h3><a href="${href}">${esc(post.title)}</a></h3>
+      <p>${esc(post.excerpt)}</p>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Read article</a>${blogDeleteBtn(post.slug)}</p>
+    </div>
+  </article>`;
+}
+
+function communityBlogCard(post) {
+  const href = ROOT + "bericht.html?p=" + encodeURIComponent(post.slug);
+  const img = post.image
+    ? `<img src="${post.image}" alt="${esc(post.title)}">`
+    : `<img src="${ROOT}assets/products/pallet-amazon-boxes.jpg" alt="">`;
+  return `<article class="blog-card">
+    <a href="${href}">${img}</a>
+    <div class="body">
+      <p class="meta">${esc(post.date)} · ${esc(post.author)}</p>
+      <h3><a href="${href}">${esc(post.title)}</a></h3>
+      <p>${esc((post.body || "").slice(0, 160))}${(post.body || "").length > 160 ? "…" : ""}</p>
+      <p class="blog-card-actions"><a class="btn btn-dark btn-sm" href="${href}">Read article</a>${blogDeleteBtn(post.slug)}</p>
+    </div>
+  </article>`;
+}
+
+function renderBlogGrid() {
+  const grid = document.querySelector("[data-blog-grid]");
+  if (grid) {
+    const html = visiblePublicPosts().map(communityBlogCard).join("") + visibleEditorialPosts().map(editorialBlogCard).join("");
+    grid.innerHTML = html || "<p>No posts yet.</p>";
+  }
+  const home = document.querySelector("[data-blog-home]");
+  if (home) {
+    const mixed = visiblePublicPosts().map(communityBlogCard).concat(visibleEditorialPosts().map(editorialBlogCard));
+    home.innerHTML = mixed.slice(0, 3).join("") || "";
+  }
+  renderBlogAdmin();
+  guardHiddenEditorial();
+}
+
+function renderBlogAdmin() {
+  document.querySelectorAll("[data-blog-admin]").forEach(box => {
+    const slug = box.dataset.deleteSlug || new URLSearchParams(location.search).get("p") || "";
+    if (isAdmin()) {
+      box.innerHTML = `<div class="alert alert-ok">Admin is active. Click <strong>Delete</strong> on a post you do not want.
+        ${slug ? blogDeleteBtn(slug) : ""}
+        <button class="btn btn-sm" type="button" data-admin-logout>Close admin</button></div>`;
+      return;
+    }
+    box.innerHTML = `<form class="blog-admin-form" data-admin-login>
+      <p><strong>Admin</strong> — delete blog posts you do not want.</p>
+      <label>Admin password</label>
+      <div class="row">
+        <div><input type="password" name="password" required autocomplete="current-password"></div>
+        <div><button class="btn btn-dark btn-sm" type="submit">Open admin</button></div>
+      </div>
+      <div data-result></div>
+    </form>`;
+    const form = box.querySelector("[data-admin-login]");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const hash = await sha256Admin(form.password.value);
+      if (!ADMIN_INFO.hash || hash !== ADMIN_INFO.hash) {
+        showFormMessage(form, false, "Incorrect password.");
+        return;
+      }
+      setAdmin(true);
+      renderBlogGrid();
+    });
+  });
+}
+
+async function sha256Admin(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ph-admin:" + text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function guardHiddenEditorial() {
+  const article = document.querySelector("[data-editorial-slug]");
+  if (!article) return;
+  const slug = article.dataset.editorialSlug;
+  if (!slug || !loadHiddenBlog().includes(slug)) return;
+  article.innerHTML = `<p>This blog post has been deleted.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a></p>`;
+}
+
+function renderBlog() {
+  renderBlogGrid();
+  const form = document.querySelector("[data-post-blog]");
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = "1";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = form.title.value.trim();
+    const body = form.body.value.trim();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    if (!title || !body || !name || !email) {
+      showFormMessage(form, false, "Fill in title, article, name and email.");
+      return;
+    }
+    const file = form.photo?.files?.[0];
+    let image = "";
+    try {
+      if (file) image = await fileToJpegDataUrl(file);
+    } catch {
+      showFormMessage(form, false, "The photo could not be read. Try another image or publish without a photo.");
+      return;
+    }
+    const post = {
+      slug: "blog-" + Date.now(),
+      title,
+      body,
+      author: name,
+      email,
+      date: new Date().toLocaleDateString("en-GB"),
+      image
+    };
+    const list = loadBlogPosts();
+    list.unshift(post);
+    try {
+      saveBlogPosts(list);
+    } catch {
+      post.image = "";
+      list[0] = post;
+      try {
+        saveBlogPosts(list);
+      } catch {
+        showFormMessage(form, false, "Save failed. Try a shorter text or no photo.");
+        return;
+      }
+    }
+    showFormMessage(form, true, "Your blog post is live at the top of the list.");
+    form.reset();
+    renderBlogGrid();
+    document.querySelector("[data-blog-grid]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function renderBlogArticle() {
+  const mount = document.querySelector("[data-blog-article]");
+  if (!mount) return;
+  const slug = new URLSearchParams(location.search).get("p");
+  const post = visiblePublicPosts().find(p => p.slug === slug);
+  if (!post) {
+    mount.innerHTML = `<p>This post was not found or has been deleted.</p><p><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a></p>`;
+    renderBlogAdmin();
+    return;
+  }
+  const titleEl = document.querySelector("[data-blog-title]");
+  if (titleEl) titleEl.textContent = post.title;
+  document.title = post.title + " – PalletHaven";
+  const paras = esc(post.body).split(/\n+/).map(p => `<p>${p}</p>`).join("");
+  const img = post.image ? `<img class="featured" src="${post.image}" alt="${esc(post.title)}">` : "";
+  mount.innerHTML = `${img}<p class="meta">${esc(post.date)} · ${esc(post.author)}</p>${paras}
+    <p class="blog-card-actions"><a class="btn btn-dark" href="${ROOT}blog.html">Back to blog</a>${blogDeleteBtn(post.slug)}</p>`;
+  const adminBox = document.querySelector("[data-blog-admin]");
+  if (adminBox) adminBox.dataset.deleteSlug = post.slug;
+  renderBlogAdmin();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindCommon();
+  renderShop();
+  renderProductPage();
+  renderCartPage();
+  renderCheckout();
+  renderAccount();
+  renderCommunity();
+  renderBlog();
+  renderBlogArticle();
+  bindLanguage();
+});
+
+const LANG_KEY = "pallethaven-lang";
+function currentLang() {
+  try { return localStorage.getItem(LANG_KEY) || "en"; }
+  catch { return "en"; }
+}
+function bindLanguage() {
+  const lang = currentLang();
+  document.querySelectorAll("[data-site-lang]").forEach(sel => {
+    sel.value = lang;
+    if (sel.dataset.bound) return;
+    sel.dataset.bound = "1";
+    sel.addEventListener("change", () => {
+      try { localStorage.setItem(LANG_KEY, sel.value); } catch {}
+      applySiteLanguage(sel.value);
+    });
+  });
+  if (lang && lang !== "en") applySiteLanguage(lang);
+}
+function applySiteLanguage(tl) {
+  document.querySelectorAll("[data-site-lang]").forEach(sel => { sel.value = tl; });
+  if (tl === "en") {
+    document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    if (document.querySelector(".translated-ltr, .translated-rtl")) location.reload();
+    return;
+  }
+  document.cookie = "googtrans=/en/" + tl + ";path=/";
+  loadGoogleTranslate();
+}
+function loadGoogleTranslate() {
+  if (document.getElementById("google-translate-script")) return;
+  const s = document.createElement("script");
+  s.id = "google-translate-script";
+  s.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  s.async = true;
+  s.defer = true;
+  s.onerror = function () { s.remove(); };
+  document.head.appendChild(s);
+}
+function googleTranslateElementInit() {
+  if (!window.google || !google.translate || !google.translate.TranslateElement) return;
+  new google.translate.TranslateElement({
+    pageLanguage: "en",
+    includedLanguages: "en,nl,de,fr,es,it,pl,pt,ro,tr,ar,zh-CN,ru,uk,sv,da,nb,fi,cs,hu,el,ja,ko,hi,id,vi,th,bg,hr,sk,sl,lt,lv,et",
+    autoDisplay: false
+  }, "google_translate_element");
+}
+window.googleTranslateElementInit = googleTranslateElementInit;
