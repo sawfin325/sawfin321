@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search luxury watches | luxerywatchsales</title>
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/app.css?v=15" />
+</head>
+<body data-page="search">
+  <a class="wa-float" href="https://wa.me/19132785312?text=Hello%2C%20I%20want%20to%20buy%20a%20watch%20from%20luxerywatchsales." target="_blank" rel="noopener">WhatsApp</a>
+  <div id="site-header"></div>
+  <div class="page-head wrap">
+    <div class="crumbs"><a href="index.html">Home</a> / Search</div>
+    <h1 id="search-heading">Luxury watches</h1>
+    <div class="feat-row" id="featured-models" hidden></div>
+    <div class="chips" id="filter-chips" hidden></div>
+  </div>
+  <div class="layout wrap">
+    <form class="filters" method="get" action="search.html">
+      <h3>Filters</h3>
+      <label>Brand
+        <select name="brand" id="filter-brand"></select>
+      </label>
+      <label>Category
+        <select name="cat">
+          <option value="">All</option>
+          <option value="mens">Men's Watches</option>
+          <option value="womens">Women's Watches</option>
+          <option value="preowned">Pre-Owned Watches</option>
+          <option value="mechanical">Mechanical Watches</option>
+          <option value="automatic">Automatic Watches</option>
+          <option value="vintage">Vintage Watches</option>
+          <option value="chrono">Chronographs</option>
+          <option value="dive">Diving Watches</option>
+          <option value="pilot">Pilot's Watches</option>
+          <option value="military">Military Watches</option>
+          <option value="swiss">Swiss Watches</option>
+          <option value="affordable">Affordable Watches</option>
+          <option value="gold">Gold Watches</option>
+          <option value="skeleton">Skeleton Watches</option>
+          <option value="moonphase">Moon Phase</option>
+          <option value="pocket">Pocket Watches</option>
+        </select>
+      </label>
+      <div class="range">
+        <label>Min <input type="number" name="min" placeholder="0" /></label>
+        <label>Max <input type="number" name="max" placeholder="200000" /></label>
+      </div>
+      <input type="hidden" name="q" />
+      <p><button class="btn btn-block" type="submit">Apply</button></p>
+    </form>
+    <div>
+      <div class="toolbar">
+        <strong id="result-count"></strong>
+        <form method="get">
+          <select name="sort" onchange="this.form.submit()">
+            <option value="popular">Most popular</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="new">Newest production</option>
+          </select>
+        </form>
+      </div>
+      <div class="watch-grid" id="results"></div>
+      <nav class="pager" id="pager"></nav>
+    </div>
+  </div>
+  <div id="site-footer"></div>
+  <script src="js/data.js?v=10"></script>
+  <script src="js/scene.js?v=10"></script>
+  <script src="js/blog.js?v=10"></script>
+  <script src="js/app.js?v=15"></script>
+  <script>
+    (function () {
+      const p = new URLSearchParams(location.search);
+      document.querySelector('.filters [name=q]').value = p.get('q') || '';
+      document.querySelector('.filters [name=cat]').value = p.get('cat') || '';
+      document.querySelector('.filters [name=min]').value = p.get('min') || '';
+      document.querySelector('.filters [name=max]').value = p.get('max') || '';
+      const sort = document.querySelector('[name=sort]');
+      if (p.get('sort')) sort.value = p.get('sort');
+      ['q','brand','cat','min','max'].forEach((k) => {
+        if (p.get(k)) {
+          const i = document.createElement('input');
+          i.type = 'hidden'; i.name = k; i.value = p.get(k);
+          sort.form.appendChild(i);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
