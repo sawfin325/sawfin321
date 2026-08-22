@@ -33,17 +33,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.45;
-  overflow-x: hidden;
 }
-body > *:not(#bg-3d) { position: relative; z-index: 1; }
-#site-header { z-index: 50; }
-body > .wa-float {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 90;
-}
-body > .toast { position: fixed; z-index: 80; }
+body > *:not(#bg-3d):not(.wa-float):not(.toast) { position: relative; z-index: 1; }
+#site-header { z-index: 80; overflow: visible; }
+.header { overflow: visible; }
 
 #bg-3d {
   position: fixed;
@@ -52,6 +45,7 @@ body > .toast { position: fixed; z-index: 80; }
   pointer-events: none;
   overflow: hidden;
 }
+#bg-3d * { pointer-events: none; }
 #bg-3d canvas {
   position: absolute;
   inset: 0;
@@ -246,6 +240,12 @@ button { cursor: pointer; }
   font-size: 14px;
   color: #fff;
 }
+button.nav-link {
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
 .nav-link:hover, .nav-item:hover > .nav-link { background: var(--chrome-2); }
 .caret { font-size: 9px; opacity: 0.7; }
 .dropdown {
@@ -258,7 +258,7 @@ button { cursor: pointer; }
   border: 1px solid var(--chrome-line);
   box-shadow: var(--shadow);
   padding: 10px 0;
-  z-index: 50;
+  z-index: 200;
 }
 .nav-item:hover > .dropdown,
 .nav-item.open > .dropdown { display: block; }
@@ -283,10 +283,11 @@ button { cursor: pointer; }
   border-top: 1px solid var(--chrome-line);
   box-shadow: 0 18px 40px rgba(0,0,0,.35);
   padding: 28px 0 32px;
-  z-index: 60;
+  z-index: 200;
 }
 .nav-item.has-mega:hover .mega,
-.nav-item.has-mega.open .mega { display: block; }
+.nav-item.has-mega.open .mega,
+.nav-item.has-mega:focus-within .mega { display: block; }
 .mega-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1.1fr;
@@ -810,10 +811,12 @@ button { cursor: pointer; }
   padding: 12px 16px; z-index: 80; display: none;
 }
 .wa-float {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 90;
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: 99999 !important;
   height: 44px;
   padding: 0 28px;
   border-radius: 999px;

@@ -253,7 +253,7 @@ function headerHTML() {
     </div>
     <nav class="nav wrap" id="main-nav">
       <div class="nav-item has-mega">
-        <a class="nav-link" href="search.html">Buy a watch <span class="caret">▾</span></a>
+        <button class="nav-link" type="button" data-menu-panel aria-expanded="false">Buy a watch <span class="caret">▾</span></button>
         <div class="mega">
           <div class="wrap mega-grid">
             <div>
@@ -287,7 +287,7 @@ function headerHTML() {
         </div>
       </div>
       <div class="nav-item">
-        <a class="nav-link" href="sell.html">Sell a watch <span class="caret">▾</span></a>
+        <button class="nav-link" type="button" data-menu-panel aria-expanded="false">Sell a watch <span class="caret">▾</span></button>
         <div class="dropdown">
           <a href="sell.html">Start a listing</a>
           <a href="sell.html#how">How selling works</a>
@@ -300,7 +300,7 @@ function headerHTML() {
       <a class="nav-link" href="pulse.html">ChronoPulse</a>
       <a class="nav-link" href="faq.html">FAQ</a>
       <div class="nav-item">
-        <a class="nav-link" href="security.html">Security <span class="caret">▾</span></a>
+        <button class="nav-link" type="button" data-menu-panel aria-expanded="false">Security <span class="caret">▾</span></button>
         <div class="dropdown">
           <a href="security.html">Buyer Protection</a>
           <a href="security.html#escrow">Escrow Service</a>
@@ -407,17 +407,28 @@ function mountChrome() {
   const menu = $("[data-menu]");
   if (menu) menu.addEventListener("click", () => $("#main-nav").classList.toggle("open"));
   document.body.addEventListener("click", (e) => {
-    const buy = e.target.closest(".has-mega > .nav-link");
-    if (buy) {
+    const trigger = e.target.closest("[data-menu-panel]");
+    if (trigger) {
       e.preventDefault();
-      const item = buy.parentElement;
+      const item = trigger.closest(".nav-item");
       const open = item.classList.contains("open");
-      $all(".nav-item.open").forEach((el) => el.classList.remove("open"));
-      if (!open) item.classList.add("open");
+      $all(".nav-item.open").forEach((el) => {
+        el.classList.remove("open");
+        const btn = el.querySelector("[data-menu-panel]");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      });
+      if (!open) {
+        item.classList.add("open");
+        trigger.setAttribute("aria-expanded", "true");
+      }
       return;
     }
     if (!e.target.closest(".nav-item")) {
-      $all(".nav-item.open").forEach((el) => el.classList.remove("open"));
+      $all(".nav-item.open").forEach((el) => {
+        el.classList.remove("open");
+        const btn = el.querySelector("[data-menu-panel]");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      });
     }
   });
   document.body.addEventListener("click", (e) => {
@@ -442,7 +453,6 @@ function mountChrome() {
     wa.target = "_blank";
     wa.rel = "noopener";
     wa.setAttribute("aria-label", "WhatsApp");
-    wa.title = "WhatsApp";
     wa.textContent = "WhatsApp";
     document.body.appendChild(wa);
   }
