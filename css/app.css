@@ -796,7 +796,7 @@ button { cursor: pointer; }
 .faq summary { cursor: pointer; font-weight: 600; }
 
 .toast {
-  position: fixed; bottom: 92px; right: 20px; background: var(--navy); color: #fff;
+  position: fixed; bottom: 78px; right: 20px; background: var(--navy); color: #fff;
   padding: 12px 16px; z-index: 80; display: none;
 }
 .wa-float {
@@ -804,17 +804,20 @@ button { cursor: pointer; }
   right: 20px;
   bottom: 20px;
   z-index: 90;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 999px;
   background: #25d366;
-  display: flex;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
 }
-.wa-float svg { width: 32px; height: 32px; }
-.wa-float:hover { transform: scale(1.06); background: #20bd5a; }
+.wa-float:hover { background: #20bd5a; color: #fff; }
 .featured-blog { padding: 18px 0 8px; }
 .featured-blog-card {
   width: min(var(--max), calc(100% - 40px));

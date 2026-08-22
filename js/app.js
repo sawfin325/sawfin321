@@ -434,9 +434,9 @@ function mountChrome() {
     wa.href = `${CONTACT.whatsapp}?text=${encodeURIComponent("Hello, I want to buy a watch from luxerywatchsales.")}`;
     wa.target = "_blank";
     wa.rel = "noopener";
-    wa.setAttribute("aria-label", "Chat on WhatsApp");
-    wa.title = "Chat on WhatsApp";
-    wa.innerHTML = `<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M19.1 17.5c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.7-1.4-3.7-3.2-.2-.3 0-.5.1-.6.2-.2.3-.4.5-.6.1-.2.2-.3.2-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2 3.2 4.9 4.4 1.8.8 2.5.8 3.4.7.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.2.1-1.3-.1-.2-.2-.2-.5-.3zM16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.1 1.6 5.9L4 29l8.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.3l-.4-.2-4.9 1 1-4.8-.2-.4A9.7 9.7 0 0 1 6.2 15C6.2 9.6 10.6 5.2 16 5.2S25.8 9.6 25.8 15 21.4 24.8 16 24.8z"/></svg>`;
+    wa.setAttribute("aria-label", "WhatsApp");
+    wa.title = "WhatsApp";
+    wa.textContent = "WhatsApp";
     document.body.appendChild(wa);
   }
 }
