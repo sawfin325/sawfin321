@@ -37,8 +37,13 @@ body {
 }
 body > *:not(#bg-3d) { position: relative; z-index: 1; }
 #site-header { z-index: 50; }
-body > .wa-float { z-index: 90; }
-body > .toast { z-index: 80; }
+body > .wa-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+}
+body > .toast { position: fixed; z-index: 80; }
 
 #bg-3d {
   position: fixed;
