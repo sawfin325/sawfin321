@@ -658,7 +658,25 @@ textarea {
   display: none;
 }
 
-@media (max-width: 980px) {
+.empty-catalog {
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  border-radius: 28px;
+  padding: 48px 36px;
+  text-align: center;
+}
+
+.empty-catalog h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  max-width: 640px;
+  margin: 0 auto 12px;
+}
+
+.empty-catalog .btn {
+  margin-top: 12px;
+}
+
+@media (max-width: 1080px) {
   .split,
   .puppy-hero,
   .contact-panel,

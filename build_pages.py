@@ -25,86 +25,15 @@ def img(key, alt):
     return f'<img src="{IMG[key]}" alt="{alt}" loading="lazy">'
 
 
-PUPPIES = [
-    {
-        "slug": "luna",
-        "name": "Luna",
-        "color": "Orange sable",
-        "sex": "Female",
-        "age": "10 weeks",
-        "weight": "3.4 lb",
-        "status": "Available",
-        "price": "$2,800",
-        "img": "hero",
-        "temperament": "Affectionate, bright, and already crate-comfortable.",
-        "bio": "Luna is a classic orange-sable girl with a plush coat, a fox-like expression, and a calm confidence around people. She loves lap time, short play bursts, and following her person from room to room. She is a wonderful match for a first-time Pomeranian family that wants a devoted companion.",
-    },
-    {
-        "slug": "coco",
-        "name": "Coco",
-        "color": "Chocolate",
-        "sex": "Male",
-        "age": "9 weeks",
-        "weight": "3.1 lb",
-        "status": "Available",
-        "price": "$3,200",
-        "img": "brown",
-        "temperament": "Curious, playful, and eager to learn.",
-        "bio": "Coco has a rich chocolate coat and a sparkling personality. He is the first to investigate a new toy and the last to leave a snuggle pile. He is well-started on name recognition, gentle handling, and house manners, and he will thrive with daily walks, puzzle toys, and a family that enjoys a little extra sparkle.",
-    },
-    {
-        "slug": "bella",
-        "name": "Bella",
-        "color": "Cream",
-        "sex": "Female",
-        "age": "11 weeks",
-        "weight": "3.8 lb",
-        "status": "Reserved",
-        "price": "Reserved",
-        "img": "white",
-        "temperament": "Gentle, people-oriented, and quietly confident.",
-        "bio": "Bella is a cream beauty with a soft expression and a sweet, measured way of meeting new people. She is currently reserved for her family. If you love her look, we can help match you with a similar upcoming puppy from our cream and white lines.",
-    },
-    {
-        "slug": "milo",
-        "name": "Milo",
-        "color": "Orange",
-        "sex": "Male",
-        "age": "10 weeks",
-        "weight": "3.6 lb",
-        "status": "Available",
-        "price": "$2,600",
-        "img": "tongue",
-        "temperament": "Happy, social, and full of comic timing.",
-        "bio": "Milo is the sunshine of the current litter. He greets the day with a wag, a stretch, and a request for breakfast. He is sturdy, well-socialized with children in our home, and a great choice for a family that wants a cheerful little shadow who still settles nicely after play.",
-    },
-    {
-        "slug": "pearl",
-        "name": "Pearl",
-        "color": "White",
-        "sex": "Female",
-        "age": "8 weeks",
-        "weight": "2.9 lb",
-        "status": "Available",
-        "price": "$3,400",
-        "img": "sitting",
-        "temperament": "Sensitive, intelligent, and velcro-loyal.",
-        "bio": "Pearl is a refined white girl with a powder-puff coat and an old-soul stare. She prefers a calmer household, loves being carried for short moments, and is already learning to sit for meals. She will do best with a family that enjoys grooming, indoor enrichment, and lots of gentle conversation.",
-    },
-    {
-        "slug": "ember",
-        "name": "Ember",
-        "color": "Red sable",
-        "sex": "Male",
-        "age": "12 weeks",
-        "weight": "4.1 lb",
-        "status": "Available",
-        "price": "$2,900",
-        "img": "grass",
-        "temperament": "Outgoing, athletic for his size, and people-smart.",
-        "bio": "Ember is a red-sable boy who loves the garden, a rolling ball, and a warm nap in a sun patch. He is a little further along in training than the younger pups and is ready for a family that wants weekend adventures, city walks, and a Pomeranian who still fits in a travel bag.",
-    },
-]
+def product_img(pup, alt, depth=0):
+    src = pup.get("photo") or IMG.get(pup.get("img", ""), "")
+    if src and not src.startswith("http"):
+        src = prefix(depth) + src
+    return f'<img src="{src}" alt="{alt}" loading="lazy">'
+
+
+# Real products are added from owner photos. Sample listings stay empty until photos arrive.
+PUPPIES = []
 
 
 BLOGS = [
@@ -271,7 +200,7 @@ def puppy_card(pup, depth=0):
     p = prefix(depth)
     pill = "available" if pup["status"] == "Available" else "reserved"
     return f'''<article class="puppy-card">
-  <a href="{p}puppies/{pup["slug"]}.html" class="media">{img(pup["img"], pup["name"] + " the Pomeranian puppy")}</a>
+  <a href="{p}puppies/{pup["slug"]}.html" class="media">{product_img(pup, pup["name"] + " the Pomeranian puppy", depth)}</a>
   <div class="body">
     <div class="meta">
       <span class="pill {pill}">{pup["status"]}</span>
@@ -286,8 +215,20 @@ def puppy_card(pup, depth=0):
 </article>'''
 
 
+def catalog_markup(depth=0, limit=None):
+    items = PUPPIES[:limit] if limit else PUPPIES
+    if not items:
+        p = prefix(depth)
+        return f'''<div class="empty-catalog">
+  <p class="eyebrow">Current availability</p>
+  <h2>Puppies will appear here as they are listed.</h2>
+  <p>Call {PHONE} to ask about this litter, or send a note on the contact page.</p>
+  <a class="btn" href="{p}contact.html">Inquire now</a>
+</div>'''
+    return '<div class="grid grid-3">\n' + "\n".join(puppy_card(p, depth) for p in items) + "\n</div>"
+
+
 def home():
-    cards = "\n".join(puppy_card(p) for p in PUPPIES[:3])
     posts = "\n".join(
         f'''<article class="post-card">
   <a class="media" href="blog/{b["slug"]}.html">{img(b["img"], b["title"])}</a>
@@ -340,9 +281,7 @@ def home():
       </div>
       <a class="btn ghost" href="puppies.html">View all puppies</a>
     </div>
-    <div class="grid grid-3">
-      {cards}
-    </div>
+    {catalog_markup()}
   </div>
 </section>
 <section class="section">
@@ -388,7 +327,6 @@ def home():
 
 
 def puppies_index():
-    cards = "\n".join(puppy_card(p) for p in PUPPIES)
     body = f'''<section class="page-hero">
   <div class="wrap">
     <p class="eyebrow">Meet the litter</p>
@@ -397,8 +335,8 @@ def puppies_index():
   </div>
 </section>
 <section class="section" style="padding-top:0">
-  <div class="wrap grid grid-3">
-    {cards}
+  <div class="wrap">
+    {catalog_markup()}
   </div>
 </section>'''
     return page("Available Pomeranian Puppies", 0, "puppies", body)
@@ -414,7 +352,7 @@ def puppy_page(pup):
     )
     body = f'''<section class="page-hero">
   <div class="wrap puppy-hero">
-    <div class="frame">{img(pup["img"], pup["name"] + " the Pomeranian")}</div>
+    <div class="frame">{product_img(pup, pup["name"] + " the Pomeranian", 1)}</div>
     <div>
       <p class="eyebrow">{pup["color"]} · {pup["sex"]}</p>
       <h1>{pup["name"]}</h1>
@@ -747,6 +685,10 @@ def write(path, content):
 
 
 def main():
+    puppies_dir = ROOT / "puppies"
+    if puppies_dir.exists():
+        for old in puppies_dir.glob("*.html"):
+            old.unlink()
     write(ROOT / "index.html", home())
     write(ROOT / "puppies.html", puppies_index())
     write(ROOT / "about.html", about())
