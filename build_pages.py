@@ -16,8 +16,8 @@ IMG = {
     "sitting": "https://images.unsplash.com/photo-1591946614720-90a587da4a36?auto=format&fit=crop&w=1400&q=80",
     "fluffy": "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=1400&q=80",
     "face": "https://images.unsplash.com/photo-1615751072497-5f5169febe17?auto=format&fit=crop&w=1400&q=80",
-    "portrait": "https://images.unsplash.com/photo-1517423440428-a5a00ad98d8a?auto=format&fit=crop&w=1400&q=80",
-    "cozy": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80",
+    "portrait": "https://images.unsplash.com/photo-1615751072497-5f5169febe17?auto=format&fit=crop&w=1400&q=80",
+    "cozy": "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=1400&q=80",
 }
 
 

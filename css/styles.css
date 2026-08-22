@@ -189,7 +189,9 @@ p {
 .nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .nav a {
