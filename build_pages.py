@@ -7,10 +7,10 @@ import site_content
 ROOT = Path("/workspace")
 PHONE = "+1 743-259-3337"
 PHONE_TEL = "+17432593337"
-EMAIL = "hello@evergoldpomeranians.com"
+EMAIL = "miaspomeranian@gmail.com"
 WA_BASE = "https://wa.me/17432593337"
 BRAND = "Evergold Pomeranians"
-ASSET_V = "4"
+ASSET_V = "5"
 
 
 def order_message(puppy="a Pomeranian puppy"):

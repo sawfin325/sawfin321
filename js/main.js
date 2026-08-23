@@ -5,7 +5,7 @@
   const wa = document.getElementById("order-whatsapp");
   const mail = document.getElementById("order-email");
   const waNumber = "17432593337";
-  const email = "hello@evergoldpomeranians.com";
+  const email = "miaspomeranian@gmail.com";
 
   if (toggle) {
     toggle.addEventListener("click", function () {
