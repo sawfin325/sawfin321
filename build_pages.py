@@ -57,6 +57,23 @@ def gallery_html(pup):
     return f'<div class="gallery">{thumbs}</div>'
 
 
+def _pup(slug, name, color, sex, weight, tone, folder, count, temperament, bio, status="Available"):
+    return {
+        "slug": slug,
+        "name": name,
+        "color": color,
+        "sex": sex,
+        "age": "8 weeks",
+        "weight": weight,
+        "status": status,
+        "price": "$1,250",
+        "tone": tone,
+        "photos": [f"images/products/{folder}/photo-{i}.jpg" for i in range(1, count + 1)],
+        "temperament": temperament,
+        "bio": bio,
+    }
+
+
 PUPPIES = [
     {
         "slug": "jasper",
@@ -78,20 +95,210 @@ PUPPIES = [
         "temperament": "Tiny, fluffy, and alert, with a rare merle coat and a bright blue eye.",
         "bio": "Jasper is a blue-merle Pomeranian with a black-and-silver coat, tan points, and heterochromia — one ice-blue eye and one dark eye. He is a pocket-size companion with a plush teddy coat and a curious, people-focused nature.",
     },
-    {
-        "slug": "cotton",
-        "name": "Cotton",
-        "color": "Cream",
-        "sex": "Female",
-        "age": "8 weeks",
-        "weight": "About 3 lb",
-        "status": "Available",
-        "price": "$1,250",
-        "tone": "cream",
-        "photos": [],
-        "temperament": "A round teddy-bear coat, calm face, and a classic cream puffball look.",
-        "bio": "Cotton is an exceptionally fluffy cream Pomeranian with a spherical teddy-bear coat, dark bead eyes, and a soft pinkish-brown nose. She has that classic pom-pom look and a calm, snuggly way of meeting new people.",
-    },
+    _pup(
+        "cotton",
+        "Cotton",
+        "Cream",
+        "Female",
+        "About 2.8 lb",
+        "cream",
+        "p02",
+        3,
+        "A round teddy-bear coat, calm face, and a classic cream puffball look.",
+        "Cotton is an exceptionally fluffy cream Pomeranian with a spherical teddy-bear coat, dark bead eyes, and a soft pinkish-brown nose. She has that classic pom-pom look and a calm, snuggly way of meeting new people.",
+    ),
+    _pup(
+        "cocoa",
+        "Cocoa",
+        "Chocolate and white",
+        "Male",
+        "About 3.0 lb",
+        "brown",
+        "p03",
+        4,
+        "A chocolate boy with a white chest, plush fox face, and a playful streak.",
+        "Cocoa is a chocolate-and-white Pomeranian with a dark mask, a bright white chest, and a dense teddy coat. He is eight weeks old, about three pounds, and already follows people from room to room.",
+    ),
+    _pup(
+        "patch",
+        "Patch",
+        "Parti tan and white",
+        "Female",
+        "About 2.9 lb",
+        "cream",
+        "p04",
+        5,
+        "A tan, white, and brown parti girl with a saddle coat and bright eyes.",
+        "Patch is a parti-color Pomeranian with tan, white, and brown markings and a thick fox-tail. She is curious, vocal, and happiest chasing a toy across a rug.",
+    ),
+    _pup(
+        "mist",
+        "Mist",
+        "Blue merle",
+        "Female",
+        "About 2.7 lb",
+        "merle",
+        "p05",
+        5,
+        "A merle girl with a pale eye and a thick silver-and-black coat.",
+        "Mist is a blue-merle girl with a striking pale eye and a plush silver-and-black coat. She is gentle in a lap, bold with toys, and already crate-curious after short naps.",
+    ),
+    _pup(
+        "honey",
+        "Honey",
+        "Orange cream",
+        "Female",
+        "About 2.8 lb",
+        "cream",
+        "p06",
+        5,
+        "A tan-and-cream girl with a soft nest of a coat and a sweet face.",
+        "Honey is an orange-cream Pomeranian photographed in her teepee nest. She is cuddly, food-motivated, and already offering a sit for a treat.",
+    ),
+    _pup(
+        "mocha",
+        "Mocha",
+        "Chocolate and tan",
+        "Male",
+        "About 3.1 lb",
+        "brown",
+        "p07",
+        5,
+        "A chocolate boy with tan points, a plush mane, and a bold toy drive.",
+        "Mocha is a chocolate-and-tan Pomeranian with a thick mane and tan points. He is bold with toys, gentle with children, and already learning crate naps.",
+    ),
+    _pup(
+        "snow",
+        "Snow",
+        "White",
+        "Female",
+        "About 2.6 lb",
+        "cream",
+        "p08",
+        5,
+        "A white girl with a teddy-bear face and a dense double coat.",
+        "Snow is a white Pomeranian with a round face, dark eyes, and a cloud of a coat. She is quiet in a crate nest, playful in short bursts, and deeply people-oriented.",
+    ),
+    _pup(
+        "cloud",
+        "Cloud",
+        "Cream",
+        "Female",
+        "About 2.8 lb",
+        "cream",
+        "p09",
+        5,
+        "A cream girl on a soft bed with a round fox face.",
+        "Cloud is a cream Pomeranian with a plush coat and a calm, snuggly way of meeting new people. She is food-motivated and already learning her name.",
+    ),
+    _pup(
+        "maple",
+        "Maple",
+        "Orange sable",
+        "Male",
+        "About 3.0 lb",
+        "orange",
+        "p10",
+        5,
+        "A tan-and-cream boy with a black nose and a fox-red coat.",
+        "Maple is an orange-sable boy with a black nose, cream furnishings, and a thick fox-tail. He is playful, food-motivated, and already offering a sit for a treat.",
+    ),
+    _pup(
+        "ember",
+        "Ember",
+        "Orange sable",
+        "Male",
+        "About 3.0 lb",
+        "orange",
+        "p11",
+        5,
+        "A tan boy with a possible odd eye and a thick fox-tail.",
+        "Ember is an orange-sable Pomeranian with a darker mask and a bright, curious face. He is vocal, people-focused, and happiest following you from room to room.",
+    ),
+    _pup(
+        "pearl",
+        "Pearl",
+        "White",
+        "Female",
+        "About 2.7 lb",
+        "cream",
+        "p12",
+        5,
+        "A white girl with a plush coat and a black button nose.",
+        "Pearl is a white Pomeranian with a dense double coat and a black button nose. She is gentle, crate-curious, and already walking short indoor trips.",
+    ),
+    _pup(
+        "cinnamon",
+        "Cinnamon",
+        "Orange sable",
+        "Female",
+        "About 2.9 lb",
+        "orange",
+        "p13",
+        5,
+        "An orange sable girl from the same owner photo set as Maple.",
+        "Cinnamon is an orange-sable girl with a fox-red coat and cream furnishings. The owner listing used the same photos as Maple; call for a current video so you can tell the two apart.",
+    ),
+    _pup(
+        "truffle",
+        "Truffle",
+        "Dark chocolate",
+        "Male",
+        "About 3.1 lb",
+        "brown",
+        "p14",
+        5,
+        "A dark chocolate boy with a plush mane and a fox face.",
+        "Truffle is a dark chocolate Pomeranian with a thick mane and a compact fox face. He is bold with toys, gentle in a lap, and already crate-curious.",
+    ),
+    _pup(
+        "shadow",
+        "Shadow",
+        "Sable",
+        "Male",
+        "About 3.0 lb",
+        "brown",
+        "p15",
+        5,
+        "A sable boy with a darker mask and a thick double coat.",
+        "Shadow is a sable Pomeranian with a darker mask and a dense weather coat. He is curious, vocal, and already walking a short house line.",
+    ),
+    _pup(
+        "butter",
+        "Butter",
+        "Cream",
+        "Female",
+        "About 2.8 lb",
+        "cream",
+        "p16",
+        5,
+        "A cream girl sitting up with a teddy-bear face.",
+        "Butter is a cream Pomeranian with a round teddy-bear face and a soft, dense coat. She is cuddly, food-motivated, and happiest in a lap.",
+    ),
+    _pup(
+        "brindle",
+        "Brindle",
+        "Brindle and tan",
+        "Male",
+        "About 3.2 lb",
+        "brown",
+        "p17",
+        4,
+        "A tan-and-black brindle boy with a bold coat pattern.",
+        "Brindle is a tan-and-black Pomeranian with a striking brindle pattern and a sturdy little frame. He is playful, food-motivated, and already crate-curious.",
+    ),
+    _pup(
+        "amber",
+        "Amber",
+        "Orange sable",
+        "Female",
+        "About 2.9 lb",
+        "orange",
+        "p18",
+        5,
+        "A tan sable girl with a black nose and a fox-red coat.",
+        "Amber is an orange-sable Pomeranian with a black nose, cream furnishings, and a plush fox-tail. She is gentle, people-oriented, and already learning her name.",
+    ),
 ]
 
 
@@ -340,7 +547,7 @@ def home():
       </div>
       <a class="btn ghost" href="puppies.html">View all puppies</a>
     </div>
-    {catalog_markup()}
+    {catalog_markup(limit=6)}
   </div>
 </section>
 <section class="section">
@@ -402,7 +609,9 @@ def puppies_index():
 
 
 def puppy_page(pup):
-    others = "\n".join(puppy_card(p, 1) for p in PUPPIES if p["slug"] != pup["slug"])
+    others = "\n".join(
+        puppy_card(p, 1) for p in [x for x in PUPPIES if x["slug"] != pup["slug"]][:3]
+    )
     pill = "available" if pup["status"] == "Available" else "reserved"
     cta = (
         f'<a class="btn gold" href="../contact.html">Reserve {pup["name"]}</a>'
