@@ -1,8 +1,11 @@
 (function () {
   const toggle = document.querySelector(".menu-toggle");
   const year = document.getElementById("year");
-  const form = document.getElementById("contact-form");
-  const note = document.querySelector(".form-note");
+  const puppySelect = document.getElementById("order-puppy");
+  const wa = document.getElementById("order-whatsapp");
+  const mail = document.getElementById("order-email");
+  const waNumber = "17432593337";
+  const email = "hello@evergoldpomeranians.com";
 
   if (toggle) {
     toggle.addEventListener("click", function () {
@@ -15,11 +18,44 @@
     year.textContent = String(new Date().getFullYear());
   }
 
-  if (form && note) {
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      form.reset();
-      note.style.display = "block";
-    });
+  function messageFor(puppy) {
+    return (
+      "Hello Evergold, I would like to order " +
+      puppy +
+      ". Please send the latest video, the health packet, and reservation steps."
+    );
+  }
+
+  function setOrderLinks(puppy) {
+    const text = messageFor(puppy);
+    if (wa) {
+      wa.href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(text);
+    }
+    if (mail) {
+      mail.href =
+        "mailto:" +
+        email +
+        "?subject=" +
+        encodeURIComponent("Puppy order: " + puppy) +
+        "&body=" +
+        encodeURIComponent(text);
+    }
+  }
+
+  if (puppySelect && (wa || mail)) {
+    const params = new URLSearchParams(window.location.search);
+    const wanted = (params.get("puppy") || "").toLowerCase();
+    if (wanted) {
+      Array.from(puppySelect.options).forEach(function (opt) {
+        if (opt.value.toLowerCase() === wanted || opt.text.toLowerCase().indexOf(wanted) === 0) {
+          puppySelect.value = opt.value;
+        }
+      });
+    }
+    const apply = function () {
+      setOrderLinks(puppySelect.value || "a Pomeranian puppy");
+    };
+    puppySelect.addEventListener("change", apply);
+    apply();
   }
 })();

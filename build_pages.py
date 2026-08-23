@@ -1,10 +1,32 @@
 #!/usr/bin/env python3
 from pathlib import Path
+from urllib.parse import quote
+
+import site_content
 
 ROOT = Path("/workspace")
 PHONE = "+1 743-259-3337"
 PHONE_TEL = "+17432593337"
+EMAIL = "hello@evergoldpomeranians.com"
+WA_BASE = "https://wa.me/17432593337"
 BRAND = "Evergold Pomeranians"
+
+
+def order_message(puppy="a Pomeranian puppy"):
+    return (
+        f"Hello Evergold, I would like to order {puppy}. "
+        "Please send the latest video, the health packet, and reservation steps."
+    )
+
+
+def wa_href(puppy="a Pomeranian puppy"):
+    return f"{WA_BASE}?text={quote(order_message(puppy))}"
+
+
+def mail_href(puppy="a Pomeranian puppy"):
+    subject = quote(f"Puppy order: {puppy}")
+    body = quote(order_message(puppy))
+    return f"mailto:{EMAIL}?subject={subject}&body={body}"
 
 IMG = {
     "hero": "https://images.unsplash.com/photo-1744032789697-fdc713e03595?auto=format&fit=crop&w=1800&q=80",
@@ -302,35 +324,16 @@ PUPPIES = [
 ]
 
 
+BLOG_ARTICLES = site_content.blog_articles()
 BLOGS = [
     {
-        "slug": "first-week-home",
-        "title": "The first week home with a Pomeranian puppy",
-        "date": "August 4, 2026",
-        "img": "cozy",
-        "excerpt": "A calm routine for sleep, meals, potty trips, and bonding in those first seven days.",
-    },
-    {
-        "slug": "grooming-double-coat",
-        "title": "How to care for a Pomeranian double coat",
-        "date": "July 18, 2026",
-        "img": "fluffy",
-        "excerpt": "Brushing, bathing, and the one grooming habit that prevents painful mats.",
-    },
-    {
-        "slug": "nutrition-small-breed",
-        "title": "Feeding small-breed puppies the right way",
-        "date": "June 29, 2026",
-        "img": "orange",
-        "excerpt": "Meal size, schedule, and why Pomeranians should never skip breakfast.",
-    },
-    {
-        "slug": "teacup-myths",
-        "title": "Teacup Pomeranians: what the word really means",
-        "date": "June 9, 2026",
-        "img": "portrait",
-        "excerpt": "Size, health, and how we talk about puppies honestly at Evergold.",
-    },
+        "slug": slug,
+        "title": data["title"],
+        "date": data["date"],
+        "img": data["img"],
+        "excerpt": data["excerpt"],
+    }
+    for slug, data in BLOG_ARTICLES.items()
 ]
 
 
@@ -345,8 +348,9 @@ def nav_html(depth, active):
         ("puppies.html", "puppies", "Puppies"),
         ("about.html", "about", "About Us"),
         ("care.html", "care", "Care Guide"),
+        ("solution.html", "solution", "Solution"),
         ("blog.html", "blog", "Blog"),
-        ("contact.html", "contact", "Contact"),
+        ("contact.html", "contact", "Order"),
         ("shipping.html", "shipping", "Shipping"),
         ("health.html", "health", "Health"),
     ]
@@ -378,24 +382,31 @@ def header(depth, active):
     <nav class="nav">
         {nav_html(depth, active)}
     </nav>
-    <a class="btn header-cta" href="{p}contact.html">Inquire</a>
+    <a class="btn header-cta" href="{p}contact.html">Order</a>
   </div>
 </header>'''
 
 
-def footer(depth):
+def wa_float(depth=0):
+    return f'''<a class="wa-float" href="{wa_href()}" target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16.01 3C9.39 3 4 8.28 4 14.76c0 2.07.55 4.1 1.6 5.88L4 29l8.58-2.25a12.2 12.2 0 0 0 3.43.49c6.62 0 12.01-5.28 12.01-11.76C28.02 8.28 22.63 3 16.01 3zm6.96 16.66c-.29.82-1.45 1.5-2.04 1.6-.52.08-1.18.12-1.9-.12-.44-.14-1-.32-1.73-.63-3.04-1.32-5.02-4.38-5.17-4.58-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.2 1.04-2.5.27-.3.59-.37.79-.37h.57c.18 0 .43-.07.67.51.25.6.84 2.06.91 2.21.08.15.12.33.02.53-.1.2-.14.33-.29.5-.14.18-.31.4-.44.53-.15.15-.3.31-.13.61.18.3.8 1.32 1.72 2.14 1.18 1.05 2.18 1.38 2.48 1.53.3.15.48.13.66-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.3.15.49.22.56.35.08.12.08.71-.21 1.53z"/></svg>
+  <span>WhatsApp</span>
+</a>'''
+
+
+def footer(depth, extra_scripts=""):
     p = prefix(depth)
     return f'''<section class="section" style="padding-bottom:0">
   <div class="wrap">
     <div class="cta-band">
       <div>
-        <p class="eyebrow">Ready to meet a puppy?</p>
-        <h2>Call {PHONE} or send an inquiry.</h2>
-        <p>We are happy to share videos, pedigrees, and upcoming litter dates.</p>
+        <p class="eyebrow">Ready to order a puppy?</p>
+        <h2>Reserve on WhatsApp or email.</h2>
+        <p>We send videos, the health packet, and deposit instructions in writing. Call {PHONE} if you want to talk first.</p>
       </div>
       <div class="btn-row">
-        <a class="btn gold" href="tel:{PHONE_TEL}">Call now</a>
-        <a class="btn ghost" href="{p}contact.html" style="color:#fff;border-color:rgba(255,255,255,.25)">Contact form</a>
+        <a class="btn gold" href="{wa_href()}" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" href="{mail_href()}" style="color:#fff;border-color:rgba(255,255,255,.25)">Email {EMAIL}</a>
       </div>
     </div>
   </div>
@@ -406,6 +417,7 @@ def footer(depth):
       <h3>Evergold Pomeranians</h3>
       <p>Home-raised Pomeranian puppies with health testing, early socialization, and nationwide delivery support.</p>
       <p><a href="tel:{PHONE_TEL}">{PHONE}</a></p>
+      <p><a href="{mail_href()}">{EMAIL}</a></p>
     </div>
     <div>
       <h3>Explore</h3>
@@ -413,13 +425,14 @@ def footer(depth):
         <li><a href="{p}puppies.html">Available puppies</a></li>
         <li><a href="{p}about.html">About us</a></li>
         <li><a href="{p}care.html">Care guide</a></li>
+        <li><a href="{p}solution.html">Our solution</a></li>
         <li><a href="{p}blog.html">Blog</a></li>
       </ul>
     </div>
     <div>
       <h3>Families</h3>
       <ul>
-        <li><a href="{p}contact.html">Contact</a></li>
+        <li><a href="{p}contact.html">Order via WhatsApp or email</a></li>
         <li><a href="{p}shipping.html">Shipping &amp; delivery</a></li>
         <li><a href="{p}health.html">Health &amp; vaccination</a></li>
       </ul>
@@ -431,11 +444,13 @@ def footer(depth):
   </div>
   <div class="wrap copyright">© <span id="year"></span> Evergold Pomeranians. All rights reserved.</div>
 </footer>
+{wa_float(depth)}
 <a class="call-bar" href="tel:{PHONE_TEL}">Call {PHONE}</a>
-<script src="{p}js/main.js"></script>'''
+<script src="{p}js/main.js"></script>
+{extra_scripts}'''
 
 
-def page(title, depth, active, body, extra_head=""):
+def page(title, depth, active, body, extra_head="", extra_scripts=""):
     p = prefix(depth)
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -443,7 +458,7 @@ def page(title, depth, active, body, extra_head=""):
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title} | {BRAND}</title>
-  <meta name="description" content="Evergold Pomeranians raises healthy, home-socialized Pomeranian puppies. Call {PHONE}.">
+  <meta name="description" content="Evergold Pomeranians raises healthy, home-socialized Pomeranian puppies. Order on WhatsApp or email. Call {PHONE}.">
   <link rel="icon" href="{p}favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -456,15 +471,16 @@ def page(title, depth, active, body, extra_head=""):
 <main>
 {body}
 </main>
-{footer(depth)}
+{footer(depth, extra_scripts)}
 </body>
 </html>
 '''
 
 
-def puppy_card(pup, depth=0):
+def puppy_card(pup, depth=0, compact=False):
     p = prefix(depth)
     pill = "available" if pup["status"] == "Available" else "reserved"
+    blurb = pup["color"] if compact else f'{pup["age"]} · {pup["temperament"]}'
     return f'''<article class="puppy-card">
   <a href="{p}puppies/{pup["slug"]}.html" class="media">{product_img(pup, pup["name"] + " the Pomeranian puppy", depth)}</a>
   <div class="body">
@@ -474,24 +490,24 @@ def puppy_card(pup, depth=0):
       <span class="pill">{pup["sex"]}</span>
     </div>
     <h3>{pup["name"]}</h3>
-    <p>{pup["age"]} · {pup["temperament"]}</p>
+    <p>{blurb}</p>
     <div class="price">{pup["price"]}</div>
     <a class="btn" href="{p}puppies/{pup["slug"]}.html">View {pup["name"]}</a>
   </div>
 </article>'''
 
 
-def catalog_markup(depth=0, limit=None):
+def catalog_markup(depth=0, limit=None, compact=False):
     items = PUPPIES[:limit] if limit else PUPPIES
     if not items:
         p = prefix(depth)
         return f'''<div class="empty-catalog">
   <p class="eyebrow">Current availability</p>
   <h2>Puppies will appear here as they are listed.</h2>
-  <p>Call {PHONE} to ask about this litter, or send a note on the contact page.</p>
-  <a class="btn" href="{p}contact.html">Inquire now</a>
+  <p>Call {PHONE} to ask about this litter, or send a WhatsApp or email order.</p>
+  <a class="btn" href="{p}contact.html">Order now</a>
 </div>'''
-    return '<div class="grid grid-3">\n' + "\n".join(puppy_card(p, depth) for p in items) + "\n</div>"
+    return '<div class="grid grid-3">\n' + "\n".join(puppy_card(p, depth, compact=compact) for p in items) + "\n</div>"
 
 
 def home():
@@ -501,7 +517,6 @@ def home():
   <div class="body">
     <p class="eyebrow">{b["date"]}</p>
     <h3><a href="blog/{b["slug"]}.html">{b["title"]}</a></h3>
-    <p>{b["excerpt"]}</p>
   </div>
 </article>'''
         for b in BLOGS[:3]
@@ -511,10 +526,10 @@ def home():
   <div class="wrap hero-copy">
     <p class="eyebrow">Home-raised companions</p>
     <h1>Pomeranian puppies with golden hearts.</h1>
-    <p>Evergold Pomeranians is a small family kennel producing healthy, well-socialized puppies with honest health records and lifelong support.</p>
+    <p>Evergold Pomeranians is a small family kennel producing healthy, well-socialized puppies with honest health records and lifelong support. Order on WhatsApp or email — this site does not take a card.</p>
     <div class="btn-row">
       <a class="btn gold" href="puppies.html">See available puppies</a>
-      <a class="btn ghost" href="tel:{PHONE_TEL}" style="color:#fff;border-color:rgba(255,255,255,.35)">Call {PHONE}</a>
+      <a class="btn ghost" href="contact.html" style="color:#fff;border-color:rgba(255,255,255,.35)">Order a puppy</a>
     </div>
   </div>
 </section>
@@ -525,15 +540,15 @@ def home():
       <p class="eyebrow">A quieter way to raise puppies</p>
       <h2>Raised underfoot, not in a barn.</h2>
       <p>Our puppies live in the house from day one. They hear kitchen sounds, meet visitors, learn crate naps, and leave with a start on potty habits, grooming, and confidence.</p>
-      <p>Parents are selected for sound structure, sweet temperaments, and coat quality. We share health testing, vaccine records, and a written health agreement with every family.</p>
+      {site_content.HOME_STORY}
       <div class="stats">
         <div class="stat"><b>12+</b><span>years with the breed</span></div>
         <div class="stat"><b>AKC</b><span>registerable puppies</span></div>
         <div class="stat"><b>2 yr</b><span>health agreement</span></div>
       </div>
       <div class="btn-row">
-        <a class="btn" href="about.html">About our kennel</a>
-        <a class="btn ghost" href="health.html">Health information</a>
+        <a class="btn" href="solution.html">Read our solution</a>
+        <a class="btn ghost" href="contact.html">Order via WhatsApp or email</a>
       </div>
     </div>
   </div>
@@ -547,7 +562,7 @@ def home():
       </div>
       <a class="btn ghost" href="puppies.html">View all puppies</a>
     </div>
-    {catalog_markup(limit=6)}
+    {catalog_markup(limit=6, compact=True)}
   </div>
 </section>
 <section class="section">
@@ -562,17 +577,17 @@ def home():
       <article class="care-card">
         <p class="eyebrow">01</p>
         <h3>Health start</h3>
-        <p>Age-appropriate vaccines, deworming, vet check, and a record packet you can hand to your veterinarian on day one.</p>
+        <p>Vaccines, deworming, a vet exam, and a packet for your veterinarian.</p>
       </article>
       <article class="care-card">
         <p class="eyebrow">02</p>
         <h3>Go-home kit</h3>
-        <p>Food sample, blanket with littermate scent, collar, and a written care plan for sleep, meals, and the first grooming appointment.</p>
+        <p>Food, a littermate blanket, and a written first-week plan.</p>
       </article>
       <article class="care-card">
         <p class="eyebrow">03</p>
         <h3>Lifetime guidance</h3>
-        <p>We stay available for questions on coat, feeding, travel, and temperament. Call {PHONE} any time you need us.</p>
+        <p>Coat, feeding, and travel questions after placement. Call {PHONE}.</p>
       </article>
     </div>
   </div>
@@ -597,7 +612,7 @@ def puppies_index():
   <div class="wrap">
     <p class="eyebrow">Meet the litter</p>
     <h1>Available Pomeranian puppies</h1>
-    <p class="lead">Each puppy is raised in our home, vet-checked, and placed with a family that fits their temperament. Open a profile to see photos, personality notes, and reservation details.</p>
+    <p class="lead">Each puppy is raised in our home, vet-checked, and placed with a family that fits their temperament. Open a profile for owner photos, then order on WhatsApp or email. There is no website checkout. The current price is $1,250, and a puppy is reserved only after a written order and a received deposit.</p>
   </div>
 </section>
 <section class="section" style="padding-top:0">
@@ -614,7 +629,10 @@ def puppy_page(pup):
     )
     pill = "available" if pup["status"] == "Available" else "reserved"
     cta = (
-        f'<a class="btn gold" href="../contact.html">Reserve {pup["name"]}</a>'
+        (
+            f'<a class="btn gold" href="../contact.html?puppy={pup["slug"]}">Order {pup["name"]}</a>'
+            f'<a class="btn" href="{wa_href(pup["name"])}" target="_blank" rel="noopener">WhatsApp</a>'
+        )
         if pup["status"] == "Available"
         else '<a class="btn" href="../puppies.html">See other puppies</a>'
     )
@@ -690,7 +708,7 @@ def about():
       <h2>Why we raise Poms this way</h2>
       <p>Evergold began after years of living with the breed and seeing too many puppies leave facilities that treated them as inventory. We keep only a few females, plan litters carefully, and raise every puppy in the house.</p>
       <p>Our standard is simple. Parents should be healthy, kind, and typey. Puppies should leave confident, handled, and documented. Families should feel they can call us in year five as easily as week one.</p>
-      <p>Call {PHONE} to talk through upcoming litters, color plans, or whether a Pomeranian is the right fit for your home.</p>
+      {site_content.ABOUT_EXTRA}
     </div>
     <div class="frame">{img("face", "Pomeranian portrait")}</div>
   </div>
@@ -700,6 +718,12 @@ def about():
     <article class="care-card"><h3>Home-raised</h3><p>Puppies are born and raised indoors with daily handling, crate introductions, and household noise.</p></article>
     <article class="care-card"><h3>Health-first</h3><p>Breeding dogs are selected with attention to patellas, teeth, temperament, and coat. Puppies receive a vet exam before placement.</p></article>
     <article class="care-card"><h3>Honest matching</h3><p>We match energy and coat care expectations, not just color. If a puppy is not the right fit, we will say so.</p></article>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap article">
+    <h2>How families start with us</h2>
+    <p>Look at the owner photos, read the <a href="solution.html">solution</a>, then send a WhatsApp or email order from the <a href="contact.html">order page</a>. We do not take a card on this website.</p>
   </div>
 </section>'''
     return page("About Us", 0, "about", body)
@@ -733,7 +757,8 @@ def care():
       <li>Keep vaccines and parasite prevention current with your veterinarian.</li>
       <li>Schedule a grooming day before the coat can mat.</li>
     </ol>
-    <p>Questions about a specific puppy? Call {PHONE} and we will walk through your setup.</p>
+    {site_content.CARE_EXTRA}
+    <p>Questions about a specific puppy? Call {PHONE}, or send WhatsApp or email, and we will walk through your setup.</p>
   </div>
 </section>'''
     return page("Pomeranian Care Guide", 0, "care", body)
@@ -756,77 +781,39 @@ def blog_index():
   <div class="wrap">
     <p class="eyebrow">Notes from the kennel</p>
     <h1>Pomeranian blog</h1>
-    <p class="lead">Practical writing on puppies, coats, feeding, and the culture of this little spitz.</p>
+    <p class="lead">Five featured guides, plus a 5,000-card kennel archive you can browse by page. Practical writing on puppies, coats, feeding, orders, and life with this little spitz.</p>
   </div>
 </section>
 <section class="section" style="padding-top:0">
-  <div class="wrap grid grid-2">{cards}</div>
+  <div class="wrap">
+    <div class="section-head"><h2>Featured guides</h2></div>
+    <div class="grid grid-2">{cards}</div>
+  </div>
+</section>
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Kennel archive</p>
+        <h2>5,000 blog cards</h2>
+      </div>
+      <p id="blog-count" class="lead" style="margin:0">Loading archive…</p>
+    </div>
+    <div id="blog-archive" class="grid grid-3"></div>
+    <div class="blog-pager" id="blog-pager"></div>
+  </div>
 </section>'''
-    return page("Pomeranian Blog", 0, "blog", body)
+    return page(
+        "Pomeranian Blog",
+        0,
+        "blog",
+        body,
+        extra_scripts='<script src="js/blog-archive.js"></script>',
+    )
 
 
 def blog_article(slug):
-    articles = {
-        "first-week-home": {
-            "title": "The first week home with a Pomeranian puppy",
-            "date": "August 4, 2026",
-            "img": "cozy",
-            "html": f'''<p>The first week is not about perfect training. It is about sleep, food, and feeling safe. Keep the world small and predictable.</p>
-<h2>Set up before pickup</h2>
-<ul>
-  <li>A crate or covered pen in a quiet corner</li>
-  <li>The same food we send home</li>
-  <li>A playpen, pee pads or a nearby door, and a harness</li>
-  <li>A slicker brush, comb, and nail clippers</li>
-</ul>
-<h2>A first-week schedule</h2>
-<p>Puppies this small sleep a lot. Offer meals three times a day, potty trips after waking, eating, and play, and several short training moments of 2–3 minutes. Do not host a parade of visitors in week one.</p>
-<h2>What is normal</h2>
-<p>Soft stools after travel, a night or two of crying, and a dip in appetite can happen. Call us at {PHONE} or your veterinarian if energy crashes, vomiting continues, or the puppy will not eat.</p>''',
-        },
-        "grooming-double-coat": {
-            "title": "How to care for a Pomeranian double coat",
-            "date": "July 18, 2026",
-            "img": "fluffy",
-            "html": '''<p>A Pomeranian coat is a weather shield: a dense undercoat and a longer guard coat. When it is maintained, it looks like a halo. When it is neglected, it mats at the skin.</p>
-<h2>Tools that actually work</h2>
-<ul>
-  <li>Slicker brush for the body</li>
-  <li>Metal comb to check you reached the skin</li>
-  <li>Pin brush for finishing</li>
-  <li>A high-velocity dryer after baths</li>
-</ul>
-<h2>The rule we repeat</h2>
-<p>If the comb does not pass to the skin, you are not finished. Line-brush in sections. Never shave down a healthy Pom coat for convenience; it can ruin texture and sun protection.</p>
-<h2>Puppy coats</h2>
-<p>The fluffy puppy coat will blow as the adult coat comes in. This is the season to stay ahead of mats. Book a groomer who knows spitz breeds.</p>''',
-        },
-        "nutrition-small-breed": {
-            "title": "Feeding small-breed puppies the right way",
-            "date": "June 29, 2026",
-            "img": "orange",
-            "html": f'''<p>Pomeranian puppies have tiny stomachs and fast metabolisms. Skipping meals can be dangerous, especially in very small pups.</p>
-<h2>What we send home</h2>
-<p>We start puppies on a named small-breed puppy kibble. Keep that food for at least two weeks, then transition slowly if you change brands. Measure with a scale, not a giant scoop.</p>
-<h2>Treats</h2>
-<p>Training treats should be pea-sized. Cheese and table scraps add up. If the waist disappears, cut treats first, not meals.</p>
-<h2>Water and hypoglycemia</h2>
-<p>Fresh water always. If a young puppy becomes wobbly, weak, or glassy-eyed, this is an emergency. Rub a little honey on the gums and call your vet. We also welcome a call at {PHONE}.</p>''',
-        },
-        "teacup-myths": {
-            "title": "Teacup Pomeranians: what the word really means",
-            "date": "June 9, 2026",
-            "img": "portrait",
-            "html": '''<p>“Teacup” is a marketing word, not an AKC variety. Pomeranians are already a toy breed. Extra-tiny puppies are not a separate, healthier type.</p>
-<h2>How we talk about size</h2>
-<p>We share current weight, estimated adult range, and parent sizes. Some of our dogs finish smaller; some finish a sturdy 6–8 pounds. Structure and health matter more than fitting in a teacup.</p>
-<h2>Risks of chasing tiny</h2>
-<p>Very small dogs can have more fragile bones, dental crowding, and blood-sugar swings. We do not breed down to an extreme.</p>
-<h2>Choosing honestly</h2>
-<p>If you want a lap companion who still has bone and bounce, we will help you pick that puppy. If a listing promises a 2-pound adult as a guaranteed trait, be cautious.</p>''',
-        },
-    }
-    a = articles[slug]
+    a = BLOG_ARTICLES[slug]
     others = "\n".join(
         f'<p><a href="{b["slug"]}.html">{b["title"]}</a></p>'
         for b in BLOGS
@@ -846,43 +833,64 @@ def blog_article(slug):
 
 
 def contact():
-    options = "\n".join(f'<option value="{p["name"]}">{p["name"]} ({p["status"]})</option>' for p in PUPPIES)
+    options = "\n".join(
+        f'<option value="{p["name"]}">{p["name"]} ({p["status"]})</option>' for p in PUPPIES
+    )
     body = f'''<section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">We would love to hear from you</p>
-    <h1>Contact</h1>
-    <p class="lead">Tell us about your home, the puppy you are drawn to, and your timeline. We answer by phone fastest.</p>
+    <p class="eyebrow">No website checkout</p>
+    <h1>Order via WhatsApp or email</h1>
+    <p class="lead">Choose the puppy, then send the order on WhatsApp or by email. We reply with videos, the health packet, and deposit instructions in writing.</p>
   </div>
 </section>
 <section class="section" style="padding-top:0">
-  <div class="wrap contact-panel">
-    <aside class="contact-card">
-      <p class="eyebrow">Call the kennel</p>
-      <h2>Talk with us today</h2>
-      <p><a class="phone-xl" href="tel:{PHONE_TEL}">{PHONE}</a></p>
-      <p>Inquiries 9am–6pm daily. Puppy visits are by appointment so the litter can rest.</p>
-      <p>We can share recent videos, parent photos, and shipping options for your city.</p>
-    </aside>
-    <form class="form" id="contact-form">
-      <div class="form-row">
-        <label>Name<input name="name" required></label>
-        <label>Phone<input name="phone" type="tel" required></label>
-      </div>
-      <label>Email<input name="email" type="email" required></label>
-      <label>Puppy of interest
-        <select name="puppy">
-          <option value="">Select a puppy or litter</option>
-          {options}
-          <option value="upcoming">Upcoming litter</option>
-        </select>
-      </label>
-      <label>Message<textarea name="message" required placeholder="Tell us about your family, yard, and timeline."></textarea></label>
-      <button class="btn" type="submit">Send inquiry</button>
-      <div class="form-note">Thank you. We have your message and will follow up. For a faster reply, call {PHONE}.</div>
-    </form>
+  <div class="wrap article">
+    {site_content.CONTACT_COPY}
+    <label class="order-select">Puppy you want to order
+      <select id="order-puppy">
+        <option value="">A Pomeranian puppy</option>
+        {options}
+        <option value="Upcoming litter">Upcoming litter</option>
+      </select>
+    </label>
+    <div class="order-grid">
+      <a class="order-card whatsapp" id="order-whatsapp" href="{wa_href()}" target="_blank" rel="noopener">
+        <p class="eyebrow">Fastest</p>
+        <h2>Order on WhatsApp</h2>
+        <p>Send a message to {PHONE}. Ask for the latest video and reservation steps. We answer during 9am–6pm.</p>
+        <span class="btn gold">Open WhatsApp</span>
+      </a>
+      <a class="order-card email" id="order-email" href="{mail_href()}">
+        <p class="eyebrow">Written record</p>
+        <h2>Order by email</h2>
+        <p>Write {EMAIL} with your city, the puppy name, and pickup or delivery. Keep the thread for your veterinarian.</p>
+        <span class="btn">Open email</span>
+      </a>
+    </div>
+    <p>Prefer a voice first? <a href="tel:{PHONE_TEL}">Call {PHONE}</a>, then send the written order so the reservation is on record. Read the <a href="solution.html">solution page</a> for the full placement path.</p>
   </div>
 </section>'''
-    return page("Contact", 0, "contact", body)
+    return page("Order a Puppy", 0, "contact", body)
+
+
+def solution():
+    body = f'''<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">How placement works</p>
+    <h1>The Evergold solution</h1>
+    <p class="lead">A complete path from first message to the first night home: honest matching, documented health, WhatsApp or email ordering, and aftercare you can still use in year five.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap article">
+    {site_content.SOLUTION_HTML}
+    <div class="btn-row">
+      <a class="btn gold" href="contact.html">Order via WhatsApp or email</a>
+      <a class="btn ghost" href="puppies.html">See available puppies</a>
+    </div>
+  </div>
+</section>'''
+    return page("Our Solution", 0, "solution", body)
 
 
 def shipping():
@@ -912,7 +920,7 @@ def shipping():
     <h2>Cost and timing</h2>
     <p>Delivery fees vary by distance, season, and whether a nanny is flying or driving. We quote after we know your airport or city. Puppies travel only after veterinary clearance and when weather is safe.</p>
     <h2>Local meet-ups</h2>
-    <p>In some cases we can meet partway. Call {PHONE} to talk through the kindest route for your puppy.</p>
+    {site_content.SHIPPING_EXTRA}
   </div>
 </section>'''
     return page("Shipping and Delivery", 0, "shipping", body)
@@ -951,9 +959,32 @@ def health():
       <details><summary>Are puppies examined by a veterinarian?</summary><p>Yes. Each puppy has a wellness exam before placement, and travel puppies receive a health certificate dated for the trip.</p></details>
       <details><summary>Do you offer a guarantee?</summary><p>Yes. Families receive a written two-year health agreement at reservation. Read it before you commit so the terms are clear.</p></details>
     </div>
+    {site_content.HEALTH_EXTRA}
   </div>
 </section>'''
     return page("Health and Vaccination", 0, "health", body)
+
+
+def blog_entry_page():
+    body = '''<section class="page-hero">
+  <div class="wrap article">
+    <p class="eyebrow" id="entry-date">Kennel archive</p>
+    <h1 id="entry-title">Archive article</h1>
+    <div class="article-hero" id="entry-hero"></div>
+    <div id="entry-body"></div>
+    <div class="btn-row">
+      <a class="btn gold" href="../contact.html">Order via WhatsApp or email</a>
+      <a class="btn ghost" href="../blog.html">Back to 5,000 cards</a>
+    </div>
+  </div>
+</section>'''
+    return page(
+        "Archive article",
+        1,
+        "blog",
+        body,
+        extra_scripts='<script src="../js/blog-archive.js"></script>',
+    )
 
 
 def write(path, content):
@@ -970,10 +1001,12 @@ def main():
     write(ROOT / "puppies.html", puppies_index())
     write(ROOT / "about.html", about())
     write(ROOT / "care.html", care())
+    write(ROOT / "solution.html", solution())
     write(ROOT / "blog.html", blog_index())
     write(ROOT / "contact.html", contact())
     write(ROOT / "shipping.html", shipping())
     write(ROOT / "health.html", health())
+    write(ROOT / "blog" / "entry.html", blog_entry_page())
     for pup in PUPPIES:
         write(ROOT / "puppies" / f"{pup['slug']}.html", puppy_page(pup))
     for b in BLOGS:

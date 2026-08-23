@@ -783,4 +783,113 @@ textarea {
   .contact-card {
     padding: 28px;
   }
+
+  .wa-float {
+    bottom: 72px;
+  }
+}
+
+.wa-float {
+  position: fixed;
+  right: 20px;
+  bottom: 22px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  background: #1f9e4b;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(31, 158, 75, 0.35);
+}
+
+.wa-float svg {
+  width: 26px;
+  height: 26px;
+}
+
+.wa-float:hover {
+  transform: translateY(-2px);
+  background: #188c40;
+}
+
+.order-select {
+  display: grid;
+  gap: 8px;
+  margin: 28px 0 32px;
+  font-weight: 600;
+}
+
+.order-select select {
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  padding: 0 14px;
+  font: inherit;
+  background: var(--paper);
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.order-card {
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 28px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(42, 34, 24, 0.04);
+}
+
+.order-card h2 {
+  font-size: 2rem;
+}
+
+.order-card.whatsapp {
+  border-color: rgba(31, 158, 75, 0.35);
+  background: #f3fbf5;
+}
+
+.order-card .btn {
+  margin-top: 8px;
+}
+
+.blog-pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.blog-pager button,
+.blog-pager a {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.blog-pager .is-current {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+@media (max-width: 1080px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
 }
