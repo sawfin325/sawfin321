@@ -510,6 +510,18 @@ def catalog_markup(depth=0, limit=None, compact=False):
     return '<div class="grid grid-3">\n' + "\n".join(puppy_card(p, depth, compact=compact) for p in items) + "\n</div>"
 
 
+def hero_slides():
+    slides = []
+    for pup in PUPPIES:
+        photos = product_photos(pup)
+        if not photos:
+            continue
+        active = ' class="is-active"' if not slides else ""
+        name = pup["name"]
+        slides.append(f'<img{active} src="{photos[0]}" alt="{name} the Pomeranian puppy">')
+    return '<div class="hero-slides" aria-hidden="true">\n    ' + "\n    ".join(slides) + "\n  </div>"
+
+
 def home():
     posts = "\n".join(
         f'''<article class="post-card">
@@ -522,7 +534,7 @@ def home():
         for b in BLOGS[:3]
     )
     body = f'''<section class="hero">
-  <img src="images/products/jasper/jasper-1.jpg" alt="Jasper the blue merle Pomeranian puppy" loading="lazy">
+  {hero_slides()}
   <div class="wrap hero-copy">
     <p class="eyebrow">Home-raised companions</p>
     <h1>Pomeranian puppies with golden hearts.</h1>

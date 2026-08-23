@@ -18,6 +18,16 @@
     year.textContent = String(new Date().getFullYear());
   }
 
+  const slides = document.querySelectorAll(".hero-slides img");
+  if (slides.length > 1) {
+    let index = 0;
+    setInterval(function () {
+      slides[index].classList.remove("is-active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("is-active");
+    }, 1000);
+  }
+
   function messageFor(puppy) {
     return (
       "Hello Evergold, I would like to order " +
