@@ -10,7 +10,7 @@ PHONE_TEL = "+17432593337"
 EMAIL = "miaspomeranian@gmail.com"
 WA_BASE = "https://wa.me/17432593337"
 BRAND = "Evergold Pomeranians"
-ASSET_V = "5"
+ASSET_V = "6"
 
 
 def order_message(puppy="a Pomeranian puppy"):
@@ -522,6 +522,23 @@ def hero_slides():
     return '<div class="hero-slides" aria-hidden="true">\n    ' + "\n    ".join(slides) + "\n  </div>"
 
 
+def home_topic_cards():
+    cards = []
+    for card in site_content.HOME_TOPIC_CARDS:
+        cards.append(
+            f'''<article class="topic-card">
+  <a class="media" href="{card["href"]}"><img src="{card["photo"]}" alt="{card["alt"]}" loading="lazy"></a>
+  <div class="body">
+    <p class="eyebrow">{card["n"]}</p>
+    <h3>{card["title"]}</h3>
+    <p>{card["text"]}</p>
+    <a class="btn ghost" href="{card["href"]}">Read more</a>
+  </div>
+</article>'''
+        )
+    return "\n".join(cards)
+
+
 def home():
     posts = "\n".join(
         f'''<article class="post-card">
@@ -605,6 +622,19 @@ def home():
   </div>
 </section>
 <section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Ten more places to look</p>
+        <h2>A card for each part of the Evergold path</h2>
+      </div>
+    </div>
+    <div class="grid grid-3">
+      {home_topic_cards()}
+    </div>
+  </div>
+</section>
+<section class="section">
   <div class="wrap">
     <div class="section-head">
       <div>

@@ -8,6 +8,90 @@ HOME_STORY = f"""
 <p>This website does not take a card. Eighteen puppies are listed now. Order on WhatsApp or email so you can ask for the latest video and receive deposit instructions in writing. Call {PHONE} if you want to talk first. Pickup is by appointment; delivery is quoted after we know your city. The solution page is the full placement path. The care guide is what to buy before go-home day.</p>
 """
 
+HOME_TOPIC_CARDS = [
+    {
+        "n": "01",
+        "title": "Raised in the house",
+        "text": "Puppies live underfoot from week one. They hear the kettle, meet visitors, and learn crate naps before they ever ride in a car.",
+        "href": "about.html",
+        "photo": "images/products/jasper/jasper-2.jpg",
+        "alt": "House-raised Pomeranian puppy",
+    },
+    {
+        "n": "02",
+        "title": "Owner photos only",
+        "text": "Every listing uses the puppy’s own pictures from our Google Docs, not a stock stand-in. Open a profile and you see the dog you are asking about.",
+        "href": "puppies.html",
+        "photo": "images/products/p02/photo-1.jpg",
+        "alt": "Cream Pomeranian puppy photo",
+    },
+    {
+        "n": "03",
+        "title": "Honest $1,250 price",
+        "text": "The current litter is one price for every puppy. We do not raise the number because a coat color is trending this month.",
+        "href": "puppies.html",
+        "photo": "images/products/p03/photo-1.jpg",
+        "alt": "Chocolate Pomeranian puppy",
+    },
+    {
+        "n": "04",
+        "title": "Order on WhatsApp or email",
+        "text": "There is no website checkout. Send the puppy name to WhatsApp or miaspomeranian@gmail.com and we reply with video, the health packet, and deposit steps.",
+        "href": "contact.html",
+        "photo": "images/products/p04/photo-1.jpg",
+        "alt": "Parti Pomeranian puppy",
+    },
+    {
+        "n": "05",
+        "title": "Written health start",
+        "text": "Each puppy leaves with vaccines, deworming, a veterinarian exam, and a folder you can hand to your own vet on day one.",
+        "href": "health.html",
+        "photo": "images/products/p05/photo-1.jpg",
+        "alt": "Merle Pomeranian puppy",
+    },
+    {
+        "n": "06",
+        "title": "Two-year health agreement",
+        "text": "Families receive a written two-year agreement covering specified congenital conditions. Read it before you send a deposit.",
+        "href": "health.html",
+        "photo": "images/products/p07/photo-1.jpg",
+        "alt": "Chocolate and tan Pomeranian",
+    },
+    {
+        "n": "07",
+        "title": "AKC paperwork",
+        "text": "Eligible puppies go home with an AKC registration application. We explain what the papers are and what they are not.",
+        "href": "solution.html",
+        "photo": "images/products/p08/photo-1.jpg",
+        "alt": "White Pomeranian puppy",
+    },
+    {
+        "n": "08",
+        "title": "Pickup or delivery",
+        "text": "Meet us by appointment, or we quote ground or in-cabin nanny travel after we know your city. Cargo is not our default.",
+        "href": "shipping.html",
+        "photo": "images/products/p10/photo-1.jpg",
+        "alt": "Orange sable Pomeranian puppy",
+    },
+    {
+        "n": "09",
+        "title": "Coat care from day one",
+        "text": "We start a slicker brush before go-home and teach the comb test: if it cannot pass to the skin, you are not finished.",
+        "href": "care.html",
+        "photo": "images/products/p12/photo-1.jpg",
+        "alt": "White Pomeranian with a plush coat",
+    },
+    {
+        "n": "10",
+        "title": "Aftercare you can still use",
+        "text": "Call +1 743-259-3337 in year five as easily as week one. Coat blow, picky eating, and first grooms are ordinary questions here.",
+        "href": "solution.html",
+        "photo": "images/products/p18/photo-1.jpg",
+        "alt": "Orange sable Pomeranian girl",
+    },
+]
+
+
 SOLUTION_HTML = f"""
 <p>The Evergold solution is a complete placement path for a family-raised Pomeranian: honest matching, documented health, a reserved go-home date, and a kennel you can still call after the coat blows. This page is the long version of how an order works, what you receive, and what we will not promise. It is more than twelve hundred words on purpose. Read it before you send a deposit.</p>
 <h2>1. Start with fit, not with color</h2>
