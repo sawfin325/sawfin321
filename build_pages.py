@@ -68,7 +68,13 @@ PUPPIES = [
         "status": "Available",
         "price": "$1,250",
         "tone": "merle",
-        "photos": [],
+        "photos": [
+            "images/products/jasper/jasper-1.jpg",
+            "images/products/jasper/jasper-2.jpg",
+            "images/products/jasper/jasper-3.jpg",
+            "images/products/jasper/jasper-4.jpg",
+            "images/products/jasper/jasper-5.jpg",
+        ],
         "temperament": "Tiny, fluffy, and alert, with a rare merle coat and a bright blue eye.",
         "bio": "Jasper is a blue-merle Pomeranian with a black-and-silver coat, tan points, and heterochromia — one ice-blue eye and one dark eye. He is a pocket-size companion with a plush teddy coat and a curious, people-focused nature.",
     },
@@ -294,7 +300,7 @@ def home():
         for b in BLOGS[:3]
     )
     body = f'''<section class="hero">
-  {img("hero", "Fluffy Pomeranian puppy smiling at the camera")}
+  <img src="images/products/jasper/jasper-1.jpg" alt="Jasper the blue merle Pomeranian puppy" loading="lazy">
   <div class="wrap hero-copy">
     <p class="eyebrow">Home-raised companions</p>
     <h1>Pomeranian puppies with golden hearts.</h1>
@@ -307,7 +313,7 @@ def home():
 </section>
 <section class="section">
   <div class="wrap split">
-    <div class="frame">{img("sitting", "Cream Pomeranian sitting for a portrait")}</div>
+    <div class="frame"><img src="images/products/jasper/jasper-3.jpg" alt="Jasper the blue merle Pomeranian" loading="lazy"></div>
     <div>
       <p class="eyebrow">A quieter way to raise puppies</p>
       <h2>Raised underfoot, not in a barn.</h2>
