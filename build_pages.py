@@ -10,7 +10,7 @@ PHONE_TEL = "+17432593337"
 EMAIL = "miaspomeranian@gmail.com"
 WA_BASE = "https://wa.me/17432593337"
 BRAND = "Evergold Pomeranians"
-ASSET_V = "6"
+ASSET_V = "7"
 
 
 def order_message(puppy="a Pomeranian puppy"):
@@ -523,20 +523,30 @@ def hero_slides():
 
 
 def home_topic_cards():
-    cards = []
+    photos = []
+    copy = []
     for card in site_content.HOME_TOPIC_CARDS:
-        cards.append(
-            f'''<article class="topic-card">
-  <a class="media" href="{card["href"]}"><img src="{card["photo"]}" alt="{card["alt"]}" loading="lazy"></a>
-  <div class="body">
-    <p class="eyebrow">{card["n"]}</p>
-    <h3>{card["title"]}</h3>
-    <p>{card["text"]}</p>
-    <a class="btn ghost" href="{card["href"]}">Read more</a>
-  </div>
+        photos.append(
+            f'''<a class="topic-photo" href="{card["href"]}">
+  <img src="{card["photo"]}" alt="{card["alt"]}" loading="lazy">
+</a>'''
+        )
+        copy.append(
+            f'''<article class="topic-copy">
+  <p class="eyebrow">{card["n"]}</p>
+  <h3>{card["title"]}</h3>
+  <p>{card["text"]}</p>
+  <a href="{card["href"]}">Read more</a>
 </article>'''
         )
-    return "\n".join(cards)
+    return f'''<div class="home-topics">
+  <div class="home-topics-photos">{"".join(photos)}</div>
+  <div class="home-topics-copy">
+    <p class="eyebrow">Ten more places to look</p>
+    <h2>A card for each part of the Evergold path</h2>
+    {"".join(copy)}
+  </div>
+</div>'''
 
 
 def home():
@@ -623,15 +633,7 @@ def home():
 </section>
 <section class="section alt">
   <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Ten more places to look</p>
-        <h2>A card for each part of the Evergold path</h2>
-      </div>
-    </div>
-    <div class="grid grid-3">
-      {home_topic_cards()}
-    </div>
+    {home_topic_cards()}
   </div>
 </section>
 <section class="section">
