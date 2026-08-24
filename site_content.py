@@ -1,0 +1,254 @@
+"""Long-form copy used by build_pages.py."""
+
+PHONE = "+1 743-259-3337"
+EMAIL = "miaspomeranian@gmail.com"
+
+HOME_STORY = f"""
+<p>Evergold Pomeranians is a small family kennel raising AKC-registerable puppies in the house, not in a barn. We keep a short list of breeding dogs, plan one litter at a time, and place companions with people who can live with a bright, coated, vocal toy spitz for a decade or more. The current puppies are eight weeks old and priced at $1,250. Owner photos live on each profile.</p>
+<p>The right home offers daily brushing, measured meals, short training, and a person to follow. The wrong home wants a guaranteed two-pound adult or a puppy left alone through long workdays. We talk through that fit before a deposit. Puppies live underfoot from week one: kitchen sound, crate naps, a name, and a slicker brush. They leave with a vaccine, deworming record, vet exam, and a written two-year health agreement.</p>
+<p>This website does not take a card. Eighteen puppies are listed now. Order on WhatsApp or email so you can ask for the latest video and receive deposit instructions in writing. Call {PHONE} if you want to talk first. Pickup is by appointment; delivery is quoted after we know your city. The solution page is the full placement path. The care guide is what to buy before go-home day.</p>
+"""
+
+HOME_TOPIC_CARDS = [
+    {
+        "n": "01",
+        "title": "Raised in the house",
+        "text": "Puppies live underfoot from week one. They hear the kettle, meet visitors, and learn crate naps before they ever ride in a car.",
+        "href": "about.html",
+        "photo": "images/products/jasper/jasper-2.jpg",
+        "alt": "House-raised Pomeranian puppy",
+    },
+    {
+        "n": "02",
+        "title": "Owner photos only",
+        "text": "Every listing uses the puppy’s own pictures from our Google Docs, not a stock stand-in. Open a profile and you see the dog you are asking about.",
+        "href": "puppies.html",
+        "photo": "images/products/p02/photo-1.jpg",
+        "alt": "Cream Pomeranian puppy photo",
+    },
+    {
+        "n": "03",
+        "title": "Honest $1,250 price",
+        "text": "The current litter is one price for every puppy. We do not raise the number because a coat color is trending this month.",
+        "href": "puppies.html",
+        "photo": "images/products/p03/photo-1.jpg",
+        "alt": "Chocolate Pomeranian puppy",
+    },
+    {
+        "n": "04",
+        "title": "Order on WhatsApp or email",
+        "text": "There is no website checkout. Send the puppy name to WhatsApp or miaspomeranian@gmail.com and we reply with video, the health packet, and deposit steps.",
+        "href": "contact.html",
+        "photo": "images/products/p04/photo-1.jpg",
+        "alt": "Parti Pomeranian puppy",
+    },
+    {
+        "n": "05",
+        "title": "Written health start",
+        "text": "Each puppy leaves with vaccines, deworming, a veterinarian exam, and a folder you can hand to your own vet on day one.",
+        "href": "health.html",
+        "photo": "images/products/p05/photo-1.jpg",
+        "alt": "Merle Pomeranian puppy",
+    },
+    {
+        "n": "06",
+        "title": "Two-year health agreement",
+        "text": "Families receive a written two-year agreement covering specified congenital conditions. Read it before you send a deposit.",
+        "href": "health.html",
+        "photo": "images/products/p07/photo-1.jpg",
+        "alt": "Chocolate and tan Pomeranian",
+    },
+    {
+        "n": "07",
+        "title": "AKC paperwork",
+        "text": "Eligible puppies go home with an AKC registration application. We explain what the papers are and what they are not.",
+        "href": "solution.html",
+        "photo": "images/products/p08/photo-1.jpg",
+        "alt": "White Pomeranian puppy",
+    },
+    {
+        "n": "08",
+        "title": "Pickup or delivery",
+        "text": "Meet us by appointment, or we quote ground or in-cabin nanny travel after we know your city. Cargo is not our default.",
+        "href": "shipping.html",
+        "photo": "images/products/p10/photo-1.jpg",
+        "alt": "Orange sable Pomeranian puppy",
+    },
+    {
+        "n": "09",
+        "title": "Coat care from day one",
+        "text": "We start a slicker brush before go-home and teach the comb test: if it cannot pass to the skin, you are not finished.",
+        "href": "care.html",
+        "photo": "images/products/p12/photo-1.jpg",
+        "alt": "White Pomeranian with a plush coat",
+    },
+    {
+        "n": "10",
+        "title": "Aftercare you can still use",
+        "text": "Call +1 743-259-3337 in year five as easily as week one. Coat blow, picky eating, and first grooms are ordinary questions here.",
+        "href": "solution.html",
+        "photo": "images/products/p18/photo-1.jpg",
+        "alt": "Orange sable Pomeranian girl",
+    },
+]
+
+
+SOLUTION_HTML = f"""
+<p>The Evergold solution is a complete placement path for a family-raised Pomeranian: honest matching, documented health, a reserved go-home date, and a kennel you can still call after the coat blows. This page is the long version of how an order works, what you receive, and what we will not promise. It is more than twelve hundred words on purpose. Read it before you send a deposit.</p>
+<h2>1. Start with fit, not with color</h2>
+<p>Most first messages ask for a color. Color matters, and we list it clearly on every puppy page. Fit matters more. A Pomeranian is a toy spitz with a dense double coat, a quick mind, and a bark that can fill an apartment hallway. The breed does well with people who are home often, who can schedule grooming, and who will treat a four-to-eight-pound dog as a real animal rather than a purse accessory.</p>
+<p>We ask about children, other pets, stairs, work hours, and whether anyone in the home has owned a double-coated breed. A cream girl who looks like a teddy bear still needs line-brushing to the skin. A merle boy with a pale eye still needs crate rest and a meal schedule. If your household cannot offer that, we will not take a deposit to be polite. We would rather keep a puppy an extra week than send one into a home that will shave the coat, skip meals, or return the dog when the puppy energy arrives.</p>
+<p>If you are comparing listings online, be cautious of words like teacup, tiny tiny, or guaranteed two-pound adult. Pomeranians are already a toy breed. We share current weight, parent size, and an estimated adult range. We do not sell a fantasy measurement.</p>
+<h2>2. How to order on WhatsApp or email</h2>
+<p>We do not run a shopping cart. A puppy is not a candle. When you are ready, open the contact page, choose the puppy, and send the order on WhatsApp or by email. WhatsApp is fastest for videos and same-day questions. Email is best when you want a written thread you can forward to a partner or a veterinarian. Call {PHONE} if you prefer a voice first, then follow with a written order so the reservation is clear.</p>
+<p>A complete first message includes your name, city, the puppy you want, your timeline, and whether you will pick up or need delivery. Ask for the latest video, the vaccine date, and the written health agreement. We reply with availability, the deposit amount, and the go-home window. A puppy is reserved when the deposit is received and we confirm it in writing. Until then, the listing stays available.</p>
+<p>Please do not send cash-app-only requests from a brand-new account and expect us to skip a conversation. We will ask ordinary questions. That is part of the solution: a paper trail and a person on both sides.</p>
+<h2>3. What the price includes</h2>
+<p>The current litter is $1,250 per puppy. That price includes the puppy, the starter health packet, a sample of the food they are eating, a blanket with littermate scent, a written care sheet, and the two-year health agreement. It does not include your airline ticket, a nanny flight, or a crate you want us to buy in a specific brand. Delivery is quoted after we know the airport or the ground route.</p>
+<p>If two families ask for the same puppy on the same day, we honor the first complete written order with a deposit. We will not hold a puppy on a maybe. We will not raise the price because a coat color is trending this month.</p>
+<h2>4. Health, vaccines, and the first vet visit</h2>
+<p>Before go-home, puppies receive age-appropriate DA2PP vaccination, deworming on a schedule, and a veterinarian wellness exam. Travel puppies receive a health certificate dated for the trip. You continue the vaccine series with your own veterinarian, usually every three to four weeks until about sixteen weeks, plus rabies timing for your state.</p>
+<p>The written health agreement covers specified congenital conditions for two years. Read it before you pay. It is not a substitute for pet insurance, and it does not cover every cough or every dietary upset after a long ride. Soft stools after travel are common. Lethargy, repeated vomiting, or a puppy who will not eat is not something to wait on. Call your veterinarian first, then call us.</p>
+<p>Breed notes we discuss out loud: luxating patellas, dental crowding, tracheal sensitivity, hypoglycemia in very small pups, and coat damage from shaving. We would rather you hear those words here than meet them as a surprise in year two.</p>
+<h2>5. Go-home day and the first week</h2>
+<p>Pickup is by appointment so the litter can rest between visits. We walk through feeding amounts, the crate, the brush, and the packet. If a nanny is flying or driving, we send departure and arrival updates and pack food, pads, and a familiar blanket. Puppies travel only after veterinary clearance and when weather is safe. Cargo is not our default.</p>
+<p>The first week at your house is about sleep, food, and a small map of the world. Keep visitors short. Offer three meals a day. Carry the puppy out after waking, eating, and play. Do not host a parade. If energy crashes or the puppy will not eat, treat it as urgent. Our first-week blog article and the care guide repeat the same rhythm because it works.</p>
+<h2>6. Coat, meals, and the life you are buying</h2>
+<p>A Pomeranian coat is a weather shield: a dense undercoat and a longer guard coat. If a metal comb cannot pass to the skin, you are not finished brushing. Never shave a healthy double coat for convenience. The puppy coat will blow as the adult coat comes in; that is the season to stay ahead of mats and to book a groomer who knows spitz breeds.</p>
+<p>Feed a named small-breed puppy food on a schedule. Measure with a scale. Training treats should be pea-sized. Skipping meals can be dangerous in a tiny puppy. Fresh water always. If a young puppy becomes wobbly or glassy-eyed, that is an emergency: honey on the gums and a call to the veterinarian.</p>
+<h2>7. Aftercare is part of the sale</h2>
+<p>We stay available for coat questions, travel, a first grooming appointment, and temperament notes as the puppy matures. Families should feel they can reach us in year five as easily as week one. That is the product: not only an eight-week-old Pomeranian, but a kennel that remains a phone number you actually use.</p>
+<p>If you want to start an order today, use WhatsApp or email from the contact page, name the puppy, and ask for the health packet. If you are still deciding, open the puppy photos, read the care guide, and sit with the coat-care reality for a day. We would rather place eighteen puppies into eighteen lasting homes than rush a nineteenth message.</p>
+<p>The solution, in one line: a home-raised Pomeranian, a written health start, a reserved go-home plan, and a human conversation on WhatsApp or email instead of a silent checkout button. Call {PHONE} whenever you want that conversation to begin.</p>
+"""
+
+ABOUT_EXTRA = f"""
+<p>We did not start Evergold to become a high-volume kennel. We started it because we had lived with Pomeranians long enough to see the gap between a well-bred house puppy and a puppy treated as inventory. Volume hides sloppy matching. A short list of females forces us to choose pairings with care and to raise each litter in the rooms where we already live.</p>
+<p>House-raising is not a slogan. It means the whelping box is indoors, the first handling happens during ordinary household hours, and crate naps compete with the sound of a kettle and a door. Puppies meet a small, repeating cast of people before they meet a crowd. They learn that a comb can be boring and safe. They leave knowing a name and a rhythm, not a warehouse aisle.</p>
+<p>Honesty is the other half of the work. We will tell you when a merle eye is striking and when a coat will take more brushing than a first-time owner expects. We will tell you when a puppy is bold with toys and when a puppy would be a poor match for a very young child. We will not invent a teacup variety to win a click. If you want a lap companion with bone and bounce, we will help you pick that dog. If you want a guaranteed extreme miniature, we are the wrong kennel.</p>
+<p>Call {PHONE}, or send WhatsApp or email, if you want to talk through upcoming litters, color plans, or whether this breed belongs in your home at all. We would rather answer a hard question early than repair a poor placement later.</p>
+"""
+
+CARE_EXTRA = f"""
+<p>This guide is the same conversation we have on go-home day. A compact dog still needs a full plan. If you only remember four things, remember these: brush to the skin, feed on a clock, keep the waist, and give the dog a person. Everything else is detail.</p>
+<h2>Coat, bath, and the first professional groom</h2>
+<p>Line-brush in sections with a slicker, then prove your work with a metal comb. Pay attention behind the ears, in the pants, under the collar, and in the armpits. A bath is useful only if the coat is fully dried to the skin with a high-velocity dryer. Damp undercoat is how mats start. Book a groomer who knows spitz breeds every six to eight weeks for a sanitary trim, nails, and a proper dry. Do not shave a healthy Pomeranian down for summer. You can ruin texture and sun protection for a long time.</p>
+<h2>Food, treats, and low blood sugar</h2>
+<p>Three measured meals a day until about six months, then two. Use the kibble we send home for at least two weeks before any slow transition. Weigh portions. Cheese, table scraps, and giant training biscuits add up on a six-pound body. If a young puppy becomes wobbly, weak, or glassy-eyed, rub a little honey on the gums and call your veterinarian. That is an emergency, not a wait-and-see moment.</p>
+<h2>Rest, noise, and manners</h2>
+<p>Pomeranians are intelligent and can become barky when they are bored or underslept. A covered crate or a quiet pen is not unkind. It is how a small dog learns that the house has an off switch. Keep training sessions to two or three minutes. Reward a sit, a wait, and four paws on the floor. Give them a job: a puzzle feeder, a short trick, or simply following you from room to room with a purpose.</p>
+<p>They are small. Watch stairs, larger dogs, and children who may drop them. Use a harness on walks. Do not leave a puppy unattended with strings, xylitol gum, or open water buckets. If you want us to walk through your setup before pickup, call {PHONE} or send a photo of the crate corner on WhatsApp.</p>
+"""
+
+SHIPPING_EXTRA = f"""
+<p>The kindest trip is the one the puppy is ready for. We do not ship on a hope and a cheap crate. We ship when a veterinarian has cleared the puppy, the weather is safe, and a person is responsible at both ends. If those pieces are not in place, we wait. A delayed arrival is better than a frightened, overheated, or underfed ride.</p>
+<p>Pickup families get the fullest briefing: we put the food scoop in your hand, show the brush path on the coat you are taking home, and read the packet together. Ground nanny routes work well for many U.S. cities when the vehicle is climate-controlled and the driver sends real updates. In-cabin airline travel is our preferred flight method when the puppy’s size and the airline’s current rules allow it. Cargo is a last conversation, not a default listing extra.</p>
+<p>You will receive a health certificate dated for travel, an airline-approved carrier when flying, food, absorbent pads, and a blanket that smells like home. Fees depend on distance, season, and whether a nanny is flying or driving. We quote after we know your airport or city. If a meet-up halfway is kinder than a full route, we will say so. Start that planning on WhatsApp or email when you order, and keep {PHONE} saved for the travel day itself.</p>
+"""
+
+HEALTH_EXTRA = f"""
+<p>Health at Evergold is a packet you can hold, not a paragraph of adjectives. You should leave with dates, product names, and a veterinarian’s exam note, then hand that folder to your own vet on the first visit. If a seller cannot produce those papers, you are not buying a documented puppy.</p>
+<p>We evaluate breeding dogs for soundness, temperament, and known breed concerns, and we share what we have on each pairing when you inquire. Puppies receive age-appropriate DA2PP vaccination, deworming, and a wellness exam before placement. Travel puppies receive a health certificate dated for the trip. Your veterinarian finishes the series, sets rabies timing for your state, and chooses parasite prevention that fits your region.</p>
+<p>The two-year written agreement covers specified congenital conditions. Read it before you send money. It does not replace insurance and it does not cover every soft stool after a van ride. Bring the packet to your first appointment so your vet is not guessing. If a puppy is quiet, vomits repeatedly, or will not eat after travel, treat it as urgent. Call the veterinarian first, then call {PHONE}. We want to hear from you while there is still time to help, not after a weekend of hoping it will pass.</p>
+"""
+
+CONTACT_COPY = f"""
+<p>Submit the inquiry form above and the message is delivered to {EMAIL}. We reply with videos, the health packet, and deposit instructions in writing. If you want to talk first, call {PHONE}.</p>
+<p>We answer inquiries from 9am to 6pm. Puppy visits are by appointment so the litter can rest.</p>
+"""
+
+
+def blog_articles():
+    return {
+        "first-week-home": {
+            "title": "The first week home with a Pomeranian puppy",
+            "date": "August 4, 2026",
+            "img": "cozy",
+            "excerpt": "A calm routine for sleep, meals, potty trips, and bonding in those first seven days.",
+            "html": f"""
+<p>The first week is not about perfect training. It is about sleep, food, and a map of the house that feels small enough to survive. A Pomeranian puppy this young has a tiny stomach, a fast mind, and a coat that still smells like littermates. If you try to host a parade, teach three tricks, and photograph every hour, you will get a tired, noisy, loose-stool week. If you keep the world predictable, you will get a puppy who starts to trust the crate, the bowl, and you.</p>
+<h2>Set up before pickup</h2>
+<p>Finish the hardware before you drive. You need a crate or a covered pen in a quiet corner, not in the center of a party room. Use the same food we send home. Put a playpen, pee pads or a nearby door, and a harness by the exit you will actually use at 2 a.m. A slicker brush, a metal comb, and nail clippers should already be in a drawer. Fill a water bowl that cannot tip easily. Write the feeding amounts on a card and tape it to the bin so every adult in the house says the same number.</p>
+<p>Choose one sleeping place for week one. Puppies who roam three floors on night one cry longer. A bathroom, a kitchen nook, or a bedroom crate all work if the air is calm and the floor is easy to wipe. Wash the blanket we send, or do not: some puppies settle faster if the first nights still smell like the litter.</p>
+<h2>A first-week schedule</h2>
+<p>Offer meals three times a day. Carry the puppy out after waking, after eating, and after play. Keep training to two or three minutes. A sit for a pea-sized treat is enough. Do not invite a line of neighbors. Children can meet the puppy sitting on the floor with quiet hands. Larger dogs should meet through a gate until you have seen the puppy eat and rest.</p>
+<p>Daytime naps are not optional. A Pomeranian who skips rest becomes a shark. Use the crate or pen after play, even if the puppy protests for a few minutes. Covering part of the crate often helps. Play white noise if the street is loud. At night, expect a wake-up. That is normal. What is not normal is a puppy who cannot be roused, who vomits repeatedly, or who turns away from every meal.</p>
+<h2>Coat and handling in week one</h2>
+<p>Do not book a full salon groom in the first seven days unless a mat or a mess forces it. Do introduce the slicker for two minutes on the shoulder and the pants. Touch paws, ears, and mouth while the puppy is already relaxed. The goal is a boring ritual, not a perfect halo. If the coat is dirty from travel, a damp cloth and a thorough dry are kinder than a long bath.</p>
+<h2>What is normal, and what is not</h2>
+<p>Soft stools after a car ride or a flight can happen. A night or two of crying can happen. A small dip in appetite on the first evening can happen. Call your veterinarian, and call us at {PHONE}, if energy crashes, vomiting continues, gums look pale, or the puppy will not eat. Rub a little honey on the gums if a very small puppy becomes wobbly while you are on the way to the clinic.</p>
+<p>By day seven you should see a slightly braver step into the hallway, a clearer potty pattern, and a puppy who recognizes the food bin. You will not have a finished companion. You will have a start. That is the honest first week, and it is the one we plan for when we pack the go-home bag.</p>
+""",
+        },
+        "grooming-double-coat": {
+            "title": "How to care for a Pomeranian double coat",
+            "date": "July 18, 2026",
+            "img": "fluffy",
+            "excerpt": "Brushing, bathing, and the one grooming habit that prevents painful mats.",
+            "html": """
+<p>A Pomeranian coat is a weather shield. The undercoat is dense and insulating. The guard coat is longer and sheds water and dirt when it is healthy. Together they make the halo people fall in love with. Neglected, the same coat mats at the skin, pulls, and hides moisture. Grooming is not vanity. It is how a double coat stays a coat instead of a felted jacket.</p>
+<h2>Tools that actually work</h2>
+<p>You need a slicker brush for the body, a metal comb to prove you reached the skin, a pin brush for finishing, and a high-velocity dryer after baths. A human hairbrush and a bath towel will not do this job. Keep a spray bottle of water or a light coat mist so you are not ripping a dry undercoat. Work in sections: shoulder, rib, pants, tail, chest, behind the ears. If the comb snags, go back to the slicker. If the comb passes, you are done with that section.</p>
+<h2>The rule we repeat</h2>
+<p>If the comb does not pass to the skin, you are not finished. Line-brush. Lift a layer, brush the layer below, and only then move on. Never shave a healthy Pom coat for convenience. Shaving can ruin texture, reduce sun protection, and leave a coat that grows back patchy. Medical shaves are a veterinarian decision. Fashion shaves are how people end up with a lion cut and a lifetime of regret.</p>
+<h2>Baths and drying</h2>
+<p>Bathe when the coat is dirty or before a professional groom, not because the calendar says so. Use a gentle dog shampoo. Rinse until your hands feel no slip. Then dry to the skin. A damp undercoat is a mat factory. A high-velocity dryer, used with patience and a hand on the coat, is the difference between a cloud and a compact of wet wool. Keep the air moving and the puppy’s face comfortable. Stop if the puppy overheats.</p>
+<h2>Puppy coat to adult coat</h2>
+<p>The fluffy puppy coat will blow as the adult coat comes in. This is the season that surprises new families. Hair will come out in handfuls. Mats will form overnight behind the ears if you skip two days. Book a groomer who knows spitz breeds before you are already in trouble. Ask them to teach you the section you always miss. Between visits, you still own the comb test.</p>
+<p>Sanitary trims, paw pads, and nails belong on a regular schedule, usually every six to eight weeks. Eyes may tear; wipe them daily if needed so the facial hair does not stain and mat. If you want a demonstration on your own puppy before you leave our kitchen, say so on go-home day. We would rather watch you brush once than hear about a shaved coat in month four.</p>
+""",
+        },
+        "nutrition-small-breed": {
+            "title": "Feeding small-breed puppies the right way",
+            "date": "June 29, 2026",
+            "img": "orange",
+            "excerpt": "Meal size, schedule, and why Pomeranians should never skip breakfast.",
+            "html": f"""
+<p>Pomeranian puppies have tiny stomachs and fast metabolisms. A skipped meal is not a diet. In a very small puppy it can become low blood sugar, weakness, and an emergency. Feeding well is less about premium branding and more about rhythm: the same food, the same clock, the same measured amount, and water that is always there.</p>
+<h2>What we send home</h2>
+<p>We start puppies on a named small-breed puppy kibble and we send a sample with the go-home bag. Keep that food for at least two weeks. If you change brands later, mix slowly over several days. Measure with a kitchen scale, not a giant scoop meant for a Labrador. Write the grams on the bin. If two people feed, they must use the same number. A Pomeranian can look “fine” while quietly gaining a pound that will sit on small joints.</p>
+<h2>A daily clock</h2>
+<p>Three meals a day until about six months, then two. Morning, mid-afternoon, and evening works for most households. After each meal, go out. Do not free-feed a whole day’s kibble in a bowl and hope. Free-feeding hides a puppy who has stopped eating, which is information you need. If a meal is refused, note the time and try again in an hour. If two meals are refused, or the puppy becomes quiet and wobbly, call the veterinarian.</p>
+<h2>Treats and table scraps</h2>
+<p>Training treats should be pea-sized. Cheese, chicken skin, and “just a bite” of dinner add up faster than people think. If the waist disappears, cut treats first, not breakfast. Puzzle feeders can slow a gulp-y eater and give a bored brain a job. Avoid xylitol, grapes, raisins, onions, and cooked bones. If you want to use fresh food, ask your veterinarian for a balanced plan. Do not invent a homemade diet from social media for an eight-week-old toy breed.</p>
+<h2>Water and hypoglycemia</h2>
+<p>Fresh water always. Travel days need extra attention: a small meal before a long gap is safer than an empty stomach. If a young puppy becomes wobbly, weak, or glassy-eyed, rub a little honey on the gums and go to the clinic. Call us at {PHONE} after you have started that help. We would rather get a scared message than a late one.</p>
+<p>Weight is a weekly habit. Use the same scale. Feel the ribs under the coat; a Pomeranian can hide condition in fur. Growing puppies should gain steadily, not balloon. Adults should keep a waist you can see from above. Food is part of the health packet we send, and it is part of the life you are buying when you order a puppy on WhatsApp or email.</p>
+""",
+        },
+        "teacup-myths": {
+            "title": "Teacup Pomeranians: what the word really means",
+            "date": "June 9, 2026",
+            "img": "portrait",
+            "excerpt": "Size, health, and how we talk about puppies honestly at Evergold.",
+            "html": """
+<p>Teacup is a marketing word, not an AKC variety. Pomeranians are already a toy breed. Extra-tiny puppies are not a separate, healthier type with a special registry. They are small dogs, sometimes from small parents, sometimes from a litter that simply produced a finer-boned baby, and sometimes from a seller who needs a word that photographs well.</p>
+<h2>How we talk about size</h2>
+<p>We share current weight, estimated adult range, and parent sizes. Some of our dogs finish smaller. Some finish a sturdy six to eight pounds. Structure and health matter more than fitting in a cup. A compact, well-made Pomeranian with a proper coat and a kind temperament is the goal. A puppy advertised as a guaranteed two-pound adult is a promise we will not make, because bodies do not take dictation from a listing title.</p>
+<h2>Risks of chasing tiny</h2>
+<p>Very small dogs can have more fragile bones, more dental crowding, and more blood-sugar swings. They can be harder to keep warm and easier to injure when a child drops them. None of that makes them more precious. It makes them more work and, in the worst cases, more veterinary risk. We do not breed down to an extreme to win a search result. We also will not shame a naturally small puppy. We will describe the puppy in pounds and weeks, not in tableware.</p>
+<h2>Reading listings with a colder eye</h2>
+<p>If a page uses teacup, micro, or tiny tiny in every sentence and cannot produce vaccine dates or a veterinarian exam, keep walking. If the only photos are tight face crops with no sense of scale, ask for a video with a soda can or a kitchen scale in the frame. If the price jumps because of a color word, ask what else changed. Color is real. Magic size is usually not.</p>
+<h2>Choosing honestly at Evergold</h2>
+<p>If you want a lap companion who still has bone and bounce, we will help you pick that puppy. If you want the smallest possible adult no matter the tradeoffs, we will tell you we are the wrong kennel and why. Our current litter is priced at $1,250, eight weeks old, and shown in owner photographs. That is enough truth to start a conversation. The rest belongs on WhatsApp or email, where we can send a current weight and a video instead of another adjective.</p>
+""",
+        },
+        "whatsapp-order-guide": {
+            "title": "How to reserve an Evergold puppy on WhatsApp or email",
+            "date": "August 20, 2026",
+            "img": "sitting",
+            "excerpt": "What to send, what we send back, and why we do not use a website checkout.",
+            "html": f"""
+<p>We closed the website checkout on purpose. A Pomeranian reservation needs a video, a health packet, and a person who can answer whether pickup or a nanny flight is kinder. WhatsApp and email do that work. This article is the script we wish every first message followed. Use it when you are ready to order, and ignore it if you are still only looking at photos.</p>
+<h2>What to send in the first message</h2>
+<p>Write your name, your city, the puppy’s name, and your timeline. Say whether you can pick up or will need ground or in-cabin delivery. Ask for the latest video, the last vaccine date, and the written health agreement. If two adults are deciding, copy both of them on email, or say so on WhatsApp so we are not negotiating with a ghost. A complete message gets a complete answer. A single word — “price?” — gets a polite reply and a request for the rest.</p>
+<h2>What we send back</h2>
+<p>You should receive availability, the $1,250 price, what the price includes, the deposit amount, and the go-home window. If the puppy is already reserved, we will say so and offer another name or a future litter. We will not hold a puppy on a maybe. We will not ask you to pay a stranger who is not on this site. Deposit instructions come from us, in writing, after we have confirmed the puppy is still available.</p>
+<h2>Why WhatsApp and why email</h2>
+<p>WhatsApp is fastest for a short video of the puppy moving. Email is best when you want a thread to forward to a veterinarian or a partner who missed the first call. Call {PHONE} if you want a voice. Then put the order in writing anyway. Spoken enthusiasm is not a reservation. A written order plus a received deposit is.</p>
+<h2>After the deposit</h2>
+<p>We confirm the hold, share the remaining balance timing, and plan pickup or travel. You can keep asking for photos. We would rather send another clip than have you arrive surprised. Read the solution page for health, delivery, and aftercare. Read the care guide so the crate and the comb exist before the puppy does. If something in your home changes — a new baby, a sudden move, a job that leaves the dog alone twelve hours — tell us before go-home day. A delayed placement is kinder than a return.</p>
+<p>That is the whole order path. No cart. No surprise upsell at a pixel checkout. A conversation, a packet, and a puppy with a name. When you are ready, open the contact page and send the message.</p>
+""",
+        },
+    }
