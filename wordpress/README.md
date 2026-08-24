@@ -2,16 +2,16 @@
 
 This folder is a complete WordPress theme converted from the static kennel site. It keeps the same design, 18 puppies, WhatsApp/email ordering, blog, and pages.
 
+## Download the upload file
+
+Use this zip in WordPress (Appearance → Themes → Upload Theme):
+
+- [evergold-pomeranians-wordpress-theme.zip](https://github.com/sawfin325/sawfin321/raw/cursor/pomeranian-website-e7ca/wordpress/evergold-pomeranians-wordpress-theme.zip)
+
 ## Install on any WordPress host
 
 1. Install WordPress (Hostinger, Bluehost, SiteGround, or wordpress.org).
-2. Zip the theme folder (the folder that contains `style.css`):
-
-   ```bash
-   cd wordpress
-   zip -r evergold-pomeranians-wordpress-theme.zip evergold-pomeranians
-   ```
-
+2. Download `evergold-pomeranians-wordpress-theme.zip` (or zip the `evergold-pomeranians` folder yourself).
 3. In wp-admin go to **Appearance → Themes → Add New → Upload Theme**.
 4. Upload `evergold-pomeranians-wordpress-theme.zip`.
 5. Click **Activate**.

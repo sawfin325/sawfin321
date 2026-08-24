@@ -4,12 +4,11 @@ Family Pomeranian kennel website. Contact: **+1 743-259-3337**. Orders: WhatsApp
 
 ## WordPress version (recommended)
 
-A complete WordPress theme lives in `wordpress/evergold-pomeranians/`. Zip that folder and upload it under **Appearance → Themes**.
+A complete WordPress theme lives in `wordpress/evergold-pomeranians/`. Download the ready-to-upload zip:
 
-```bash
-cd wordpress
-zip -r evergold-pomeranians-wordpress-theme.zip evergold-pomeranians
-```
+[evergold-pomeranians-wordpress-theme.zip](https://github.com/sawfin325/sawfin321/raw/cursor/pomeranian-website-e7ca/wordpress/evergold-pomeranians-wordpress-theme.zip)
+
+Then upload it under **Appearance → Themes**.
 
 Activate the theme, then set permalinks to **Post name**. Activation creates the pages, 18 puppies, blog posts, and menu. See `wordpress/README.md`.
 
