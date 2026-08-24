@@ -1,24 +1,21 @@
 # Evergold Pomeranians
 
-Static HTML website for a family Pomeranian kennel.
+Family Pomeranian kennel website. Contact: **+1 743-259-3337**. Orders: WhatsApp or **miaspomeranian@gmail.com**.
 
-## Pages
+## WordPress version (recommended)
 
-- Home (`index.html`)
-- Available Pomeranian Puppies (`puppies.html`)
-- Individual puppy pages in `puppies/`
-- About Us (`about.html`)
-- Pomeranian Care Guide (`care.html`)
-- Pomeranian Blog (`blog.html` and `blog/`)
-- Contact (`contact.html`)
-- Shipping/Delivery Information (`shipping.html`)
-- Health & Vaccination Information (`health.html`)
+A complete WordPress theme lives in `wordpress/evergold-pomeranians/`. Zip that folder and upload it under **Appearance → Themes**.
 
-Contact: **+1 743-259-3337**
+```bash
+cd wordpress
+zip -r evergold-pomeranians-wordpress-theme.zip evergold-pomeranians
+```
 
-## Preview locally
+Activate the theme, then set permalinks to **Post name**. Activation creates the pages, 18 puppies, blog posts, and menu. See `wordpress/README.md`.
 
-Open `index.html` in a browser, or from this folder run:
+## Static HTML version
+
+The original static site is still in this folder.
 
 ```bash
 python3 -m http.server 8080
