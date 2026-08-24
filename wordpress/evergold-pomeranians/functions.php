@@ -3,11 +3,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('EVERGOLD_VERSION', '1.1.0');
+define('EVERGOLD_VERSION', '1.2.0');
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/cpt.php';
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/mail.php';
 require get_template_directory() . '/inc/inquiry.php';
 require get_template_directory() . '/inc/seed.php';
 

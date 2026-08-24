@@ -20,12 +20,13 @@ $wanted = evergold_inquiry_wanted_puppy();
 <section class="inquiry-section">
   <div class="wrap">
     <?php echo evergold_inquiry_notice(); ?>
-    <form class="inquiry-box" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+    <form class="inquiry-box" method="post" action="<?php echo esc_url(evergold_page_url('order')); ?>">
       <input type="hidden" name="action" value="evergold_inquiry">
+      <input type="hidden" name="evergold_started" value="<?php echo esc_attr((string) time()); ?>">
       <?php wp_nonce_field('evergold_inquiry', 'evergold_inquiry_nonce'); ?>
       <div class="inquiry-hp" aria-hidden="true">
-        <label>Name pets? your
-          <input type="text" name="pets_name" tabindex="-1" autocomplete="off">
+        <label>Leave this blank
+          <input type="text" name="evergold_fax" value="" tabindex="-1" autocomplete="new-password">
         </label>
       </div>
       <div class="inquiry-field">

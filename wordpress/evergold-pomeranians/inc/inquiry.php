@@ -39,8 +39,14 @@ function evergold_handle_inquiry() {
         exit;
     }
 
-    if (!empty($_POST['pets_name'])) {
-        wp_safe_redirect(add_query_arg('inquiry', 'sent', $order_url));
+    if (!empty($_POST['evergold_fax'])) {
+        wp_safe_redirect(add_query_arg('inquiry', 'error', $order_url));
+        exit;
+    }
+
+    $started = absint($_POST['evergold_started'] ?? 0);
+    if ($started && (time() - $started) < 2) {
+        wp_safe_redirect(add_query_arg('inquiry', 'error', $order_url));
         exit;
     }
 
@@ -88,17 +94,24 @@ function evergold_handle_inquiry() {
         'post_content' => $body . "\n\nSubmitted: " . gmdate('Y-m-d H:i:s') . ' UTC',
     ]);
 
-    $headers = [
-        'Content-Type: text/plain; charset=UTF-8',
-        'Reply-To: ' . $full_name . ' <' . $email . '>',
-    ];
-    wp_mail(evergold_email(), $subject, $body, $headers);
+    evergold_send_inquiry_mail(evergold_email(), $subject, $body, $email, $full_name);
 
     wp_safe_redirect(add_query_arg('inquiry', 'sent', $order_url));
     exit;
 }
 add_action('admin_post_nopriv_evergold_inquiry', 'evergold_handle_inquiry');
 add_action('admin_post_evergold_inquiry', 'evergold_handle_inquiry');
+
+function evergold_catch_inquiry_post() {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+        return;
+    }
+    if (sanitize_text_field(wp_unslash($_POST['action'] ?? '')) !== 'evergold_inquiry') {
+        return;
+    }
+    evergold_handle_inquiry();
+}
+add_action('template_redirect', 'evergold_catch_inquiry_post');
 
 function evergold_refresh_order_copy() {
     if (get_option('evergold_inquiry_copy')) {
