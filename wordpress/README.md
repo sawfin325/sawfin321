@@ -29,8 +29,10 @@ On first activation the theme creates:
 
 - Edit puppies under **Puppies** in wp-admin.
 - Change phone, email, or WhatsApp under **Appearance → Customize → Evergold contact**.
-- The green WhatsApp button is on every page.
-- Orders still go through WhatsApp or Gmail. There is no card checkout.
+- The Order page is an online puppy inquiry form. Submissions are emailed to **miaspomeranian@gmail.com**.
+- You can also see them under **Inquiries** in wp-admin.
+- Change the destination email under **Appearance → Customize → Evergold contact**.
+- If emails do not arrive, install a mail plugin such as WP Mail SMTP on your host.
 
 ## Local test with Docker (optional)
 

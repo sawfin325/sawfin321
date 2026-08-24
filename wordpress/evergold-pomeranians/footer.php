@@ -4,12 +4,12 @@
     <div class="cta-band">
       <div>
         <p class="eyebrow">Ready to order a puppy?</p>
-        <h2>Reserve on WhatsApp or email.</h2>
-        <p>We send videos, the health packet, and deposit instructions in writing. Call <?php echo esc_html(evergold_phone()); ?> if you want to talk first.</p>
+        <h2>Reserve with the inquiry form.</h2>
+        <p>Submissions go to <?php echo esc_html(evergold_email()); ?>. We send videos, the health packet, and deposit instructions in writing. Call <?php echo esc_html(evergold_phone()); ?> if you want to talk first.</p>
       </div>
       <div class="btn-row">
-        <a class="btn gold" href="<?php echo esc_url(evergold_wa_url()); ?>" target="_blank" rel="noopener">WhatsApp</a>
-        <a class="btn ghost" href="<?php echo esc_url(evergold_mail_url()); ?>" style="color:#fff;border-color:rgba(255,255,255,.25)">Email <?php echo esc_html(evergold_email()); ?></a>
+        <a class="btn gold" href="<?php echo esc_url(evergold_page_url('order')); ?>">Inquiry form</a>
+        <a class="btn ghost" href="<?php echo esc_url(evergold_wa_url()); ?>" target="_blank" rel="noopener" style="color:#fff;border-color:rgba(255,255,255,.25)">WhatsApp</a>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
     <div>
       <h3>Families</h3>
       <ul>
-        <li><a href="<?php echo esc_url(evergold_page_url('order')); ?>">Order via WhatsApp or email</a></li>
+        <li><a href="<?php echo esc_url(evergold_page_url('order')); ?>">Puppy inquiry form</a></li>
         <li><a href="<?php echo esc_url(evergold_page_url('shipping')); ?>">Shipping &amp; delivery</a></li>
         <li><a href="<?php echo esc_url(evergold_page_url('health')); ?>">Health &amp; vaccination</a></li>
       </ul>

@@ -1,7 +1,7 @@
 (function () {
   const toggle = document.querySelector(".menu-toggle");
   const year = document.getElementById("year");
-  const puppySelect = document.getElementById("order-puppy");
+  const puppySelect = document.getElementById("inquiry-puppy") || document.getElementById("order-puppy");
   const wa = document.getElementById("order-whatsapp");
   const mail = document.getElementById("order-email");
   const waNumber = (window.evergoldOrder && evergoldOrder.wa) || "17432593337";
@@ -16,6 +16,11 @@
 
   if (year) {
     year.textContent = String(new Date().getFullYear());
+  }
+
+  const inquirySent = document.getElementById("inquiry-sent");
+  if (inquirySent && new URLSearchParams(window.location.search).get("inquiry") === "sent") {
+    inquirySent.hidden = false;
   }
 
   function messageFor(puppy) {

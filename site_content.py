@@ -1,6 +1,7 @@
 """Long-form copy used by build_pages.py."""
 
 PHONE = "+1 743-259-3337"
+EMAIL = "miaspomeranian@gmail.com"
 
 HOME_STORY = f"""
 <p>Evergold Pomeranians is a small family kennel raising AKC-registerable puppies in the house, not in a barn. We keep a short list of breeding dogs, plan one litter at a time, and place companions with people who can live with a bright, coated, vocal toy spitz for a decade or more. The current puppies are eight weeks old and priced at $1,250. Owner photos live on each profile.</p>
@@ -152,8 +153,8 @@ HEALTH_EXTRA = f"""
 """
 
 CONTACT_COPY = f"""
-<p>Orders are not placed through an online checkout. When you are ready to reserve a puppy, send the order on WhatsApp or by email. That is how we share the latest video, confirm the health packet, and send deposit instructions in writing. If you want to talk first, call {PHONE}, then follow with a written message so the reservation is on record.</p>
-<p>A useful first message includes your name, city, the puppy you want, your timeline, and whether you will pick up or need delivery. Ask any question you would ask in the kitchen on go-home day. We answer inquiries from 9am to 6pm. Puppy visits are by appointment so the litter can rest.</p>
+<p>Submit the inquiry form above and the message is delivered to {EMAIL}. We reply with videos, the health packet, and deposit instructions in writing. If you want to talk first, call {PHONE}.</p>
+<p>We answer inquiries from 9am to 6pm. Puppy visits are by appointment so the litter can rest.</p>
 """
 
 
